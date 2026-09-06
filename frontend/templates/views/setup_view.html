@@ -1,0 +1,244 @@
+  <div id="setupView" style="display:none;">
+    <div class="container setup-container">
+      
+      <!-- Setup Hero Header -->
+      <div class="setup-hero-banner">
+        <div class="setup-badge-tag">
+          <span>✨ DEALWISE SMART SETUP BUILDER</span>
+        </div>
+        <h1 class="setup-hero-title">
+          Build smarter spaces. <span class="green-word">Pay less.</span>
+        </h1>
+        <p class="setup-hero-sub">
+          Tell us what you want to create and your budget. DealWise composes an aesthetically coordinated, deal-verified setup across Amazon, Flipkart, Myntra & IKEA — building around the furniture you already own.
+        </p>
+      </div>
+
+      <!-- 4-Step Interactive Configurator Card -->
+      <div class="setup-configurator-card">
+        <div class="config-steps-grid">
+          
+          <!-- Step 1: Choose Space -->
+          <div class="config-step-box">
+            <span class="step-num-pill">Step 1</span>
+            <label class="step-label">Select Your Space</label>
+            <div class="space-select-cards" id="spaceSelectGroup">
+              <button type="button" class="space-card active" data-space="bedroom">
+                <span class="space-icon">🛏️</span>
+                <span class="space-title">Bedroom Makeover</span>
+                <span class="space-sub">Sleep, rugs, warm lighting</span>
+              </button>
+              <button type="button" class="space-card" data-space="wfh_desk">
+                <span class="space-icon">💻</span>
+                <span class="space-title">WFH & Desk Setup</span>
+                <span class="space-sub">Ergonomics, desk mat, lamp</span>
+              </button>
+              <button type="button" class="space-card" data-space="living_room">
+                <span class="space-icon">🛋️</span>
+                <span class="space-title">Living Room & Hall</span>
+                <span class="space-sub">Sofa, coffee table, ambient lamps</span>
+              </button>
+              <button type="button" class="space-card" data-space="kitchen_bar">
+                <span class="space-icon">☕</span>
+                <span class="space-title">Kitchen & Coffee Bar</span>
+                <span class="space-sub">Espresso, air fryer, organizers</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Set Budget -->
+          <div class="config-step-box">
+            <span class="step-num-pill">Step 2</span>
+            <div class="budget-label-row">
+              <label class="step-label">Total Setup Budget</label>
+              <span class="budget-current-val" id="budgetDisplayVal">₹25,000</span>
+            </div>
+            <input type="range" id="setupBudgetSlider" min="15000" max="75000" step="1000" value="25000" class="dealwise-range-slider">
+            <div class="budget-quick-pills" id="budgetPillsGroup">
+              <button type="button" class="budget-pill" data-val="18000">₹18,000</button>
+              <button type="button" class="budget-pill active" data-val="25000">₹25,000</button>
+              <button type="button" class="budget-pill" data-val="35000">₹35,000</button>
+              <button type="button" class="budget-pill" data-val="50000">₹50,000</button>
+            </div>
+          </div>
+
+          <!-- Step 3: What Do You Already Own? -->
+          <div class="config-step-box">
+            <span class="step-num-pill">Step 3</span>
+            <label class="step-label">What do you already own? <span class="sub-tip">(We deduct cost & build around them)</span></label>
+            <div class="owned-items-flex" id="ownedItemsGroup">
+              <!-- Dynamically populated based on space -->
+              <label class="owned-pill"><input type="checkbox" value="bed"> <span>Bed Frame</span></label>
+              <label class="owned-pill"><input type="checkbox" value="mattress"> <span>Mattress</span></label>
+              <label class="owned-pill"><input type="checkbox" value="curtains"> <span>Curtains</span></label>
+              <label class="owned-pill"><input type="checkbox" value="lighting"> <span>Floor Lamp</span></label>
+              <label class="owned-pill"><input type="checkbox" value="rug"> <span>Floor Rug</span></label>
+            </div>
+          </div>
+
+          <!-- Step 4: Aesthetic Style -->
+          <div class="config-step-box">
+            <span class="step-num-pill">Step 4</span>
+            <label class="step-label">Design Aesthetic</label>
+            <div class="style-select-pills" id="styleSelectGroup">
+              <button type="button" class="style-pill active" data-style="modern_minimal">🌿 Modern Minimalist</button>
+              <button type="button" class="style-pill" data-style="warm_boho">🏮 Warm Boho / Cozy</button>
+              <button type="button" class="style-pill" data-style="dark_aesthetic">🖤 Dark Architectural</button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="config-action-row">
+          <button type="button" id="generateSetupBtn" class="btn-generate-setup">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L13.8 7.5a2 2 0 0 0 1.3 1.3L21 11l-5.9 2.2a2 2 0 0 0-1.3 1.3L12 20l-1.8-5.5a2 2 0 0 0-1.3-1.3L3 11l5.9-2.2a2 2 0 0 0 1.3-1.3L12 2Z"/>
+            </svg>
+            <span>Generate Deal-Verified Setup</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Generated Setup Results Container -->
+      <div id="setupResultsContainer" class="setup-results-wrap" style="display:none;">
+        
+        <!-- Tier Tabs (Best Value, Smart Upgrade, Premium Luxe) -->
+        <div class="setup-tier-nav-bar" id="tierTabsBar">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- DealWise Trust Guard: "You Don't Need This" (Anti-Affiliate Spam Weapon) -->
+        <div id="trustGuardBanner" class="trust-guard-banner" style="display:none;">
+          <div class="trust-guard-icon-box">🛡️</div>
+          <div class="trust-guard-content">
+            <div class="trust-guard-title-row">
+              <h4 class="trust-guard-title">DealWise Trust Guard: Keep What You Already Own</h4>
+              <span id="trustGuardSavedPill" class="trust-guard-saved-pill">Saved ₹0</span>
+            </div>
+            <p id="trustGuardDesc" class="trust-guard-desc">
+              You marked existing items as already owned. Unlike affiliate sites that push redundant products for commission, DealWise excluded them and reallocated your budget toward higher-impact lighting and aesthetic upgrades.
+            </p>
+          </div>
+        </div>
+
+        <!-- Budget & Savings Summary Bar -->
+        <div class="setup-budget-summary-banner" id="tierSummaryBanner">
+          <div class="summary-stat-group">
+            <span class="summary-label">Total Setup Cost</span>
+            <strong class="summary-val-green" id="tierTotalCost">₹0</strong>
+          </div>
+          <div class="summary-stat-group">
+            <span class="summary-label">Verified Savings</span>
+            <strong class="summary-val-black" id="tierTotalSavings">₹0</strong>
+          </div>
+          <div class="summary-stat-group">
+            <span class="summary-label">Budget Remaining</span>
+            <strong class="summary-val-blue" id="tierBudgetRemaining">₹0</strong>
+          </div>
+          <div class="summary-advice-block">
+            <span class="advice-sparkle">💡 AI Budget Advice:</span>
+            <span class="advice-text" id="tierAllocationAdvice">Loading optimization advice...</span>
+          </div>
+        </div>
+
+        <!-- Phased Items Grids -->
+        <div class="setup-phases-layout">
+          <!-- Phase 1: Essential 70% Transformation -->
+          <div class="phase-section">
+            <div class="phase-header-row">
+              <div class="phase-title-group">
+                <span class="phase-badge phase-1-badge">Phase 1: Essential High-Impact Items</span>
+                <h3 class="phase-heading">Transforms 70% of the Room Aesthetic</h3>
+              </div>
+              <div class="phase-subtotal-callout" id="phase1Subtotal">Subtotal: ₹0</div>
+            </div>
+            <div class="setup-cards-grid" id="phase1Grid">
+              <!-- Dynamically populated items -->
+            </div>
+          </div>
+
+          <!-- Phase 2: Finishing Accents -->
+          <div class="phase-section" style="margin-top:40px;">
+            <div class="phase-header-row">
+              <div class="phase-title-group">
+                <span class="phase-badge phase-2-badge">Phase 2: Finishing Accents & Decor</span>
+                <h3 class="phase-heading">Complete the Look (Wall Art, Planters & Accents)</h3>
+              </div>
+              <div class="phase-subtotal-callout" id="phase2Subtotal">Subtotal: ₹0</div>
+            </div>
+            <div class="setup-cards-grid" id="phase2Grid">
+              <!-- Dynamically populated items -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Setup Action Bar -->
+        <div class="setup-bottom-checkout-bar">
+          <div class="checkout-bar-left">
+            <strong id="bottomBarTierTitle">Best Value Setup</strong>
+            <span id="bottomBarItemCount">6 items verified across Amazon & Flipkart</span>
+          </div>
+          <div class="checkout-bar-right">
+            <button type="button" id="copySetupLinkBtn" class="btn-copy-setup-link" title="Copy shareable setup deep-link">
+              <span>📋 Copy Link</span>
+            </button>
+            <button type="button" id="shareSetupBtn" class="btn-share-setup">
+              <span>📲 Share on WhatsApp</span>
+            </button>
+            <button type="button" id="buyAllSetupBtn" class="btn-buy-entire-setup">
+              <span>Buy Entire Setup (₹<span id="buyAllCost">0</span>) →</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Multi-Store Bundle Checkout Modal -->
+    <div id="bundleModalBackdrop" class="bundle-modal-backdrop" style="display:none;">
+      <div class="bundle-modal-card">
+        <div class="bundle-modal-header">
+          <div>
+            <span class="bundle-modal-pill">✨ MULTI-STORE BUNDLE CART</span>
+            <h3 class="bundle-modal-title" id="bundleModalTitle">Your Curated Setup Cart</h3>
+          </div>
+          <button type="button" id="closeBundleModalBtn" class="bundle-modal-close-btn">&times;</button>
+        </div>
+
+        <div class="bundle-modal-summary-strip">
+          <div class="bundle-stat">
+            <span class="bundle-stat-label">Total Setup Price</span>
+            <strong class="bundle-stat-val" id="bundleModalTotal">₹0</strong>
+          </div>
+          <div class="bundle-stat">
+            <span class="bundle-stat-label">Total MRP Value</span>
+            <span class="bundle-stat-old" id="bundleModalMrp">₹0</span>
+          </div>
+          <div class="bundle-stat">
+            <span class="bundle-stat-label">Verified Savings</span>
+            <span class="bundle-stat-save" id="bundleModalSavings">Save ₹0 (0%)</span>
+          </div>
+        </div>
+
+        <div class="bundle-modal-body" id="bundleModalBody">
+          <!-- Dynamically populated grouped by store -->
+        </div>
+
+        <div class="bundle-modal-footer">
+          <button type="button" id="openAllStoresBtn" class="btn-open-all-stores">
+            <span>🚀 Open All Store Links in Tabs</span>
+          </button>
+          <button type="button" id="modalCopyLinkBtn" class="btn-modal-copy-link">
+            <span>📋 Copy Setup Link</span>
+          </button>
+          <button type="button" id="modalShareWhatsappBtn" class="btn-modal-whatsapp">
+            <span>📲 Share on WhatsApp</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->

@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DealSense — India's Most Accurate Deal Intelligence Engine</title>
+  <meta name="description" content="Stop falling for fake discounts and price anchoring. DealSense analyzes genuine price history, computes card offers, and calculates effective prices across Amazon, Flipkart, and leading stores.">
+
+  <!-- Google Fonts: Inter Display + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <!-- Chart.js for Interactive Price History Trends -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/dealwise-logo.png">
+
+  <!-- DealSense Master Stylesheet (Modular) -->
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <!-- Navigation Header Component -->
+    <header class="site-header">
+    <div class="container header-container">
+      <div class="header-left">
+        <!-- DealSense Brand Logo using Official D Mark -->
+        <a id="navLogoBtn" class="brand-logo-wrap" title="DealSense Home">
+          <img src="/assets/dealwise-logo.png" alt="DealSense Logo" class="brand-d-logo">
+          <div class="brand-name-group">
+            <span class="brand-title-text">DealSense</span>
+            <span class="brand-tagline-text">Shop smart. Save more.</span>
+          </div>
+        </a>
+
+        <nav class="main-nav">
+          <a href="#" id="homeNavBtn" class="nav-link active">Home</a>
+          <a href="#" id="setupNavBtn" class="nav-link nav-link-highlight">
+            <span class="nav-sparkle">✨</span> Smart Setups
+          </a>
+          <a href="#priceHistory" class="nav-link">Price History</a>
+          <a href="/deals" id="dealsNavBtn" class="nav-link">Deals</a>
+          <a href="/categories" class="nav-link">Categories</a>
+          <a href="#compare" class="nav-link">Compare</a>
+          <a href="#coupons" class="nav-link">Coupons</a>
+          <a href="#track" class="nav-link" id="headerTrackNavBtn">Track</a>
+          <a href="#blog" class="nav-link">Blog</a>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <div class="header-search-wrap">
+          <input type="text" id="headerSearch" class="header-search-box" placeholder="Search for products, brands or categories...">
+          <span class="header-search-ico">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+          <div id="headerSearchDropdown" class="header-search-dropdown-menu" style="display:none;">
+            <div id="headerSearchResultsList" class="header-search-results-list"></div>
+          </div>
+        </div>
+
+        <button class="btn-icon-ghost" id="headerBellBtn" title="Tracked Deals & Alerts">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+          </svg>
+        </button>
+
+        <button class="btn-header-login">Login</button>
+        <button class="btn-header-signup">Sign Up</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- View 1: Homepage & Deal Ingestion -->
+      <div id="homeView">
+    <!-- Homepage Hero Section (Exact Replica from Backup) -->
+    <section class="home-hero-section">
+      <div class="container hero-layout-grid">
+        
+        <!-- Left Hero Column: Typography & Search -->
+        <div class="hero-left-column">
+          <div class="trust-badge-pill">
+            <svg class="trust-shield-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <polyline points="9 12 11 14 15 10"></polyline>
+            </svg>
+            <span>India's Most Trusted Shopping Intelligence Platform</span>
+          </div>
+
+          <h1 class="hero-headline-text">
+            Shop <span class="green-word">smarter.</span><br>
+            Save <span class="green-word">bigger.</span>
+          </h1>
+
+          <p class="hero-subheadline-desc">
+            Track price history, compare across stores, get price drop alerts and know the best time to buy.
+          </p>
+
+          <!-- Main Deal URL & Omni-Search Bar -->
+          <div class="hero-search-wrapper" style="position:relative; width:100%;">
+            <form id="heroDealForm" class="deal-url-card">
+              <span class="url-icon-lead">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </span>
+              <input 
+                type="text" 
+                id="heroUrlInput" 
+                class="url-input-field" 
+                placeholder="Paste Amazon, Flipkart or any product link..."
+                required
+                autocomplete="off"
+              >
+              <button type="submit" id="heroSubmitBtn" class="btn-cta-analyze">
+                <!-- Default Content -->
+                <span class="btn-default-content">
+                  <svg class="btn-analyze-sparkle-ico" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L13.8 7.5a2 2 0 0 0 1.3 1.3L21 11l-5.9 2.2a2 2 0 0 0-1.3 1.3L12 20l-1.8-5.5a2 2 0 0 0-1.3-1.3L3 11l5.9-2.2a2 2 0 0 0 1.3-1.3L12 2Z"/>
+                    <circle cx="19" cy="5" r="2"/>
+                    <circle cx="5" cy="18" r="1.5"/>
+                  </svg>
+                  <span class="btn-text-label">Analyze Deal</span>
+                </span>
+
+                <!-- Loading / Progress Content -->
+                <span class="btn-loading-content" style="display:none;">
+                  <svg class="btn-spinner-ring" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.25)"></circle>
+                    <path class="spinner-arc" d="M12 2a10 10 0 0 1 10 10" stroke="#FFFFFF" stroke-linecap="round"></path>
+                  </svg>
+                  <span class="btn-loading-label">Analyzing Deal...</span>
+                </span>
+
+                <!-- Success State -->
+                <span class="btn-success-content" style="display:none;">
+                  <svg class="btn-check-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5">
+                    <polyline class="check-polyline" points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>Deal Verified!</span>
+                </span>
+
+                <!-- Progress Border Trace -->
+                <svg class="btn-progress-border" viewBox="0 0 160 48" preserveAspectRatio="none">
+                  <rect class="progress-border-rect" x="1.5" y="1.5" width="157" height="45" rx="9.5" fill="none" stroke="#22C55E" stroke-width="2.5"></rect>
+                </svg>
+              </button>
+            </form>
+
+            <!-- Floating Omni-Search Autocomplete Results Dropdown -->
+            <div id="searchResultsDropdown" class="search-dropdown-overlay" style="display:none;">
+              <div class="search-dropdown-header">
+                <span class="search-dropdown-title">Matching Deals & Products</span>
+                <span class="search-dropdown-sub">Click to analyze price history & discount authenticity</span>
+              </div>
+              <div id="searchResultsList" class="search-results-list"></div>
+            </div>
+          </div>
+
+          <!-- Store Chips (Amazon & Flipkart Only) -->
+          <div class="hero-chips-bar">
+            <span class="chips-intro-label">Try these:</span>
+            
+            <!-- Official Amazon -->
+            <button class="store-chip-btn chip-trigger" data-url="https://www.amazon.in/dp/B0D14BB5XY" title="Analyze sample Amazon deal">
+              <img src="/assets/amazon-logo.svg" alt="Amazon" class="store-official-logo">
+              <span>Amazon</span>
+            </button>
+
+            <!-- Official Flipkart -->
+            <button class="store-chip-btn chip-trigger" data-url="https://www.flipkart.com/motorola-g37-power-pantone-nautical-blue-128-gb/p/itm48ade38c32669?pid=MOBHMX5YNNYGMVWH" title="Analyze sample Flipkart deal">
+              <img src="/assets/flipkart-icon.svg" alt="Flipkart" class="store-official-logo">
+              <span>Flipkart</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Hero Column: Official Woman Illustration + Image 2 Floating Cards -->
+        <div class="hero-artwork-frame">
+          <!-- Float 1: Price History Card -->
+          <div class="floating-overlay-card float-card-history float-anim-a">
+            <div class="hist-card-title">Price History</div>
+            <div class="hist-chart-wrap">
+              <svg class="hist-svg-line" viewBox="0 0 215 58" fill="none" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="histGreenGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#22C55E" stop-opacity="0.32" />
+                    <stop offset="70%" stop-color="#22C55E" stop-opacity="0.06" />
+                    <stop offset="100%" stop-color="#22C55E" stop-opacity="0.0" />
+                  </linearGradient>
+                </defs>
+                <line x1="4" y1="6" x2="4" y2="56" stroke="#E2E8F0" stroke-width="1.5" stroke-linecap="round" />
+                <path d="M 4,36 L 16,38 L 26,34 L 36,40 L 46,32 L 58,42 L 70,34 L 84,18 L 94,28 L 104,22 L 114,34 L 126,30 L 136,40 L 148,36 L 158,42 L 170,36 L 186,42 L 200,30 L 212,24 L 212,56 L 4,56 Z" fill="url(#histGreenGrad)" />
+                <path d="M 4,36 L 16,38 L 26,34 L 36,40 L 46,32 L 58,42 L 70,34 L 84,18 L 94,28 L 104,22 L 114,34 L 126,30 L 136,40 L 148,36 L 158,42 L 170,36 L 186,42 L 200,30 L 212,24" stroke="#22C55E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <div class="hist-lowest-box">
+                <span class="hist-lowest-lbl">Lowest Price</span>
+                <span class="hist-lowest-val">₹37,499</span>
+                <span class="hist-lowest-date">on 12 Sep 2024</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Float 2: Price Drop Alert Card (Foreground Left) -->
+          <div class="floating-overlay-card float-card-alert float-anim-b">
+            <div class="alert-bell-box">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+              </svg>
+            </div>
+            <div class="alert-text-col">
+              <div class="alert-tag-title">Price Drop Alert</div>
+              <div class="alert-sub-msg">Great news!</div>
+              <div class="alert-drop-bold">Price dropped by ₹2,500</div>
+            </div>
+          </div>
+
+          <!-- Official Hero Artwork Asset (Woman on Sofa) -->
+          <img src="/assets/hero-illustration.png" alt="DealSense Shopping Intelligence" class="hero-woman-artwork">
+
+          <!-- Float 3: Recently Viewed / Featured Product Card -->
+          <div class="floating-overlay-card float-card-deal float-anim-c" id="heroFeaturedDealCard" data-url="https://www.amazon.in/dp/B0CHX6PXX6">
+            <div class="float-deal-img-col">
+              <img src="/assets/apple-watch-s9.png" id="heroFeaturedImg" class="float-watch-img" alt="Product Deal">
+            </div>
+            <div class="float-deal-info">
+              <div class="float-deal-badge-row">
+                <span class="float-recent-pill" id="heroFeaturedBadge">Recently Viewed</span>
+              </div>
+              <h4 class="float-deal-title" id="heroFeaturedTitle">Apple Watch Series 9</h4>
+              <div class="float-deal-subspec" id="heroFeaturedSubspec">45mm, Midnight Aluminium</div>
+              <div class="float-deal-rating-row" id="heroFeaturedRatingRow">
+                <span class="rating-num" id="heroFeaturedRatingNum">4.6</span>
+                <span class="rating-stars" id="heroFeaturedStars">★★★★★</span>
+                <span class="rating-count" id="heroFeaturedCount">(12,540)</span>
+              </div>
+              <div class="float-deal-pricing-row">
+                <span class="float-deal-price" id="heroFeaturedPrice">₹39,900</span>
+                <span class="float-deal-mrp" id="heroFeaturedMrp">₹45,900</span>
+                <span class="float-deal-disc" id="heroFeaturedDisc">13% OFF</span>
+              </div>
+              <button class="btn-float-view" id="heroFeaturedViewBtn" data-url="https://www.amazon.in/dp/B0CHX6PXX6">
+                <span>View Deal</span>
+                <span class="float-btn-arr">→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2. Section: What are you shopping for? (Dual Split Pathways) -->
+    <section class="mockup-shopping-pathways">
+      <div class="container">
+        <h2 class="pathways-main-title">What are you shopping for?</h2>
+        <div class="pathways-grid">
+          <!-- Pathway 1: I found a product -->
+          <div class="pathway-card pathway-product" id="pathwayProductCard">
+            <div class="pathway-icon-circle icon-circle-green">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.4">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <div class="pathway-card-info">
+              <h3 class="pathway-title">I found a product</h3>
+              <p class="pathway-desc">Check if it's a good deal</p>
+              <span class="pathway-cta-link">Check Product →</span>
+            </div>
+          </div>
+
+          <!-- Pathway 2: I want to build something -->
+          <div class="pathway-card pathway-setup" id="pathwaySetupCard">
+            <div class="pathway-icon-circle icon-circle-blue">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.4">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+            </div>
+            <div class="pathway-card-info">
+              <h3 class="pathway-title">I want to build something</h3>
+              <p class="pathway-desc">Get a complete shopping setup</p>
+              <span class="pathway-cta-link">Build My Setup →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Section: Build it. We'll find it. (6 Setup Category Cards) -->
+    <section class="mockup-setup-categories">
+      <div class="container">
+        <div class="setup-section-header">
+          <div class="setup-title-line">
+            <h2 class="setup-main-title">Build it. We'll find it.</h2>
+            <span class="setup-popular-pill">Popular</span>
+          </div>
+          <p class="setup-main-desc">
+            Tell us what you want to create and your budget. We'll build the perfect setup for you.
+          </p>
+        </div>
+
+        <div class="setup-categories-carousel-wrap">
+          <div class="setup-categories-grid">
+            <!-- 1. Bedroom -->
+            <div class="setup-room-card" data-space="bedroom" data-budget="20000">
+              <div class="setup-room-thumb-wrap">
+                <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=400&q=80" alt="Bedroom" class="setup-room-img">
+              </div>
+              <div class="setup-room-info">
+                <h4 class="setup-room-title">Bedroom</h4>
+                <span class="setup-room-sub">from ₹20,000</span>
+                <a href="#" class="setup-room-cta">Build Now →</a>
+              </div>
+            </div>
+
+            <!-- 2. Gaming Setup -->
+            <div class="setup-room-card" data-space="wfh_desk" data-budget="40000">
+              <div class="setup-room-thumb-wrap">
+                <img src="https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=400&q=80" alt="Gaming Setup" class="setup-room-img">
+              </div>
+              <div class="setup-room-info">
+                <h4 class="setup-room-title">Gaming Setup</h4>
+                <span class="setup-room-sub">from ₹40,000</span>
+                <a href="#" class="setup-room-cta">Build Now →</a>
+              </div>
+            </div>
+
+            <!-- 3. Home Office -->
+            <div class="setup-room-card" data-space="wfh_desk" data-budget="15000">
+              <div class="setup-room-thumb-wrap">
+                <img src="https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=400&q=80" alt="Home Office" class="setup-room-img">
+              </div>
+              <div class="setup-room-info">
+                <h4 class="setup-room-title">Home Office</h4>
+                <span class="setup-room-sub">from ₹15,000</span>
+                <a href="#" class="setup-room-cta">Build Now →</a>
+              </div>
+            </div>
+
+            <!-- 4. Living Room -->
+            <div class="setup-room-card" data-space="living_room" data-budget="30000">
+              <div class="setup-room-thumb-wrap">
+                <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80" alt="Living Room" class="setup-room-img">
+              </div>
+              <div class="setup-room-info">
+                <h4 class="setup-room-title">Living Room</h4>
+                <span class="setup-room-sub">from ₹30,000</span>
+                <a href="#" class="setup-room-cta">Build Now →</a>
+              </div>
+            </div>
+
+            <!-- 5. Kitchen -->
+            <div class="setup-room-card" data-space="kitchen_bar" data-budget="15000">
+              <div class="setup-room-thumb-wrap">
+                <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=400&q=80" alt="Kitchen" class="setup-room-img">
+              </div>
+              <div class="setup-room-info">
+                <h4 class="setup-room-title">Kitchen</h4>
+                <span class="setup-room-sub">from ₹15,000</span>
+                <a href="#" class="setup-room-cta">Build Now →</a>
+              </div>
+            </div>
+
+            <!-- 6. PC Build -->
+            <div class="setup-room-card" data-space="wfh_desk" data-budget="50000">
+              <div class="setup-room-thumb-wrap">
+                <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=400&q=80" alt="PC Build" class="setup-room-img">
+              </div>
+              <div class="setup-room-info">
+                <h4 class="setup-room-title">PC Build</h4>
+                <span class="setup-room-sub">from ₹50,000</span>
+                <a href="#" class="setup-room-cta">Build Now →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Section: Deals worth checking (Curated Live Deals with Filter Pills) -->
+    <section class="mockup-deals-section" id="liveDeals">
+      <div class="container">
+        <div class="deals-header-row">
+          <h2 class="deals-section-title">Deals worth checking</h2>
+          <a href="/deals" class="deals-view-all-link">View All Deals →</a>
+        </div>
+
+        <!-- Filter Pills Strip -->
+        <div class="deals-filter-pills-bar" id="dealsFilterPillsRow">
+          <button type="button" class="mockup-pill-btn active" data-filter="trending">Trending</button>
+          <button type="button" class="mockup-pill-btn" data-filter="best_deals">Best Deals</button>
+          <button type="button" class="mockup-pill-btn" data-filter="price_drops">Price Drops</button>
+          <button type="button" class="mockup-pill-btn" data-filter="under_999">Under ₹999</button>
+          <button type="button" class="mockup-pill-btn" data-filter="under_2499">Under ₹2,499</button>
+          <button type="button" class="mockup-pill-btn" data-filter="under_5000">Under ₹5,000</button>
+          <button type="button" class="mockup-pill-btn" data-filter="electronics">Electronics</button>
+          <button type="button" class="mockup-pill-btn" data-filter="home">Home</button>
+          <button type="button" class="mockup-pill-btn" data-filter="fashion">Fashion</button>
+          <button type="button" class="mockup-pill-btn pill-more" data-filter="more">More ▾</button>
+        </div>
+
+        <!-- Deals Grid — Live from Amazon & Flipkart API -->
+        <!-- Populated by live_deals.js → renderModernDealsGrid() via /api/deals/live -->
+        <div class="deals-cards-5-grid" id="dealsWorthCheckingContainer" data-live="true">
+          <!-- 1. Apple AirPods 4 -->
+          <div class="mockup-deal-card" data-url="https://www.amazon.in/dp/B0DGJDBP7X">
+            <div class="deal-card-media">
+              <img src="https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=300&q=80" alt="Apple AirPods 4" class="deal-media-img" loading="lazy">
+            </div>
+            <div class="deal-card-content">
+              <h4 class="deal-card-name">Apple AirPods 4</h4>
+              <div class="deal-card-pricing">
+                <strong class="deal-price-cur">₹11,999</strong>
+                <span class="deal-price-mrp">₹14,900</span>
+                <span class="deal-disc-badge">20% OFF</span>
+              </div>
+              <div class="deal-verdict-row">
+                <span class="verdict-good-pill">✓ Good Deal</span>
+              </div>
+              <span class="deal-comp-note">🛡️ 18% below typical price</span>
+              <div class="deal-store-row">
+                <img src="/assets/amazon-logo.svg" alt="Amazon" class="deal-store-ico">
+                <span class="deal-store-arr">→</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. boAt Airdopes 141 -->
+          <div class="mockup-deal-card" data-url="https://www.amazon.in/dp/B09XSXVMML">
+            <div class="deal-card-media">
+              <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=300&q=80" alt="boAt Airdopes 141" class="deal-media-img" loading="lazy">
+            </div>
+            <div class="deal-card-content">
+              <h4 class="deal-card-name">boAt Airdopes 141</h4>
+              <div class="deal-card-pricing">
+                <strong class="deal-price-cur">₹699</strong>
+                <span class="deal-price-mrp">₹2,990</span>
+                <span class="deal-disc-badge">77% OFF</span>
+              </div>
+              <div class="deal-verdict-row">
+                <span class="verdict-good-pill">✓ Great Deal</span>
+              </div>
+              <span class="deal-comp-note">✓ Near historical low</span>
+              <div class="deal-store-row">
+                <img src="/assets/amazon-logo.svg" alt="Amazon" class="deal-store-ico">
+                <span class="deal-store-arr">→</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Samsung 55" 4K TV -->
+          <div class="mockup-deal-card" data-url="https://www.amazon.in/dp/B0CY5J8424">
+            <div class="deal-card-media">
+              <img src="https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=300&q=80" alt="Samsung 55 4K TV" class="deal-media-img" loading="lazy">
+            </div>
+            <div class="deal-card-content">
+              <h4 class="deal-card-name">Samsung 55" 4K TV</h4>
+              <div class="deal-card-pricing">
+                <strong class="deal-price-cur">₹38,990</strong>
+                <span class="deal-price-mrp">₹59,990</span>
+                <span class="deal-disc-badge">35% OFF</span>
+              </div>
+              <div class="deal-verdict-row">
+                <span class="verdict-good-pill">✓ Good Deal</span>
+              </div>
+              <span class="deal-comp-note">🛡️ 12% below typical price</span>
+              <div class="deal-store-row">
+                <img src="/assets/amazon-logo.svg" alt="Amazon" class="deal-store-ico">
+                <span class="deal-store-arr">→</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Redmi Note 13 5G (Flipkart) -->
+          <div class="mockup-deal-card" data-url="https://www.flipkart.com/redmi-note-13-5g-arctic-white-128-gb/p/itm7da7e9e8d43b2">
+            <div class="deal-card-media">
+              <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&q=80" alt="Redmi Note 13 5G" class="deal-media-img" loading="lazy">
+            </div>
+            <div class="deal-card-content">
+              <h4 class="deal-card-name">Redmi Note 13 5G</h4>
+              <div class="deal-card-pricing">
+                <strong class="deal-price-cur">₹12,999</strong>
+                <span class="deal-price-mrp">₹19,999</span>
+                <span class="deal-disc-badge">35% OFF</span>
+              </div>
+              <div class="deal-verdict-row">
+                <span class="verdict-good-pill">✓ Great Deal</span>
+              </div>
+              <span class="deal-comp-note">✓ Lowest in 90 days</span>
+              <div class="deal-store-row">
+                <img src="/assets/flipkart-icon.svg" alt="Flipkart" class="deal-store-ico">
+                <span class="deal-store-arr">→</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Philips Mixer Grinder -->
+          <div class="mockup-deal-card" data-url="https://www.flipkart.com/philips-hl7576-00-750-w-juicer-mixer-grinder/p/itmf7cd3c5aeed5b">
+            <div class="deal-card-media">
+              <img src="https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=300&q=80" alt="Philips Mixer Grinder" class="deal-media-img" loading="lazy">
+            </div>
+            <div class="deal-card-content">
+              <h4 class="deal-card-name">Philips Mixer Grinder</h4>
+              <div class="deal-card-pricing">
+                <strong class="deal-price-cur">₹2,499</strong>
+                <span class="deal-price-mrp">₹4,995</span>
+                <span class="deal-disc-badge">50% OFF</span>
+              </div>
+              <div class="deal-verdict-row">
+                <span class="verdict-good-pill">✓ Good Deal</span>
+              </div>
+              <span class="deal-comp-note">🛡️ 15% below typical price</span>
+              <div class="deal-store-row">
+                <img src="/assets/flipkart-icon.svg" alt="Flipkart" class="deal-store-ico">
+                <span class="deal-store-arr">→</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Section: Explore deals by category (7 Benchmark Cards) -->
+    <section class="mockup-cat-deals-section" id="categories">
+      <div class="container">
+        <div class="cat-deals-header-row">
+          <h2 class="cat-deals-title">Explore deals by category</h2>
+          <a href="/categories" class="cat-deals-view-all">View All Categories →</a>
+        </div>
+
+        <div class="cat-deals-grid">
+          <!-- 1. OnePlus Nord 4 -->
+          <div class="cat-deal-item-card" data-url="https://www.amazon.in/dp/B0D78W65C3" data-category-slug="electronics" title="View Electronics Category">
+            <span class="cat-drop-tag">↓ 16%</span>
+            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200&q=80" alt="OnePlus Nord 4" class="cat-deal-thumb">
+            <h4 class="cat-deal-name">OnePlus Nord 4</h4>
+            <strong class="cat-deal-price">₹26,999</strong>
+            <span class="cat-deal-was">was ₹32,999</span>
+            <span class="cat-deal-typical">Typical: ₹28,500</span>
+          </div>
+
+          <!-- 2. Sony WH-1000XM5 -->
+          <div class="cat-deal-item-card" data-url="https://www.amazon.in/dp/B09XS7JWHH" data-category-slug="electronics" title="View Electronics Category">
+            <span class="cat-drop-tag">↓ 22%</span>
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&q=80" alt="Sony WH-1000XM5" class="cat-deal-thumb">
+            <h4 class="cat-deal-name">Sony WH-1000XM5</h4>
+            <strong class="cat-deal-price">₹24,990</strong>
+            <span class="cat-deal-was">was ₹31,990</span>
+            <span class="cat-deal-typical">Typical: ₹28,900</span>
+          </div>
+
+          <!-- 3. Smart TVs -->
+          <div class="cat-deal-item-card" data-url="https://www.amazon.in/dp/B0CY5J8424" data-category-slug="electronics" title="View Electronics Category">
+            <span class="cat-drop-tag">↓ 15%</span>
+            <img src="https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=200&q=80" alt="Smart TVs" class="cat-deal-thumb">
+            <h4 class="cat-deal-name">Smart TVs</h4>
+            <strong class="cat-deal-price">₹29,900</strong>
+            <span class="cat-deal-was">was ₹34,990</span>
+            <span class="cat-deal-typical">Typical: ₹31,200</span>
+          </div>
+
+          <!-- 4. Laptops -->
+          <div class="cat-deal-item-card" data-url="https://www.amazon.in/dp/B0DFY4KCKW" data-category-slug="electronics" title="View Electronics Category">
+            <span class="cat-drop-tag">↓ 16%</span>
+            <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&q=80" alt="Laptops" class="cat-deal-thumb">
+            <h4 class="cat-deal-name">Laptops</h4>
+            <strong class="cat-deal-price">₹23,990</strong>
+            <span class="cat-deal-was">was ₹29,990</span>
+            <span class="cat-deal-typical">Typical: ₹31,200</span>
+          </div>
+
+          <!-- 5. LG 43" 4K TV -->
+          <div class="cat-deal-item-card" data-url="https://www.amazon.in/dp/B0D4N38P8Q" data-category-slug="electronics" title="View Electronics Category">
+            <span class="cat-drop-tag">↓ 19%</span>
+            <img src="https://images.unsplash.com/photo-1593784991095-a205069470b6?w=200&q=80" alt="LG 43 4K TV" class="cat-deal-thumb">
+            <h4 class="cat-deal-name">LG 43" 4K TV</h4>
+            <strong class="cat-deal-price">₹23,990</strong>
+            <span class="cat-deal-was">was ₹29,900</span>
+            <span class="cat-deal-typical">Typical: ₹25,500</span>
+          </div>
+
+          <!-- 6. Kitchen Appliances -->
+          <div class="cat-deal-item-card" data-url="https://www.amazon.in/dp/B0D14BB5XY" data-category-slug="home-living" title="View Home & Living Category">
+            <span class="cat-drop-tag">↓ 20%</span>
+            <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=200&q=80" alt="Kitchen" class="cat-deal-thumb">
+            <h4 class="cat-deal-name">Kitchen</h4>
+            <strong class="cat-deal-price">₹4,706</strong>
+            <span class="cat-deal-was">was ₹6,995</span>
+            <span class="cat-deal-typical">Typical: ₹5,500</span>
+          </div>
+
+          <!-- 7. ASUS TUF Gaming F15 -->
+          <div class="cat-deal-item-card" data-url="https://www.amazon.in/dp/B0D3F5C3L5" data-category-slug="electronics" title="View Electronics Category">
+            <span class="cat-drop-tag">↓ 20%</span>
+            <img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=200&q=80" alt="ASUS TUF Gaming F15" class="cat-deal-thumb">
+            <h4 class="cat-deal-name">ASUS TUF Gaming</h4>
+            <strong class="cat-deal-price">₹64,990</strong>
+            <span class="cat-deal-was">was ₹81,900</span>
+            <span class="cat-deal-typical">Typical: ₹68,900</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Section: Why smart shoppers choose DealSense (5 Pillars) -->
+    <section class="mockup-why-choose-section">
+      <div class="container">
+        <h2 class="why-choose-title">Why smart shoppers choose DealSense</h2>
+        <div class="why-choose-grid">
+          <!-- 1 -->
+          <div class="why-choose-card">
+            <div class="why-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <h4 class="why-card-title">Real Price History</h4>
+            <p class="why-card-desc">Know what a product actually sold for.</p>
+          </div>
+
+          <!-- 2 -->
+          <div class="why-choose-card">
+            <div class="why-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </div>
+            <h4 class="why-card-title">Buy / Wait / Avoid</h4>
+            <p class="why-card-desc">Our engine tells you the right time to buy.</p>
+          </div>
+
+          <!-- 3 -->
+          <div class="why-choose-card">
+            <div class="why-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.2">
+                <circle cx="6" cy="6" r="3"></circle>
+                <circle cx="18" cy="18" r="3"></circle>
+                <line x1="8.59" y1="8.59" x2="15.42" y2="15.42"></line>
+              </svg>
+            </div>
+            <h4 class="why-card-title">Compare Everywhere</h4>
+            <p class="why-card-desc">Compare prices across multiple stores.</p>
+          </div>
+
+          <!-- 4 -->
+          <div class="why-choose-card">
+            <div class="why-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.2">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              </svg>
+            </div>
+            <h4 class="why-card-title">Build Smarter</h4>
+            <p class="why-card-desc">Complete setups within your budget.</p>
+          </div>
+
+          <!-- 5 -->
+          <div class="why-choose-card">
+            <div class="why-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <polyline points="9 12 11 14 15 10"></polyline>
+              </svg>
+            </div>
+            <h4 class="why-card-title">Save Money</h4>
+            <p class="why-card-desc">Transparent deals. No fake discounts.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Section: VIP Deal Alerts & Community (Replacing Redundant Analyzer) -->
+    <section class="mockup-bottom-cta-section">
+      <div class="container">
+        <div class="bottom-cta-banner bottom-alert-banner">
+          <div class="bottom-alert-content">
+            <div class="bottom-alert-tag">
+              <span class="pulse-dot"></span> Instant Price Drop Radar
+            </div>
+            <h3 class="bottom-alert-heading">Never miss a real price drop again.</h3>
+            <p class="bottom-alert-sub">
+              Get verified deal alerts on WhatsApp and Telegram the second high-demand electronics, appliances, and home gear hit all-time low prices.
+            </p>
+            <div class="bottom-alert-actions">
+              <button type="button" class="btn-alert-channel btn-whatsapp-channel" id="bottomWhatsAppAlertBtn">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                </svg>
+                <span>Get WhatsApp Deal Alerts</span>
+              </button>
+              <button type="button" class="btn-alert-channel btn-telegram-channel" id="bottomTelegramAlertBtn">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+                <span>Join Telegram Channel</span>
+              </button>
+            </div>
+            <div class="bottom-alert-trust-row">
+              <span class="trust-pill-tag">✓ 100% Free Forever</span>
+              <span class="trust-pill-tag">✓ Zero Spam • Only 3-5 Deals / Day</span>
+              <span class="trust-pill-tag">✓ Verified Against 90-Day Real Price History</span>
+            </div>
+          </div>
+
+          <!-- Phone Notification Preview Mockup Card -->
+          <div class="bottom-alert-card-preview">
+            <div class="phone-mockup-outer">
+              <div class="phone-notification-card">
+                <div class="notif-card-header">
+                  <div class="notif-app-info">
+                    <img src="/assets/dealwise-logo.png" alt="DealSense" class="notif-dw-icon">
+                    <span class="notif-app-name">DealSense Price Drop Alert</span>
+                  </div>
+                  <span class="notif-time-ago">Just now</span>
+                </div>
+                <div class="notif-card-body">
+                  <div class="notif-product-thumb">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=120&q=80" alt="Sony Headphones">
+                  </div>
+                  <div class="notif-product-info">
+                    <h5 class="notif-prod-title">Sony WH-1000XM5 ANC</h5>
+                    <div class="notif-price-row">
+                      <strong class="notif-cur-price">₹24,990</strong>
+                      <span class="notif-was-price">₹31,990</span>
+                      <span class="notif-drop-pill">↓ 22% OFF</span>
+                    </div>
+                    <span class="notif-history-benchmark">⚡ All-time low • 8% below typical</span>
+                  </div>
+                </div>
+                <div class="notif-card-footer">
+                  <span class="notif-card-cta">View Live Deal on Amazon →</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ==========================================================================
+       VIEW 2: PRODUCT DETAIL & DEAL INTELLIGENCE (Reference Image 2 Exact Replica)
+       ========================================================================== -->
+
+    <!-- View 2: Product Detail & Deal Intelligence -->
+      <div id="detailView" class="product-detail-view-wrap" style="display: none;">
+    <div class="container">
+      
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs-nav-row">
+        <a href="#" id="backToHomeBreadcrumb" class="breadcrumb-nav-link">Home</a>
+        <span>›</span>
+        <span id="breadcrumbCategory" class="breadcrumb-nav-link">Audio</span>
+        <span>›</span>
+        <span id="breadcrumbBrand" class="breadcrumb-nav-link">Headphones</span>
+        <span>›</span>
+        <span id="breadcrumbTitle" class="breadcrumb-active-item">boAt Rockerz 450 Pro</span>
+      </nav>
+
+      <!-- 3-Column Product Hero Card -->
+      <div class="pdp-hero-container-card">
+        
+        <!-- Col 1: Product Photo Gallery -->
+        <div class="gallery-column">
+          <div class="gallery-thumbs-stack">
+            <button class="gallery-thumb-item active">
+              <img id="thumb1" src="" alt="Thumb 1">
+            </button>
+            <button class="gallery-thumb-item">
+              <img id="thumb2" src="" alt="Thumb 2">
+            </button>
+            <button class="gallery-thumb-item">
+              <img id="thumb3" src="" alt="Thumb 3">
+            </button>
+            <div class="gallery-thumb-item" style="display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--text-secondary);">
+              +2
+            </div>
+          </div>
+
+          <div class="gallery-main-container">
+            <span id="pdpVerdictPill" class="deal-status-chip">✓ Good Deal</span>
+            <img id="pdpMainImg" src="" class="gallery-main-photo" alt="Product Photo">
+          </div>
+        </div>
+
+        <!-- Col 2: Title, Price, Ratings & Primary CTAs -->
+        <div class="product-center-column">
+          <h2 id="pdpTitle" class="product-full-title">Product Title</h2>
+          
+          <div class="ratings-social-row">
+            <span id="pdpStarsDisplay" class="stars-gold">4.4 ★★★★☆</span>
+            <span id="pdpRatingsCount">(8,230)</span>
+            <span>|</span>
+            <span id="pdpBoughtCount">12K+ bought in past month</span>
+          </div>
+
+          <div style="display: flex; gap: 8px; align-items:center;">
+            <span id="pdpStoreBadge" class="badge-amazon-choice">Amazon's Choice</span>
+            <span id="pdpSpecTag" class="badge-tag-spec">Verified Quality</span>
+          </div>
+
+          <!-- Price Row -->
+          <div class="pdp-pricing-headline-row">
+            <span class="currency" style="font-size:24px; font-weight:800; color:#0F172A;">₹</span>
+            <span id="pdpCurrentPrice" class="pdp-bold-price">0</span>
+            <span id="pdpMrpPrice" class="pdp-struck-mrp">₹0</span>
+            <span id="pdpDiscountBadge" class="pdp-pct-badge-green">0% OFF</span>
+          </div>
+          <span class="pdp-taxes-note">Inclusive of all taxes</span>
+
+          <!-- Deal Authenticity & Fake Discount Auditor Card -->
+          <div id="pdpInflationCard" class="inflation-auditor-card">
+            <div class="inflation-header-row">
+              <div class="inflation-badge-pill" id="pdpInflationBadge">
+                <span class="inflation-shield-ico">🛡️</span>
+                <span id="pdpInflationVerdictText">Verified Genuine Discount</span>
+              </div>
+              <span class="inflation-tested-tag">90-Day Baseline Audit</span>
+            </div>
+            <div class="inflation-metrics-strip">
+              <div class="inflation-metric-col">
+                <span class="metric-label">Advertised Discount</span>
+                <strong id="pdpAdvertisedDiscount">0% OFF</strong>
+              </div>
+              <div class="inflation-arrow">→</div>
+              <div class="inflation-metric-col">
+                <span class="metric-label">Real Baseline Saving</span>
+                <strong id="pdpRealDiscount" class="real-saving-green">0% OFF</strong>
+              </div>
+              <div class="inflation-metric-col">
+                <span class="metric-label">Typical 90D Price</span>
+                <strong id="pdpTypicalBaseline">₹0</strong>
+              </div>
+            </div>
+            <p id="pdpInflationNote" class="inflation-note-desc">
+              Selling price is genuinely below the 90-day typical baseline with no artificial price spike.
+            </p>
+          </div>
+
+          <!-- Primary Affiliate CTA Button -->
+          <div class="pdp-cta-actions-row">
+            <a id="pdpMainBuyBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary-view-deal">
+              <span>View Deal on <span id="pdpStoreLabel">Amazon</span> →</span>
+            </a>
+            <button class="btn-icon-wishlist" id="pdpWishlistBtn" title="View Tracked Deals & Watchlist">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- True Landed Checkout Price Engine (Transparent Slip) -->
+          <div class="true-price-card" id="truePriceCard">
+            <div class="true-price-header">
+              <div class="true-price-title-row">
+                <span class="true-price-ico">🧾</span>
+                <span class="true-price-title">True Landed Checkout Price</span>
+                <span class="true-price-live-badge">Live Computation</span>
+              </div>
+              <span class="true-price-sub">Transparent checkout total after eligible store coupons & card discounts</span>
+            </div>
+
+            <!-- Bank Selector Pills -->
+            <div class="bank-selector-pills" id="bankSelectorPills">
+              <button type="button" class="bank-pill active" data-bank="sbi" data-pct="10" data-max="1500">
+                <span class="bank-logo-tag sbi-tag">SBI</span>
+                <span>SBI Card (10% Instant)</span>
+              </button>
+              <button type="button" class="bank-pill" data-bank="hdfc" data-pct="10" data-max="1250">
+                <span class="bank-logo-tag hdfc-tag">HDFC</span>
+                <span>HDFC (10% Instant)</span>
+              </button>
+              <button type="button" class="bank-pill" data-bank="icici" data-pct="5" data-max="2000">
+                <span class="bank-logo-tag icici-tag">ICICI</span>
+                <span>Amazon Pay ICICI (5%)</span>
+              </button>
+              <button type="button" class="bank-pill" data-bank="none" data-pct="0" data-max="0">
+                <span>Standard (No Card Offer)</span>
+              </button>
+            </div>
+
+            <!-- Receipt Breakdown Table -->
+            <div class="receipt-slip-table">
+              <div class="receipt-row">
+                <span class="receipt-label">Listed Store Price</span>
+                <span class="receipt-val" id="receiptBasePrice">₹0</span>
+              </div>
+              <div class="receipt-row savings-row" id="receiptCouponRow">
+                <span class="receipt-label">Eligible Store Coupon <span class="receipt-code-pill" id="receiptCouponCode">AIRFRY300</span></span>
+                <span class="receipt-val green-val" id="receiptCouponDiscount">-₹300</span>
+              </div>
+              <div class="receipt-row savings-row" id="receiptBankRow">
+                <span class="receipt-label">Instant Card Discount <span class="receipt-bank-pill" id="receiptBankCardLabel">SBI Card (10%)</span></span>
+                <span class="receipt-val green-val" id="receiptBankDiscount">-₹540</span>
+              </div>
+              <div class="receipt-row">
+                <span class="receipt-label">Delivery & Handling</span>
+                <span class="receipt-val green-val">FREE Prime Delivery</span>
+              </div>
+
+              <!-- Dashed Perforation Line -->
+              <div class="receipt-divider-dashed"></div>
+
+              <!-- Final Total Row -->
+              <div class="receipt-total-row">
+                <div class="receipt-total-left">
+                  <span class="receipt-total-lbl">Estimated Landed Price</span>
+                  <span class="receipt-disclaimer-txt">ℹ️ Applied at final payment screen with eligible card</span>
+                </div>
+                <div class="receipt-total-right">
+                  <span class="receipt-total-val" id="receiptFinalPrice">₹0</span>
+                  <span class="receipt-savings-callout" id="receiptTotalSavingsBadge">You save ₹0 vs MRP</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="pdp-secondary-actions-links">
+            <button class="pdp-action-btn" id="pdpShareBtn">🔗 Share</button>
+            <button class="pdp-action-btn highlight-alert-btn" id="openPriceAlertBtn">🔔 Track Price</button>
+            <button class="pdp-action-btn">⚖️ Add to Compare</button>
+          </div>
+        </div>
+
+        <!-- Col 3: Price at a Glance & Best Time to Buy -->
+        <div class="pdp-intelligence-glance-col">
+          <div class="glance-stat-card">
+            <div class="glance-card-header">Price at a Glance</div>
+            <div class="glance-data-row">
+              <span>Lowest Price (90 Days)</span>
+              <strong id="glanceLow">₹0</strong>
+            </div>
+            <div class="glance-data-row">
+              <span>Average Price</span>
+              <strong id="glanceAvg">₹0</strong>
+            </div>
+            <div class="glance-data-row">
+              <span>Highest Price (90 Days)</span>
+              <strong id="glanceHigh">₹0</strong>
+            </div>
+            <div class="glance-data-row">
+              <span>Price Drop</span>
+              <strong id="glanceDrop" style="color:var(--dw-green-primary);">0%</strong>
+            </div>
+            <div id="glanceSaving" class="glance-savings-pill">
+              You save ₹0
+            </div>
+          </div>
+
+          <!-- Best Time to Buy Intelligence Card (Image 1 Exact Match) -->
+          <div class="time-to-buy-card">
+            <div class="ttb-lead-row">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>Best Time to Buy</span>
+            </div>
+            <div class="ttb-sub-instruction">Based on price history, the best time to buy is</div>
+            <div class="ttb-content-flex">
+              <div class="ttb-text-block">
+                <div id="ttbHeadline" class="ttb-days-callout">Buy Today</div>
+                <p id="ttbDescription" class="ttb-explanation">Our AI prediction indicates price is verified near the 90-day low.</p>
+              </div>
+              <div class="ttb-calendar-box">
+                <div class="cal-top-accent"></div>
+                <div class="cal-dots-matrix">
+                  <span></span><span></span><span></span>
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="cal-clock-sub">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="3">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <button class="btn-ttb-how-it-works">ⓘ How it works</button>
+            <button class="btn-ttb-set-alert" id="ttbSetAlertBtn">
+              <span class="bell-ring-ico">🔔</span>
+              <span>Get WhatsApp Alert When Price Drops</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="pdp-nav-tabs-bar">
+        <button class="pdp-nav-tab-btn active" data-tab="overview">Overview</button>
+        <button class="pdp-nav-tab-btn" data-tab="history">Price History</button>
+        <button class="pdp-nav-tab-btn" data-tab="compare">Compare Prices</button>
+        <button class="pdp-nav-tab-btn" data-tab="coupons">Offers & Coupons</button>
+        <button class="pdp-nav-tab-btn" data-tab="reviews">Reviews</button>
+        <button class="pdp-nav-tab-btn" data-tab="specs">Specifications</button>
+        <button class="pdp-nav-tab-btn" data-tab="similar">Similar Products</button>
+      </nav>
+
+      <!-- 3-Column Intelligence Row -->
+      <div class="pdp-deep-intelligence-grid">
+        
+        <!-- Card 1: Price History (90 Days) -->
+        <div class="intel-box-container" id="sectionHistory">
+          <div class="box-title-lead-row">
+            <h3 class="box-title-h3">Price History (90 Days)</h3>
+            <div class="timeframe-filter-pills">
+              <button class="tf-filter-btn active" data-tf="90D">90D</button>
+              <button class="tf-filter-btn" data-tf="6M">6M</button>
+              <button class="tf-filter-btn" data-tf="1Y">1Y</button>
+              <button class="tf-filter-btn" data-tf="All">All</button>
+            </div>
+          </div>
+
+          <div class="svg-chart-container" style="position:relative;">
+            <!-- Interactive Floating Lowest Price Marker -->
+            <div id="chartLowestTooltip" class="chart-lowest-tooltip">
+              <span class="clt-lbl">Lowest Price</span>
+              <strong id="cltPrice">₹0</strong>
+              <span id="cltDate" class="clt-date">on 12 Sep 2024</span>
+            </div>
+            <svg id="pdpHistorySvg" viewBox="0 0 400 160" style="width:100%; height:100%; overflow:visible;">
+              <!-- Dynamic curve -->
+            </svg>
+          </div>
+
+          <div class="chart-bottom-metrics-grid">
+            <div>
+              <span>Lowest Price</span>
+              <strong id="chartSumLow">₹0</strong>
+              <span id="chartSumLowDate" style="font-size:9.5px; color:#64748B; display:block;">12 Sep 2024</span>
+            </div>
+            <div>
+              <span>Average Price</span>
+              <strong id="chartSumAvg">₹0</strong>
+              <span style="font-size:9.5px; color:#64748B; display:block;">last 90 days</span>
+            </div>
+            <div>
+              <span>Highest Price</span>
+              <strong id="chartSumHigh">₹0</strong>
+              <span id="chartSumHighDate" style="font-size:9.5px; color:#64748B; display:block;">28 May 2024</span>
+            </div>
+            <div>
+              <span>Price Drops</span>
+              <strong id="chartSumDrops">14 times</strong>
+              <span style="font-size:9.5px; color:#64748B; display:block;">in last 90 days</span>
+            </div>
+          </div>
+          <div class="chart-disclaimer-note">Prices are based on data from multiple stores and may vary.</div>
+        </div>
+
+        <!-- Card 2: Compare Prices Table -->
+        <div class="intel-box-container" id="sectionCompare">
+          <div class="box-title-lead-row">
+            <h3 class="box-title-h3">Compare Prices</h3>
+            <span style="font-size:11px; color:var(--text-secondary);">Sort by: Lowest Price ▾</span>
+          </div>
+
+          <div class="comparison-table-scroll">
+            <table class="clean-store-table">
+              <thead>
+                <tr>
+                  <th>Store</th>
+                  <th>Price</th>
+                  <th>Discount</th>
+                  <th>Delivery</th>
+                  <th>Total Price</th>
+                </tr>
+              </thead>
+              <tbody id="comparisonTableBody">
+                <!-- Dynamically filled with Amazon / Flipkart / Official / Croma / Reliance -->
+              </tbody>
+            </table>
+          </div>
+
+          <div id="savingsNoticeBox" class="table-savings-callout-banner">
+            <span>Price Difference: <strong id="savingsNoticeDiff">₹0</strong></span>
+            <span id="savingsNoticeText">Comparing verified live store offers</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Deal Intelligence & Price Drop Alert -->
+        <div class="intel-box-container">
+          <div class="box-title-lead-row">
+            <h3 class="box-title-h3">Deal Intelligence</h3>
+          </div>
+
+          <div class="gauge-score-layout">
+            <div class="score-circle-row">
+              <div id="circularScoreVal" class="circular-score-indicator">85%</div>
+              <div>
+                <div id="gaugeVerdictText" class="gauge-verdict-bold">Good Deal</div>
+                <div id="gaugeVerdictDesc" class="gauge-verdict-detail">Current price is 12% lower than 90-day average.</div>
+              </div>
+            </div>
+
+            <!-- Evidence Checklist -->
+            <ul id="pdpEvidenceList" class="evidence-checklist-items">
+              <!-- Dynamically populated -->
+            </ul>
+
+            <!-- Seller Trust & Authenticity Scorecard (from Keepa / PriceHistory) -->
+            <div class="seller-trust-box" id="sellerTrustBox">
+              <div class="seller-trust-head-row">
+                <div class="seller-name-group">
+                  <span class="seller-trust-label">Sold & Shipped by</span>
+                  <strong id="sellerNameTxt" class="seller-bold-name">Appario Retail / Official</strong>
+                </div>
+                <span id="sellerTrustBadge" class="seller-platinum-badge">🛡️ Platinum Seller</span>
+              </div>
+              <div class="seller-metrics-row">
+                <div class="seller-metric-item">
+                  <span class="metric-star-ico">★</span>
+                  <span id="sellerRatingVal" class="metric-val">4.8</span>
+                  <span id="sellerRatingsCountTxt" class="metric-sub">(142K+ ratings)</span>
+                </div>
+                <div class="seller-metric-item">
+                  <span class="metric-ico">🚚</span>
+                  <span id="sellerFulfillmentTxt" class="metric-val">Fulfilled by Store</span>
+                </div>
+              </div>
+              <div class="seller-authenticity-strip">
+                <span class="auth-tick">✓</span>
+                <span id="sellerAuthPolicy">7 Days Free Replacement • 100% Genuine Guaranteed</span>
+              </div>
+            </div>
+
+            <!-- Price Drop Alert Subscription Trigger -->
+            <div class="price-alert-section-box">
+              <div class="alert-section-heading">🔔 Price Drop Alert</div>
+              <p class="alert-section-subhead">Get notified when the price falls below your target price.</p>
+              <div class="alert-input-button-group">
+                <input type="number" id="targetPriceInput" class="alert-input-num" placeholder="Enter target price (₹)">
+                <button id="setAlertBtn" class="btn-alert-submit-action">Set Alert</button>
+              </div>
+              <div class="alert-footnote-txt">Instant WhatsApp & email notifications • Zero spam</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ==========================================================================
+           BOTTOM 3-CARD SECTION (Image 1 Exact Match)
+           ========================================================================== -->
+      <div class="pdp-bottom-cards-grid" id="sectionBottomCards">
+        
+        <!-- Card 1: Coupons & Bank Offers -->
+        <div class="pdp-bottom-card" id="sectionCoupons">
+          <div class="pdp-card-header-row">
+            <h3 class="bottom-card-title">Coupons & Bank Offers</h3>
+            <a href="#" class="bottom-card-link-green">View All</a>
+          </div>
+          <div id="pdpCouponsContainer" class="coupons-stack-list">
+            <!-- Dynamically populated offer cards with one-click copy -->
+          </div>
+        </div>
+
+        <!-- Card 2: Top Reviews with 5-to-1 Star Percentage Distribution Bars -->
+        <div class="pdp-bottom-card" id="sectionReviews">
+          <div class="pdp-card-header-row">
+            <h3 class="bottom-card-title">Top Reviews</h3>
+            <a href="#" class="bottom-card-link-green">View All</a>
+          </div>
+          <div class="reviews-deep-layout">
+            <div class="reviews-score-and-bars">
+              <div class="reviews-big-col">
+                <span id="reviewsScoreBig" class="reviews-score-num">4.4</span>
+                <div class="reviews-stars-row">★★★★★</div>
+                <span id="reviewsCountSub" class="reviews-total-sub">(8,230 reviews)</span>
+              </div>
+              <div class="rating-bars-stack">
+                <div class="star-bar-row">
+                  <span class="star-num-label">5 ★</span>
+                  <div class="star-track"><div class="star-fill" style="width:63%;"></div></div>
+                  <span class="star-pct-label">63%</span>
+                </div>
+                <div class="star-bar-row">
+                  <span class="star-num-label">4 ★</span>
+                  <div class="star-track"><div class="star-fill" style="width:22%;"></div></div>
+                  <span class="star-pct-label">22%</span>
+                </div>
+                <div class="star-bar-row">
+                  <span class="star-num-label">3 ★</span>
+                  <div class="star-track"><div class="star-fill" style="width:8%;"></div></div>
+                  <span class="star-pct-label">8%</span>
+                </div>
+                <div class="star-bar-row">
+                  <span class="star-num-label">2 ★</span>
+                  <div class="star-track"><div class="star-fill" style="width:4%;"></div></div>
+                  <span class="star-pct-label">4%</span>
+                </div>
+                <div class="star-bar-row">
+                  <span class="star-num-label">1 ★</span>
+                  <div class="star-track"><div class="star-fill" style="width:3%;"></div></div>
+                  <span class="star-pct-label">3%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Featured Verified Purchase Review Quote -->
+            <div class="featured-review-bubble">
+              <div class="rev-rating-pill">
+                <span>5 ★★★★★</span>
+                <span class="rev-verified-text">✓ Verified Purchase</span>
+              </div>
+              <p id="featuredReviewQuote" class="featured-quote-body">
+                "Excellent quality and value for money. Very satisfied with the purchase."
+              </p>
+              <span id="featuredReviewAuthor" class="featured-quote-author">- Rahul Sharma (Verified Buyer)</span>
+            </div>
+
+            <!-- AI Review Sentiment: Pros & Cons Summary -->
+            <div class="ai-review-sentiment-box" id="aiReviewSentimentBox">
+              <div class="ai-sentiment-header">
+                <span class="ai-sparkle-ico">✨</span>
+                <span class="ai-sentiment-title">AI Buyer Consensus</span>
+                <span class="ai-consensus-pct" id="aiConsensusPct">89% Positive</span>
+              </div>
+              <p id="aiConsensusDesc" class="ai-consensus-sentence">
+                Buyers praise the heating performance and build quality.
+              </p>
+              <div class="pros-cons-grid">
+                <div class="pro-column">
+                  <span class="pro-head">👍 What Buyers Love</span>
+                  <ul id="pdpProsList" class="pros-list">
+                    <!-- Populated dynamically -->
+                  </ul>
+                </div>
+                <div class="con-column">
+                  <span class="con-head">⚠️ What to Keep in Mind</span>
+                  <ul id="pdpConsList" class="cons-list">
+                    <!-- Populated dynamically -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="carousel-dots-row">
+              <span class="dot active"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Similar Products Carousel Deck -->
+        <div class="pdp-bottom-card" id="sectionSimilar" style="position:relative;">
+          <div class="pdp-card-header-row">
+            <h3 class="bottom-card-title">Similar Products</h3>
+            <a href="#" class="bottom-card-link-green">View All</a>
+          </div>
+          <div id="pdpSimilarGrid" class="similar-products-deck">
+            <!-- Dynamically populated 4 alternative product cards -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Price Drop Alert Modal -->
+  <div id="priceAlertModalBackdrop" class="alert-modal-backdrop" style="display:none;" aria-hidden="true">
+    <div class="alert-modal-card" role="dialog" aria-labelledby="alertModalTitle">
+      <button id="closeAlertModalBtn" class="alert-modal-close" aria-label="Close modal">×</button>
+
+      <div class="alert-modal-header">
+        <div class="alert-bell-badge">🔔</div>
+        <div>
+          <span class="alert-modal-tag">SMART PRICE TRACKER</span>
+          <h3 id="alertModalTitle" class="alert-modal-title">Set Price Drop Alert</h3>
+          <p id="alertModalProductTitle" class="alert-modal-subtitle">Product title...</p>
+        </div>
+      </div>
+
+      <div class="alert-modal-body">
+        <!-- Target Price Group -->
+        <div class="alert-form-section">
+          <div class="alert-price-preview-row">
+            <div>
+              <span class="alert-label">Current Selling Price</span>
+              <strong id="alertCurrentPriceDisplay" class="alert-current-price">₹0</strong>
+            </div>
+            <div class="alert-arrow-col">→</div>
+            <div>
+              <span class="alert-label">Alert Target Price</span>
+              <div class="alert-input-with-currency">
+                <span class="curr-sym">₹</span>
+                <input type="number" id="alertTargetPriceInput" class="alert-target-input" placeholder="4800" min="10" step="10">
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Presets -->
+          <div class="alert-presets-row">
+            <button type="button" class="alert-preset-pill active" data-pct="10" id="presetBtn10">
+              <span>🎯 -10% Drop</span>
+              <small id="preset10Val">₹0</small>
+            </button>
+            <button type="button" class="alert-preset-pill" data-pct="15" id="presetBtn15">
+              <span>📉 -15% Drop</span>
+              <small id="preset15Val">₹0</small>
+            </button>
+            <button type="button" class="alert-preset-pill" data-type="all_time_low" id="presetBtnLow">
+              <span>🏆 90D Low</span>
+              <small id="presetLowVal">₹0</small>
+            </button>
+          </div>
+        </div>
+
+        <!-- Channel Selector -->
+        <div class="alert-form-section">
+          <label class="alert-label">Where should we ping you?</label>
+          <div class="alert-channel-tabs">
+            <button type="button" class="alert-channel-btn active" data-channel="whatsapp" id="alertChannelWhatsApp">
+              <span class="wa-ico">🟢</span> WhatsApp (Instant)
+            </button>
+            <button type="button" class="alert-channel-btn" data-channel="email" id="alertChannelEmail">
+              <span class="mail-ico">✉️</span> Email Alert
+            </button>
+          </div>
+
+          <!-- Contact Input -->
+          <div class="alert-contact-wrap" id="alertContactWrap">
+            <div class="phone-input-group" id="alertPhoneGroup">
+              <span class="country-code">+91</span>
+              <input type="tel" id="alertPhoneInput" class="alert-text-input" placeholder="98765 43210" maxlength="10">
+            </div>
+            <input type="email" id="alertEmailInput" class="alert-text-input" placeholder="your.name@example.com" style="display:none;">
+            <p class="alert-security-note" id="alertChannelNote">
+              ⚡ We only send a WhatsApp message when the price drops below your target. Zero spam, ever.
+            </p>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button id="submitPriceAlertBtn" class="btn-activate-alert">
+          <span class="btn-bell-ico">🔔</span>
+          <span>Activate Price Drop Alert</span>
+        </button>
+
+        <!-- Trust guarantee -->
+        <div class="alert-guarantee-row">
+          <span>🔒 100% Free Service</span>
+          <span>•</span>
+          <span>No Spam Guarantee</span>
+          <span>•</span>
+          <span>Cancel Anytime</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       VIEW 3: SMART SETUP BUILDER (The Strategic Weapon)
+       ========================================================================== -->
+
+    <!-- View 3: Smart Setup & Renovation Builder -->
+      <div id="setupView" style="display:none;">
+    <div class="container setup-container">
+      
+      <!-- Setup Hero Header -->
+      <div class="setup-hero-banner">
+        <div class="setup-badge-tag">
+          <span>✨ DEALWISE SMART SETUP BUILDER</span>
+        </div>
+        <h1 class="setup-hero-title">
+          Build smarter spaces. <span class="green-word">Pay less.</span>
+        </h1>
+        <p class="setup-hero-sub">
+          Tell us what you want to create and your budget. DealSense composes an aesthetically coordinated, deal-verified setup across Amazon, Flipkart, Myntra & IKEA — building around the furniture you already own.
+        </p>
+      </div>
+
+      <!-- 4-Step Interactive Configurator Card -->
+      <div class="setup-configurator-card">
+        <div class="config-steps-grid">
+          
+          <!-- Step 1: Choose Space -->
+          <div class="config-step-box">
+            <span class="step-num-pill">Step 1</span>
+            <label class="step-label">Select Your Space</label>
+            <div class="space-select-cards" id="spaceSelectGroup">
+              <button type="button" class="space-card active" data-space="bedroom">
+                <span class="space-icon">🛏️</span>
+                <span class="space-title">Bedroom Makeover</span>
+                <span class="space-sub">Sleep, rugs, warm lighting</span>
+              </button>
+              <button type="button" class="space-card" data-space="wfh_desk">
+                <span class="space-icon">💻</span>
+                <span class="space-title">WFH & Desk Setup</span>
+                <span class="space-sub">Ergonomics, desk mat, lamp</span>
+              </button>
+              <button type="button" class="space-card" data-space="living_room">
+                <span class="space-icon">🛋️</span>
+                <span class="space-title">Living Room & Hall</span>
+                <span class="space-sub">Sofa, coffee table, ambient lamps</span>
+              </button>
+              <button type="button" class="space-card" data-space="kitchen_bar">
+                <span class="space-icon">☕</span>
+                <span class="space-title">Kitchen & Coffee Bar</span>
+                <span class="space-sub">Espresso, air fryer, organizers</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Set Budget -->
+          <div class="config-step-box">
+            <span class="step-num-pill">Step 2</span>
+            <div class="budget-label-row">
+              <label class="step-label">Total Setup Budget</label>
+              <span class="budget-current-val" id="budgetDisplayVal">₹25,000</span>
+            </div>
+            <input type="range" id="setupBudgetSlider" min="15000" max="75000" step="1000" value="25000" class="dealwise-range-slider">
+            <div class="budget-quick-pills" id="budgetPillsGroup">
+              <button type="button" class="budget-pill" data-val="18000">₹18,000</button>
+              <button type="button" class="budget-pill active" data-val="25000">₹25,000</button>
+              <button type="button" class="budget-pill" data-val="35000">₹35,000</button>
+              <button type="button" class="budget-pill" data-val="50000">₹50,000</button>
+            </div>
+          </div>
+
+          <!-- Step 3: What Do You Already Own? -->
+          <div class="config-step-box">
+            <span class="step-num-pill">Step 3</span>
+            <label class="step-label">What do you already own? <span class="sub-tip">(We deduct cost & build around them)</span></label>
+            <div class="owned-items-flex" id="ownedItemsGroup">
+              <!-- Dynamically populated based on space -->
+              <label class="owned-pill"><input type="checkbox" value="bed"> <span>Bed Frame</span></label>
+              <label class="owned-pill"><input type="checkbox" value="mattress"> <span>Mattress</span></label>
+              <label class="owned-pill"><input type="checkbox" value="curtains"> <span>Curtains</span></label>
+              <label class="owned-pill"><input type="checkbox" value="lighting"> <span>Floor Lamp</span></label>
+              <label class="owned-pill"><input type="checkbox" value="rug"> <span>Floor Rug</span></label>
+            </div>
+          </div>
+
+          <!-- Step 4: Aesthetic Style -->
+          <div class="config-step-box">
+            <span class="step-num-pill">Step 4</span>
+            <label class="step-label">Design Aesthetic</label>
+            <div class="style-select-pills" id="styleSelectGroup">
+              <button type="button" class="style-pill active" data-style="modern_minimal">🌿 Modern Minimalist</button>
+              <button type="button" class="style-pill" data-style="warm_boho">🏮 Warm Boho / Cozy</button>
+              <button type="button" class="style-pill" data-style="dark_aesthetic">🖤 Dark Architectural</button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="config-action-row">
+          <button type="button" id="generateSetupBtn" class="btn-generate-setup">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L13.8 7.5a2 2 0 0 0 1.3 1.3L21 11l-5.9 2.2a2 2 0 0 0-1.3 1.3L12 20l-1.8-5.5a2 2 0 0 0-1.3-1.3L3 11l5.9-2.2a2 2 0 0 0 1.3-1.3L12 2Z"/>
+            </svg>
+            <span>Generate Deal-Verified Setup</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Generated Setup Results Container -->
+      <div id="setupResultsContainer" class="setup-results-wrap" style="display:none;">
+        
+        <!-- Tier Tabs (Best Value, Smart Upgrade, Premium Luxe) -->
+        <div class="setup-tier-nav-bar" id="tierTabsBar">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- DealSense Trust Guard: "You Don't Need This" (Anti-Affiliate Spam Weapon) -->
+        <div id="trustGuardBanner" class="trust-guard-banner" style="display:none;">
+          <div class="trust-guard-icon-box">🛡️</div>
+          <div class="trust-guard-content">
+            <div class="trust-guard-title-row">
+              <h4 class="trust-guard-title">DealSense Trust Guard: Keep What You Already Own</h4>
+              <span id="trustGuardSavedPill" class="trust-guard-saved-pill">Saved ₹0</span>
+            </div>
+            <p id="trustGuardDesc" class="trust-guard-desc">
+              You marked existing items as already owned. Unlike affiliate sites that push redundant products for commission, DealSense excluded them and reallocated your budget toward higher-impact lighting and aesthetic upgrades.
+            </p>
+          </div>
+        </div>
+
+        <!-- Budget & Savings Summary Bar -->
+        <div class="setup-budget-summary-banner" id="tierSummaryBanner">
+          <div class="summary-stat-group">
+            <span class="summary-label">Total Setup Cost</span>
+            <strong class="summary-val-green" id="tierTotalCost">₹0</strong>
+          </div>
+          <div class="summary-stat-group">
+            <span class="summary-label">Verified Savings</span>
+            <strong class="summary-val-black" id="tierTotalSavings">₹0</strong>
+          </div>
+          <div class="summary-stat-group">
+            <span class="summary-label">Budget Remaining</span>
+            <strong class="summary-val-blue" id="tierBudgetRemaining">₹0</strong>
+          </div>
+          <div class="summary-advice-block">
+            <span class="advice-sparkle">💡 AI Budget Advice:</span>
+            <span class="advice-text" id="tierAllocationAdvice">Loading optimization advice...</span>
+          </div>
+        </div>
+
+        <!-- Phased Items Grids -->
+        <div class="setup-phases-layout">
+          <!-- Phase 1: Essential 70% Transformation -->
+          <div class="phase-section">
+            <div class="phase-header-row">
+              <div class="phase-title-group">
+                <span class="phase-badge phase-1-badge">Phase 1: Essential High-Impact Items</span>
+                <h3 class="phase-heading">Transforms 70% of the Room Aesthetic</h3>
+              </div>
+              <div class="phase-subtotal-callout" id="phase1Subtotal">Subtotal: ₹0</div>
+            </div>
+            <div class="setup-cards-grid" id="phase1Grid">
+              <!-- Dynamically populated items -->
+            </div>
+          </div>
+
+          <!-- Phase 2: Finishing Accents -->
+          <div class="phase-section" style="margin-top:40px;">
+            <div class="phase-header-row">
+              <div class="phase-title-group">
+                <span class="phase-badge phase-2-badge">Phase 2: Finishing Accents & Decor</span>
+                <h3 class="phase-heading">Complete the Look (Wall Art, Planters & Accents)</h3>
+              </div>
+              <div class="phase-subtotal-callout" id="phase2Subtotal">Subtotal: ₹0</div>
+            </div>
+            <div class="setup-cards-grid" id="phase2Grid">
+              <!-- Dynamically populated items -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Setup Action Bar -->
+        <div class="setup-bottom-checkout-bar">
+          <div class="checkout-bar-left">
+            <strong id="bottomBarTierTitle">Best Value Setup</strong>
+            <span id="bottomBarItemCount">6 items verified across Amazon & Flipkart</span>
+          </div>
+          <div class="checkout-bar-right">
+            <button type="button" id="copySetupLinkBtn" class="btn-copy-setup-link" title="Copy shareable setup deep-link">
+              <span>📋 Copy Link</span>
+            </button>
+            <button type="button" id="shareSetupBtn" class="btn-share-setup">
+              <span>📲 Share on WhatsApp</span>
+            </button>
+            <button type="button" id="buyAllSetupBtn" class="btn-buy-entire-setup">
+              <span>Buy Entire Setup (₹<span id="buyAllCost">0</span>) →</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Multi-Store Bundle Checkout Modal -->
+    <div id="bundleModalBackdrop" class="bundle-modal-backdrop" style="display:none;">
+      <div class="bundle-modal-card">
+        <div class="bundle-modal-header">
+          <div>
+            <span class="bundle-modal-pill">✨ MULTI-STORE BUNDLE CART</span>
+            <h3 class="bundle-modal-title" id="bundleModalTitle">Your Curated Setup Cart</h3>
+          </div>
+          <button type="button" id="closeBundleModalBtn" class="bundle-modal-close-btn">&times;</button>
+        </div>
+
+        <div class="bundle-modal-summary-strip">
+          <div class="bundle-stat">
+            <span class="bundle-stat-label">Total Setup Price</span>
+            <strong class="bundle-stat-val" id="bundleModalTotal">₹0</strong>
+          </div>
+          <div class="bundle-stat">
+            <span class="bundle-stat-label">Total MRP Value</span>
+            <span class="bundle-stat-old" id="bundleModalMrp">₹0</span>
+          </div>
+          <div class="bundle-stat">
+            <span class="bundle-stat-label">Verified Savings</span>
+            <span class="bundle-stat-save" id="bundleModalSavings">Save ₹0 (0%)</span>
+          </div>
+        </div>
+
+        <div class="bundle-modal-body" id="bundleModalBody">
+          <!-- Dynamically populated grouped by store -->
+        </div>
+
+        <div class="bundle-modal-footer">
+          <button type="button" id="openAllStoresBtn" class="btn-open-all-stores">
+            <span>🚀 Open All Store Links in Tabs</span>
+          </button>
+          <button type="button" id="modalCopyLinkBtn" class="btn-modal-copy-link">
+            <span>📋 Copy Setup Link</span>
+          </button>
+          <button type="button" id="modalShareWhatsappBtn" class="btn-modal-whatsapp">
+            <span>📲 Share on WhatsApp</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  </main>
+
+  <!-- Site Footer Component -->
+    <!-- Comprehensive 5-Column Footer matching DealSense Mockup -->
+  <footer class="site-footer-bar">
+    <!-- Live Platform Impact & Shopper Numbers Ribbon -->
+    <div class="footer-stats-ribbon">
+      <div class="container">
+        <div class="footer-stats-grid">
+          <div class="footer-stat-box">
+            <div class="stat-number-wrap">
+              <span class="stat-num-highlight">450,000+</span>
+              <span class="stat-trend-chip">↑ 18%</span>
+            </div>
+            <span class="stat-lbl-txt">Smart Indian Shoppers</span>
+          </div>
+
+          <div class="footer-stat-sep"></div>
+
+          <div class="footer-stat-box">
+            <div class="stat-number-wrap">
+              <span class="stat-num-highlight">₹9.2 Crore+</span>
+            </div>
+            <span class="stat-lbl-txt">Total Verified Savings</span>
+          </div>
+
+          <div class="footer-stat-sep"></div>
+
+          <div class="footer-stat-box">
+            <div class="stat-number-wrap">
+              <span class="stat-num-highlight">210,000+</span>
+              <span class="stat-badge-guard">🛡️ Flagged</span>
+            </div>
+            <span class="stat-lbl-txt">Fake Discounts Caught</span>
+          </div>
+
+          <div class="footer-stat-sep"></div>
+
+          <div class="footer-stat-box">
+            <div class="stat-number-wrap">
+              <span class="stat-num-highlight">1.5 Million+</span>
+            </div>
+            <span class="stat-lbl-txt">Daily Price Checks</span>
+          </div>
+
+          <div class="footer-stat-sep"></div>
+
+          <div class="footer-stat-box">
+            <div class="stat-number-wrap">
+              <span class="stat-num-highlight">4.9 ★</span>
+              <span class="stat-stars-icon">★★★★★</span>
+            </div>
+            <span class="stat-lbl-txt">Verified User Rating</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-v2-container">
+      <div class="footer-v2-grid">
+        <!-- Brand & Social Column -->
+        <div class="footer-col footer-brand-col">
+          <div class="footer-brand-header">
+            <img src="./assets/dealwise-logo.png" alt="DealSense" class="footer-brand-logo" width="26" height="26" style="width:26px; height:26px; max-width:26px; max-height:26px; object-fit:contain; display:block;">
+            <span class="footer-brand-name">DealSense</span>
+          </div>
+          <p class="footer-brand-tagline">Shop smarter. Decide better.</p>
+          <div class="footer-social-links">
+            <a href="#" class="social-circle-btn" aria-label="Facebook">
+              <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+            </a>
+            <a href="#" class="social-circle-btn" aria-label="X (Twitter)">
+              <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="#" class="social-circle-btn" aria-label="Instagram">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>
+            <a href="#" class="social-circle-btn" aria-label="YouTube">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: SHOP -->
+        <div class="footer-col">
+          <h4 class="footer-col-title">SHOP</h4>
+          <ul class="footer-link-list">
+            <li><a href="/deals">Deals</a></li>
+            <li><a href="#priceHistory">Price History</a></li>
+            <li><a href="#compare">Compare</a></li>
+            <li><a href="/categories">Categories</a></li>
+            <li><a href="#coupons">Coupons</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: BUILD -->
+        <div class="footer-col">
+          <h4 class="footer-col-title">BUILD</h4>
+          <ul class="footer-link-list">
+            <li><a href="#setup" class="footer-setup-link" data-space="bedroom">Bedroom</a></li>
+            <li><a href="#setup" class="footer-setup-link" data-space="wfh_desk">Gaming Setup</a></li>
+            <li><a href="#setup" class="footer-setup-link" data-space="wfh_desk">Home Office</a></li>
+            <li><a href="#setup" class="footer-setup-link" data-space="wfh_desk">PC Builds</a></li>
+            <li><a href="#setup" class="footer-setup-link" data-space="living_room">Living Room</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: LEARN -->
+        <div class="footer-col">
+          <h4 class="footer-col-title">LEARN</h4>
+          <ul class="footer-link-list">
+            <li><a href="#blog">Buying Guides</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#howItWorks">How It Works</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#glossary">Glossary</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 5: COMPANY -->
+        <div class="footer-col">
+          <h4 class="footer-col-title">COMPANY</h4>
+          <ul class="footer-link-list">
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="#disclosure">Affiliate Disclosure</a></li>
+            <li><a href="#privacy">Privacy Policy</a></li>
+            <li><a href="#terms">Terms & Conditions</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 6: APP DOWNLOAD -->
+        <div class="footer-col footer-app-col">
+          <h4 class="footer-col-title">Get the DealSense App</h4>
+          <span class="footer-qr-label">Scan to download</span>
+          <div class="footer-qr-wrap">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=https://dealsense.in/app" alt="Scan QR code to get DealSense Mobile App" class="footer-qr-img">
+            <div class="footer-app-badges">
+              <a href="#" class="app-badge-btn" title="Get it on Google Play">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83.67-1.5 1.5-1.5.38 0 .73.14 1 .38l12.5 8.62c.6.41.95 1.09.95 1.82s-.35 1.41-.95 1.82L5.5 23.27c-.27.24-.62.38-1 .38-.83 0-1.5-.67-1.5-1.5z"/></svg>
+                <div class="app-badge-text">
+                  <span class="badge-sub">GET IT ON</span>
+                  <span class="badge-title">Google Play</span>
+                </div>
+              </a>
+              <a href="#" class="app-badge-btn" title="Download on the App Store">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.93-2.85-.9.04-2 .6-2.65 1.35-.58.65-1.09 1.73-.95 2.76 1.01.08 2.05-.51 2.67-1.26z"/></svg>
+                <div class="app-badge-text">
+                  <span class="badge-sub">Download on the</span>
+                  <span class="badge-title">App Store</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legal Disclosure Banner -->
+      <div class="footer-affiliate-note">
+        <strong>Affiliate & Trust Disclosure:</strong> DealSense is an independent consumer shopping intelligence platform. We participate in the Amazon Associates and Flipkart Affiliate Programs and may earn a commission on qualifying purchases at no extra cost to you. Deal ratings and verdicts are 100% data-driven and strictly unbiased.
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-v2-bottom-bar">
+        <span class="footer-copy-text">© 2026 DealSense Technologies Pvt. Ltd. All rights reserved.</span>
+        <div class="footer-legal-links">
+          <a href="#privacy">Privacy</a>
+          <span class="dot-sep">•</span>
+          <a href="#terms">Terms</a>
+          <span class="dot-sep">•</span>
+          <a href="#sitemap">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Tracked Deals & Alerts Slide-Out Drawer -->
+  <!-- ==========================================================================
+     DEALWISE TRACKED DEALS & WATCHLIST SLIDE-OUT DRAWER
+     ========================================================================== -->
+<div id="trackedDealsDrawerBackdrop" class="drawer-backdrop" style="display: none;" aria-hidden="true">
+  <div id="trackedDealsDrawer" class="drawer-panel">
+    
+    <!-- Drawer Header -->
+    <div class="drawer-header-row">
+      <div class="drawer-title-group">
+        <span class="drawer-ico">🔔</span>
+        <h3 class="drawer-heading">My Tracked Deals</h3>
+        <span id="drawerActiveAlertsCount" class="drawer-count-badge">0 Active</span>
+      </div>
+      <button id="closeTrackedDrawerBtn" class="drawer-close-btn" aria-label="Close Watchlist">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <p class="drawer-subhead-txt">
+      Live price monitors actively tracking price drops on Amazon & Flipkart with instant WhatsApp & Email alerts.
+    </p>
+
+    <!-- Drawer Content / Alerts List -->
+    <div id="trackedDealsList" class="drawer-alerts-list">
+      <!-- Dynamically filled with active alert items or empty state -->
+    </div>
+
+    <!-- Drawer Footer Actions -->
+    <div class="drawer-footer-actions">
+      <div class="drawer-guarantee-note">
+        <span class="drawer-shield-ico">🛡️</span>
+        <span>Zero spam guarantee • Direct 1-click checkout deals sent to your WhatsApp</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  <!-- Anime.js library for synced micro-interactions -->
+  <script src="/assets/anime.min.js"></script>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <title>All Deals | Handpicked Real Deals with Price History — DealSense</title>
+  <meta name="description" content="Discover verified deals with real price history across Amazon, Flipkart, Myntra, Croma and more. Zero fake discounts. Know the exact right time to buy.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dealsense.in/deals">
+
+  <!-- Open Graph / Social -->
+  <meta property="og:title" content="All Deals | DealSense India">
+  <meta property="og:description" content="Handpicked deals with real price history. We show you only the deals that are truly worth it.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dealsense.in/deals">
+  <meta property="og:image" content="https://dealsense.in/assets/deals/deals-hero-bags.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="All Deals | DealSense India">
+  <meta name="twitter:description" content="Handpicked deals with real price history across India's top online stores.">
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/dealwise-logo.png">
+
+  <!-- Core DealSense Design Tokens -->
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/buttons.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <!-- Deals Page Scoped Stylesheet -->
+  <link rel="stylesheet" href="/css/deals.css">
+
+  <!-- Structured Data (Breadcrumbs & OfferCatalog) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://dealsense.in/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Deals",
+            "item": "https://dealsense.in/deals"
+          }
+        ]
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "DealSense Verified Deals Catalog",
+        "url": "https://dealsense.in/deals",
+        "description": "Handpicked verified e-commerce deals across India with historical price drop intelligence."
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="deals-page-body">
+
+  <!-- =========================================================================
+       GLOBAL HEADER (Matching DealSense Standard)
+       ========================================================================= -->
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="header-left">
+        <a href="/" id="navLogoBtn" class="brand-logo-wrap" title="DealSense Home">
+          <img src="/assets/dealwise-logo.png" alt="DealSense Logo" class="brand-d-logo" width="36" height="36">
+          <div class="brand-name-group">
+            <span class="brand-title-text">DealSense</span>
+            <span class="brand-tagline-text">Shop smart. Save more.</span>
+          </div>
+        </a>
+
+        <div class="header-search-wrap" style="max-width: 420px; margin-left: 12px;">
+          <input type="text" id="headerSearch" class="header-search-box" placeholder="Search for products, categories or paste a link...">
+          <button class="btn" style="position: absolute; right: 4px; top: 4px; bottom: 4px; background: #16A34A; color: #FFFFFF; border: none; border-radius: 6px; padding: 0 14px; font-size: 12px; font-weight: 600; cursor: pointer;">Analyze</button>
+        </div>
+
+        <nav class="main-nav" style="margin-left: 16px;">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/deals" class="nav-link active" style="color: #16A34A; font-weight: 700; border-bottom: 2px solid #16A34A;">Deals</a>
+          <a href="/#priceHistory" class="nav-link">Price History</a>
+          <a href="/#compare" class="nav-link">Compare</a>
+          <a href="/#setup" class="nav-link">Build a Setup</a>
+          <a href="/#coupons" class="nav-link">Coupons</a>
+          <a href="/#blog" class="nav-link">Blog</a>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <!-- Notification Bell with Count -->
+        <button class="btn-icon-ghost" id="headerBellBtn" title="Deals & Notifications" style="position: relative;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span style="position: absolute; top: 2px; right: 2px; width: 15px; height: 15px; background: #E11D48; color: #FFFFFF; font-size: 9px; font-weight: 800; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #FFFFFF;">3</span>
+        </button>
+
+        <button class="btn-header-login">Login</button>
+        <button class="btn-header-signup">Sign Up</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       MAIN DEALS VIEW
+       ========================================================================= -->
+  <main class="deals-main-wrap">
+
+    <!-- Breadcrumb -->
+    <nav class="deals-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="bc-sep">›</span>
+      <span style="color: #1E293B; font-weight: 600;">Deals</span>
+    </nav>
+
+    <!-- Hero Header Row -->
+    <section class="deals-hero-row">
+      <div class="deals-hero-left">
+        <h1 class="deals-hero-title">All Deals</h1>
+        <p class="deals-hero-sub">
+          Handpicked deals with real price history. We show you only the deals that are truly worth it.
+        </p>
+      </div>
+
+      <!-- Right Card with Live Stats & Graphic -->
+      <aside class="deals-hero-card" aria-label="DealSense Intelligence Overview">
+        <img src="/assets/deals/deals-hero-bags.png" alt="DealSense Savings" class="deals-hero-card-img" width="115" height="85">
+        <div class="deals-hero-card-content">
+          <h3 class="deals-hero-card-title">Great deals. Real savings.</h3>
+          <p class="deals-hero-card-text">We analyze price history, so you don't have to.</p>
+          <div class="deals-hero-stats-row">
+            <div class="deals-stat-item">
+              <span class="deals-stat-val">2,541 <span class="deals-stat-arrow">›</span></span>
+              <span class="deals-stat-lbl">Good Deals</span>
+            </div>
+            <div class="deals-stat-item">
+              <span class="deals-stat-val stat-dark">12,876</span>
+              <span class="deals-stat-lbl">Products</span>
+            </div>
+            <div class="deals-stat-item">
+              <span class="deals-stat-val stat-dark">48</span>
+              <span class="deals-stat-lbl">Stores</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Pills & Sort Bar -->
+    <section class="deals-control-bar">
+      <div class="deals-pills-row" role="tablist" aria-label="Deal Category Filters">
+        <button class="deals-pill-btn active" data-pill="trending" role="tab" aria-selected="true">
+          <span>🔥</span> Trending
+        </button>
+        <button class="deals-pill-btn" data-pill="best" role="tab">
+          <span>⭐</span> Best Deals
+        </button>
+        <button class="deals-pill-btn" data-pill="drops" role="tab">
+          <span>📉</span> Price Drops
+        </button>
+        <button class="deals-pill-btn" data-pill="under999" role="tab">
+          <span>🏷️</span> Under ₹999
+        </button>
+        <button class="deals-pill-btn" data-pill="under2499" role="tab">
+          <span>🏷️</span> Under ₹2,499
+        </button>
+        <button class="deals-pill-btn" data-pill="under5000" role="tab">
+          <span>🏷️</span> Under ₹5,000
+        </button>
+        <button class="deals-pill-btn" data-pill="electronics" role="tab">
+          <span class="deals-pill-dot"></span> Electronics
+        </button>
+        <button class="deals-pill-btn" data-pill="home" role="tab">
+          <span class="deals-pill-dot"></span> Home
+        </button>
+        <button class="deals-pill-btn" data-pill="fashion" role="tab">
+          <span class="deals-pill-dot"></span> Fashion
+        </button>
+        <button class="deals-pill-btn" data-pill="more" role="tab">
+          <span class="deals-pill-dot"></span> More ▾
+        </button>
+      </div>
+
+      <div class="deals-sort-wrap">
+        <label for="dealsSortSelect" class="sr-only" style="display: none;">Sort deals by</label>
+        <select id="dealsSortSelect" class="deals-sort-select" aria-label="Sort deals by">
+          <option value="popular">Sort by: Popular</option>
+          <option value="discount">Highest Discount</option>
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Two-Column Layout: Sidebar + Deals Feed -->
+    <div class="deals-content-layout">
+
+      <!-- LEFT SIDEBAR -->
+      <aside class="deals-sidebar" aria-label="Deals Filters">
+        <div class="deals-filter-header">
+          <h2 class="deals-filter-head-title">Filters</h2>
+          <button type="button" id="dealsClearAllBtn" class="deals-clear-all-btn">Clear All</button>
+        </div>
+
+        <!-- Filter 1: Deal Quality -->
+        <div class="filter-group">
+          <h3 class="filter-group-title">Deal Quality</h3>
+          <div class="filter-option-list">
+            <label class="filter-checkbox-label">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_quality" value="good" class="filter-checkbox-input">
+                <span class="quality-dot dot-good"></span>
+                <span>Good Deal</span>
+              </span>
+              <span class="filter-count">1,284</span>
+            </label>
+            <label class="filter-checkbox-label">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_quality" value="great" class="filter-checkbox-input">
+                <span class="quality-dot dot-great"></span>
+                <span>Great Deal</span>
+              </span>
+              <span class="filter-count">842</span>
+            </label>
+            <label class="filter-checkbox-label">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_quality" value="hot" class="filter-checkbox-input">
+                <span class="quality-dot dot-hot"></span>
+                <span>Hot Deal</span>
+              </span>
+              <span class="filter-count">415</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Filter 2: Categories -->
+        <div class="filter-group">
+          <h3 class="filter-group-title">Categories</h3>
+          <div class="filter-option-list">
+            <label class="filter-checkbox-label">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_category" value="mobiles" class="filter-checkbox-input">
+                <span>Mobiles & Tablets</span>
+              </span>
+              <span class="filter-count">1,247</span>
+            </label>
+            <label class="filter-checkbox-label">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_category" value="laptops" class="filter-checkbox-input">
+                <span>Laptops & Accessories</span>
+              </span>
+              <span class="filter-count">1,156</span>
+            </label>
+            <label class="filter-checkbox-label">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_category" value="tv" class="filter-checkbox-input">
+                <span>TV & Entertainment</span>
+              </span>
+              <span class="filter-count">850</span>
+            </label>
+            <label class="filter-checkbox-label">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_category" value="audio" class="filter-checkbox-input">
+                <span>Audio</span>
+              </span>
+              <span class="filter-count">643</span>
+            </label>
+            <label class="filter-checkbox-label">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_category" value="home" class="filter-checkbox-input">
+                <span>Home & Kitchen</span>
+              </span>
+              <span class="filter-count">1,534</span>
+            </label>
+          </div>
+          <button type="button" class="filter-show-more">+ Show more</button>
+        </div>
+
+        <!-- Filter 3: Price Range -->
+        <div class="filter-group">
+          <h3 class="filter-group-title">Price Range</h3>
+          <div class="price-slider-wrap">
+            <div class="price-slider-track-wrap">
+              <div id="priceSliderFill" class="price-slider-fill" style="left: 0%; width: 100%;"></div>
+            </div>
+            <div class="price-range-inputs">
+              <input type="range" id="priceMinSlider" min="0" max="100000" step="500" value="0" aria-label="Minimum price">
+              <input type="range" id="priceMaxSlider" min="0" max="100000" step="500" value="100000" aria-label="Maximum price">
+            </div>
+            <div class="price-slider-values">
+              <div id="priceMinBadge" class="price-val-badge">₹ 0</div>
+              <div id="priceMaxBadge" class="price-val-badge">₹ 1,00,000+</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter 4: Discount -->
+        <div class="filter-group">
+          <h3 class="filter-group-title">Discount</h3>
+          <div class="filter-option-list">
+            <label class="filter-checkbox-label">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_discount" value="10" class="filter-checkbox-input">
+                <span>10% and above</span>
+              </span>
+              <span class="filter-count">2,341</span>
+            </label>
+            <label class="filter-checkbox-label">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_discount" value="20" class="filter-checkbox-input">
+                <span>20% and above</span>
+              </span>
+              <span class="filter-count">1,874</span>
+            </label>
+            <label class="filter-checkbox-label">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_discount" value="30" class="filter-checkbox-input">
+                <span>30% and above</span>
+              </span>
+              <span class="filter-count">1,123</span>
+            </label>
+            <label class="filter-checkbox-label">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_discount" value="50" class="filter-checkbox-input">
+                <span>50% and above</span>
+              </span>
+              <span class="filter-count">643</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Filter 5: Stores -->
+        <div class="filter-group">
+          <h3 class="filter-group-title">Stores</h3>
+          <input type="text" id="storeSearchInput" class="store-search-box" placeholder="Search store...">
+          <div class="filter-option-list" id="storeFiltersList">
+            <label class="filter-checkbox-label store-filter-item" data-store-name="Amazon">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_store" value="Amazon" class="filter-checkbox-input">
+                <span>Amazon</span>
+              </span>
+              <span class="filter-count">2,341</span>
+            </label>
+            <label class="filter-checkbox-label store-filter-item" data-store-name="Flipkart">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_store" value="Flipkart" class="filter-checkbox-input">
+                <span>Flipkart</span>
+              </span>
+              <span class="filter-count">2,214</span>
+            </label>
+            <label class="filter-checkbox-label store-filter-item" data-store-name="Myntra">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_store" value="Myntra" class="filter-checkbox-input">
+                <span>Myntra</span>
+              </span>
+              <span class="filter-count">643</span>
+            </label>
+            <label class="filter-checkbox-label store-filter-item" data-store-name="Croma">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_store" value="Croma" class="filter-checkbox-input">
+                <span>Croma</span>
+              </span>
+              <span class="filter-count">421</span>
+            </label>
+            <label class="filter-checkbox-label store-filter-item" data-store-name="Meesho">
+              <span class="filter-check-left">
+                <input type="checkbox" name="deal_store" value="Meesho" class="filter-checkbox-input">
+                <span>Meesho</span>
+              </span>
+              <span class="filter-count">315</span>
+            </label>
+          </div>
+          <button type="button" class="filter-show-more">+ Show more</button>
+        </div>
+      </aside>
+
+      <!-- RIGHT COLUMN (DEALS FEED) -->
+      <section class="deals-feed-column">
+
+        <!-- 6-Card Wide Main Grid -->
+        <div id="dealsGrid" class="deals-grid" aria-live="polite">
+          <!-- Dynamically populated by /js/deals.js -->
+        </div>
+
+        <!-- Section: Prices Just Dropped -->
+        <section class="dropped-section">
+          <div class="section-head-row">
+            <h2 class="section-head-title">Prices Just Dropped</h2>
+            <a href="/deals?filter=drops" class="section-head-link">View All Price Drops →</a>
+          </div>
+
+          <div class="dropped-carousel-wrap">
+            <div id="droppedCardsRow" class="dropped-cards-row">
+              <!-- Dynamically populated by /js/deals.js -->
+            </div>
+            <button type="button" id="droppedNextBtn" class="carousel-next-btn" aria-label="Next dropped deals">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </section>
+
+        <!-- Section: Top Deals by Store -->
+        <section class="store-deals-section">
+          <div class="section-head-row">
+            <h2 class="section-head-title">Top Deals by Store</h2>
+            <a href="/#stores" class="section-head-link">View All Stores →</a>
+          </div>
+
+          <div class="store-deals-grid">
+            <!-- Amazon -->
+            <div class="store-deal-card" onclick="window.open('https://www.amazon.in?tag=dealintel-21', '_blank')">
+              <div class="store-deal-left">
+                <img src="/assets/stores/wordmark-amazon.png" alt="Amazon" class="store-card-logo" width="85" height="22">
+                <span class="store-deal-count">2,341 deals</span>
+                <span class="store-deal-discount">Up to 60% off</span>
+                <span class="store-deal-link">View Deals →</span>
+              </div>
+              <div class="store-card-img-wrap">
+                <img src="/assets/stores/showcase-amazon.png" alt="Amazon Best Deals" class="store-card-img" width="55" height="65">
+              </div>
+            </div>
+
+            <!-- Flipkart -->
+            <div class="store-deal-card" onclick="window.open('https://www.flipkart.com?affid=dealintel', '_blank')">
+              <div class="store-deal-left">
+                <img src="/assets/stores/wordmark-flipkart.png" alt="Flipkart" class="store-card-logo" width="85" height="22">
+                <span class="store-deal-count">2,214 deals</span>
+                <span class="store-deal-discount">Up to 70% off</span>
+                <span class="store-deal-link">View Deals →</span>
+              </div>
+              <div class="store-card-img-wrap">
+                <img src="/assets/stores/showcase-flipkart.png" alt="Flipkart Best Deals" class="store-card-img" width="55" height="65">
+              </div>
+            </div>
+
+            <!-- Myntra -->
+            <div class="store-deal-card" onclick="window.open('https://www.myntra.com', '_blank')">
+              <div class="store-deal-left">
+                <img src="/assets/stores/wordmark-myntra.png" alt="Myntra" class="store-card-logo" width="85" height="22">
+                <span class="store-deal-count">643 deals</span>
+                <span class="store-deal-discount">Up to 80% off</span>
+                <span class="store-deal-link">View Deals →</span>
+              </div>
+              <div class="store-card-img-wrap">
+                <img src="/assets/stores/showcase-myntra.png" alt="Myntra Best Deals" class="store-card-img" width="55" height="65">
+              </div>
+            </div>
+
+            <!-- Croma -->
+            <div class="store-deal-card" onclick="window.open('https://www.croma.com', '_blank')">
+              <div class="store-deal-left">
+                <img src="/assets/stores/wordmark-croma.png" alt="Croma" class="store-card-logo" width="85" height="22">
+                <span class="store-deal-count">421 deals</span>
+                <span class="store-deal-discount">Up to 50% off</span>
+                <span class="store-deal-link">View Deals →</span>
+              </div>
+              <div class="store-card-img-wrap">
+                <img src="/assets/stores/showcase-croma.png" alt="Croma Best Deals" class="store-card-img" width="55" height="65">
+              </div>
+            </div>
+
+            <!-- Meesho -->
+            <div class="store-deal-card" onclick="window.open('https://www.meesho.com', '_blank')">
+              <div class="store-deal-left">
+                <img src="/assets/stores/wordmark-meesho.png" alt="Meesho" class="store-card-logo" width="85" height="22">
+                <span class="store-deal-count">315 deals</span>
+                <span class="store-deal-discount">Up to 40% off</span>
+                <span class="store-deal-link">View Deals →</span>
+              </div>
+              <div class="store-card-img-wrap">
+                <img src="/assets/stores/showcase-meesho.png" alt="Meesho Best Deals" class="store-card-img" width="55" height="65">
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </section>
+    </div>
+
+  </main>
+
+  <!-- =========================================================================
+       BOTTOM TRUST BAR (6 Pillars)
+       ========================================================================= -->
+  <section class="deals-trust-bar" aria-label="DealSense Trust Guarantees">
+    <div class="deals-main-wrap" style="padding-top: 0; padding-bottom: 0;">
+      <div class="deals-trust-grid">
+        <div class="deals-trust-item">
+          <svg class="deals-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+          <div class="deals-trust-text">
+            <span class="deals-trust-title">Real Price History</span>
+            <p class="deals-trust-desc">We track prices across multiple stores</p>
+          </div>
+        </div>
+
+        <div class="deals-trust-item">
+          <svg class="deals-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+          <div class="deals-trust-text">
+            <span class="deals-trust-title">Buy / Wait / Avoid</span>
+            <p class="deals-trust-desc">Know the right time to buy every product</p>
+          </div>
+        </div>
+
+        <div class="deals-trust-item">
+          <svg class="deals-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="8" r="7"></circle>
+            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+          </svg>
+          <div class="deals-trust-text">
+            <span class="deals-trust-title">Best Value Picks</span>
+            <p class="deals-trust-desc">Handpicked products that give you more</p>
+          </div>
+        </div>
+
+        <div class="deals-trust-item">
+          <svg class="deals-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+          <div class="deals-trust-text">
+            <span class="deals-trust-title">Compare Everywhere</span>
+            <p class="deals-trust-desc">Compare prices across 100+ stores</p>
+          </div>
+        </div>
+
+        <div class="deals-trust-item">
+          <svg class="deals-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <div class="deals-trust-text">
+            <span class="deals-trust-title">Save More</span>
+            <p class="deals-trust-desc">Transparent deals. No fake discounts</p>
+          </div>
+        </div>
+
+        <div class="deals-trust-item">
+          <svg class="deals-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <div class="deals-trust-text">
+            <span class="deals-trust-title">Trusted by Shoppers</span>
+            <p class="deals-trust-desc">Join thousands of smart shoppers saving daily</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       GLOBAL 5-COLUMN FOOTER
+       ========================================================================= -->
+  <footer class="site-footer-bar">
+    <div class="container footer-v2-container">
+      <div class="footer-v2-grid">
+        <div class="footer-col footer-brand-col">
+          <div class="footer-brand-header">
+            <img src="/assets/dealwise-logo.png" alt="DealSense" class="footer-brand-logo" width="26" height="26">
+            <span class="footer-brand-name">DealSense</span>
+          </div>
+          <p class="footer-brand-tagline">Shop smarter. Decide better.</p>
+          <div class="footer-social-links">
+            <a href="#" class="social-circle-btn" aria-label="Facebook">
+              <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+            </a>
+            <a href="#" class="social-circle-btn" aria-label="X (Twitter)">
+              <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="#" class="social-circle-btn" aria-label="Instagram">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>
+            <a href="#" class="social-circle-btn" aria-label="YouTube">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">SHOP</h4>
+          <ul class="footer-link-list">
+            <li><a href="/deals">Deals</a></li>
+            <li><a href="/#priceHistory">Price History</a></li>
+            <li><a href="/#compare">Compare</a></li>
+            <li><a href="/categories">Categories</a></li>
+            <li><a href="/#coupons">Coupons</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">BUILD</h4>
+          <ul class="footer-link-list">
+            <li><a href="/#setup">Bedroom</a></li>
+            <li><a href="/#setup">Gaming Setup</a></li>
+            <li><a href="/#setup">Home Office</a></li>
+            <li><a href="/#setup">PC Builds</a></li>
+            <li><a href="/#setup">Living Room</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">LEARN</h4>
+          <ul class="footer-link-list">
+            <li><a href="/#blog">Buying Guides</a></li>
+            <li><a href="/#blog">Blog</a></li>
+            <li><a href="/#howItWorks">How It Works</a></li>
+            <li><a href="/#faq">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">COMPANY</h4>
+          <ul class="footer-link-list">
+            <li><a href="/#about">About Us</a></li>
+            <li><a href="/#careers">Careers</a></li>
+            <li><a href="/#contact">Contact</a></li>
+            <li><a href="/#privacy">Privacy Policy</a></li>
+            <li><a href="/#terms">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar" style="margin-top: 32px; padding-top: 18px; border-top: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #94A3B8;">
+        <p style="margin: 0;">© 2026 DealSense India Technologies Private Limited. All rights reserved.</p>
+        <p style="margin: 0;">Prices, offers, and discounts are verified continuously against merchant APIs.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Page Interactive Script -->
+  <script src="/js/deals.js"></script>
+</body>
+</html>

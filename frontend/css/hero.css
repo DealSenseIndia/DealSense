@@ -1,0 +1,977 @@
+/* ==========================================================================
+   HOMEPAGE HERO (Reference Image 1)
+   ========================================================================== */
+.home-hero-section {
+  background: #FFFFFF;
+  padding: 24px 0 28px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.hero-layout-grid {
+  display: grid;
+  grid-template-columns: 48% 52%;
+  gap: 32px;
+  align-items: center;
+}
+
+.hero-left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.trust-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 13px;
+  background: rgba(220, 252, 231, 0.65);
+  color: #15803D;
+  border-radius: var(--radius-pill);
+  font-size: 11.5px;
+  font-weight: 500;
+  width: fit-content;
+}
+
+.trust-shield-svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+.hero-headline-text {
+  font-size: 50px;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -1.6px;
+  color: var(--text-headline);
+}
+
+.hero-headline-text span.green-word {
+  color: var(--dw-green-main);
+}
+
+.hero-subheadline-desc {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  max-width: 500px;
+}
+
+/* Search Bar Container */
+.deal-url-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s;
+  max-width: 680px;
+  width: 100%;
+}
+
+.deal-url-card:focus-within {
+  border-color: var(--dw-green-main);
+  box-shadow: 0 6px 20px rgba(22, 163, 74, 0.12);
+}
+
+.url-icon-lead {
+  padding-left: 14px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.url-input-field {
+  flex: 1;
+  height: 44px;
+  border: none;
+  outline: none;
+  padding: 0 14px;
+  font-size: 14px;
+  color: var(--text-headline);
+  background: transparent;
+  font-family: inherit;
+  min-width: 0;
+  width: 100%;
+}
+
+.url-input-field::placeholder {
+  color: var(--text-muted);
+}
+
+/* Quick Store Chips with Official Logos */
+.hero-chips-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.chips-intro-label {
+  font-size: 13.5px;
+  color: #475569;
+  font-weight: 600;
+  margin-right: 2px;
+}
+
+.store-chip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 600;
+  color: #0F172A;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.15s ease;
+}
+
+.store-chip-btn:hover {
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+}
+
+.store-official-logo {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Right Side: Hero Visual Frame (80% Back to Normal) */
+.hero-artwork-frame {
+  position: relative;
+  width: 100%;
+  max-width: 550px;
+  min-height: 420px;
+  height: 420px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.hero-woman-artwork {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 0;
+}
+
+/* Floating Overlay Cards System */
+.floating-overlay-card {
+  position: absolute;
+  background: #FFFFFF;
+  border-radius: var(--radius-card);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.08);
+  border: 1px solid #EEF2F6;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.floating-overlay-card:hover {
+  animation-play-state: paused !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Smooth Asynchronous Floating Keyframes */
+@keyframes floatCardMotionA {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes floatCardMotionB {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(4px); }
+}
+
+@keyframes floatCardMotionC {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+.float-anim-a {
+  animation: floatCardMotionA 5.2s ease-in-out infinite;
+}
+
+.float-anim-b {
+  animation: floatCardMotionB 5.8s ease-in-out infinite 0.6s;
+}
+
+.float-anim-c {
+  animation: floatCardMotionC 4.6s ease-in-out infinite 1.2s;
+}
+
+/* Float 1: Price History Card */
+.float-card-history {
+  top: 75px;
+  left: -20px;
+  width: 240px;
+  padding: 12px 14px 10px 16px;
+  z-index: 1;
+}
+
+.hist-card-title {
+  font-size: 13px;
+  font-weight: 750;
+  color: #0F172A;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.hist-chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 56px;
+}
+
+.hist-svg-line {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hist-lowest-box {
+  position: absolute;
+  top: -8px;
+  right: 8px;
+  background: #FFFFFF;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  border-radius: 12px;
+  padding: 5px 10px;
+  text-align: left;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  z-index: 2;
+}
+
+.hist-lowest-lbl {
+  font-size: 9.5px;
+  color: #16A34A;
+  font-weight: 600;
+  display: block;
+  line-height: 1.1;
+}
+
+.hist-lowest-val {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0F172A;
+  display: block;
+  line-height: 1.2;
+  margin: 1px 0;
+}
+
+.hist-lowest-date {
+  font-size: 9px;
+  color: #64748B;
+  font-weight: 500;
+  display: block;
+  line-height: 1.1;
+}
+
+/* Float 2: Price Drop Alert Card */
+.float-card-alert {
+  top: 205px;
+  left: 0px;
+  width: 225px;
+  padding: 11px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 3;
+}
+
+.alert-bell-box {
+  width: 36px;
+  height: 36px;
+  background: #DCFCE7;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.alert-text-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.alert-tag-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #0F172A;
+  line-height: 1.2;
+}
+
+.alert-sub-msg {
+  font-size: 10px;
+  color: #64748B;
+  margin: 1px 0 2px;
+}
+
+.alert-drop-bold {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.2;
+}
+
+/* Float 3: Product Deal Card (Apple Watch Series 9 - Top Right, Screenshot 2 Match) */
+.float-card-deal {
+  top: 15px;
+  right: -5px;
+  width: 315px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.float-deal-badge-row {
+  margin-bottom: 2px;
+}
+
+.float-recent-pill {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #15803D;
+  background: #DCFCE7;
+  padding: 1.5px 6px;
+  border-radius: 4px;
+  line-height: 1.2;
+}
+
+.float-deal-img-col {
+  width: 74px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.float-watch-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.08));
+}
+
+.float-deal-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.float-deal-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 195px;
+}
+
+.float-deal-subspec {
+  font-size: 11px;
+  color: #64748B;
+  font-weight: 500;
+  margin: 1px 0 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 195px;
+}
+
+.float-deal-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  margin-bottom: 6px;
+}
+
+.rating-num {
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.rating-stars {
+  color: #F59E0B;
+  letter-spacing: -1px;
+}
+
+.rating-count {
+  color: #64748B;
+  font-size: 11px;
+}
+
+.float-deal-pricing-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.float-deal-price {
+  font-size: 15.5px;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.float-deal-mrp {
+  font-size: 12px;
+  color: #94A3B8;
+  text-decoration: line-through;
+}
+
+.float-deal-disc {
+  font-size: 11px;
+  font-weight: 700;
+  color: #166534;
+  background: #DCFCE7;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.btn-float-view {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 34px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #0F172A;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.btn-float-view:hover {
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+  color: #16A34A;
+  transform: translateY(-1px);
+}
+
+.float-btn-arr {
+  font-size: 13px;
+  transition: transform 0.15s ease;
+}
+
+.btn-float-view:hover .float-btn-arr {
+  transform: translateX(3px);
+}
+
+/* ==========================================================================
+   FEATURE STRIP (Floating White Card on Soft Background - Image 1 Exact Match)
+   ========================================================================== */
+.feature-highlights-bar {
+  background: transparent;
+  border-bottom: none;
+  padding: 18px 0 24px;
+}
+
+.feature-grid-6 {
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid #EEF2F6;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+  padding: 12px 18px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  align-items: center;
+}
+
+.feature-item-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  transition: background 0.15s;
+}
+
+.feature-item-pill:hover {
+  background: #F8FAFC;
+}
+
+.icon-box-sq {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.box-green { background: #DCFCE7; color: #16A34A; }
+.box-blue { background: #EFF6FF; color: #2563EB; }
+.box-purple { background: #F5F3FF; color: #7C3AED; }
+.box-amber { background: #FEF3C7; color: #EA580C; }
+.box-pink { background: #FDF2F8; color: #DB2777; }
+.box-emerald { background: #ECFDF5; color: #16A34A; }
+
+.feature-label-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #0F172A;
+  line-height: 2;
+}
+
+.feature-label-sub {
+  font-size: 10.5px;
+  color: #64748B;
+  line-height: 1.2;
+}
+
+/* ==========================================================================
+   HOMEPAGE DUAL SECTION: TOP CATEGORIES + LIVE DEALS
+   ========================================================================== */
+.content-dual-section {
+  padding: 16px 0 48px;
+}
+
+.dual-columns-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.section-heading-h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-headline);
+  letter-spacing: -0.4px;
+}
+
+.link-view-all-green {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dw-green-main);
+  text-decoration: none;
+}
+
+/* Categories Grid */
+.category-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.cat-box-card {
+  background: var(--bg-pure);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.cat-box-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border-color: var(--border-card);
+}
+
+.cat-box-card.active-category {
+  border-color: #10B981 !important;
+  background: #F0FDF4 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2), 0 6px 18px rgba(16, 185, 129, 0.12) !important;
+  transform: translateY(-2px);
+}
+
+.cat-box-card.active-category .cat-name-text {
+  color: #15803D !important;
+  font-weight: 750 !important;
+}
+
+.live-deals-filter-badge {
+  font-size: 11px;
+  font-weight: 750;
+  color: #15803D;
+  background: #DCFCE7;
+  border: 1px solid #86EFAC;
+  padding: 3px 8px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.live-deals-filter-badge:hover {
+  background: #BBF7D0;
+  color: #047857;
+}
+
+.cat-thumb-box {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cat-thumb-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.cat-name-text {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-headline);
+}
+
+.cat-discount-sub {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+}
+
+/* Live Deals Stack */
+.live-deals-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.live-deal-card-row {
+  background: var(--bg-pure);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.15s;
+  cursor: pointer;
+}
+
+.live-deal-card-row:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border-color: var(--border-card);
+}
+
+.deal-left-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.deal-item-img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+}
+
+.deal-item-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-headline);
+  margin-bottom: 2px;
+}
+
+.deal-meta-pill {
+  font-size: 11px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.merchant-badge-pill {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  background: #F1F5F9;
+  color: var(--text-body);
+}
+
+.deal-price-col {
+  text-align: right;
+}
+
+.deal-sell-price {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-headline);
+}
+
+.deal-old-mrp {
+  font-size: 12px;
+  text-decoration: line-through;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+
+.deal-pct-pill {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--dw-green-main);
+  margin-left: 6px;
+}
+
+.deal-timer-red {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--status-danger);
+  font-family: var(--font-mono);
+  margin-top: 2px;
+}
+
+/* Statistics Bar */
+.stats-proof-bar {
+  background: var(--bg-pure);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 32px 0;
+}
+
+.stats-proof-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.stat-metric-cell {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stat-icon-circ {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--dw-green-pastel);
+  color: var(--dw-green-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.stat-value-bold {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-headline);
+  line-height: 1.1;
+}
+
+.stat-label-muted {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   DUAL-ENGINE STYLES: OMNI-SEARCH, INFLATION AUDITOR, BANK CALC & SETUP BUILDER
+   ========================================================================== */
+
+.nav-link-highlight {
+  color: #16A34A !important;
+  font-weight: 600 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.nav-link-highlight:hover {
+  color: #15803D !important;
+}
+.nav-sparkle {
+  display: inline-block;
+  font-size: 13px;
+}
+
+.hero-mode-switch-wrap {
+  display: inline-flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+.mode-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid var(--border-subtle);
+  background: #FFFFFF;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.mode-switch-btn:hover {
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary);
+}
+.mode-switch-btn.active {
+  background: rgba(22, 163, 74, 0.1);
+  color: var(--dw-green-primary);
+  border-color: rgba(22, 163, 74, 0.3);
+}
+
+/* Omni-Search Autocomplete Dropdown */
+.search-dropdown-overlay {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+  z-index: 1000;
+  overflow: hidden;
+  max-height: 420px;
+}
+.search-dropdown-header {
+  padding: 12px 18px;
+  background: #F8FAFC;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.search-dropdown-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+.search-dropdown-sub {
+  font-size: 11px;
+  color: #94A3B8;
+}
+.search-results-list {
+  max-height: 350px;
+  overflow-y: auto;
+}
+.search-result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid #F1F5F9;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.search-result-row:hover {
+  background: #F8FAFC;
+}
+.search-result-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+.search-result-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: contain;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  padding: 3px;
+}
+.search-result-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.search-result-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #0F172A;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.search-result-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #64748B;
+  margin-top: 2px;
+}
+.search-merchant-tag {
+  background: #F1F5F9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+.search-result-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  margin-left: 14px;
+}
+.search-result-price {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0F172A;
+}
+.search-result-mrp {
+  font-size: 11.5px;
+  color: #94A3B8;
+  text-decoration: line-through;
+}
+

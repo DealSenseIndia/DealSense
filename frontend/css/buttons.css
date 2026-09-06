@@ -1,0 +1,149 @@
+/* ==========================================================================
+   STANDARDIZED PRIMARY BUTTON SYSTEM
+   Clean, Solid DealWise Green (#16A34A) (No double patterns, No 3D bevels)
+   ========================================================================== */
+.btn-cta-analyze,
+.btn-primary-view-deal,
+.btn-alert-submit-action,
+.btn-table-view-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 11px;
+  border: none;
+  background: #16A34A;
+  color: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.22);
+  font-family: var(--font-inter);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  white-space: nowrap;
+}
+
+.btn-cta-analyze:hover,
+.btn-primary-view-deal:hover,
+.btn-alert-submit-action:hover,
+.btn-table-view-cta:hover {
+  background: #15803D;
+  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.28);
+  transform: translateY(-1px);
+}
+
+/* Specific button dimensions */
+.btn-cta-analyze {
+  height: 48px;
+  padding: 0 22px;
+  min-width: 160px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.btn-primary-view-deal {
+  height: 46px;
+  padding: 0 24px;
+  font-size: 14.5px;
+}
+
+.btn-alert-submit-action {
+  height: 36px;
+  padding: 0 16px;
+  font-size: 12.5px;
+  border-radius: 8px;
+}
+
+.btn-table-view-cta {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 11.5px;
+  border-radius: 6px;
+}
+
+/* ==========================================================================
+   ANIME.JS SYNCED SUBMIT & PROGRESS BUTTON STYLES
+   ========================================================================== */
+.btn-default-content,
+.btn-loading-content,
+.btn-success-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.btn-analyze-sparkle-ico {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Spinner */
+.btn-spinner-ring {
+  animation: dwSpinRing 0.8s linear infinite;
+  display: block;
+  flex-shrink: 0;
+}
+
+@keyframes dwSpinRing {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Checkmark */
+.btn-check-svg {
+  display: block;
+  flex-shrink: 0;
+}
+
+.check-polyline {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+}
+
+/* Perimeter SVG Progress Border */
+.btn-progress-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.progress-border-rect {
+  stroke-dasharray: 410;
+  stroke-dashoffset: 410;
+}
+
+/* Success flash state */
+.btn-cta-analyze.is-verified {
+  background: #15803D !important;
+  box-shadow: 0 0 14px rgba(34, 197, 94, 0.45) !important;
+}
+
+/* Hover State */
+.btn-cta-analyze:hover:not(:disabled),
+.btn-primary-view-deal:hover,
+.btn-alert-submit-action:hover,
+.btn-table-view-cta:hover {
+  background: #15803D;
+  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.28);
+  transform: translateY(-1px);
+}
+
+/* Active State */
+.btn-cta-analyze:active:not(:disabled),
+.btn-primary-view-deal:active,
+.btn-alert-submit-action:active,
+.btn-table-view-cta:active {
+  background: #166534;
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(22, 163, 74, 0.18);
+}
+

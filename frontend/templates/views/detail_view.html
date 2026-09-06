@@ -1,0 +1,613 @@
+  <div id="detailView" class="product-detail-view-wrap" style="display: none;">
+    <div class="container">
+      
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs-nav-row">
+        <a href="#" id="backToHomeBreadcrumb" class="breadcrumb-nav-link">Home</a>
+        <span>›</span>
+        <span id="breadcrumbCategory" class="breadcrumb-nav-link">Audio</span>
+        <span>›</span>
+        <span id="breadcrumbBrand" class="breadcrumb-nav-link">Headphones</span>
+        <span>›</span>
+        <span id="breadcrumbTitle" class="breadcrumb-active-item">boAt Rockerz 450 Pro</span>
+      </nav>
+
+      <!-- 3-Column Product Hero Card -->
+      <div class="pdp-hero-container-card">
+        
+        <!-- Col 1: Product Photo Gallery -->
+        <div class="gallery-column">
+          <div class="gallery-thumbs-stack">
+            <button class="gallery-thumb-item active">
+              <img id="thumb1" src="" alt="Thumb 1">
+            </button>
+            <button class="gallery-thumb-item">
+              <img id="thumb2" src="" alt="Thumb 2">
+            </button>
+            <button class="gallery-thumb-item">
+              <img id="thumb3" src="" alt="Thumb 3">
+            </button>
+            <div class="gallery-thumb-item" style="display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--text-secondary);">
+              +2
+            </div>
+          </div>
+
+          <div class="gallery-main-container">
+            <span id="pdpVerdictPill" class="deal-status-chip">✓ Good Deal</span>
+            <img id="pdpMainImg" src="" class="gallery-main-photo" alt="Product Photo">
+          </div>
+        </div>
+
+        <!-- Col 2: Title, Price, Ratings & Primary CTAs -->
+        <div class="product-center-column">
+          <h2 id="pdpTitle" class="product-full-title">Product Title</h2>
+          
+          <div class="ratings-social-row">
+            <span id="pdpStarsDisplay" class="stars-gold">4.4 ★★★★☆</span>
+            <span id="pdpRatingsCount">(8,230)</span>
+            <span>|</span>
+            <span id="pdpBoughtCount">12K+ bought in past month</span>
+          </div>
+
+          <div style="display: flex; gap: 8px; align-items:center;">
+            <span id="pdpStoreBadge" class="badge-amazon-choice">Amazon's Choice</span>
+            <span id="pdpSpecTag" class="badge-tag-spec">Verified Quality</span>
+          </div>
+
+          <!-- Price Row -->
+          <div class="pdp-pricing-headline-row">
+            <span class="currency" style="font-size:24px; font-weight:800; color:#0F172A;">₹</span>
+            <span id="pdpCurrentPrice" class="pdp-bold-price">0</span>
+            <span id="pdpMrpPrice" class="pdp-struck-mrp">₹0</span>
+            <span id="pdpDiscountBadge" class="pdp-pct-badge-green">0% OFF</span>
+          </div>
+          <span class="pdp-taxes-note">Inclusive of all taxes</span>
+
+          <!-- Deal Authenticity & Fake Discount Auditor Card -->
+          <div id="pdpInflationCard" class="inflation-auditor-card">
+            <div class="inflation-header-row">
+              <div class="inflation-badge-pill" id="pdpInflationBadge">
+                <span class="inflation-shield-ico">🛡️</span>
+                <span id="pdpInflationVerdictText">Verified Genuine Discount</span>
+              </div>
+              <span class="inflation-tested-tag">90-Day Baseline Audit</span>
+            </div>
+            <div class="inflation-metrics-strip">
+              <div class="inflation-metric-col">
+                <span class="metric-label">Advertised Discount</span>
+                <strong id="pdpAdvertisedDiscount">0% OFF</strong>
+              </div>
+              <div class="inflation-arrow">→</div>
+              <div class="inflation-metric-col">
+                <span class="metric-label">Real Baseline Saving</span>
+                <strong id="pdpRealDiscount" class="real-saving-green">0% OFF</strong>
+              </div>
+              <div class="inflation-metric-col">
+                <span class="metric-label">Typical 90D Price</span>
+                <strong id="pdpTypicalBaseline">₹0</strong>
+              </div>
+            </div>
+            <p id="pdpInflationNote" class="inflation-note-desc">
+              Selling price is genuinely below the 90-day typical baseline with no artificial price spike.
+            </p>
+          </div>
+
+          <!-- Primary Affiliate CTA Button -->
+          <div class="pdp-cta-actions-row">
+            <a id="pdpMainBuyBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary-view-deal">
+              <span>View Deal on <span id="pdpStoreLabel">Amazon</span> →</span>
+            </a>
+            <button class="btn-icon-wishlist" id="pdpWishlistBtn" title="View Tracked Deals & Watchlist">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- True Landed Checkout Price Engine (Transparent Slip) -->
+          <div class="true-price-card" id="truePriceCard">
+            <div class="true-price-header">
+              <div class="true-price-title-row">
+                <span class="true-price-ico">🧾</span>
+                <span class="true-price-title">True Landed Checkout Price</span>
+                <span class="true-price-live-badge">Live Computation</span>
+              </div>
+              <span class="true-price-sub">Transparent checkout total after eligible store coupons & card discounts</span>
+            </div>
+
+            <!-- Bank Selector Pills -->
+            <div class="bank-selector-pills" id="bankSelectorPills">
+              <button type="button" class="bank-pill active" data-bank="sbi" data-pct="10" data-max="1500">
+                <span class="bank-logo-tag sbi-tag">SBI</span>
+                <span>SBI Card (10% Instant)</span>
+              </button>
+              <button type="button" class="bank-pill" data-bank="hdfc" data-pct="10" data-max="1250">
+                <span class="bank-logo-tag hdfc-tag">HDFC</span>
+                <span>HDFC (10% Instant)</span>
+              </button>
+              <button type="button" class="bank-pill" data-bank="icici" data-pct="5" data-max="2000">
+                <span class="bank-logo-tag icici-tag">ICICI</span>
+                <span>Amazon Pay ICICI (5%)</span>
+              </button>
+              <button type="button" class="bank-pill" data-bank="none" data-pct="0" data-max="0">
+                <span>Standard (No Card Offer)</span>
+              </button>
+            </div>
+
+            <!-- Receipt Breakdown Table -->
+            <div class="receipt-slip-table">
+              <div class="receipt-row">
+                <span class="receipt-label">Listed Store Price</span>
+                <span class="receipt-val" id="receiptBasePrice">₹0</span>
+              </div>
+              <div class="receipt-row savings-row" id="receiptCouponRow">
+                <span class="receipt-label">Eligible Store Coupon <span class="receipt-code-pill" id="receiptCouponCode">AIRFRY300</span></span>
+                <span class="receipt-val green-val" id="receiptCouponDiscount">-₹300</span>
+              </div>
+              <div class="receipt-row savings-row" id="receiptBankRow">
+                <span class="receipt-label">Instant Card Discount <span class="receipt-bank-pill" id="receiptBankCardLabel">SBI Card (10%)</span></span>
+                <span class="receipt-val green-val" id="receiptBankDiscount">-₹540</span>
+              </div>
+              <div class="receipt-row">
+                <span class="receipt-label">Delivery & Handling</span>
+                <span class="receipt-val green-val">FREE Prime Delivery</span>
+              </div>
+
+              <!-- Dashed Perforation Line -->
+              <div class="receipt-divider-dashed"></div>
+
+              <!-- Final Total Row -->
+              <div class="receipt-total-row">
+                <div class="receipt-total-left">
+                  <span class="receipt-total-lbl">Estimated Landed Price</span>
+                  <span class="receipt-disclaimer-txt">ℹ️ Applied at final payment screen with eligible card</span>
+                </div>
+                <div class="receipt-total-right">
+                  <span class="receipt-total-val" id="receiptFinalPrice">₹0</span>
+                  <span class="receipt-savings-callout" id="receiptTotalSavingsBadge">You save ₹0 vs MRP</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="pdp-secondary-actions-links">
+            <button class="pdp-action-btn" id="pdpShareBtn">🔗 Share</button>
+            <button class="pdp-action-btn highlight-alert-btn" id="openPriceAlertBtn">🔔 Track Price</button>
+            <button class="pdp-action-btn">⚖️ Add to Compare</button>
+          </div>
+        </div>
+
+        <!-- Col 3: Price at a Glance & Best Time to Buy -->
+        <div class="pdp-intelligence-glance-col">
+          <div class="glance-stat-card">
+            <div class="glance-card-header">Price at a Glance</div>
+            <div class="glance-data-row">
+              <span>Lowest Price (90 Days)</span>
+              <strong id="glanceLow">₹0</strong>
+            </div>
+            <div class="glance-data-row">
+              <span>Average Price</span>
+              <strong id="glanceAvg">₹0</strong>
+            </div>
+            <div class="glance-data-row">
+              <span>Highest Price (90 Days)</span>
+              <strong id="glanceHigh">₹0</strong>
+            </div>
+            <div class="glance-data-row">
+              <span>Price Drop</span>
+              <strong id="glanceDrop" style="color:var(--dw-green-primary);">0%</strong>
+            </div>
+            <div id="glanceSaving" class="glance-savings-pill">
+              You save ₹0
+            </div>
+          </div>
+
+          <!-- Best Time to Buy Intelligence Card (Image 1 Exact Match) -->
+          <div class="time-to-buy-card">
+            <div class="ttb-lead-row">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>Best Time to Buy</span>
+            </div>
+            <div class="ttb-sub-instruction">Based on price history, the best time to buy is</div>
+            <div class="ttb-content-flex">
+              <div class="ttb-text-block">
+                <div id="ttbHeadline" class="ttb-days-callout">Buy Today</div>
+                <p id="ttbDescription" class="ttb-explanation">Our AI prediction indicates price is verified near the 90-day low.</p>
+              </div>
+              <div class="ttb-calendar-box">
+                <div class="cal-top-accent"></div>
+                <div class="cal-dots-matrix">
+                  <span></span><span></span><span></span>
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="cal-clock-sub">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="3">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <button class="btn-ttb-how-it-works">ⓘ How it works</button>
+            <button class="btn-ttb-set-alert" id="ttbSetAlertBtn">
+              <span class="bell-ring-ico">🔔</span>
+              <span>Get WhatsApp Alert When Price Drops</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="pdp-nav-tabs-bar">
+        <button class="pdp-nav-tab-btn active" data-tab="overview">Overview</button>
+        <button class="pdp-nav-tab-btn" data-tab="history">Price History</button>
+        <button class="pdp-nav-tab-btn" data-tab="compare">Compare Prices</button>
+        <button class="pdp-nav-tab-btn" data-tab="coupons">Offers & Coupons</button>
+        <button class="pdp-nav-tab-btn" data-tab="reviews">Reviews</button>
+        <button class="pdp-nav-tab-btn" data-tab="specs">Specifications</button>
+        <button class="pdp-nav-tab-btn" data-tab="similar">Similar Products</button>
+      </nav>
+
+      <!-- 3-Column Intelligence Row -->
+      <div class="pdp-deep-intelligence-grid">
+        
+        <!-- Card 1: Price History (90 Days) -->
+        <div class="intel-box-container" id="sectionHistory">
+          <div class="box-title-lead-row">
+            <h3 class="box-title-h3">Price History (90 Days)</h3>
+            <div class="timeframe-filter-pills">
+              <button class="tf-filter-btn active" data-tf="90D">90D</button>
+              <button class="tf-filter-btn" data-tf="6M">6M</button>
+              <button class="tf-filter-btn" data-tf="1Y">1Y</button>
+              <button class="tf-filter-btn" data-tf="All">All</button>
+            </div>
+          </div>
+
+          <div class="svg-chart-container" style="position:relative;">
+            <!-- Interactive Floating Lowest Price Marker -->
+            <div id="chartLowestTooltip" class="chart-lowest-tooltip">
+              <span class="clt-lbl">Lowest Price</span>
+              <strong id="cltPrice">₹0</strong>
+              <span id="cltDate" class="clt-date">on 12 Sep 2024</span>
+            </div>
+            <svg id="pdpHistorySvg" viewBox="0 0 400 160" style="width:100%; height:100%; overflow:visible;">
+              <!-- Dynamic curve -->
+            </svg>
+          </div>
+
+          <div class="chart-bottom-metrics-grid">
+            <div>
+              <span>Lowest Price</span>
+              <strong id="chartSumLow">₹0</strong>
+              <span id="chartSumLowDate" style="font-size:9.5px; color:#64748B; display:block;">12 Sep 2024</span>
+            </div>
+            <div>
+              <span>Average Price</span>
+              <strong id="chartSumAvg">₹0</strong>
+              <span style="font-size:9.5px; color:#64748B; display:block;">last 90 days</span>
+            </div>
+            <div>
+              <span>Highest Price</span>
+              <strong id="chartSumHigh">₹0</strong>
+              <span id="chartSumHighDate" style="font-size:9.5px; color:#64748B; display:block;">28 May 2024</span>
+            </div>
+            <div>
+              <span>Price Drops</span>
+              <strong id="chartSumDrops">14 times</strong>
+              <span style="font-size:9.5px; color:#64748B; display:block;">in last 90 days</span>
+            </div>
+          </div>
+          <div class="chart-disclaimer-note">Prices are based on data from multiple stores and may vary.</div>
+        </div>
+
+        <!-- Card 2: Compare Prices Table -->
+        <div class="intel-box-container" id="sectionCompare">
+          <div class="box-title-lead-row">
+            <h3 class="box-title-h3">Compare Prices</h3>
+            <span style="font-size:11px; color:var(--text-secondary);">Sort by: Lowest Price ▾</span>
+          </div>
+
+          <div class="comparison-table-scroll">
+            <table class="clean-store-table">
+              <thead>
+                <tr>
+                  <th>Store</th>
+                  <th>Price</th>
+                  <th>Discount</th>
+                  <th>Delivery</th>
+                  <th>Total Price</th>
+                </tr>
+              </thead>
+              <tbody id="comparisonTableBody">
+                <!-- Dynamically filled with Amazon / Flipkart / Official / Croma / Reliance -->
+              </tbody>
+            </table>
+          </div>
+
+          <div id="savingsNoticeBox" class="table-savings-callout-banner">
+            <span>Price Difference: <strong id="savingsNoticeDiff">₹0</strong></span>
+            <span id="savingsNoticeText">Comparing verified live store offers</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Deal Intelligence & Price Drop Alert -->
+        <div class="intel-box-container">
+          <div class="box-title-lead-row">
+            <h3 class="box-title-h3">Deal Intelligence</h3>
+          </div>
+
+          <div class="gauge-score-layout">
+            <div class="score-circle-row">
+              <div id="circularScoreVal" class="circular-score-indicator">85%</div>
+              <div>
+                <div id="gaugeVerdictText" class="gauge-verdict-bold">Good Deal</div>
+                <div id="gaugeVerdictDesc" class="gauge-verdict-detail">Current price is 12% lower than 90-day average.</div>
+              </div>
+            </div>
+
+            <!-- Evidence Checklist -->
+            <ul id="pdpEvidenceList" class="evidence-checklist-items">
+              <!-- Dynamically populated -->
+            </ul>
+
+            <!-- Seller Trust & Authenticity Scorecard (from Keepa / PriceHistory) -->
+            <div class="seller-trust-box" id="sellerTrustBox">
+              <div class="seller-trust-head-row">
+                <div class="seller-name-group">
+                  <span class="seller-trust-label">Sold & Shipped by</span>
+                  <strong id="sellerNameTxt" class="seller-bold-name">Appario Retail / Official</strong>
+                </div>
+                <span id="sellerTrustBadge" class="seller-platinum-badge">🛡️ Platinum Seller</span>
+              </div>
+              <div class="seller-metrics-row">
+                <div class="seller-metric-item">
+                  <span class="metric-star-ico">★</span>
+                  <span id="sellerRatingVal" class="metric-val">4.8</span>
+                  <span id="sellerRatingsCountTxt" class="metric-sub">(142K+ ratings)</span>
+                </div>
+                <div class="seller-metric-item">
+                  <span class="metric-ico">🚚</span>
+                  <span id="sellerFulfillmentTxt" class="metric-val">Fulfilled by Store</span>
+                </div>
+              </div>
+              <div class="seller-authenticity-strip">
+                <span class="auth-tick">✓</span>
+                <span id="sellerAuthPolicy">7 Days Free Replacement • 100% Genuine Guaranteed</span>
+              </div>
+            </div>
+
+            <!-- Price Drop Alert Subscription Trigger -->
+            <div class="price-alert-section-box">
+              <div class="alert-section-heading">🔔 Price Drop Alert</div>
+              <p class="alert-section-subhead">Get notified when the price falls below your target price.</p>
+              <div class="alert-input-button-group">
+                <input type="number" id="targetPriceInput" class="alert-input-num" placeholder="Enter target price (₹)">
+                <button id="setAlertBtn" class="btn-alert-submit-action">Set Alert</button>
+              </div>
+              <div class="alert-footnote-txt">Instant WhatsApp & email notifications • Zero spam</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ==========================================================================
+           BOTTOM 3-CARD SECTION (Image 1 Exact Match)
+           ========================================================================== -->
+      <div class="pdp-bottom-cards-grid" id="sectionBottomCards">
+        
+        <!-- Card 1: Coupons & Bank Offers -->
+        <div class="pdp-bottom-card" id="sectionCoupons">
+          <div class="pdp-card-header-row">
+            <h3 class="bottom-card-title">Coupons & Bank Offers</h3>
+            <a href="#" class="bottom-card-link-green">View All</a>
+          </div>
+          <div id="pdpCouponsContainer" class="coupons-stack-list">
+            <!-- Dynamically populated offer cards with one-click copy -->
+          </div>
+        </div>
+
+        <!-- Card 2: Top Reviews with 5-to-1 Star Percentage Distribution Bars -->
+        <div class="pdp-bottom-card" id="sectionReviews">
+          <div class="pdp-card-header-row">
+            <h3 class="bottom-card-title">Top Reviews</h3>
+            <a href="#" class="bottom-card-link-green">View All</a>
+          </div>
+          <div class="reviews-deep-layout">
+            <div class="reviews-score-and-bars">
+              <div class="reviews-big-col">
+                <span id="reviewsScoreBig" class="reviews-score-num">4.4</span>
+                <div class="reviews-stars-row">★★★★★</div>
+                <span id="reviewsCountSub" class="reviews-total-sub">(8,230 reviews)</span>
+              </div>
+              <div class="rating-bars-stack">
+                <div class="star-bar-row">
+                  <span class="star-num-label">5 ★</span>
+                  <div class="star-track"><div class="star-fill" style="width:63%;"></div></div>
+                  <span class="star-pct-label">63%</span>
+                </div>
+                <div class="star-bar-row">
+                  <span class="star-num-label">4 ★</span>
+                  <div class="star-track"><div class="star-fill" style="width:22%;"></div></div>
+                  <span class="star-pct-label">22%</span>
+                </div>
+                <div class="star-bar-row">
+                  <span class="star-num-label">3 ★</span>
+                  <div class="star-track"><div class="star-fill" style="width:8%;"></div></div>
+                  <span class="star-pct-label">8%</span>
+                </div>
+                <div class="star-bar-row">
+                  <span class="star-num-label">2 ★</span>
+                  <div class="star-track"><div class="star-fill" style="width:4%;"></div></div>
+                  <span class="star-pct-label">4%</span>
+                </div>
+                <div class="star-bar-row">
+                  <span class="star-num-label">1 ★</span>
+                  <div class="star-track"><div class="star-fill" style="width:3%;"></div></div>
+                  <span class="star-pct-label">3%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Featured Verified Purchase Review Quote -->
+            <div class="featured-review-bubble">
+              <div class="rev-rating-pill">
+                <span>5 ★★★★★</span>
+                <span class="rev-verified-text">✓ Verified Purchase</span>
+              </div>
+              <p id="featuredReviewQuote" class="featured-quote-body">
+                "Excellent quality and value for money. Very satisfied with the purchase."
+              </p>
+              <span id="featuredReviewAuthor" class="featured-quote-author">- Rahul Sharma (Verified Buyer)</span>
+            </div>
+
+            <!-- AI Review Sentiment: Pros & Cons Summary -->
+            <div class="ai-review-sentiment-box" id="aiReviewSentimentBox">
+              <div class="ai-sentiment-header">
+                <span class="ai-sparkle-ico">✨</span>
+                <span class="ai-sentiment-title">AI Buyer Consensus</span>
+                <span class="ai-consensus-pct" id="aiConsensusPct">89% Positive</span>
+              </div>
+              <p id="aiConsensusDesc" class="ai-consensus-sentence">
+                Buyers praise the heating performance and build quality.
+              </p>
+              <div class="pros-cons-grid">
+                <div class="pro-column">
+                  <span class="pro-head">👍 What Buyers Love</span>
+                  <ul id="pdpProsList" class="pros-list">
+                    <!-- Populated dynamically -->
+                  </ul>
+                </div>
+                <div class="con-column">
+                  <span class="con-head">⚠️ What to Keep in Mind</span>
+                  <ul id="pdpConsList" class="cons-list">
+                    <!-- Populated dynamically -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="carousel-dots-row">
+              <span class="dot active"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Similar Products Carousel Deck -->
+        <div class="pdp-bottom-card" id="sectionSimilar" style="position:relative;">
+          <div class="pdp-card-header-row">
+            <h3 class="bottom-card-title">Similar Products</h3>
+            <a href="#" class="bottom-card-link-green">View All</a>
+          </div>
+          <div id="pdpSimilarGrid" class="similar-products-deck">
+            <!-- Dynamically populated 4 alternative product cards -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Price Drop Alert Modal -->
+  <div id="priceAlertModalBackdrop" class="alert-modal-backdrop" style="display:none;" aria-hidden="true">
+    <div class="alert-modal-card" role="dialog" aria-labelledby="alertModalTitle">
+      <button id="closeAlertModalBtn" class="alert-modal-close" aria-label="Close modal">×</button>
+
+      <div class="alert-modal-header">
+        <div class="alert-bell-badge">🔔</div>
+        <div>
+          <span class="alert-modal-tag">SMART PRICE TRACKER</span>
+          <h3 id="alertModalTitle" class="alert-modal-title">Set Price Drop Alert</h3>
+          <p id="alertModalProductTitle" class="alert-modal-subtitle">Product title...</p>
+        </div>
+      </div>
+
+      <div class="alert-modal-body">
+        <!-- Target Price Group -->
+        <div class="alert-form-section">
+          <div class="alert-price-preview-row">
+            <div>
+              <span class="alert-label">Current Selling Price</span>
+              <strong id="alertCurrentPriceDisplay" class="alert-current-price">₹0</strong>
+            </div>
+            <div class="alert-arrow-col">→</div>
+            <div>
+              <span class="alert-label">Alert Target Price</span>
+              <div class="alert-input-with-currency">
+                <span class="curr-sym">₹</span>
+                <input type="number" id="alertTargetPriceInput" class="alert-target-input" placeholder="4800" min="10" step="10">
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Presets -->
+          <div class="alert-presets-row">
+            <button type="button" class="alert-preset-pill active" data-pct="10" id="presetBtn10">
+              <span>🎯 -10% Drop</span>
+              <small id="preset10Val">₹0</small>
+            </button>
+            <button type="button" class="alert-preset-pill" data-pct="15" id="presetBtn15">
+              <span>📉 -15% Drop</span>
+              <small id="preset15Val">₹0</small>
+            </button>
+            <button type="button" class="alert-preset-pill" data-type="all_time_low" id="presetBtnLow">
+              <span>🏆 90D Low</span>
+              <small id="presetLowVal">₹0</small>
+            </button>
+          </div>
+        </div>
+
+        <!-- Channel Selector -->
+        <div class="alert-form-section">
+          <label class="alert-label">Where should we ping you?</label>
+          <div class="alert-channel-tabs">
+            <button type="button" class="alert-channel-btn active" data-channel="whatsapp" id="alertChannelWhatsApp">
+              <span class="wa-ico">🟢</span> WhatsApp (Instant)
+            </button>
+            <button type="button" class="alert-channel-btn" data-channel="email" id="alertChannelEmail">
+              <span class="mail-ico">✉️</span> Email Alert
+            </button>
+          </div>
+
+          <!-- Contact Input -->
+          <div class="alert-contact-wrap" id="alertContactWrap">
+            <div class="phone-input-group" id="alertPhoneGroup">
+              <span class="country-code">+91</span>
+              <input type="tel" id="alertPhoneInput" class="alert-text-input" placeholder="98765 43210" maxlength="10">
+            </div>
+            <input type="email" id="alertEmailInput" class="alert-text-input" placeholder="your.name@example.com" style="display:none;">
+            <p class="alert-security-note" id="alertChannelNote">
+              ⚡ We only send a WhatsApp message when the price drops below your target. Zero spam, ever.
+            </p>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button id="submitPriceAlertBtn" class="btn-activate-alert">
+          <span class="btn-bell-ico">🔔</span>
+          <span>Activate Price Drop Alert</span>
+        </button>
+
+        <!-- Trust guarantee -->
+        <div class="alert-guarantee-row">
+          <span>🔒 100% Free Service</span>
+          <span>•</span>
+          <span>No Spam Guarantee</span>
+          <span>•</span>
+          <span>Cancel Anytime</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       VIEW 3: SMART SETUP BUILDER (The Strategic Weapon)
+       ========================================================================== -->

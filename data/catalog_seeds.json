@@ -1,0 +1,58 @@
+[
+  {
+    "category": "Kitchen Appliances",
+    "brand": "Philips",
+    "title": "PHILIPS Air Fryer NA120/00, 4.2 Litre, Large",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0D14BB5XY"
+  },
+  {
+    "category": "Smartphones",
+    "brand": "Motorola",
+    "title": "MOTOROLA g37 power (PANTONE Nautical Blue, 128 GB)",
+    "merchant": "Flipkart",
+    "url": "https://www.flipkart.com/motorola-g37-power-pantone-nautical-blue-128-gb/p/itm48ade38c32669?pid=MOBHMX5YNNYGMVWH"
+  },
+  {
+    "category": "Home & Living",
+    "brand": "Wakefit",
+    "title": "Wakefit Standard Sleeping Pillow Set of 2",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B07L6GZYDV"
+  },
+  {
+    "category": "Kitchen Appliances",
+    "brand": "Pigeon",
+    "title": "Pigeon Popular Cooktop Glass Manual Gas Stove",
+    "merchant": "Flipkart",
+    "url": "https://www.flipkart.com/pigeon-popular-cooktop-glass-manual-gas-stove/p/itm782943770c4fe?pid=GSTGG7GKGJZKUCUG"
+  },
+  {
+    "category": "Office Furniture",
+    "brand": "Astride",
+    "title": "Astride Ergofit Ergonomic High-Back Office Chair",
+    "merchant": "Flipkart",
+    "url": "https://www.flipkart.com/astride-ergofit-ergonomic-high-back-synchro-tilt-mechanism-heavy-duty-metal-base-mesh-office-adjustable-arm-chair/p/itm596f97149920c?pid=OSCH29QQWTKJRWXH"
+  },
+  {
+    "category": "Kitchen Organizers",
+    "brand": "iBELL",
+    "title": "iBELL Multifunctional Wall-Mounted Kitchen Organizer",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0DLL4YVJJ"
+  },
+  {
+    "category": "Accessories",
+    "brand": "LEDO",
+    "title": "LEDO Leather Watch & Sunglass Organizer Box",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0BTTNR391"
+  },
+  {
+    "category": "Smartphones",
+    "brand": "Apple",
+    "title": "Apple iPhone 15 (Black, 512 GB)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CHX1W1XY"
+  }
+]

@@ -1,0 +1,287 @@
+/* ==========================================================================
+   DEALWISE TRACKED DEALS & WATCHLIST SLIDE-OUT DRAWER
+   ========================================================================== */
+
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 2500;
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.drawer-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer-panel {
+  width: 440px;
+  max-width: 92vw;
+  height: 100vh;
+  background: #FFFFFF;
+  box-shadow: -8px 0 36px rgba(15, 23, 42, 0.16);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.drawer-panel.open {
+  transform: translateX(0);
+}
+
+.drawer-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 14px;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.drawer-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.drawer-ico {
+  font-size: 20px;
+}
+
+.drawer-heading {
+  font-size: 17px;
+  font-weight: 800;
+  color: #0F172A;
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+.drawer-count-badge {
+  font-size: 11.5px;
+  font-weight: 750;
+  color: #15803D;
+  background: #DCFCE7;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.drawer-close-btn {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #64748B;
+  transition: all 0.15s ease;
+}
+
+.drawer-close-btn:hover {
+  background: #F1F5F9;
+  color: #0F172A;
+}
+
+.drawer-subhead-txt {
+  font-size: 12px;
+  color: #64748B;
+  padding: 10px 24px 14px;
+  margin: 0;
+  line-height: 1.45;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.drawer-alerts-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Individual Tracked Alert Item Card */
+.tracked-alert-card {
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.tracked-alert-card:hover {
+  border-color: #10B981;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.08);
+}
+
+.alert-card-top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.alert-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0F172A;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.btn-delete-alert {
+  background: transparent;
+  border: none;
+  color: #94A3B8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.btn-delete-alert:hover {
+  color: #DC2626;
+  background: #FEE2E2;
+}
+
+.alert-card-pricing-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #F8FAFC;
+  border-radius: 8px;
+}
+
+.alert-target-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.alert-lbl {
+  font-size: 10.5px;
+  color: #64748B;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.alert-target-val {
+  font-size: 14px;
+  font-weight: 800;
+  color: #15803D;
+}
+
+.alert-cur-col {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.alert-cur-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.alert-card-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+}
+
+.alert-channel-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.alert-channel-chip.whatsapp {
+  background: #DCFCE7;
+  color: #15803D;
+}
+
+.alert-channel-chip.email {
+  background: #EFF6FF;
+  color: #1D4ED8;
+}
+
+.alert-date-txt {
+  color: #94A3B8;
+}
+
+/* Empty State */
+.drawer-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  gap: 12px;
+  margin: auto 0;
+}
+
+.drawer-empty-ico {
+  font-size: 36px;
+  margin-bottom: 4px;
+}
+
+.drawer-empty-title {
+  font-size: 15px;
+  font-weight: 750;
+  color: #0F172A;
+  margin: 0;
+}
+
+.drawer-empty-desc {
+  font-size: 12.5px;
+  color: #64748B;
+  line-height: 1.5;
+  max-width: 280px;
+  margin: 0;
+}
+
+/* Drawer Footer */
+.drawer-footer-actions {
+  padding: 16px 24px;
+  border-top: 1px solid #F1F5F9;
+  background: #FAFAFA;
+}
+
+.drawer-guarantee-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #64748B;
+  line-height: 1.4;
+}
+
+.drawer-shield-ico {
+  font-size: 14px;
+  flex-shrink: 0;
+}

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <title>All Product Categories | DealSense India</title>
+  <meta name="description" content="Explore product categories on DealSense. Browse Electronics, Fashion, Home & Living, Beauty, Sports, Automotive and 10+ more. Compare prices, discover deals and shop smarter across India.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dealsense.in/categories">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="All Product Categories | DealSense India">
+  <meta property="og:description" content="Explore deals across every category. Find the best products, compare prices and shop smarter.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dealsense.in/categories">
+  <meta property="og:image" content="https://dealsense.in/assets/dealwise-logo.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="All Product Categories | DealSense India">
+  <meta name="twitter:description" content="Explore product categories and deals across India's top online stores.">
+
+  <!-- Fonts (same as homepage) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/dealwise-logo.png">
+
+  <!-- DealSense design tokens (base + header + buttons + footer) -->
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/buttons.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <!-- Page-scoped categories styles -->
+  <link rel="stylesheet" href="/css/categories.css">
+
+  <!-- Structured Data: BreadcrumbList + CollectionPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://dealsense.in/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "All Categories",
+            "item": "https://dealsense.in/categories"
+          }
+        ]
+      },
+      {
+        "@type": "CollectionPage",
+        "name": "All Product Categories",
+        "description": "Browse all product categories on DealSense India — Electronics, Fashion, Home & Living and more.",
+        "url": "https://dealsense.in/categories",
+        "publisher": {
+          "@type": "Organization",
+          "name": "DealSense",
+          "url": "https://dealsense.in"
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ═══ GLOBAL HEADER ═══════════════════════════════════════════════════ -->
+  <!-- Exact same header component as homepage — DO NOT modify -->
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="header-left">
+        <a href="/" class="brand-logo-wrap" title="DealSense Home">
+          <img src="./assets/dealwise-logo.png" alt="DealSense Logo" class="brand-d-logo" width="36" height="36" style="width:36px; height:36px; max-width:36px; max-height:36px; object-fit:contain; display:block;">
+          <div class="brand-name-group">
+            <span class="brand-title-text">DealSense</span>
+            <span class="brand-tagline-text">Shop smart. Save more.</span>
+          </div>
+        </a>
+
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/#setup" class="nav-link nav-link-highlight">
+            <span class="nav-sparkle">✨</span> Smart Setups
+          </a>
+          <a href="/#priceHistory" class="nav-link">Price History</a>
+          <a href="/deals" class="nav-link">Deals</a>
+          <a href="/#compare" class="nav-link">Compare</a>
+          <a href="/#coupons" class="nav-link">Coupons</a>
+          <a href="/#track" class="nav-link">Track</a>
+          <a href="/#blog" class="nav-link">Blog</a>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <div class="header-search-wrap">
+          <input type="text" id="headerSearch" class="header-search-box" placeholder="Search for products, brands or categories..." aria-label="Search products, brands or categories">
+          <span class="header-search-ico" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+        </div>
+
+        <button class="btn-icon-ghost" aria-label="Notifications and tracked deals">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+          </svg>
+        </button>
+
+        <a href="/" class="btn-header-login">Login</a>
+        <a href="/" class="btn-header-signup">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ MAIN PAGE CONTENT ════════════════════════════════════════════════ -->
+  <main id="catPageMain" class="cat-page-wrap">
+
+    <!-- ── HERO SECTION ─────────────────────────────────────────────────── -->
+    <section class="cat-hero-section" aria-labelledby="catPageH1">
+      <div class="cat-hero-inner">
+
+        <!-- Left: Breadcrumb + H1 + Search -->
+        <div class="cat-hero-left">
+          <!-- Breadcrumb -->
+          <nav class="cat-breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span class="bc-sep" aria-hidden="true">›</span>
+            <span class="bc-current" aria-current="page">All Categories</span>
+          </nav>
+
+          <!-- H1 -->
+          <h1 id="catPageH1" class="cat-page-h1">All Product Categories</h1>
+          <p class="cat-page-desc">Explore deals across every category. Find the best products, compare prices and shop smarter.</p>
+
+          <!-- Category Search -->
+          <div class="cat-search-wrap" role="search">
+            <span class="cat-search-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </span>
+            <input
+              type="search"
+              id="catSearchInput"
+              class="cat-search-input"
+              placeholder="Search for categories, products, brands…"
+              autocomplete="off"
+              aria-label="Search categories"
+              aria-autocomplete="list"
+              aria-controls="catSearchResultsGrid"
+            >
+          </div>
+
+          <!-- Popular Searches -->
+          <div class="cat-popular-row" aria-label="Popular searches">
+            <span class="cat-popular-label">Popular right now:</span>
+            <!-- Chips are injected by categories.js -->
+            <div id="catPopularChipsRow" style="display:contents;"></div>
+          </div>
+        </div>
+
+        <!-- Right: Hero illustration -->
+        <div class="cat-hero-right" aria-hidden="true">
+          <img
+            src="./assets/categories-hero.png"
+            alt="DealSense shopping categories — bags, boxes and deals illustration"
+            class="cat-hero-illustration"
+            loading="eager"
+            decoding="async"
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MAIN LAYOUT: Sidebar + Grid ──────────────────────────────────── -->
+    <div class="cat-main-layout" id="catMainLayout">
+
+      <!-- ── SIDEBAR ───────────────────────────────────────────────────── -->
+      <aside class="cat-sidebar" aria-label="Category navigation">
+        <p class="cat-sidebar-title">Shop by Category</p>
+        <ul class="cat-sidebar-nav" id="catSidebarNav" role="list">
+          <!-- Injected by categories.js -->
+        </ul>
+
+        <!-- Can't find what you need? CTA -->
+        <div class="cat-sidebar-cta">
+          <div class="cat-sidebar-cta-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+            </svg>
+          </div>
+          <div class="cat-sidebar-cta-title">Can't find what you need?</div>
+          <div class="cat-sidebar-cta-desc">Create a custom setup and we'll find the right products.</div>
+          <a href="/#setup" class="cat-sidebar-cta-btn" id="catSidebarSetupBtn">Build Custom Setup →</a>
+        </div>
+      </aside>
+
+      <!-- ── GRID AREA ─────────────────────────────────────────────────── -->
+      <div class="cat-grid-area">
+
+        <!-- Search results section (shown when user types, hidden by default) -->
+        <section class="cat-search-results-section" id="catSearchResultsSection" aria-live="polite">
+          <h2 id="catSearchResultsTitle" style="font-size:15px;font-weight:700;color:var(--text-headline);margin-bottom:14px;"></h2>
+          <div class="cat-search-inline-results" id="catSearchResultsGrid" role="list">
+            <!-- Injected by categories.js -->
+          </div>
+        </section>
+
+        <!-- Regular category content (hidden during search) -->
+        <div id="catRegularContent" class="cat-regular-content">
+          <!-- Single unified grid for ALL top-level categories -->
+          <section class="cat-section" id="cat-section-all" aria-labelledby="catAllSectionLabel">
+            <div class="cat-cards-grid" id="catCardsGrid">
+              <!-- All category cards injected by categories.js -->
+            </div>
+          </section>
+        </div>
+
+      </div><!-- /.cat-grid-area -->
+    </div><!-- /.cat-main-layout -->
+
+    <!-- ── TRUST STRIP ──────────────────────────────────────────────────── -->
+    <section class="cat-trust-strip" aria-label="Why DealSense">
+      <div class="cat-trust-inner">
+        <div class="cat-trust-item">
+          <div class="cat-trust-icon-box" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+          <div>
+            <div class="cat-trust-title">Real Price History</div>
+            <div class="cat-trust-desc">Check what products actually sold for.</div>
+          </div>
+        </div>
+        <div class="cat-trust-item">
+          <div class="cat-trust-icon-box" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+              <path d="m9 12 2 2 4-4"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="cat-trust-title">Buy / Wait / Avoid</div>
+            <div class="cat-trust-desc">Our engine tells you the right time to buy.</div>
+          </div>
+        </div>
+        <div class="cat-trust-item">
+          <div class="cat-trust-icon-box" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="21" x2="14" y1="4" y2="4"></line>
+              <line x1="10" x2="3" y1="4" y2="4"></line>
+              <line x1="21" x2="12" y1="12" y2="12"></line>
+              <line x1="8" x2="3" y1="12" y2="12"></line>
+              <line x1="21" x2="16" y1="20" y2="20"></line>
+              <line x1="12" x2="3" y1="20" y2="20"></line>
+              <circle cx="12" cy="4" r="2"></circle>
+              <circle cx="10" cy="12" r="2"></circle>
+              <circle cx="14" cy="20" r="2"></circle>
+            </svg>
+          </div>
+          <div>
+            <div class="cat-trust-title">Compare Everywhere</div>
+            <div class="cat-trust-desc">Compare prices across multiple stores.</div>
+          </div>
+        </div>
+        <div class="cat-trust-item">
+          <div class="cat-trust-icon-box" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m7.5 4.27 9 5.15"></path>
+              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+              <path d="m3.3 7 8.7 5 8.7-5"></path>
+              <path d="M12 22V12"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="cat-trust-title">Build Smarter</div>
+            <div class="cat-trust-desc">Complete setups within your budget.</div>
+          </div>
+        </div>
+        <div class="cat-trust-item">
+          <div class="cat-trust-icon-box" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+              <path d="m9 12 2 2 4-4"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="cat-trust-title">Save Money</div>
+            <div class="cat-trust-desc">Transparent deals. No fake discounts.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SEO DESCRIPTION ──────────────────────────────────────────────── -->
+    <div class="cat-seo-section">
+      <div class="cat-seo-inner">
+        <h2 class="cat-seo-title">Explore all product categories</h2>
+        <p class="cat-seo-text">Browse products across electronics, home &amp; living, fashion, beauty, sports, automotive and more. DealSense helps you compare prices, understand price history and make smarter buying decisions. We track prices across Amazon and Flipkart to show you real deal intelligence — not just discounts.</p>
+      </div>
+    </div>
+
+  </main><!-- /#catPageMain -->
+
+  <!-- ═══ FOOTER ═══════════════════════════════════════════════════════════ -->
+  <footer class="site-footer-bar">
+    <!-- Stats ribbon -->
+    <div class="footer-stats-ribbon">
+      <div class="container">
+        <div class="footer-stats-grid">
+          <div class="footer-stat-box">
+            <div class="stat-number-wrap">
+              <span class="stat-num-highlight">450,000+</span>
+              <span class="stat-trend-chip">↑ 18%</span>
+            </div>
+            <span class="stat-lbl-txt">Smart Indian Shoppers</span>
+          </div>
+          <div class="footer-stat-sep"></div>
+          <div class="footer-stat-box">
+            <div class="stat-number-wrap">
+              <span class="stat-num-highlight">₹9.2 Crore+</span>
+            </div>
+            <span class="stat-lbl-txt">Total Verified Savings</span>
+          </div>
+          <div class="footer-stat-sep"></div>
+          <div class="footer-stat-box">
+            <div class="stat-number-wrap">
+              <span class="stat-num-highlight">210,000+</span>
+              <span class="stat-badge-guard">🛡️ Flagged</span>
+            </div>
+            <span class="stat-lbl-txt">Fake Discounts Caught</span>
+          </div>
+          <div class="footer-stat-sep"></div>
+          <div class="footer-stat-box">
+            <div class="stat-number-wrap">
+              <span class="stat-num-highlight">1.5 Million+</span>
+            </div>
+            <span class="stat-lbl-txt">Daily Price Checks</span>
+          </div>
+          <div class="footer-stat-sep"></div>
+          <div class="footer-stat-box">
+            <div class="stat-number-wrap">
+              <span class="stat-num-highlight">4.9 ★</span>
+              <span class="stat-stars-icon">★★★★★</span>
+            </div>
+            <span class="stat-lbl-txt">Verified User Rating</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main footer grid -->
+    <div class="container footer-v2-container">
+      <div class="footer-v2-grid">
+        <!-- Brand -->
+        <div class="footer-col footer-brand-col">
+          <div class="footer-brand-header">
+            <img src="./assets/dealwise-logo.png" alt="DealSense" class="footer-brand-logo" width="26" height="26" style="width:26px; height:26px; max-width:26px; max-height:26px; object-fit:contain; display:block;">
+            <span class="footer-brand-name">DealSense</span>
+          </div>
+          <p class="footer-brand-tagline">Shop smarter. Decide better.</p>
+          <div class="footer-social-links">
+            <a href="#" class="social-circle-btn" aria-label="Facebook">
+              <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+            </a>
+            <a href="#" class="social-circle-btn" aria-label="X (Twitter)">
+              <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="#" class="social-circle-btn" aria-label="Instagram">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Shop -->
+        <div class="footer-col">
+          <h3 class="footer-col-title">SHOP</h3>
+          <ul class="footer-link-list">
+            <li><a href="/deals">Deals</a></li>
+            <li><a href="/#priceHistory">Price History</a></li>
+            <li><a href="/#compare">Compare</a></li>
+            <li><a href="/categories">Categories</a></li>
+            <li><a href="/#coupons">Coupons</a></li>
+          </ul>
+        </div>
+
+        <!-- Build -->
+        <div class="footer-col">
+          <h3 class="footer-col-title">BUILD</h3>
+          <ul class="footer-link-list">
+            <li><a href="/#setup">Bedroom</a></li>
+            <li><a href="/#setup">Gaming Setup</a></li>
+            <li><a href="/#setup">Home Office</a></li>
+            <li><a href="/#setup">PC Builds</a></li>
+            <li><a href="/#setup">Living Room</a></li>
+          </ul>
+        </div>
+
+        <!-- Learn -->
+        <div class="footer-col">
+          <h3 class="footer-col-title">LEARN</h3>
+          <ul class="footer-link-list">
+            <li><a href="/#blog">Buying Guides</a></li>
+            <li><a href="/#blog">Blog</a></li>
+            <li><a href="/#howItWorks">How It Works</a></li>
+            <li><a href="/#faq">FAQ</a></li>
+            <li><a href="/#glossary">Glossary</a></li>
+          </ul>
+        </div>
+
+        <!-- Company -->
+        <div class="footer-col">
+          <h3 class="footer-col-title">COMPANY</h3>
+          <ul class="footer-link-list">
+            <li><a href="/#about">About Us</a></li>
+            <li><a href="/#contact">Contact</a></li>
+            <li><a href="/#disclosure">Affiliate Disclosure</a></li>
+            <li><a href="/#privacy">Privacy Policy</a></li>
+            <li><a href="/#terms">Terms &amp; Conditions</a></li>
+          </ul>
+        </div>
+
+        <!-- App download -->
+        <div class="footer-col footer-app-col">
+          <h3 class="footer-col-title">Get the DealSense App</h3>
+          <span class="footer-qr-label">Scan to download</span>
+          <div class="footer-qr-wrap">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=https://dealsense.in/app" alt="Scan QR code to get DealSense Mobile App" class="footer-qr-img" loading="lazy">
+            <div class="footer-app-badges">
+              <a href="#" class="app-badge-btn" title="Get it on Google Play">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83.67-1.5 1.5-1.5.38 0 .73.14 1 .38l12.5 8.62c.6.41.95 1.09.95 1.82s-.35 1.41-.95 1.82L5.5 23.27c-.27.24-.62.38-1 .38-.83 0-1.5-.67-1.5-1.5z"/></svg>
+                <div class="app-badge-text">
+                  <span class="badge-sub">GET IT ON</span>
+                  <span class="badge-title">Google Play</span>
+                </div>
+              </a>
+              <a href="#" class="app-badge-btn" title="Download on the App Store">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.93-2.85-.9.04-2 .6-2.65 1.35-.58.65-1.09 1.73-.95 2.76 1.01.08 2.05-.51 2.67-1.26z"/></svg>
+                <div class="app-badge-text">
+                  <span class="badge-sub">Download on the</span>
+                  <span class="badge-title">App Store</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legal note -->
+      <div class="footer-affiliate-note">
+        <strong>Affiliate &amp; Trust Disclosure:</strong> DealSense is an independent consumer shopping intelligence platform. We participate in the Amazon Associates and Flipkart Affiliate Programs and may earn a commission on qualifying purchases at no extra cost to you. Deal ratings and verdicts are 100% data-driven and strictly unbiased.
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="footer-v2-bottom-bar">
+        <span class="footer-copy-text">© 2026 DealSense Technologies Pvt. Ltd. All rights reserved.</span>
+        <div class="footer-legal-links">
+          <a href="/#privacy">Privacy</a>
+          <span class="dot-sep">•</span>
+          <a href="/#terms">Terms</a>
+          <span class="dot-sep">•</span>
+          <a href="/#sitemap">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Categories page JS (standalone, not module — simpler for this page) -->
+  <script src="/js/categories.js"></script>
+
+  <!-- Minimal header search redirect for categories page -->
+  <script>
+    (function () {
+      var hs = document.getElementById("headerSearch");
+      if (hs) {
+        hs.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" && hs.value.trim()) {
+            // Redirect to homepage with query pre-filled
+            window.location.href = "/?q=" + encodeURIComponent(hs.value.trim());
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

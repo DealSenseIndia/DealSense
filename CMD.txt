@@ -1,0 +1,1 @@
+cd "D:\Gursher\Affiliate\Deal Intelligence"; .\.venv\Scripts\Activate; uvicorn backend.main:app --reload --port 8000

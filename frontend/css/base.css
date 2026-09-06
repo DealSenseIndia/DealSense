@@ -1,0 +1,72 @@
+/* ==========================================================================
+   DEALWISE OFFICIAL DESIGN SYSTEM — MASTER STYLESHEET
+   Source of Truth: Approved DealWise Reference Images
+   Palette: Clean White (#FFFFFF) + Surface (#F7FAF8) + DealWise Green (#16A34A)
+   ========================================================================== */
+
+:root {
+  /* Brand Green Palette */
+  --dw-green-top: #4ADE80;
+  --dw-green-mid: #22C55E;
+  --dw-green-main: #16A34A;
+  --dw-green-bot: #159447;
+  --dw-green-deep: #166534;
+  --dw-green-pastel: #ECFDF3;
+  --dw-green-surface: #DCFCE7;
+  --dw-green-border: #BBF7D0;
+  --dw-green-shadow: rgba(22, 163, 74, 0.18);
+
+  /* Backgrounds */
+  --bg-pure: #FFFFFF;
+  --bg-subtle: #F7FAF8;
+  --bg-card: #FFFFFF;
+
+  /* Typography */
+  --text-headline: #0F172A;
+  --text-body: #1E293B;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --text-white: #FFFFFF;
+
+  /* Borders */
+  --border-card: #E5E7EB;
+  --border-subtle: #EEF2F4;
+
+  /* Status Colors */
+  --status-warning: #F59E0B;
+  --status-warning-bg: #FFFBEB;
+  --status-danger: #EF4444;
+  --status-danger-bg: #FEF2F2;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-btn: 11px;
+  --radius-card: 16px;
+  --radius-pill: 999px;
+
+  /* Fonts */
+  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-subtle);
+  color: var(--text-body);
+  font-family: var(--font-inter);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+

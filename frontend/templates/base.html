@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DealWise — India's Most Accurate Deal Intelligence Engine</title>
+  <meta name="description" content="Stop falling for fake discounts and price anchoring. DealWise analyzes genuine price history, computes card offers, and calculates effective prices across Amazon, Flipkart, and leading stores.">
+
+  <!-- Google Fonts: Inter Display + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <!-- Chart.js for Interactive Price History Trends -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/dealwise-logo.png">
+
+  <!-- DealWise Master Stylesheet (Modular) -->
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <!-- Navigation Header Component -->
+  {% include 'components/header.html' %}
+
+  <main>
+    <!-- View 1: Homepage & Deal Ingestion -->
+    {% include 'views/home_view.html' %}
+
+    <!-- View 2: Product Detail & Deal Intelligence -->
+    {% include 'views/detail_view.html' %}
+
+    <!-- View 3: Smart Setup & Renovation Builder -->
+    {% include 'views/setup_view.html' %}
+  </main>
+
+  <!-- Site Footer Component -->
+  {% include 'components/footer.html' %}
+
+  <!-- Tracked Deals & Alerts Slide-Out Drawer -->
+  {% include 'components/tracked_deals_drawer.html' %}
+
+  <!-- Anime.js library for synced micro-interactions -->
+  <script src="/assets/anime.min.js"></script>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

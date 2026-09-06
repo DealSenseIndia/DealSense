@@ -1,0 +1,14 @@
+/* ==========================================================================
+   DEALWISE MASTER STYLESHEET
+   Clean modular architecture importing scoped component stylesheets.
+   ========================================================================== */
+
+@import url("./css/base.css");
+@import url("./css/buttons.css");
+@import url("./css/header.css");
+@import url("./css/hero.css");
+@import url("./css/pdp.css");
+@import url("./css/setup_builder.css");
+@import url("./css/drawer.css");
+@import url("./css/home_feed.css");
+@import url("./css/footer.css");

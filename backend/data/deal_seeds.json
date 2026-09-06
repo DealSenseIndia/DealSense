@@ -1,0 +1,203 @@
+[
+  {
+    "merchant": "Amazon",
+    "product_id": "B0D14BB5XY",
+    "category": "appliances",
+    "title_hint": "PHILIPS Air Fryer NA120/00 4.2L",
+    "priority": 1
+  },
+  {
+    "merchant": "Amazon",
+    "product_id": "B07L6GZYDV",
+    "category": "appliances",
+    "title_hint": "Pigeon 3 Burner Gas Stove",
+    "priority": 2
+  },
+  {
+    "merchant": "Amazon",
+    "product_id": "B09G9FPHY6",
+    "category": "appliances",
+    "title_hint": "Instant Pot Duo 7-in-1 Pressure Cooker",
+    "priority": 2
+  },
+  {
+    "merchant": "Flipkart",
+    "product_id": "itm12984bb",
+    "category": "appliances",
+    "title_hint": "LG 7.0 Kg Smart Inverter Washing Machine",
+    "priority": 1
+  },
+  {
+    "merchant": "Amazon",
+    "product_id": "B0BYNRT4CQ",
+    "category": "appliances",
+    "title_hint": "Havells Instanio Prime Instant Water Heater",
+    "priority": 3
+  },
+
+  {
+    "merchant": "Amazon",
+    "product_id": "B07PR1CL3S",
+    "category": "audio",
+    "title_hint": "boAt Rockerz 450 Bluetooth Headphones",
+    "priority": 1
+  },
+  {
+    "merchant": "Amazon",
+    "product_id": "B0863TXGM3",
+    "category": "audio",
+    "title_hint": "Sony WH-1000XM4 Noise Cancelling",
+    "priority": 1
+  },
+  {
+    "merchant": "Amazon",
+    "product_id": "B0BS1QCFHX",
+    "category": "audio",
+    "title_hint": "Sony WH-CH520 Wireless Headphones",
+    "priority": 2
+  },
+  {
+    "merchant": "Amazon",
+    "product_id": "B0C9S7Y58H",
+    "category": "audio",
+    "title_hint": "JBL Tune 770NC Wireless ANC Headphones",
+    "priority": 2
+  },
+  {
+    "merchant": "Flipkart",
+    "product_id": "itm23498b",
+    "category": "audio",
+    "title_hint": "Realme Buds Air 6 ANC",
+    "priority": 2
+  },
+
+  {
+    "merchant": "Flipkart",
+    "product_id": "itm5b91b9b6576b5",
+    "category": "mobiles",
+    "title_hint": "MOTOROLA g37 power 128GB",
+    "priority": 1
+  },
+  {
+    "merchant": "Amazon",
+    "product_id": "B0CP9PZ2MN",
+    "category": "mobiles",
+    "title_hint": "Redmi 13C 5G 128GB",
+    "priority": 1
+  },
+  {
+    "merchant": "Amazon",
+    "product_id": "B0CZ3M5K7C",
+    "category": "mobiles",
+    "title_hint": "OnePlus Nord CE4 5G 128GB",
+    "priority": 1
+  },
+  {
+    "merchant": "Amazon",
+    "product_id": "B0DCSM45GM",
+    "category": "mobiles",
+    "title_hint": "Samsung Galaxy M35 5G",
+    "priority": 2
+  },
+  {
+    "merchant": "Amazon",
+    "product_id": "B0CHX143LR",
+    "category": "mobiles",
+    "title_hint": "iPhone 15 128GB",
+    "priority": 1
+  },
+  {
+    "merchant": "Flipkart",
+    "product_id": "itm372b9a89a7e57",
+    "category": "mobiles",
+    "title_hint": "Poco X6 Pro 5G",
+    "priority": 2
+  },
+
+  {
+    "merchant": "Amazon",
+    "product_id": "B0CHX6PXX6",
+    "category": "smartwatches",
+    "title_hint": "Apple Watch Series 9 GPS 45mm",
+    "priority": 1
+  },
+  {
+    "merchant": "Amazon",
+    "product_id": "B0B5LVS72C",
+    "category": "smartwatches",
+    "title_hint": "Noise ColorFit Pulse 2 Max",
+    "priority": 1
+  },
+  {
+    "merchant": "Amazon",
+    "product_id": "B0D5VF8VYX",
+    "category": "smartwatches",
+    "title_hint": "Fire-Boltt Phoenix Ultra Smartwatch",
+    "priority": 2
+  },
+  {
+    "merchant": "Flipkart",
+    "product_id": "itm7898a456cd",
+    "category": "smartwatches",
+    "title_hint": "boAt Storm Call 2 Smartwatch",
+    "priority": 2
+  },
+
+  {
+    "merchant": "Amazon",
+    "product_id": "B08L7V4L2T",
+    "category": "tvs",
+    "title_hint": "Hisense 55 inch 4K Smart Google TV",
+    "priority": 1
+  },
+  {
+    "merchant": "Flipkart",
+    "product_id": "itm54321098",
+    "category": "tvs",
+    "title_hint": "Xiaomi 43 inch X Series 4K Google TV",
+    "priority": 1
+  },
+  {
+    "merchant": "Amazon",
+    "product_id": "B0C3LBQ2TB",
+    "category": "tvs",
+    "title_hint": "Samsung 43 inch Crystal 4K UHD TV",
+    "priority": 2
+  },
+  {
+    "merchant": "Amazon",
+    "product_id": "B0BT4FLJV3",
+    "category": "tvs",
+    "title_hint": "LG 32 inch HD Ready Smart LED TV",
+    "priority": 3
+  },
+
+  {
+    "merchant": "Amazon",
+    "product_id": "B09XYZ1234",
+    "category": "laptops",
+    "title_hint": "ASUS Vivobook 15 i3-1215U 8GB/512GB",
+    "priority": 1
+  },
+  {
+    "merchant": "Flipkart",
+    "product_id": "itm8765432",
+    "category": "laptops",
+    "title_hint": "Acer Aspire 7 i5 12th Gen RTX 2050",
+    "priority": 1
+  },
+  {
+    "merchant": "Amazon",
+    "product_id": "B0CPPX6RK1",
+    "category": "laptops",
+    "title_hint": "HP 15s Ryzen 5 5625U 8GB/512GB",
+    "priority": 2
+  },
+  {
+    "merchant": "Amazon",
+    "product_id": "B0CN1HP28Q",
+    "category": "laptops",
+    "title_hint": "Lenovo IdeaPad Slim 3 i5 13th Gen",
+    "priority": 2
+  }
+]

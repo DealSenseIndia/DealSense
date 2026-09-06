@@ -1,0 +1,53 @@
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="header-left">
+        <!-- DealWise Brand Logo using Official D Mark -->
+        <a id="navLogoBtn" class="brand-logo-wrap" title="DealWise Home">
+          <img src="/assets/dealwise-logo.png" alt="DealWise Logo" class="brand-d-logo">
+          <div class="brand-name-group">
+            <span class="brand-title-text">DealWise</span>
+            <span class="brand-tagline-text">Shop smart. Save more.</span>
+          </div>
+        </a>
+
+        <nav class="main-nav">
+          <a href="#" id="homeNavBtn" class="nav-link active">Home</a>
+          <a href="#" id="setupNavBtn" class="nav-link nav-link-highlight">
+            <span class="nav-sparkle">✨</span> Smart Setups
+          </a>
+          <a href="#priceHistory" class="nav-link">Price History</a>
+          <a href="/deals" id="dealsNavBtn" class="nav-link">Deals</a>
+          <a href="/categories" class="nav-link">Categories</a>
+          <a href="#compare" class="nav-link">Compare</a>
+          <a href="#coupons" class="nav-link">Coupons</a>
+          <a href="#track" class="nav-link" id="headerTrackNavBtn">Track</a>
+          <a href="#blog" class="nav-link">Blog</a>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <div class="header-search-wrap">
+          <input type="text" id="headerSearch" class="header-search-box" placeholder="Search for products, brands or categories...">
+          <span class="header-search-ico">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+          <div id="headerSearchDropdown" class="header-search-dropdown-menu" style="display:none;">
+            <div id="headerSearchResultsList" class="header-search-results-list"></div>
+          </div>
+        </div>
+
+        <button class="btn-icon-ghost" id="headerBellBtn" title="Tracked Deals & Alerts">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+          </svg>
+        </button>
+
+        <button class="btn-header-login">Login</button>
+        <button class="btn-header-signup">Sign Up</button>
+      </div>
+    </div>
+  </header>

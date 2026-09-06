@@ -1,0 +1,40 @@
+<!-- ==========================================================================
+     DEALWISE TRACKED DEALS & WATCHLIST SLIDE-OUT DRAWER
+     ========================================================================== -->
+<div id="trackedDealsDrawerBackdrop" class="drawer-backdrop" style="display: none;" aria-hidden="true">
+  <div id="trackedDealsDrawer" class="drawer-panel">
+    
+    <!-- Drawer Header -->
+    <div class="drawer-header-row">
+      <div class="drawer-title-group">
+        <span class="drawer-ico">🔔</span>
+        <h3 class="drawer-heading">My Tracked Deals</h3>
+        <span id="drawerActiveAlertsCount" class="drawer-count-badge">0 Active</span>
+      </div>
+      <button id="closeTrackedDrawerBtn" class="drawer-close-btn" aria-label="Close Watchlist">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <p class="drawer-subhead-txt">
+      Live price monitors actively tracking price drops on Amazon & Flipkart with instant WhatsApp & Email alerts.
+    </p>
+
+    <!-- Drawer Content / Alerts List -->
+    <div id="trackedDealsList" class="drawer-alerts-list">
+      <!-- Dynamically filled with active alert items or empty state -->
+    </div>
+
+    <!-- Drawer Footer Actions -->
+    <div class="drawer-footer-actions">
+      <div class="drawer-guarantee-note">
+        <span class="drawer-shield-ico">🛡️</span>
+        <span>Zero spam guarantee • Direct 1-click checkout deals sent to your WhatsApp</span>
+      </div>
+    </div>
+
+  </div>
+</div>

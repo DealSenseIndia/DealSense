@@ -1,0 +1,24 @@
+@echo off
+title Deal Intelligence - FastAPI Server
+cd /d "%~dp0"
+
+:: Activate virtual environment
+if exist ".venv\Scripts\activate.bat" (
+    call ".venv\Scripts\activate.bat"
+) else (
+    echo [ERROR] Virtual environment (.venv) not found!
+    pause
+    exit /b
+)
+
+:: Run server from the project root
+echo Starting FastAPI server...
+uvicorn backend.main:app --reload --port 8000
+
+pause
+
+
+
+cd "D:\Gursher\Affiliate\Deal Intelligence"
+.\.venv\Scripts\Activate
+uvicorn backend.main:app --reload --port 8000
