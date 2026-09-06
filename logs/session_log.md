@@ -191,6 +191,40 @@ Use the existing DealWise Admin Cuelinks API key with `read:channels` to call `G
 
 ---
 
+## [2026-09-06 13:46 IST] — Session Entry
+
+**User Request:**
+Rebranded platform to DealSense. Initialized local Git repository, created initial commit on branch `main`, updated `.gitignore` for security (secrets/databases/temp files excluded), and prepared repository for GitHub and Vercel.
+
+**Actions Taken:**
+- Replaced `DealWise` with `DealSense` (and `dealsense.in`) across all frontend pages (`index.html`, `categories.html`, `deals.html`, and JS controllers).
+- Created `frontend/vercel.json` with clean routing for `/deals` and `/categories`.
+- Hardened `.gitignore` to prevent any exposure of `.env`, `*.db`, `node_modules/`, `scratch/`, or logs.
+- Initialized local Git repository on branch `main`.
+- Created root commit: `feat: Initial DealSense shopping intelligence platform commit` (92 clean files, 0 secrets).
+
+**Status:** COMPLETE — Repository pushed to `https://github.com/DealSenseIndia/DealSense.git`.
+
+---
+
+## [2026-09-06 13:55 IST] — Session Entry
+
+**User Request:**
+Deploy DealSense to Vercel and verify live production endpoints.
+
+**Actions Taken:**
+- User linked GitHub repository to Vercel under project `dealsense-fawn`.
+- Successfully deployed to live URL: `https://dealsense-fawn.vercel.app`.
+- Verified live HTTP response on production:
+  - Homepage (`/`): 200 OK — Brand rendered as "DealSense", meta tags active.
+  - Deals (`/deals`): 200 OK — Clean routing working.
+  - Categories (`/categories`): 200 OK — Clean routing working.
+- Verified SSL (HTTPS), global CDN delivery, and responsive layout.
+
+**Status:** COMPLETE — DealSense is live on the internet!
+
+---
+
 ## [2026-09-05 02:54 IST] — Session Entry
 
 **User Request:**
