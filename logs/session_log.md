@@ -244,3 +244,25 @@ Use the DealWise Admin Cuelinks API key (with `read:channels`) to query `GET /pu
 - Zero keys exposed or printed. No campaign access requested.
 
 **Status:** COMPLETE — Awaiting next instruction.
+
+---
+
+## [2026-09-06 14:25 IST] — Session Entry
+
+**User Request:**
+Update the site with the new DealSense brand logos provided in chat and in `C:\Users\Khanna Computer\Downloads`.
+
+**Actions Taken:**
+- Extracted and processed official logo assets from downloads (`ChatGPT Image Sep 6, 2026, 02_02_20 PM.png` and `ChatGPT Image Sep 6, 2026, 02_12_22 PM.png`):
+  - `frontend/assets/dealsense-icon.png`: Centered 1:1 high-resolution transparent D mark.
+  - `frontend/assets/dealwise-logo.png`: Maintained as identical fallback to prevent any legacy breakage.
+  - `frontend/assets/dealsense-horizontal.png`: Clean cropped horizontal logo with DealSense wordmark.
+  - `frontend/assets/dealsense-app-icon.png`: Native rounded app badge.
+  - Favicons: Multi-resolution `frontend/favicon.ico` (16x16, 32x32, 48x48), `favicon-16x16.png`, `favicon-32x32.png`, and `apple-touch-icon.png` (180x180).
+- Fixed `.gitignore` filter: removed blanket `*.png` ignore rule that was blocking UI images, whitelisted `!frontend/assets/**`, allowing all category, deal, store, and brand imagery to be tracked by Git and deployed to Vercel.
+- Updated all HTML headers, footers, OpenGraph cards, notifications, and templates across `index.html`, `deals.html`, `categories.html`, and `templates/`.
+- Verified 100% of asset references in HTML resolve cleanly to existing files on disk.
+- Committed changes: `ba78a60` ("feat: Update official DealSense logo assets, favicons, and branding across site").
+- Pushed to `origin main` for automatic Vercel production rebuild at `https://dealsense-fawn.vercel.app`.
+
+**Status:** COMPLETE — Brand logo assets updated and deployed.
