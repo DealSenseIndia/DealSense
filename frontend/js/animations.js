@@ -1,5 +1,5 @@
 // ==========================================================================
-// DEALWISE ANIME.JS BUTTON & SYNCED INTERACTION ANIMATIONS
+// DEALSENSE ANIME.JS BUTTON & SYNCED INTERACTION ANIMATIONS
 // ==========================================================================
 
 let borderAnim = null;
@@ -8,6 +8,7 @@ export function startAnalyzingAnimation(heroSubmitBtn) {
   if (!heroSubmitBtn) return;
   heroSubmitBtn.disabled = true;
   heroSubmitBtn.classList.remove("is-verified");
+  heroSubmitBtn._isAnalyzing = true;
 
   const btnDefault = heroSubmitBtn.querySelector(".btn-default-content");
   const btnLoading = heroSubmitBtn.querySelector(".btn-loading-content");
@@ -21,6 +22,8 @@ export function startAnalyzingAnimation(heroSubmitBtn) {
   if (progressBorderRect) progressBorderRect.style.strokeDashoffset = "410";
 
   if (window.anime) {
+    window.anime.remove(btnDefault);
+    window.anime.remove(btnLoading);
     window.anime({
       targets: btnDefault,
       opacity: [1, 0],
@@ -28,6 +31,7 @@ export function startAnalyzingAnimation(heroSubmitBtn) {
       duration: 180,
       easing: "easeOutQuad",
       complete: () => {
+        if (!heroSubmitBtn._isAnalyzing) return;
         if (btnDefault) btnDefault.style.display = "none";
         if (btnLoading) {
           btnLoading.style.display = "inline-flex";
@@ -45,6 +49,7 @@ export function startAnalyzingAnimation(heroSubmitBtn) {
 
     // Animate progress border trace around button
     if (progressBorderRect) {
+      window.anime.remove(progressBorderRect);
       borderAnim = window.anime({
         targets: progressBorderRect,
         strokeDashoffset: [410, 80],
@@ -63,6 +68,10 @@ export function startAnalyzingAnimation(heroSubmitBtn) {
   if (btnLoadingLabel) btnLoadingLabel.textContent = steps[0];
   clearInterval(heroSubmitBtn._labelTimer);
   heroSubmitBtn._labelTimer = setInterval(() => {
+    if (!heroSubmitBtn._isAnalyzing) {
+      clearInterval(heroSubmitBtn._labelTimer);
+      return;
+    }
     step = (step + 1) % steps.length;
     if (btnLoadingLabel) btnLoadingLabel.textContent = steps[step];
   }, 650);
@@ -73,16 +82,21 @@ export function finishAnalyzingAnimation(heroSubmitBtn, success, callback) {
     if (callback) callback();
     return;
   }
+  heroSubmitBtn._isAnalyzing = false;
   clearInterval(heroSubmitBtn._labelTimer);
+  heroSubmitBtn._labelTimer = null;
 
   const btnLoading = heroSubmitBtn.querySelector(".btn-loading-content");
   const btnSuccess = heroSubmitBtn.querySelector(".btn-success-content");
   const progressBorderRect = heroSubmitBtn.querySelector(".progress-border-rect");
   const checkPolyline = heroSubmitBtn.querySelector(".check-polyline");
 
-  if (success && window.anime) {
-    if (borderAnim) borderAnim.pause();
+  if (borderAnim) {
+    try { borderAnim.pause(); } catch (e) {}
+    borderAnim = null;
+  }
 
+  if (success && window.anime) {
     // Fast-forward border to 100% completion
     if (progressBorderRect) {
       window.anime({
@@ -131,32 +145,52 @@ export function finishAnalyzingAnimation(heroSubmitBtn, success, callback) {
       }, 420);
     }
   } else {
-    if (!success && window.anime) {
+    // Failure case: instantly reset button and run short error shake
+    resetSubmitBtn(heroSubmitBtn);
+    if (window.anime) {
       window.anime({
         targets: heroSubmitBtn,
         translateX: [-9, 9, -6, 6, -3, 3, 0],
-        duration: 420,
+        duration: 380,
         easing: "easeInOutSine",
+        complete: () => {
+          heroSubmitBtn.style.transform = "none";
+          if (callback) callback();
+        },
       });
-    }
-    setTimeout(() => {
-      resetSubmitBtn(heroSubmitBtn);
+    } else {
       if (callback) callback();
-    }, success ? 400 : 0);
+    }
   }
 }
 
 export function resetSubmitBtn(heroSubmitBtn) {
   if (!heroSubmitBtn) return;
+  heroSubmitBtn._isAnalyzing = false;
   clearInterval(heroSubmitBtn._labelTimer);
-  heroSubmitBtn.disabled = false;
-  heroSubmitBtn.classList.remove("is-verified");
-  heroSubmitBtn.style.transform = "none";
+  heroSubmitBtn._labelTimer = null;
 
   const btnDefault = heroSubmitBtn.querySelector(".btn-default-content");
   const btnLoading = heroSubmitBtn.querySelector(".btn-loading-content");
   const btnSuccess = heroSubmitBtn.querySelector(".btn-success-content");
   const btnProgressBorder = heroSubmitBtn.querySelector(".btn-progress-border");
+  const progressBorderRect = heroSubmitBtn.querySelector(".progress-border-rect");
+
+  if (window.anime) {
+    window.anime.remove(heroSubmitBtn);
+    if (btnDefault) window.anime.remove(btnDefault);
+    if (btnLoading) window.anime.remove(btnLoading);
+    if (btnSuccess) window.anime.remove(btnSuccess);
+    if (progressBorderRect) window.anime.remove(progressBorderRect);
+  }
+  if (borderAnim) {
+    try { borderAnim.pause(); } catch (e) {}
+    borderAnim = null;
+  }
+
+  heroSubmitBtn.disabled = false;
+  heroSubmitBtn.classList.remove("is-verified");
+  heroSubmitBtn.style.transform = "none";
 
   if (btnDefault) {
     btnDefault.style.display = "inline-flex";
@@ -165,7 +199,7 @@ export function resetSubmitBtn(heroSubmitBtn) {
   }
   if (btnLoading) {
     btnLoading.style.display = "none";
-    btnLoading.style.opacity = "1";
+    btnLoading.style.opacity = "0";
   }
   if (btnSuccess) btnSuccess.style.display = "none";
   if (btnProgressBorder) btnProgressBorder.style.opacity = "0";

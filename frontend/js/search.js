@@ -21,11 +21,15 @@ export function initOmniSearch({ heroUrlInput, heroDealForm, searchResultsDropdo
 
   // Input debouncer for autocomplete vs URL detection
   if (heroUrlInput) {
+    heroUrlInput.addEventListener("paste", () => {
+      if (searchResultsDropdown) searchResultsDropdown.style.display = "none";
+    });
+
     heroUrlInput.addEventListener("input", () => {
       const val = heroUrlInput.value.trim();
       clearTimeout(searchDebounceTimer);
 
-      if (val.startsWith("http://") || val.startsWith("https://") || val.length < 2) {
+      if (val.startsWith("http://") || val.startsWith("https://") || val.includes("amazon.in") || val.includes("flipkart.com") || val.length < 2) {
         if (searchResultsDropdown) searchResultsDropdown.style.display = "none";
         return;
       }

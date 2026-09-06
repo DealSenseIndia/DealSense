@@ -46,6 +46,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // 3. Centralized URL Deal Analysis Controller
   async function analyzeUrl(url) {
     if (!url) return;
+    if (searchResultsDropdown) searchResultsDropdown.style.display = "none";
+    const headerDropdown = document.getElementById("headerSearchDropdown");
+    if (headerDropdown) headerDropdown.style.display = "none";
+
     startAnalyzingAnimation(heroSubmitBtn);
 
     try {
@@ -54,16 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
         saveRecentProduct(data, url);
         renderDetailPage(data, { onAnalyzeUrl: analyzeUrl });
         nav.showDetail();
+        window.scrollTo({ top: 0, behavior: "smooth" });
       });
     } catch (err) {
+      console.error("Deal analysis error:", err);
       finishAnalyzingAnimation(heroSubmitBtn, false, () => {
-        const cleanQuery = url.replace(/https?:\/\/[^\/]+\/?/i, "").replace(/[-_+]/g, " ").trim();
-        if (cleanQuery && cleanQuery.length > 2 && !cleanQuery.includes("amazon.in")) {
-          searchModule.executeSearch(cleanQuery, false);
-          showToast(`Notice: ${err.message}. Showing search results.`, "info");
-        } else {
-          showToast(`Deal Analysis: ${err.message}`, "error");
-        }
+        showToast(`Deal Analysis: ${err.message || "Failed to analyze link"}`, "error");
       });
     }
   }
