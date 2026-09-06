@@ -96,8 +96,10 @@ async function extractLiveProduct(url) {
           imageUrl = imgMatch[1].replace(/\\/g, "");
         }
 
-        // 3. Price
-        const pWhole = html.match(/<span[^>]*class=["']a-price-whole["'][^>]*>([0-9,]+)/i);
+        // 3. Price - prioritize active buybox / priceToPay
+        const pPay = html.match(/class=["'][^"']*(?:priceToPay|apexPriceToPay)[^"']*["'][^>]*>[\s\S]*?<span[^>]*class=["']a-price-whole["'][^>]*>([0-9,]+)/i);
+        const pCore = html.match(/id=["'](?:corePriceDisplay_desktop_feature_div|corePrice_feature_div)["'][^>]*>[\s\S]*?<span[^>]*class=["']a-price-whole["'][^>]*>([0-9,]+)/i);
+        const pWhole = pPay || pCore || html.match(/<span[^>]*class=["']a-price-whole["'][^>]*>([0-9,]+)/i);
         if (pWhole) {
           price = parseFloat(pWhole[1].replace(/,/g, ""));
         } else {
@@ -110,6 +112,27 @@ async function extractLiveProduct(url) {
                          html.match(/basisPrice[^>]*<span[^>]*class=["']a-offscreen["'][^>]*>[^0-9]*([0-9,]+)/i);
         if (mrpMatch) {
           mrp = parseFloat(mrpMatch[1].replace(/,/g, ""));
+        }
+
+        // JSON-LD Fallback for Amazon
+        if (!price || !title || !imageUrl) {
+          const ldMatches = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi)];
+          for (const m of ldMatches) {
+            try {
+              const ld = JSON.parse(m[1]);
+              const item = Array.isArray(ld) ? ld[0] : ld;
+              if (item) {
+                if (!title && item.name) title = item.name;
+                if (!price && item.offers) {
+                  const off = Array.isArray(item.offers) ? item.offers[0] : item.offers;
+                  if (off && off.price) price = parseFloat(off.price);
+                }
+                if (!imageUrl && item.image) {
+                  imageUrl = Array.isArray(item.image) ? item.image[0] : item.image;
+                }
+              }
+            } catch (e) {}
+          }
         }
 
         // 5. Brand
