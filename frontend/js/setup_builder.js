@@ -353,7 +353,7 @@ function openBundleModal(tier) {
 
   body.innerHTML = Object.entries(storesMap).map(([storeName, items]) => {
     const storeSubtotal = items.reduce((acc, x) => acc + x.price, 0);
-    const storeLogo = items[0].logo || "/assets/dealwise-logo.png";
+    const storeLogo = items[0].logo || "/assets/dealsense-icon.png";
 
     return `
       <div class="bundle-store-group">

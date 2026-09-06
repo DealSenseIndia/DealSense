@@ -8,6 +8,13 @@ data/*.db
 node_modules/
 temp_puppeteer/
 scratch/
-*.png
 *.log
 logs/*.log
+
+# Temporary test screenshots
+/*.png
+scratch_*.png
+
+# Allow all frontend UI assets except temp_inspect
+!frontend/assets/**
+frontend/assets/temp_inspect/

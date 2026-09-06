@@ -303,7 +303,7 @@ function renderComparisonTable(compareData, primaryListing, pricing, rivalComp) 
     row.innerHTML = `
       <td>
         <div class="store-cell" style="display:flex; align-items:center; gap:8px;">
-          <img src="${s.logo || '/assets/dealwise-logo.png'}" alt="${escapeHtml(s.name)}" style="width:22px; height:22px; object-fit:contain; border-radius:4px;">
+          <img src="${s.logo || '/assets/dealsense-icon.png'}" alt="${escapeHtml(s.name)}" style="width:22px; height:22px; object-fit:contain; border-radius:4px;">
           <strong style="font-size:13px; color:#0F172A;">${escapeHtml(s.name)}</strong>
           ${isLowestBadge}
         </div>
@@ -551,7 +551,7 @@ function renderCouponsOffers(coupons) {
     card.className = "coupon-item-card";
     card.innerHTML = `
       <div class="coupon-left-block">
-        <img src="${c.logo || '/assets/dealwise-logo.png'}" alt="${escapeHtml(c.store)}" class="coupon-store-icon">
+        <img src="${c.logo || '/assets/dealsense-icon.png'}" alt="${escapeHtml(c.store)}" class="coupon-store-icon">
         <div>
           <div class="coupon-title-txt">${escapeHtml(c.title)}</div>
           <div class="coupon-terms-txt">${escapeHtml(c.terms)}</div>
