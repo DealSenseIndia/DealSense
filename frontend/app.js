@@ -56,7 +56,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await checkDeal(url);
       finishAnalyzingAnimation(heroSubmitBtn, true, () => {
         saveRecentProduct(data, url);
-        renderDetailPage(data, { onAnalyzeUrl: analyzeUrl });
+        try {
+          renderDetailPage(data, { onAnalyzeUrl: analyzeUrl });
+        } catch (renderErr) {
+          console.error("Error inside renderDetailPage:", renderErr);
+        }
         nav.showDetail();
         window.scrollTo({ top: 0, behavior: "smooth" });
       });

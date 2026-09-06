@@ -482,15 +482,22 @@ function renderGauge(d, pr) {
 
   if (evidenceList) {
     evidenceList.innerHTML = "";
-    const list = (d.evidence && d.evidence.length > 0) ? d.evidence : [
-      "Price is near the lowest in 90 days",
-      `${Math.round(pr.discount_pct || 35)}% discount is genuine`,
-      "Verified authorized merchant seller",
-      "Good time to buy"
-    ];
+    let list = [];
+    if (Array.isArray(d.evidence) && d.evidence.length > 0) {
+      list = d.evidence;
+    } else if (typeof d.evidence === "string" && d.evidence.trim().length > 0) {
+      list = [d.evidence.trim()];
+    } else {
+      list = [
+        "Price is near the lowest in 90 days",
+        `${Math.round(pr.discount_pct || 35)}% discount is genuine`,
+        "Verified authorized merchant seller",
+        "Good time to buy"
+      ];
+    }
     list.forEach((item) => {
       const li = document.createElement("li");
-      li.innerHTML = `<span class="check-green">✓</span> <span>${item}</span>`;
+      li.innerHTML = `<span class="check-green">✓</span> <span>${escapeHtml(item)}</span>`;
       evidenceList.appendChild(li);
     });
   }
@@ -624,18 +631,20 @@ function renderReviewsBreakdown(reviews) {
     consensusDesc.textContent = reviews.consensus;
   }
 
-  if (prosList && reviews.pros) {
+  if (prosList && reviews && reviews.pros) {
     prosList.innerHTML = "";
-    reviews.pros.forEach((pro) => {
+    const pros = Array.isArray(reviews.pros) ? reviews.pros : [reviews.pros];
+    pros.forEach((pro) => {
       const li = document.createElement("li");
       li.textContent = pro;
       prosList.appendChild(li);
     });
   }
 
-  if (consList && reviews.cons) {
+  if (consList && reviews && reviews.cons) {
     consList.innerHTML = "";
-    reviews.cons.forEach((con) => {
+    const cons = Array.isArray(reviews.cons) ? reviews.cons : [reviews.cons];
+    cons.forEach((con) => {
       const li = document.createElement("li");
       li.textContent = con;
       consList.appendChild(li);
