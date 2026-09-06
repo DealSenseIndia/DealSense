@@ -3,7 +3,6 @@
   "cleanUrls": true,
   "rewrites": [
     { "source": "/deals", "destination": "/deals.html" },
-    { "source": "/categories", "destination": "/categories.html" },
-    { "source": "/(.*)", "destination": "/$1" }
+    { "source": "/categories", "destination": "/categories.html" }
   ]
 }
