@@ -4,6 +4,91 @@ All notable changes to the DealSense project are documented in this file.
 
 ---
 
+## [Phase 4.2 Layer 2B] - 2026-09-10
+
+### Objective
+Build Phase 4.2 Layer 2B: Live Candidate Discovery. Establish the first real autonomous candidate discovery pipeline that continuously discovers products for the DealSense Product Universe while preserving strict boundaries: candidate discovery remains separate from price observation, deal scoring, deal publishing, and affiliate routing.
+
+### Architecture Implemented
+- **Provider Abstraction Architecture (`backend/services/discovery/providers/`)**:
+  - `DiscoveryProvider` base abstraction defining consistent contract: `is_available()` and `discover_query(query, category, max_results)`.
+  - `CreatorsAPIProvider`: Official Amazon Creators API abstraction using `SearchItems`. Fails gracefully as unavailable if credentials are not configured without fabricating API responses or claiming access.
+  - `AmazonWebDiscoveryProvider`: Controlled Amazon India category and search discovery provider protected by circuit breaker and query budgets.
+  - `FlipkartWebDiscoveryProvider`: Controlled Flipkart category and search discovery provider extracting verified PIDs and clean URLs under circuit breaker protection.
+- **Configuration-Driven Category Registry (`backend/services/discovery/categories.py`)**:
+  - `CategoryRegistry` with 10 initial benchmark categories:
+    1. `smartphones` (priority 100, budget 50)
+    2. `monitors` (priority 95, budget 50)
+    3. `laptops` (priority 95, budget 50)
+    4. `GPUs` (priority 90, budget 40)
+    5. `SSD` (priority 85, budget 40)
+    6. `RAM` (priority 80, budget 30)
+    7. `headphones` (priority 85, budget 40)
+    8. `smartwatches` (priority 80, budget 40)
+    9. `TVs` (priority 80, budget 40)
+    10. `gaming peripherals` (priority 85, budget 40)
+  - Decouples all category/query logic from discovery workers and ingestion pipelines.
+  - Provides priority-weighted, round-robin query selection.
+- **Rate Limiting, Safety & Circuit Breaker (`backend/services/discovery/safety.py`)**:
+  - `CircuitBreaker` implementing state transitions (`CLOSED`, `OPEN`, `HALF_OPEN`), failure thresholds, and automatic cooldown periods (default 60s).
+  - Immediate trip to `OPEN` on severe status codes (403, 429, 503) or CAPTCHA detection.
+  - `DiscoverySafetyManager` managing source-level circuit breakers, timeout bounds, and exponential backoff calculations.
+  - Provider failure isolation: errors in one merchant source never crash or block discovery cycles on remaining sources.
+- **Full Provenance Preservation (`backend/models.py`, `backend/database.py`, `backend/services/discovery/base.py`)**:
+  - Candidate records preserve complete provenance: `merchant`, `source_name`, `source_type`, `discovery_method`, `category_hint`, `query`, and `discovered_at`.
+  - Added `query` indexed column to `DiscoveryCandidate` SQLModel table with automated idempotent SQLite migration in `init_db()`.
+- **Discovery Orchestrator (`backend/services/discovery/orchestrator.py`)**:
+  - `DiscoveryOrchestrator` coordinates multi-source discovery, budget enforcement (max 10 queries per run per merchant), queue deduplication, and worker intake execution.
+- **Lightweight Discovery Analytics (`backend/services/discovery/analytics.py`)**:
+  - `get_discovery_analytics()` computes KPI telemetry: candidates by source, category, query, valid listing conversion rate, observation rate, and deal candidate conversion rate.
+
+### Invariants Maintained
+1. **Candidate $\neq$ PriceObservation**: Discovery records provenance and presence only. Discovery price hints never fabricate `PriceObservation` records.
+2. **Candidate $\neq$ DealCandidate**: Discovery results never enter public deal feeds or receive `status="DEAL_CANDIDATE"`.
+3. **Strict Deduplication**: Canonical dedupe keys (`amazon:{ASIN}` and `flipkart:{PID}`) prevent duplicate queue and listing creation.
+
+### Test Suite (tests/test_live_discovery.py)
+Added 16 deterministic tests covering:
+1. `test_provider_selection`: Provider priority and fallback resolution.
+2. `test_creators_api_unavailable_fallback`: Graceful unconfigured Creators API handling.
+3. `test_malformed_api_response`: Rejection of malformed API/HTML payloads without crashing.
+4. `test_amazon_normalization_with_provenance`: End-to-end normalization of Amazon candidate with query metadata.
+5. `test_flipkart_normalization_with_provenance`: End-to-end normalization of Flipkart candidate with query metadata.
+6. `test_category_registry`: Verification of all 10 benchmark categories, priority ordering, and query retrieval.
+7. `test_query_budget`: Strict enforcement of per-run query limits.
+8. `test_candidate_budget`: Strict enforcement of per-query candidate output limits.
+9. `test_source_provenance_preservation`: Complete provenance persistence into SQLite.
+10. `test_deduplication_live_candidates`: Filtering duplicates across live queries.
+11. `test_retry_and_exponential_backoff`: Verified exponential delay calculation.
+12. `test_circuit_breaker`: State machine transitions (`CLOSED` &rarr; `OPEN` &rarr; `HALF_OPEN` &rarr; `CLOSED`) and severe error tripping.
+13. `test_candidate_queue_integration`: Proper enqueuing and priority-based queue telemetry.
+14. `test_no_synthetic_price_observation`: Guaranteed 0 fabricated PriceObservations.
+15. `test_no_deal_candidate_creation`: Guaranteed 0 DealCandidates created.
+16. `test_provider_failure_isolation`: Failure in one source isolates gracefully without crashing others.
+
+### Controlled Live Smoke Test (scripts/live_discovery_smoke_test.py)
+Executed controlled live search discovery across Amazon India and Flipkart:
+- **Amazon Raw Candidates**: 193 (193 verified 10-char ASINs, 193 unique)
+- **Flipkart Raw Candidates**: 200 (200 verified PIDs, 200 unique)
+- **Total Raw Candidates**: 393
+- **In-batch / Existing Duplicates Filtered**: 0
+- **Unique Candidates Queued**: 393
+- **Worker Batch Accepted**: 10
+- **Worker Batch Rejected**: 0
+- **Listings Created (delta)**: 10
+- **Listings Reused**: 0
+- **Products Created (delta)**: 10
+- **PriceObservations Created (delta)**: 10
+- **Synthetic Observations**: 0 (MUST BE 0)
+- **DealCandidates Created**: 0 (MUST BE 0)
+
+### Known Limitations & Next Steps
+- Controlled Live Discovery only: maximum 10 queries per run per merchant.
+- No broad crawling, infinite pagination, high concurrency, stealth browsers, proxy rotation, or challenge bypass in this phase.
+- Live Deals Feed UI and Stitch design intentionally deferred until genuine DealCandidates are produced.
+
+---
+
 ## [Phase 4.2 Layer 2A] - 2026-09-10
 
 ### Objective

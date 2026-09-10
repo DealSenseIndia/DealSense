@@ -53,6 +53,7 @@ class CandidateQueueService:
             source_type=getattr(payload, "source_type", "category"),
             discovery_method=getattr(payload, "discovery_method", "bestseller"),
             category_hint=payload.category_hint,
+            query=getattr(payload, "query", None),
             title_hint=payload.title_hint,
             price_hint=payload.price_hint,
             mrp_hint=payload.mrp_hint,

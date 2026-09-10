@@ -419,6 +419,7 @@ class DiscoveryCandidate(SQLModel, table=True):
     source_type: Optional[str] = Field(default="category", index=True)
     discovery_method: Optional[str] = Field(default="bestseller", index=True)
     category_hint: Optional[str] = Field(default=None)
+    query: Optional[str] = Field(default=None, index=True)
     title_hint: Optional[str] = Field(default=None)
     price_hint: Optional[float] = Field(default=None)
     mrp_hint: Optional[float] = Field(default=None)

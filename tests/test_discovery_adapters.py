@@ -415,6 +415,13 @@ def test_mixed_amazon_flipkart_queue_ordering():
     ]
 
     with get_session() as session:
+        # Drain pre-existing queued candidates to ensure test isolation
+        existing_queued = session.exec(select(DiscoveryCandidate).where(DiscoveryCandidate.status == "QUEUED")).all()
+        for eq in existing_queued:
+            eq.status = "PROCESSING"
+            session.add(eq)
+        session.commit()
+
         for p in payloads:
             queue_service.enqueue(p, session=session)
 

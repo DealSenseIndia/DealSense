@@ -57,6 +57,19 @@ class Settings:
     DISCOVERY_MAX_ATTEMPTS: int = int(os.getenv("DISCOVERY_MAX_ATTEMPTS", "3"))
     DISCOVERY_BASE_BACKOFF_SECONDS: int = int(os.getenv("DISCOVERY_BASE_BACKOFF_SECONDS", "300"))
 
+    # Phase 4.2 Layer 2B: Live Candidate Discovery & Safety Budgets
+    AMAZON_CREATORS_API_KEY: str = os.getenv("AMAZON_CREATORS_API_KEY", "")
+    AMAZON_CREATORS_API_SECRET: str = os.getenv("AMAZON_CREATORS_API_SECRET", "")
+    AMAZON_CREATORS_ASSOCIATE_TAG: str = os.getenv("AMAZON_CREATORS_ASSOCIATE_TAG", "")
+    AMAZON_CREATORS_HOST: str = os.getenv("AMAZON_CREATORS_HOST", "webservices.amazon.in")
+    AMAZON_CREATORS_REGION: str = os.getenv("AMAZON_CREATORS_REGION", "eu-west-1")
+
+    DISCOVERY_MAX_QUERIES_PER_RUN: int = int(os.getenv("DISCOVERY_MAX_QUERIES_PER_RUN", "10"))
+    DISCOVERY_MAX_CANDIDATES_PER_QUERY: int = int(os.getenv("DISCOVERY_MAX_CANDIDATES_PER_QUERY", "20"))
+    DISCOVERY_REQUEST_TIMEOUT_SECONDS: int = int(os.getenv("DISCOVERY_REQUEST_TIMEOUT_SECONDS", "10"))
+    DISCOVERY_COOLDOWN_SECONDS: int = int(os.getenv("DISCOVERY_COOLDOWN_SECONDS", "60"))
+    DISCOVERY_CONCURRENCY_LIMIT: int = int(os.getenv("DISCOVERY_CONCURRENCY_LIMIT", "2"))
+
 
 settings = Settings()
 

@@ -105,6 +105,7 @@ def init_db() -> None:
                 dc_cols = {
                     "source_type": "TEXT DEFAULT 'category'",
                     "discovery_method": "TEXT DEFAULT 'bestseller'",
+                    "query": "TEXT",
                 }
                 for col, col_type in dc_cols.items():
                     if col not in existing_dc_cols:

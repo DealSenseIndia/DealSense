@@ -113,6 +113,7 @@ class DiscoveryObservation:
     source_name: str
     source_type: str = "category"
     discovery_method: str = "bestseller"
+    query: Optional[str] = None
     discovered_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     product_id: Optional[int] = None
     listing_id: Optional[int] = None
@@ -128,6 +129,7 @@ class CandidatePayload(BaseModel):
     candidate_url: str
     merchant: Optional[str] = None
     category_hint: Optional[str] = None
+    query: Optional[str] = None
     title_hint: Optional[str] = None
     price_hint: Optional[float] = None
     mrp_hint: Optional[float] = None

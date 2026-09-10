@@ -1,14 +1,18 @@
 """
 Flipkart Discovery Adapter for DealSense.
-Operates in CONTROLLED FIXTURE / ADAPTER MODE.
-No live web crawling, search crawling, or proxy rotation.
+Supports both provider abstraction (FlipkartWebDiscoveryProvider) and controlled fixture mode.
+Operates with strict query budgets, circuit breaker protection, and normalized PID deduplication.
 """
 from datetime import datetime, timezone
 import logging
 from typing import List, Dict, Any, Optional
 from urllib.parse import urlparse, parse_qs
 
+from backend.config import settings
 from backend.services.discovery.base import DiscoverySource, CandidatePayload
+from backend.services.discovery.categories import category_registry
+from backend.services.discovery.providers.base import DiscoveryProvider
+from backend.services.discovery.providers.flipkart_web import FlipkartWebDiscoveryProvider
 
 logger = logging.getLogger(__name__)
 
@@ -70,21 +74,30 @@ FLIPKART_FIXTURE_CANDIDATES: List[Dict[str, Any]] = [
 
 class FlipkartDiscoverySource(DiscoverySource):
     """
-    Flipkart Discovery Adapter.
-    Initially runs in controlled fixture mode with consistent interface:
-    - discover_candidates()
-    - normalize_candidate()
-    - dedupe_key()
-    - source_metadata()
+    Flipkart Discovery Adapter with Provider Abstraction.
+    Uses FlipkartWebDiscoveryProvider with circuit-breaker protection and query budgets.
+    Maintains full backward compatibility with controlled fixture mode.
     """
     source_name: str = "flipkart"
     source_type: str = "category"
     discovery_method: str = "popular"
 
-    def __init__(self, fixture_items: Optional[List[Dict[str, Any]]] = None):
+    def __init__(
+        self,
+        providers: Optional[List[DiscoveryProvider]] = None,
+        fixture_items: Optional[List[Dict[str, Any]]] = None,
+        use_fixture: bool = True,
+    ):
+        self.use_fixture = use_fixture or (fixture_items is not None)
         self.raw_items: List[Dict[str, Any]] = (
             fixture_items if fixture_items is not None else list(FLIPKART_FIXTURE_CANDIDATES)
         )
+        if providers is not None:
+            self.providers = providers
+        else:
+            self.providers = [
+                FlipkartWebDiscoveryProvider(),
+            ]
 
     def dedupe_key(self, product_id: str) -> str:
         """Canonical dedupe key: flipkart:{PID}"""
@@ -103,12 +116,14 @@ class FlipkartDiscoverySource(DiscoverySource):
         """
         Normalizes a raw Flipkart candidate item into a verified CandidatePayload.
         Enforces PID validation and canonical clean URL.
+        Preserves complete provenance including category and query.
         """
         url = raw.get("url") or raw.get("candidate_url")
         if not url or not isinstance(url, str) or not url.strip():
             return None
 
-        pid = (raw.get("pid") or raw.get("merchant_product_id") or "").strip()
+        pid_val = raw.get("pid") if raw.get("pid") is not None else raw.get("merchant_product_id")
+        pid = str(pid_val).strip() if pid_val is not None else ""
         # Fallback to URL PID extraction if not passed directly
         if not pid:
             parsed = urlparse(url)
@@ -135,11 +150,12 @@ class FlipkartDiscoverySource(DiscoverySource):
                 merchant_product_id=pid,
                 dedupe_key=self.dedupe_key(pid),
                 category_hint=raw.get("category") or raw.get("category_hint"),
+                query=raw.get("query"),
                 title_hint=raw.get("title") or raw.get("title_hint"),
                 price_hint=raw.get("price") or raw.get("price_hint"),
                 mrp_hint=raw.get("mrp") or raw.get("mrp_hint"),
                 discovery_priority=float(raw.get("priority") or raw.get("discovery_priority", 50.0)),
-                source_name=self.source_name,
+                source_name=raw.get("source_name", self.source_name),
                 source_type=raw.get("source_type", self.source_type),
                 discovery_method=raw.get("discovery_method", self.discovery_method),
                 discovered_at=raw.get("discovered_at") or now_utc,
@@ -159,5 +175,56 @@ class FlipkartDiscoverySource(DiscoverySource):
             if payload:
                 payloads.append(payload)
 
-        logger.info(f"FlipkartDiscoverySource produced {len(payloads)} CandidatePayloads from {len(self.raw_items)} inputs.")
+        logger.info(f"FlipkartDiscoverySource produced {len(payloads)} CandidatePayloads from fixture inputs.")
+        return payloads
+
+    def discover_candidates(
+        self,
+        max_queries: Optional[int] = None,
+        candidates_per_query: Optional[int] = None,
+    ) -> List[CandidatePayload]:
+        """
+        Executes candidate discovery.
+        In fixture mode, returns normalized fixture items.
+        In live mode, queries available providers for active category queries.
+        """
+        if self.use_fixture:
+            return self.fetch_candidates()
+
+        queries_limit = max_queries or getattr(settings, "DISCOVERY_MAX_QUERIES_PER_RUN", 10)
+        per_query_limit = candidates_per_query or getattr(settings, "DISCOVERY_MAX_CANDIDATES_PER_QUERY", 20)
+
+        active_queries = category_registry.get_active_queries(max_queries=queries_limit)
+        payloads: List[CandidatePayload] = []
+        seen_keys = set()
+
+        for cat_name, query_str, priority, budget in active_queries:
+            query_raw_items: List[Dict[str, Any]] = []
+
+            for provider in self.providers:
+                if not provider.is_available():
+                    continue
+                try:
+                    results = provider.discover_query(
+                        query=query_str,
+                        category=cat_name,
+                        max_results=min(per_query_limit, budget),
+                    )
+                    if results:
+                        query_raw_items = results
+                        break
+                except Exception as e:
+                    logger.warning(f"Provider {provider.provider_name} failed for query '{query_str}': {e}")
+                    continue
+
+            for raw in query_raw_items:
+                raw.setdefault("priority", priority)
+                payload = self.normalize_candidate(raw)
+                if payload and payload.dedupe_key not in seen_keys:
+                    seen_keys.add(payload.dedupe_key)
+                    payloads.append(payload)
+
+        logger.info(
+            f"FlipkartDiscoverySource completed live discovery run: {len(payloads)} unique candidates from {len(active_queries)} queries."
+        )
         return payloads
