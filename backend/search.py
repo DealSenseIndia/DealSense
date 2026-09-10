@@ -141,8 +141,16 @@ CATALOG_PRESETS: List[Dict[str, Any]] = [
 ]
 
 
-def search_catalog(query: str, limit: int = 8) -> List[Dict[str, Any]]:
-    """Searches the database and live merchant presets by keyword or partial title."""
+def search_catalog(
+    query: str,
+    limit: int = 8,
+    session_id: Optional[str] = None,
+    session: Optional[Session] = None,
+) -> List[Dict[str, Any]]:
+    """
+    Searches canonical Product Universe and seed merchant catalog by keyword or partial title.
+    Emits USER_SEARCH discovery telemetry for matched products.
+    """
     q_norm = query.lower().strip()
     if not q_norm:
         return []
@@ -150,45 +158,72 @@ def search_catalog(query: str, limit: int = 8) -> List[Dict[str, Any]]:
     results = []
     seen_titles = set()
 
-    # 1. Search existing tracked items in local SQLite
-    with get_session() as session:
-        products = session.exec(select(Product)).all()
+    def _do_search(s: Session):
+        query_pattern = f"%{q_norm}%"
+        products = s.exec(
+            select(Product).where(
+                Product.canonical_title.ilike(query_pattern)
+                | Product.brand.ilike(query_pattern)
+                | Product.category.ilike(query_pattern)
+            ).limit(limit)
+        ).all()
+
         for p in products:
-            if q_norm in p.canonical_title.lower() or (p.brand and q_norm in p.brand.lower()):
-                listing = session.exec(
-                    select(MerchantListing).where(MerchantListing.product_id == p.id)
+            listing = s.exec(
+                select(MerchantListing).where(MerchantListing.product_id == p.id)
+            ).first()
+
+            last_obs = None
+            if listing:
+                last_obs = s.exec(
+                    select(PriceObservation)
+                    .where(PriceObservation.listing_id == listing.id)
+                    .order_by(PriceObservation.observed_at.desc())
                 ).first()
-                last_obs = None
-                if listing:
-                    last_obs = session.exec(
-                        select(PriceObservation)
-                        .where(PriceObservation.listing_id == listing.id)
-                        .order_by(PriceObservation.observed_at.desc())
-                    ).first()
 
-                p_price = last_obs.price if last_obs else 1500
-                p_mrp = last_obs.mrp if last_obs and last_obs.mrp else round(p_price * 1.3)
-                disc = round(((p_mrp - p_price) / p_mrp) * 100) if p_mrp > p_price else 0
+            p_price = last_obs.price if last_obs else (listing.current_price if listing else None)
+            p_mrp = last_obs.mrp if last_obs and last_obs.mrp else None
+            disc = round(((p_mrp - p_price) / p_mrp) * 100) if (p_mrp and p_price and p_mrp > p_price) else 0
 
-                results.append({
-                    "id": p.id,
-                    "title": p.canonical_title,
-                    "brand": p.brand,
-                    "category": p.category or "Electronics",
-                    "merchant": listing.merchant if listing else "Amazon",
-                    "price": p_price,
-                    "mrp": p_mrp,
-                    "discount_pct": disc,
-                    "rating": 4.4,
-                    "ratings_count": "8,230",
-                    "image_url": p.image_url or "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=240&q=80",
-                    "url": listing.clean_url if listing else "https://www.amazon.in",
-                    "badge": f"{listing.merchant if listing else 'Verified'}'s Choice",
-                    "source": "database",
-                })
-                seen_titles.add(p.canonical_title.lower())
+            # Record search discovery event
+            try:
+                from backend.services.universe_service import record_discovery_event
+                record_discovery_event(
+                    product_id=p.id,
+                    source="USER_SEARCH",
+                    listing_id=listing.id if listing else None,
+                    query_text=query,
+                    session_id=session_id,
+                    session=s,
+                )
+            except Exception:
+                pass
 
-    # 2. Search catalog presets
+            results.append({
+                "id": p.id,
+                "title": p.canonical_title,
+                "brand": p.brand,
+                "category": p.category or "General",
+                "merchant": listing.merchant if listing else "Amazon",
+                "price": p_price,
+                "mrp": p_mrp,
+                "discount_pct": disc,
+                "rating": p.rating,
+                "ratings_count": p.ratings_count,
+                "image_url": p.image_url or "/assets/placeholder-product.png",
+                "url": listing.clean_url if listing else f"/product/{p.id}",
+                "badge": p.badge or (f"{listing.merchant}'s Choice" if listing else "Verified"),
+                "source": "database",
+            })
+            seen_titles.add(p.canonical_title.lower())
+
+    if session:
+        _do_search(session)
+    else:
+        with get_session() as s_ctx:
+            _do_search(s_ctx)
+
+    # 2. Search catalog presets for supplementary seed candidates
     for item in CATALOG_PRESETS:
         if len(results) >= limit:
             break
@@ -199,23 +234,5 @@ def search_catalog(query: str, limit: int = 8) -> List[Dict[str, Any]]:
             if t_low not in seen_titles:
                 results.append({**item, "source": "market_catalog"})
                 seen_titles.add(t_low)
-
-    # 3. Fallback: if user query is very specific, generate high-probability candidate
-    if len(results) == 0:
-        results.append({
-            "title": f"{query.title()} (Live Search)",
-            "brand": "Verified Brand",
-            "category": "General",
-            "merchant": "Amazon",
-            "price": 1999,
-            "mrp": 3999,
-            "discount_pct": 50,
-            "rating": 4.3,
-            "ratings_count": "2,410",
-            "image_url": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=240&q=80",
-            "url": f"https://www.amazon.in/s?k={query.replace(' ', '+')}",
-            "badge": "Live Catalog",
-            "source": "generated_match",
-        })
 
     return results[:limit]

@@ -58,14 +58,28 @@ def compute_failure_backoff_seconds(failure_count: int) -> int:
 
 def determine_listing_priority(listing_id: int, product_id: Optional[int]) -> str:
     """
-    Evaluates priority tier for a listing:
-    - HOT: Active PriceAlert or high deal score
-    - ACTIVE: High price volatility or homepage visibility
+    Evaluates priority tier for a listing based on Product Universe state:
+    - HOT: Active PriceAlert, high user demand, or high deal score
+    - ACTIVE: High price volatility or recent user interactions (<24h)
     - COLD: Out of stock or inactive
     - NORMAL: Standard catalog default
     """
     with get_session() as session:
-        # 1. Check for Active User Price Alerts
+        # 1. Listing Availability Override: Out of stock is always COLD
+        listing = session.get(MerchantListing, listing_id)
+        if listing and listing.availability == "out_of_stock":
+            return "COLD"
+
+        # 2. Consult Product Universe Priority Engine
+        if product_id:
+            try:
+                from backend.services.universe_service import calculate_product_priority
+                _, tier = calculate_product_priority(product_id, session=session)
+                return tier
+            except Exception as e:
+                logger.debug(f"Universe priority calculation fallback for product #{product_id}: {e}")
+
+        # 3. Fallback Heuristics if product_id is not linked
         if product_id:
             alert = session.exec(
                 select(PriceAlert).where(
@@ -76,12 +90,6 @@ def determine_listing_priority(listing_id: int, product_id: Optional[int]) -> st
             if alert:
                 return "HOT"
 
-        # 2. Check Listing Availability
-        listing = session.get(MerchantListing, listing_id)
-        if listing and listing.availability == "out_of_stock":
-            return "COLD"
-
-        # 3. Check Price Volatility in Last 14 Days
         fourteen_days_ago = datetime.now(timezone.utc) - timedelta(days=14)
         recent_obs = session.exec(
             select(PriceObservation).where(

@@ -86,6 +86,8 @@ def ingest_product_from_url(
     raw_url: str,
     session: Session,
     force_refresh: bool = False,
+    session_id: Optional[str] = None,
+    discovery_source: str = "USER_URL",
 ) -> Tuple[Optional[Product], Optional[MerchantListing], Optional[PriceObservation], str]:
     """
     Autonomous Ingestion Pipeline:
@@ -121,6 +123,18 @@ def ingest_product_from_url(
             .where(PriceObservation.listing_id == existing_listing.id)
             .order_by(PriceObservation.observed_at.desc())
         ).first()
+        if existing_product:
+            try:
+                from backend.services.universe_service import record_discovery_event
+                record_discovery_event(
+                    product_id=existing_product.id,
+                    source=discovery_source,
+                    listing_id=existing_listing.id,
+                    session_id=session_id,
+                    session=session,
+                )
+            except Exception as e:
+                logger.warning(f"Failed to record discovery event for existing product #{existing_product.id}: {e}")
         return existing_product, existing_listing, latest_obs, "EXISTING"
 
     # 2. Resilient Metadata Extraction
@@ -403,6 +417,23 @@ def ingest_product_from_url(
             .where(PriceObservation.listing_id == existing_listing.id)
             .order_by(PriceObservation.observed_at.desc())
         ).first()
+
+    if product and listing:
+        try:
+            from backend.services.universe_service import record_discovery_event
+            product.lifecycle_status = "OBSERVING" if obs else "IDENTIFIED"
+            product.last_interacted_at = now_utc
+            session.add(product)
+            session.commit()
+            record_discovery_event(
+                product_id=product.id,
+                source=discovery_source,
+                listing_id=listing.id,
+                session_id=session_id,
+                session=session,
+            )
+        except Exception as e:
+            logger.warning(f"Failed to record discovery event for product #{product.id}: {e}")
 
     status_str = "UPDATED" if existing_listing else "CREATED"
     return product, listing, obs, status_str

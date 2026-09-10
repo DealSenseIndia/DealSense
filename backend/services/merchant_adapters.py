@@ -245,11 +245,22 @@ class AmazonAdapter(BaseMerchantAdapter):
             return clean_url
         parsed = urlparse(clean_url)
         query = parse_qs(parsed.query)
-        query["tag"] = [tag]
+
         # Remove stray ref tags
         query.pop("ref", None)
         query.pop("ref_", None)
-        new_query = urlencode(query, doseq=True)
+
+        ordered_query: Dict[str, List[str]] = {}
+        ordered_query["tag"] = [tag]
+        if subids:
+            for k, v in subids.items():
+                if v:
+                    ordered_query[k] = [str(v)]
+        for k, v in query.items():
+            if k not in ordered_query:
+                ordered_query[k] = v
+
+        new_query = urlencode(ordered_query, doseq=True)
         return urlunparse(parsed._replace(query=new_query))
 
     def extract_from_html(self, html_content: str, clean_url: str, product_id: str) -> Optional[ExtractedProductData]:

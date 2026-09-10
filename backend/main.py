@@ -16,6 +16,8 @@ from backend.models import (
     SetupCategory,
     Setup,
     SetupItem,
+    ProductDiscoveryEvent,
+    DiscoveryCandidate,
 )
 from contextlib import asynccontextmanager
 from backend.service import ingest_and_evaluate
@@ -24,6 +26,14 @@ from backend.setup_engine import build_smart_setup, SetupRequest
 from backend.services.deals_crawler import get_live_deals_feed, refresh_deals_feed
 from backend.services.observation_worker import worker
 from backend.services.observation_service import observe_listing
+from backend.services.universe_service import (
+    record_discovery_event,
+    calculate_product_priority,
+    propagate_product_priority,
+    get_product_metrics,
+    get_universe_statistics,
+)
+from backend.services.ingestion_service import ingest_product_from_url
 
 
 @asynccontextmanager
@@ -66,6 +76,22 @@ class CheckDealRequest(BaseModel):
 class AnalyzeProductRequest(BaseModel):
     url: str
     force_refresh: bool = False
+
+
+class DiscoverProductRequest(BaseModel):
+    url: str
+    session_id: Optional[str] = None
+    force_refresh: bool = False
+
+
+class ProductViewRequest(BaseModel):
+    session_id: Optional[str] = None
+    source: str = "PRODUCT_VIEW"
+
+
+class ProductCompareRequest(BaseModel):
+    rival_id: int
+    session_id: Optional[str] = None
 
 
 @app.get("/api/health")
@@ -411,7 +437,7 @@ def analyze_product_endpoint(req: AnalyzeProductRequest):
 def list_products(limit: int = 20):
     """Lists tracked canonical products and their latest verified prices."""
     with get_session() as session:
-        products = session.exec(select(Product).limit(limit)).all()
+        products = session.exec(select(Product).order_by(Product.id.desc()).limit(limit)).all()
         results = []
         for p in products:
             listing = session.exec(
@@ -435,9 +461,229 @@ def list_products(limit: int = 20):
                     "price": last_obs.price if last_obs else None,
                     "mrp": last_obs.mrp if last_obs else None,
                     "last_checked": last_obs.observed_at.isoformat() if last_obs else None,
+                    "lifecycle_status": p.lifecycle_status,
+                    "discovery_score": p.discovery_score,
                 }
             )
         return results
+
+
+@app.post("/api/discover")
+def discover_product_endpoint(req: DiscoverProductRequest):
+    """
+    Submits an Amazon or Flipkart product URL to:
+    1. Resolve & normalize URL to canonical merchant product.
+    2. Check if product exists; if not, extract metadata and day-1 price.
+    3. Record canonical PRODUCT_DISCOVERED event with deduplication.
+    4. Compute product priority and schedule immediate observation.
+    5. Returns product universe metadata, lifecycle, and verified listings.
+    """
+    if not req.url or not req.url.strip():
+        raise HTTPException(status_code=400, detail="URL is required")
+
+    with get_session() as session:
+        try:
+            product, listing, obs, status = ingest_product_from_url(
+                raw_url=req.url.strip(),
+                session=session,
+                force_refresh=req.force_refresh,
+                session_id=req.session_id,
+            )
+            if not product or not listing:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Unable to process product URL (status: {status}). Ensure it is an Amazon India or Flipkart URL.",
+                )
+
+            priority_info = propagate_product_priority(session, product.id)
+            metrics = get_product_metrics(session, product.id)
+            session.commit()
+
+            return {
+                "success": True,
+                "status": status,
+                "product": {
+                    "id": product.id,
+                    "canonical_title": product.canonical_title,
+                    "brand": product.brand,
+                    "category": product.category,
+                    "image_url": product.image_url,
+                    "lifecycle_status": product.lifecycle_status,
+                    "discovery_score": product.discovery_score,
+                    "priority": priority_info["priority"],
+                    "priority_score": priority_info["score"],
+                    "metrics": metrics,
+                    "last_interacted_at": product.last_interacted_at.isoformat() if product.last_interacted_at else None,
+                },
+                "listing": {
+                    "id": listing.id,
+                    "merchant": listing.merchant,
+                    "merchant_product_id": listing.merchant_product_id,
+                    "priority": listing.priority,
+                    "next_check_at": listing.next_check_at.isoformat() if listing.next_check_at else None,
+                    "price": obs.price if obs else None,
+                    "mrp": obs.mrp if obs else None,
+                    "in_stock": obs.in_stock if obs else True,
+                },
+            }
+        except HTTPException:
+            raise
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Failed to discover product: {str(e)}")
+
+
+@app.get("/api/products/{product_id}")
+def get_product_by_id(product_id: int, record_view: bool = False, session_id: Optional[str] = None):
+    """
+    Retrieves canonical product details, all linked merchant listings,
+    universe lifecycle state, priority breakdown, and derived metrics.
+    Optionally records a PRODUCT_VIEW event if record_view=True.
+    """
+    with get_session() as session:
+        product = session.get(Product, product_id)
+        if not product:
+            raise HTTPException(status_code=404, detail=f"Product #{product_id} not found in Universe")
+
+        if record_view:
+            record_discovery_event(
+                product_id=product.id,
+                source="PRODUCT_VIEW",
+                session_id=session_id,
+                session=session,
+            )
+            propagate_product_priority(session, product.id)
+            session.commit()
+            session.refresh(product)
+
+        listings = session.exec(
+            select(MerchantListing).where(MerchantListing.product_id == product.id)
+        ).all()
+
+        listings_data = []
+        for l in listings:
+            latest_obs = session.exec(
+                select(PriceObservation)
+                .where(PriceObservation.listing_id == l.id)
+                .order_by(PriceObservation.observed_at.desc())
+            ).first()
+            listings_data.append({
+                "id": l.id,
+                "merchant": l.merchant,
+                "merchant_product_id": l.merchant_product_id,
+                "url": l.url,
+                "priority": l.priority,
+                "next_check_at": l.next_check_at.isoformat() if l.next_check_at else None,
+                "latest_price": latest_obs.price if latest_obs else None,
+                "mrp": latest_obs.mrp if latest_obs else None,
+                "in_stock": latest_obs.in_stock if latest_obs else True,
+                "last_observed_at": latest_obs.observed_at.isoformat() if latest_obs else None,
+            })
+
+        metrics = get_product_metrics(session, product.id)
+        priority_info = calculate_product_priority(session, product.id)
+
+        return {
+            "id": product.id,
+            "canonical_title": product.canonical_title,
+            "brand": product.brand,
+            "category": product.category,
+            "image_url": product.image_url,
+            "lifecycle_status": product.lifecycle_status,
+            "discovery_score": product.discovery_score,
+            "last_interacted_at": product.last_interacted_at.isoformat() if product.last_interacted_at else None,
+            "priority": priority_info["priority"],
+            "priority_score": priority_info["score"],
+            "priority_breakdown": priority_info["breakdown"],
+            "metrics": metrics,
+            "listings": listings_data,
+        }
+
+
+@app.post("/api/products/{product_id}/view")
+def record_product_view(product_id: int, req: Optional[ProductViewRequest] = None):
+    """
+    Records a PRODUCT_VIEW interaction event.
+    Deduplicates repeated views in a 15-minute sliding window per session.
+    Escalates product and listing observation priority.
+    """
+    with get_session() as session:
+        product = session.get(Product, product_id)
+        if not product:
+            raise HTTPException(status_code=404, detail=f"Product #{product_id} not found")
+
+        sess_id = req.session_id if req else None
+        event = record_discovery_event(
+            product_id=product.id,
+            source="PRODUCT_VIEW",
+            session_id=sess_id,
+            session=session,
+        )
+        priority_info = propagate_product_priority(session, product.id)
+        session.commit()
+
+        return {
+            "success": True,
+            "product_id": product.id,
+            "recorded": event is not None,
+            "event_id": event.id if event else None,
+            "new_priority": priority_info["priority"],
+            "new_score": priority_info["score"],
+        }
+
+
+@app.post("/api/products/{product_id}/compare")
+def record_product_comparison(product_id: int, req: ProductCompareRequest):
+    """
+    Records a product comparison interaction between primary and rival products.
+    Deduplicates within 15 minutes, boosts discovery metrics and priority for both.
+    """
+    with get_session() as session:
+        primary = session.get(Product, product_id)
+        if not primary:
+            raise HTTPException(status_code=404, detail=f"Primary product #{product_id} not found")
+
+        rival = session.get(Product, req.rival_id)
+        if not rival:
+            raise HTTPException(status_code=404, detail=f"Rival product #{req.rival_id} not found")
+
+        ev_primary = record_discovery_event(
+            product_id=primary.id,
+            source="COMPARE",
+            session_id=req.session_id,
+            session=session,
+        )
+        ev_rival = record_discovery_event(
+            product_id=rival.id,
+            source="COMPARE",
+            session_id=req.session_id,
+            session=session,
+        )
+
+        p1 = propagate_product_priority(session, primary.id)
+        p2 = propagate_product_priority(session, rival.id)
+        session.commit()
+
+        return {
+            "success": True,
+            "primary_id": primary.id,
+            "rival_id": rival.id,
+            "recorded": bool(ev_primary or ev_rival),
+            "primary_priority": p1["priority"],
+            "rival_priority": p2["priority"],
+        }
+
+
+@app.get("/api/universe/stats")
+def get_product_universe_stats():
+    """
+    Returns global DealSense Product Universe metrics and telemetry:
+    - Total catalog size
+    - Breakdown by lifecycle status (OBSERVING, ACTIVE, NORMAL, COLD, etc.)
+    - Breakdown by observation priority (HOT, ACTIVE, NORMAL, COLD)
+    - Total discovery events recorded & breakdown by source (USER_URL, USER_SEARCH, etc.)
+    """
+    with get_session() as session:
+        return get_universe_statistics(session)
 
 
 @app.get("/api/search")
@@ -1078,6 +1324,109 @@ def trigger_deals_refresh(background: bool = False):
     (Unofficial web scraping crawl has been removed).
     """
     return refresh_deals_feed()
+
+
+# ── Phase 4.2 Autonomous Discovery API Endpoints ──────────────────────────────
+class DiscoverySeedRequest(BaseModel):
+    items: Optional[List[dict]] = None
+    use_default_benchmarks: bool = True
+
+
+@app.post("/api/discovery/seed")
+def seed_discovery_candidates(req: Optional[DiscoverySeedRequest] = None):
+    """
+    Seeds curated candidate URLs into the discovery intake queue.
+    """
+    from backend.services.discovery.sources.curated_seed import CuratedSeedSource
+    from backend.services.discovery.queue import queue_service
+
+    raw_items = req.items if (req and req.items) else None
+    source = CuratedSeedSource(seed_items=raw_items)
+    candidate_payloads = source.fetch_candidates()
+
+    enqueued = []
+    with get_session() as session:
+        for p in candidate_payloads:
+            cand = queue_service.enqueue(p, session=session)
+            enqueued.append({
+                "id": cand.id,
+                "dedupe_key": cand.dedupe_key,
+                "merchant": cand.merchant,
+                "merchant_product_id": cand.merchant_product_id,
+                "status": cand.status,
+                "clean_url": cand.clean_url,
+                "discovery_priority": cand.discovery_priority,
+            })
+
+    return {
+        "success": True,
+        "seeded_count": len(enqueued),
+        "candidates": enqueued,
+    }
+
+
+@app.post("/api/discovery/run-cycle")
+def trigger_discovery_cycle(batch_size: int = 10):
+    """
+    Triggers an autonomous discovery intake cycle across queued candidates.
+    """
+    from backend.services.discovery.worker import discovery_worker
+    summary = discovery_worker.run_discovery_cycle(batch_size=batch_size)
+    return {
+        "success": True,
+        "summary": summary,
+    }
+
+
+@app.get("/api/discovery/queue")
+def get_discovery_queue_telemetry():
+    """
+    Returns discovery queue counts by status and configured budget targets.
+    """
+    from backend.services.discovery.queue import queue_service
+    with get_session() as session:
+        return queue_service.get_queue_stats(session=session)
+
+
+@app.get("/api/discovery/candidates")
+def list_discovery_candidates(status: Optional[str] = None, limit: int = 50):
+    """
+    Returns list of discovery candidates, optionally filtered by lifecycle status.
+    """
+    with get_session() as session:
+        query = select(DiscoveryCandidate)
+        if status:
+            query = query.where(DiscoveryCandidate.status == status)
+        query = query.order_by(
+            DiscoveryCandidate.discovery_priority.desc(),
+            DiscoveryCandidate.created_at.desc(),
+        ).limit(limit)
+        results = session.exec(query).all()
+        return [
+            {
+                "id": c.id,
+                "dedupe_key": c.dedupe_key,
+                "merchant": c.merchant,
+                "merchant_product_id": c.merchant_product_id,
+                "candidate_url": c.candidate_url,
+                "clean_url": c.clean_url,
+                "source_name": c.source_name,
+                "category_hint": c.category_hint,
+                "title_hint": c.title_hint,
+                "discovery_priority": c.discovery_priority,
+                "status": c.status,
+                "attempts": c.attempts,
+                "max_attempts": c.max_attempts,
+                "last_error": c.last_error,
+                "next_attempt_at": c.next_attempt_at.isoformat() if c.next_attempt_at else None,
+                "product_id": c.product_id,
+                "listing_id": c.listing_id,
+                "discovered_at": c.discovered_at.isoformat() if c.discovered_at else None,
+                "processed_at": c.processed_at.isoformat() if c.processed_at else None,
+                "created_at": c.created_at.isoformat() if c.created_at else None,
+            }
+            for c in results
+        ]
 
 
 # Mount static frontend application

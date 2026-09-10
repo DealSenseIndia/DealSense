@@ -969,9 +969,18 @@ def test_api_delete_disable_works():
         assert del_resp.status_code == 200
         assert del_resp.json()["success"] is True
 
-        # Verify not found
+        # Verify row is preserved in DB with soft-deletion semantics
+        with get_session() as s:
+            db_alert = s.get(PriceAlert, aid)
+            assert db_alert is not None
+            assert db_alert.status == "DISABLED"
+            assert db_alert.is_active is False
+
+        # Verify get returns disabled state
         get_resp = client.get(f"/api/alerts/{aid}")
-        assert get_resp.status_code == 404
+        assert get_resp.status_code == 200
+        assert get_resp.json()["status"] == "DISABLED"
+        assert get_resp.json()["is_active"] is False
 
 
 # -----------------------------------------------------------------------------

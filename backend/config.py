@@ -21,8 +21,8 @@ class Settings:
     CACHE_TTL_MINUTES: int = int(os.getenv("CACHE_TTL_MINUTES", "60"))
 
     # Direct Affiliate Credentials
-    # Must be set explicitly in .env once an official Associates Store ID is verified.
-    AMAZON_AFFILIATE_TAG: str = os.getenv("AMAZON_AFFILIATE_TAG", "")
+    # Canonical DealSense Amazon Associates Tag, configurable via .env
+    AMAZON_AFFILIATE_TAG: str = os.getenv("AMAZON_AFFILIATE_TAG", "dealsense-21")
 
     # Replace with your direct Flipkart Affiliate ID if approved
     FLIPKART_AFFILIATE_ID: str = os.getenv("FLIPKART_AFFILIATE_ID", "dealintel")
@@ -48,6 +48,14 @@ class Settings:
 
     # Application Base URL for link backs
     APP_BASE_URL: str = os.getenv("APP_BASE_URL", "https://dealsense.in")
+
+    # ── Phase 4.2 Autonomous Discovery Configuration ──
+    DISCOVERY_TARGET_PRODUCTS: int = int(os.getenv("DISCOVERY_TARGET_PRODUCTS", "1500"))
+    CATEGORY_SEED_BUDGET: int = int(os.getenv("CATEGORY_SEED_BUDGET", "250"))
+    OFFER_CANDIDATE_BUDGET: int = int(os.getenv("OFFER_CANDIDATE_BUDGET", "500"))
+    BESTSELLER_CANDIDATE_BUDGET: int = int(os.getenv("BESTSELLER_CANDIDATE_BUDGET", "750"))
+    DISCOVERY_MAX_ATTEMPTS: int = int(os.getenv("DISCOVERY_MAX_ATTEMPTS", "3"))
+    DISCOVERY_BASE_BACKOFF_SECONDS: int = int(os.getenv("DISCOVERY_BASE_BACKOFF_SECONDS", "300"))
 
 
 settings = Settings()

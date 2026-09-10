@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from typing import Optional, List
+from sqlalchemy import Index
 from sqlmodel import SQLModel, Field, Relationship
 
 
@@ -58,6 +59,13 @@ class Product(SQLModel, table=True):
     rating_breakdown_json: Optional[str] = Field(default=None, description="JSON dict of star percentages")
     pros_json: Optional[str] = Field(default=None, description="JSON array of pros")
     cons_json: Optional[str] = Field(default=None, description="JSON array of cons")
+    lifecycle_status: str = Field(
+        default="IDENTIFIED",
+        index=True,
+        description="DISCOVERED, IDENTIFIED, OBSERVING, ACTIVE, NORMAL, COLD, STALE, ARCHIVED",
+    )
+    discovery_score: float = Field(default=0.0, index=True)
+    last_interacted_at: Optional[datetime] = Field(default=None, index=True)
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc),
         nullable=False,
@@ -67,6 +75,7 @@ class Product(SQLModel, table=True):
     category_rel: Optional[Category] = Relationship(back_populates="products")
     listings: List["MerchantListing"] = Relationship(back_populates="product")
     variants: List["ProductVariant"] = Relationship(back_populates="product")
+    discovery_events: List["ProductDiscoveryEvent"] = Relationship(back_populates="product")
 
 
 class ProductVariant(SQLModel, table=True):
@@ -155,6 +164,19 @@ class MerchantListing(SQLModel, table=True):
         default_factory=lambda: datetime.now(timezone.utc),
         nullable=False,
     )
+
+    def __init__(self, **data):
+        if "priority" in data and "refresh_priority" not in data:
+            data["refresh_priority"] = data.pop("priority")
+        super().__init__(**data)
+
+    @property
+    def priority(self) -> str:
+        return self.refresh_priority
+
+    @priority.setter
+    def priority(self, val: str):
+        self.refresh_priority = val
 
     product: Optional[Product] = Relationship(back_populates="listings")
     variant: Optional[ProductVariant] = Relationship(back_populates="listings")
@@ -353,3 +375,70 @@ class AlertDeliveryLog(SQLModel, table=True):
         nullable=False,
         index=True,
     )
+
+
+class ProductDiscoveryEvent(SQLModel, table=True):
+    """Canonical discovery and interaction event for the Product Universe."""
+
+    __tablename__ = "product_discovery_events"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    product_id: int = Field(foreign_key="products.id", index=True)
+    listing_id: Optional[int] = Field(default=None, foreign_key="merchant_listings.id", index=True)
+    source: str = Field(index=True)  # 'USER_URL', 'USER_SEARCH', 'PRODUCT_VIEW', 'COMPARE', 'AUTONOMOUS_DISCOVERY'
+    query_text: Optional[str] = None
+    session_id: Optional[str] = Field(default=None, index=True)
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
+        nullable=False,
+        index=True,
+    )
+
+    product: Optional[Product] = Relationship(back_populates="discovery_events")
+
+
+class DiscoveryCandidate(SQLModel, table=True):
+    """
+    Quarantined candidate product in the Autonomous Discovery Pipeline.
+    Progression: DISCOVERED -> QUEUED -> PROCESSING -> IDENTIFIED -> OBSERVED -> TRACKING -> DEAL_CANDIDATE
+    Failure: PROCESSING -> FAILED -> RETRY -> REJECTED
+    """
+
+    __tablename__ = "discovery_candidates"
+    __table_args__ = (
+        Index("ix_discovery_candidates_status_priority_next", "status", "discovery_priority", "next_attempt_at"),
+    )
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    dedupe_key: str = Field(unique=True, index=True)  # 'amazon:B0CHX1W1XY' or sha256(clean_url)
+    merchant: str = Field(index=True)                 # 'Amazon' or 'Flipkart'
+    merchant_product_id: Optional[str] = Field(default=None, index=True)
+    candidate_url: str
+    clean_url: str
+    source_name: str = Field(index=True)              # 'curated_seed', 'category_anchor', etc.
+    category_hint: Optional[str] = Field(default=None)
+    title_hint: Optional[str] = Field(default=None)
+    price_hint: Optional[float] = Field(default=None)
+    mrp_hint: Optional[float] = Field(default=None)
+    discovery_priority: float = Field(default=50.0, index=True)
+
+    status: str = Field(default="DISCOVERED", index=True)
+    attempts: int = Field(default=0)
+    max_attempts: int = Field(default=3)
+    last_error: Optional[str] = None
+    next_attempt_at: Optional[datetime] = Field(default=None, index=True)
+
+    # Resolution links once candidate is accepted
+    product_id: Optional[int] = Field(default=None, foreign_key="products.id", index=True)
+    listing_id: Optional[int] = Field(default=None, foreign_key="merchant_listings.id", index=True)
+
+    discovered_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
+    processed_at: Optional[datetime] = None
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
+

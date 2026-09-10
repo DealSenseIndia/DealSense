@@ -37,8 +37,9 @@ def escape_telegram_html(text: Optional[str]) -> str:
 def build_telegram_affiliate_url(event: AlertTriggerEvent) -> str:
     """
     Enriches the event affiliate URL with Telegram-specific sub-ID attribution:
-    - Amazon Associates: ascsubtag=tg_alert_{alert_id}_{listing_id}&ref=dealsense_tg
+    - Amazon Associates: tag={AMAZON_ASSOCIATE_TAG}&ascsubtag=tg_alert_{alert_id}_{listing_id}&ref=dealsense_tg
     - General / Cuelinks: subid3=telegram_alert&subid4=alert_{alert_id}
+    Uses DealSense affiliate gateway & merchant adapters as single source of truth.
     """
     raw_url = event.affiliate_url or ""
     if not raw_url or raw_url == "#":
@@ -46,18 +47,52 @@ def build_telegram_affiliate_url(event: AlertTriggerEvent) -> str:
         return f"{settings.APP_BASE_URL.rstrip('/')}/product/{event.product_id}"
 
     try:
+        from backend.services.merchant_adapters import adapter_registry
+
         parsed = urlparse(raw_url)
-        query = parse_qs(parsed.query)
+        netloc = parsed.netloc.lower()
+        merchant_name = (event.merchant or "").lower()
 
         # Amazon specific subtag attribution
-        if "amazon.in" in parsed.netloc.lower() or event.merchant.lower() == "amazon":
-            query["ascsubtag"] = [f"tg_alert_{event.alert_id}_{event.listing_id}"]
-            query["ref"] = ["dealsense_tg"]
-            if settings.AMAZON_AFFILIATE_TAG and "tag" not in query:
-                query["tag"] = [settings.AMAZON_AFFILIATE_TAG]
-        else:
-            # Aggregator / Cuelinks / Generic parameters
+        if "amazon.in" in netloc or merchant_name == "amazon":
+            adapter = adapter_registry.get_adapter_for_url(raw_url) or adapter_registry.get_adapter_for_merchant("amazon")
+            subtag = f"tg_alert_{event.alert_id}_{event.listing_id}"
+            subids = {
+                "ascsubtag": subtag,
+                "ref": "dealsense_tg",
+            }
+            if adapter:
+                clean_base = f"{parsed.scheme or 'https'}://{parsed.netloc}{parsed.path}"
+                outbound = adapter.generate_affiliate_url(clean_base, subids=subids)
+                out_parsed = urlparse(outbound)
+                out_query = parse_qs(out_parsed.query)
+
+                # Preserve any pre-existing query parameters (e.g. th, psc, etc.)
+                for k, v in parse_qs(parsed.query).items():
+                    if k not in ("tag", "ascsubtag", "ref", "ref_"):
+                        out_query[k] = v
+
+                return urlunparse(out_parsed._replace(query=urlencode(out_query, doseq=True)))
+            else:
+                tag = (settings.AMAZON_AFFILIATE_TAG or "").strip() or "dealsense-21"
+                query = parse_qs(parsed.query)
+                query.pop("ref", None)
+                query.pop("ref_", None)
+                ordered: Dict[str, List[str]] = {
+                    "tag": [tag],
+                    "ascsubtag": [subtag],
+                    "ref": ["dealsense_tg"],
+                }
+                for k, v in query.items():
+                    if k not in ordered:
+                        ordered[k] = v
+                return urlunparse(parsed._replace(query=urlencode(ordered, doseq=True)))
+
+        # Aggregator / Cuelinks / Generic parameters
+        query = parse_qs(parsed.query)
+        if "subid3" not in query:
             query["subid3"] = ["telegram_alert"]
+        if "subid4" not in query:
             query["subid4"] = [f"alert_{event.alert_id}"]
 
         new_query = urlencode(query, doseq=True)

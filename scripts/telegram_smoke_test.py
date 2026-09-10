@@ -225,9 +225,11 @@ def run_smoke_test(
 
     # Verify CTA parameters
     if "amazon.in" in cta_url:
-        assert f"tg_alert_{target_event.alert_id}_{target_event.listing_id}" in cta_url
+        expected_tag = settings.AMAZON_AFFILIATE_TAG or "dealsense-21"
+        assert f"tag={expected_tag}" in cta_url
+        assert f"ascsubtag=tg_alert_{target_event.alert_id}_{target_event.listing_id}" in cta_url
         assert "ref=dealsense_tg" in cta_url
-        print("  • Verified Amazon attribution: ascsubtag & ref=dealsense_tg are present.")
+        print(f"  • Verified Amazon attribution: tag={expected_tag}, ascsubtag & ref=dealsense_tg are present.")
     else:
         assert "subid3=telegram_alert" in cta_url
         assert f"subid4=alert_{target_event.alert_id}" in cta_url

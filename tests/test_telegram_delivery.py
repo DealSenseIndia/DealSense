@@ -145,7 +145,67 @@ def test_subid_attribution_amazon():
     )
     enriched_url = build_telegram_affiliate_url(event)
 
+    assert "tag=dealsense-21" in enriched_url
     assert "ascsubtag=tg_alert_42_202" in enriched_url
+    assert "ref=dealsense_tg" in enriched_url
+    assert "https://www.amazon.in/dp/B0CX249P6Y" in enriched_url
+
+
+def test_subid_attribution_amazon_clean_url_injects_canonical_tag():
+    """
+    CRITICAL FIX TEST: Even if raw observation URL has NO tag (e.g. from smoke test),
+    build_telegram_affiliate_url MUST inject the canonical Amazon Associate tag (tag=dealsense-21).
+    """
+    event = make_sample_event(
+        alert_id=239,
+        listing_id=1,
+        merchant="Amazon",
+        affiliate_url="https://www.amazon.in/dp/B0D14BB5XY",
+    )
+    enriched_url = build_telegram_affiliate_url(event)
+
+    # 1. Assert required attribution tags
+    assert "tag=dealsense-21" in enriched_url
+    assert "ascsubtag=tg_alert_239_1" in enriched_url
+    assert "ref=dealsense_tg" in enriched_url
+
+    # 2. Assert correct ASIN and destination
+    assert enriched_url.startswith("https://www.amazon.in/dp/B0D14BB5XY?")
+    assert "B0D14BB5XY" in enriched_url
+
+
+def test_amazon_outbound_preserves_extra_parameters():
+    """Verifies that pre-existing merchant query parameters are not lost during tag injection."""
+    event = make_sample_event(
+        alert_id=101,
+        listing_id=5,
+        merchant="Amazon",
+        affiliate_url="https://www.amazon.in/dp/B0D14BB5XY?th=1&psc=1",
+    )
+    enriched_url = build_telegram_affiliate_url(event)
+
+    assert "tag=dealsense-21" in enriched_url
+    assert "ascsubtag=tg_alert_101_5" in enriched_url
+    assert "ref=dealsense_tg" in enriched_url
+    assert "th=1" in enriched_url
+    assert "psc=1" in enriched_url
+    assert "B0D14BB5XY" in enriched_url
+
+
+def test_custom_amazon_associate_tag_configured(monkeypatch):
+    """Verifies that when AMAZON_AFFILIATE_TAG is overridden in env, that tag is respected."""
+    from backend.config import settings
+    monkeypatch.setattr(settings, "AMAZON_AFFILIATE_TAG", "mycustompartner-21")
+    event = make_sample_event(
+        alert_id=88,
+        listing_id=12,
+        merchant="Amazon",
+        affiliate_url="https://www.amazon.in/dp/B0CX249P6Y",
+    )
+    enriched_url = build_telegram_affiliate_url(event)
+
+    assert "tag=mycustompartner-21" in enriched_url
+    assert "ascsubtag=tg_alert_88_12" in enriched_url
     assert "ref=dealsense_tg" in enriched_url
 
 
@@ -159,6 +219,24 @@ def test_subid_attribution_cuelinks():
 
     assert "subid3=telegram_alert" in enriched_url
     assert "subid4=alert_55" in enriched_url
+    assert "cid=123" in enriched_url
+    assert "url=https%3A%2F%2Fvijaysales.com%2Fitem" in enriched_url
+
+
+def test_cuelinks_preserves_existing_subids():
+    """Verifies existing subID and subID2 from Cuelinks are preserved."""
+    event = make_sample_event(
+        alert_id=77,
+        merchant="Tata CLiQ",
+        affiliate_url="https://linksredirect.com/?cid=317867&subid=999&subid2=tatacliq&url=https%3A%2F%2Fwww.tatacliq.com%2Fp-mp1",
+    )
+    enriched_url = build_telegram_affiliate_url(event)
+
+    assert "cid=317867" in enriched_url
+    assert "subid=999" in enriched_url
+    assert "subid2=tatacliq" in enriched_url
+    assert "subid3=telegram_alert" in enriched_url
+    assert "subid4=alert_77" in enriched_url
 
 
 def test_inline_keyboard_structure():

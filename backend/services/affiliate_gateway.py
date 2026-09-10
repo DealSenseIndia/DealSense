@@ -30,6 +30,7 @@ def resolve_outbound_affiliate_url(
     clean_url: str,
     listing_id: Optional[int] = None,
     verdict: Optional[str] = None,
+    subids: Optional[Dict[str, str]] = None,
 ) -> OutboundMonetizationResult:
     """
     Routes outbound purchase clicks cleanly and safely based on verified merchant policy.
@@ -38,7 +39,7 @@ def resolve_outbound_affiliate_url(
     # 1. If merchant is Direct Tag (e.g. Amazon India)
     if adapter.affiliate_type == "direct_tag":
         is_available = adapter.is_affiliate_available()
-        tagged_url = adapter.generate_affiliate_url(clean_url)
+        tagged_url = adapter.generate_affiliate_url(clean_url, subids=subids)
         return OutboundMonetizationResult(
             outbound_url=tagged_url,
             is_monetized=is_available,
@@ -82,6 +83,10 @@ def resolve_outbound_affiliate_url(
         "subid3": "deal_analyze",
         "subid4": str(verdict or "UNKNOWN"),
     }
+    if subids:
+        for s_key in ("subid", "subid2", "subid3", "subid4"):
+            if s_key in subids and subids[s_key]:
+                payload[s_key] = str(subids[s_key])
 
     try:
         with httpx.Client(timeout=4.0) as client:

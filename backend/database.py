@@ -1,5 +1,6 @@
 from pathlib import Path
 from sqlmodel import SQLModel, Session, create_engine
+import backend.models  # noqa: F401
 
 # Ensure data directory exists
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,6 +43,9 @@ def init_db() -> None:
                 "rating_breakdown_json": "TEXT",
                 "pros_json": "TEXT",
                 "cons_json": "TEXT",
+                "lifecycle_status": "TEXT DEFAULT 'IDENTIFIED'",
+                "discovery_score": "FLOAT DEFAULT 0.0",
+                "last_interacted_at": "DATETIME",
             }
             for col, col_type in prod_cols.items():
                 if col not in existing_prod_cols:
@@ -93,6 +97,19 @@ def init_db() -> None:
             for col, col_type in pa_cols.items():
                 if col not in existing_pa_cols:
                     conn.exec_driver_sql(f"ALTER TABLE price_alerts ADD COLUMN {col} {col_type}")
+
+            # Safe auto-index for discovery_candidates
+            try:
+                conn.exec_driver_sql(
+                    "CREATE INDEX IF NOT EXISTS ix_discovery_candidates_status_priority_next "
+                    "ON discovery_candidates (status, discovery_priority, next_attempt_at);"
+                )
+                conn.exec_driver_sql(
+                    "CREATE UNIQUE INDEX IF NOT EXISTS ix_discovery_candidates_dedupe_key "
+                    "ON discovery_candidates (dedupe_key);"
+                )
+            except Exception:
+                pass
 
             conn.commit()
     except Exception as e:

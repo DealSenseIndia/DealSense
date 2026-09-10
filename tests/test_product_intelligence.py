@@ -329,8 +329,10 @@ def test_deal_engine_price_above_mrp():
 # 5. AFFILIATE GATEWAY ROUTING TESTS
 # ==============================================================================
 
-def test_amazon_affiliate_unverified_fallback():
-    # When AMAZON_AFFILIATE_TAG is empty (default in config), must NOT monetize with guessed tag
+def test_amazon_affiliate_unverified_fallback(monkeypatch):
+    # When AMAZON_AFFILIATE_TAG is empty (unconfigured), must NOT monetize with guessed tag
+    from backend.config import settings
+    monkeypatch.setattr(settings, "AMAZON_AFFILIATE_TAG", "")
     adapter = AmazonAdapter()
     clean_url = "https://www.amazon.in/dp/B0CHX1W1XY"
     res = resolve_outbound_affiliate_url(adapter, clean_url, listing_id=1, verdict="BUY")

@@ -210,12 +210,18 @@ def disable_alert(alert_id: int) -> Optional[PriceAlert]:
 
 
 def delete_alert(alert_id: int) -> bool:
-    """Deletes an alert permanently from SQLite."""
+    """
+    Soft-deletes an alert by transitioning status to DISABLED and is_active=False.
+    Preserves database row for future audit and analytics.
+    """
     with get_session() as session:
         alert = session.get(PriceAlert, alert_id)
         if not alert:
             return False
-        session.delete(alert)
+        alert.status = AlertStatus.DISABLED.value
+        alert.is_active = False
+        alert.updated_at = datetime.now(timezone.utc)
+        session.add(alert)
         session.commit()
         return True
 
