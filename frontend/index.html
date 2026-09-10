@@ -998,6 +998,10 @@
               <span>Get WhatsApp Alert When Price Drops</span>
             </button>
           </div>
+
+          <!-- Active Price Alert Intelligence Card -->
+          <div id="pdpActiveAlertCard" class="pdp-active-alert-card" style="display:none;" aria-live="polite">
+          </div>
         </div>
 
       </div>
@@ -1420,31 +1424,48 @@
     </div>
   </div>
 
-  <!-- Price Drop Alert Modal -->
+  <!-- Price Drop Alert Modal / Bottom Sheet -->
   <div id="priceAlertModalBackdrop" class="alert-modal-backdrop" style="display:none;" aria-hidden="true">
     <div class="alert-modal-card" role="dialog" aria-labelledby="alertModalTitle">
+      <div class="alert-sheet-drag-handle" aria-hidden="true"></div>
       <button id="closeAlertModalBtn" class="alert-modal-close" aria-label="Close modal">×</button>
 
       <div class="alert-modal-header">
         <div class="alert-bell-badge">🔔</div>
         <div>
-          <span class="alert-modal-tag">SMART PRICE TRACKER</span>
-          <h3 id="alertModalTitle" class="alert-modal-title">Set Price Drop Alert</h3>
-          <p id="alertModalProductTitle" class="alert-modal-subtitle">Product title...</p>
+          <span class="alert-modal-tag">DEALSENSE ALERT INTELLIGENCE</span>
+          <h3 id="alertModalTitle" class="alert-modal-title">Set Price Intelligence Alert</h3>
+          <p id="alertModalProductTitle" class="alert-modal-subtitle">Loading product context...</p>
         </div>
       </div>
 
       <div class="alert-modal-body">
-        <!-- Target Price Group -->
+        <!-- Alert Type Segmented Selector -->
         <div class="alert-form-section">
+          <label class="alert-label">Select Trigger Strategy</label>
+          <div class="alert-type-tabs" role="tablist">
+            <button type="button" class="alert-type-tab-btn active" data-type="TARGET_PRICE" id="typeTabTarget">
+              🎯 Target Price
+            </button>
+            <button type="button" class="alert-type-tab-btn" data-type="PERCENTAGE_DROP" id="typeTabPercent">
+              📉 % Drop
+            </button>
+            <button type="button" class="alert-type-tab-btn" data-type="DEAL_SCORE" id="typeTabScore">
+              ⚡ Deal Score
+            </button>
+          </div>
+        </div>
+
+        <!-- Strategy 1: TARGET_PRICE Panel -->
+        <div id="alertSectionTargetPrice" class="alert-strategy-panel active">
           <div class="alert-price-preview-row">
             <div>
-              <span class="alert-label">Current Selling Price</span>
+              <span class="alert-label">Current Price</span>
               <strong id="alertCurrentPriceDisplay" class="alert-current-price">₹0</strong>
             </div>
             <div class="alert-arrow-col">→</div>
             <div>
-              <span class="alert-label">Alert Target Price</span>
+              <span class="alert-label">Target Trigger Price</span>
               <div class="alert-input-with-currency">
                 <span class="curr-sym">₹</span>
                 <input type="number" id="alertTargetPriceInput" class="alert-target-input" placeholder="4800" min="10" step="10">
@@ -1467,6 +1488,69 @@
               <small id="presetLowVal">₹0</small>
             </button>
           </div>
+          <p class="alert-strategy-hint" id="targetPriceHint">
+            Triggers immediately when verified merchant price drops to or below your target.
+          </p>
+        </div>
+
+        <!-- Strategy 2: PERCENTAGE_DROP Panel -->
+        <div id="alertSectionPercentageDrop" class="alert-strategy-panel" style="display:none;">
+          <div class="alert-price-preview-row">
+            <div>
+              <span class="alert-label">Baseline Price</span>
+              <strong id="alertBaselinePriceDisplay" class="alert-current-price">₹0</strong>
+            </div>
+            <div class="alert-arrow-col">→</div>
+            <div>
+              <span class="alert-label">Target Drop (%)</span>
+              <div class="alert-input-with-currency">
+                <input type="number" id="alertPercentageInput" class="alert-target-input" style="padding-left:12px;" placeholder="10" min="1" max="95" step="1" value="10">
+                <span class="curr-sym" style="left:auto; right:12px;">%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert-presets-row">
+            <button type="button" class="alert-preset-pill" data-val="5" id="presetPct5"><span>-5%</span><small>Quick</small></button>
+            <button type="button" class="alert-preset-pill active" data-val="10" id="presetPct10"><span>-10%</span><small>Popular</small></button>
+            <button type="button" class="alert-preset-pill" data-val="15" id="presetPct15"><span>-15%</span><small>Substantial</small></button>
+            <button type="button" class="alert-preset-pill" data-val="20" id="presetPct20"><span>-20%</span><small>Deep Deal</small></button>
+          </div>
+          <p class="alert-strategy-hint" id="percentageDropHint">
+            Triggers when price falls by at least the specified % against verified baseline.
+          </p>
+        </div>
+
+        <!-- Strategy 3: DEAL_SCORE Panel -->
+        <div id="alertSectionDealScore" class="alert-strategy-panel" style="display:none;">
+          <div class="alert-score-preview-box">
+            <div class="alert-score-lead">
+              <span class="alert-label">Minimum Deal Score (0–100)</span>
+              <strong id="alertScoreDisplay" class="alert-score-num">80</strong>
+            </div>
+            <input type="range" id="alertScoreSlider" min="60" max="98" step="1" value="80" class="alert-score-slider">
+          </div>
+
+          <div class="alert-presets-row">
+            <button type="button" class="alert-preset-pill" data-score="75" id="presetScore75"><span>75+</span><small>Good Deal</small></button>
+            <button type="button" class="alert-preset-pill active" data-score="80" id="presetScore80"><span>80+</span><small>Great Deal</small></button>
+            <button type="button" class="alert-preset-pill" data-score="90" id="presetScore90"><span>90+</span><small>Historic Low</small></button>
+          </div>
+          <p class="alert-strategy-hint">
+            Triggers only when DealSense AI produces score ≥ target with <strong>BUY</strong> verdict and high/medium confidence.
+          </p>
+        </div>
+
+        <!-- Persistence & Auto-Rearm Option -->
+        <div class="alert-form-section">
+          <label class="alert-toggle-label" for="alertPersistentToggle">
+            <input type="checkbox" id="alertPersistentToggle" class="alert-toggle-checkbox">
+            <span class="alert-toggle-slider"></span>
+            <span class="alert-toggle-text">
+              <strong>Persistent Alert (Keep Armed)</strong>
+              <small>Stay active after trigger and auto-rearm upon price recovery</small>
+            </span>
+          </label>
         </div>
 
         <!-- Channel Selector -->
@@ -1497,7 +1581,7 @@
         <!-- Submit Button -->
         <button id="submitPriceAlertBtn" class="btn-activate-alert">
           <span class="btn-bell-ico">🔔</span>
-          <span>Activate Price Drop Alert</span>
+          <span>Arm Price Alert Trigger</span>
         </button>
 
         <!-- Trust guarantee -->
@@ -1508,6 +1592,9 @@
           <span>•</span>
           <span>Cancel Anytime</span>
         </div>
+      </div>
+    </div>
+  </div>
   <!-- Image Lightbox Modal for High-Resolution Product Inspection -->
   <div id="pdpLightboxModal" class="pdp-lightbox-backdrop" style="display:none;" aria-hidden="true">
     <div class="pdp-lightbox-dialog" role="dialog" aria-labelledby="lightboxTitle">

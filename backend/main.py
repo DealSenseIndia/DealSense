@@ -731,82 +731,231 @@ def get_compare_history(primary_id: int, rival_id: int = 0, rival_price: Optiona
 
 class PriceAlertRequest(BaseModel):
     product_id: Optional[int] = None
+    listing_id: Optional[int] = None
     product_title: str
-    target_price: float
+    target_price: Optional[float] = None
     current_price: float
-    channel: str = "whatsapp"  # "whatsapp" or "email"
+    alert_type: str = "TARGET_PRICE"
+    target_percentage: Optional[float] = None
+    target_deal_score: Optional[int] = None
+    is_persistent: bool = False
+    cooldown_hours: int = 24
+    channel: str = "whatsapp"  # "whatsapp", "email", "console"
     contact: str
 
 
 @app.post("/api/alerts")
 def create_price_alert(req: PriceAlertRequest):
     """
-    Registers a price drop alert for WhatsApp or Email.
-    Saves the target price trigger to SQLite and schedules monitoring.
+    Registers a price drop or deal score alert.
+    Initializes state machine in ARMED state with immutable baseline pricing.
     """
-    contact_clean = req.contact.strip()
-    if not contact_clean:
-        raise HTTPException(status_code=400, detail="Phone number or email is required")
-
-    with get_session() as session:
-        alert = PriceAlert(
-            product_id=req.product_id,
+    from backend.services.alert_service import create_alert
+    try:
+        alert = create_alert(
             product_title=req.product_title,
-            target_price=req.target_price,
             current_price=req.current_price,
-            channel=req.channel.lower(),
-            contact=contact_clean,
-            is_active=True,
+            contact=req.contact,
+            channel=req.channel,
+            product_id=req.product_id,
+            listing_id=req.listing_id,
+            alert_type=req.alert_type,
+            target_price=req.target_price,
+            target_percentage=req.target_percentage,
+            target_deal_score=req.target_deal_score,
+            is_persistent=req.is_persistent,
+            cooldown_hours=req.cooldown_hours,
         )
-        session.add(alert)
-        session.commit()
-        session.refresh(alert)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-        channel_display = "WhatsApp" if req.channel.lower() == "whatsapp" else "Email"
-        msg = (
-            f"Price drop alert set for ₹{round(req.target_price):,}! "
-            f"We'll ping you on {channel_display} ({contact_clean}) the moment the price drops."
-        )
-        return {
-            "success": True,
-            "alert_id": alert.id,
-            "message": msg,
-            "channel": alert.channel,
-            "target_price": alert.target_price,
-            "contact": alert.contact,
-        }
+    channel_display = "WhatsApp" if alert.channel == "whatsapp" else alert.channel.capitalize()
+    target_desc = f"₹{round(alert.target_price):,}" if alert.target_price else f"Score {alert.target_deal_score}+"
+    msg = (
+        f"Price alert set for {target_desc}! "
+        f"We'll ping you on {channel_display} ({alert.contact}) when verified criteria are met."
+    )
+    return {
+        "success": True,
+        "alert_id": alert.id,
+        "message": msg,
+        "status": alert.status,
+        "alert_type": alert.alert_type,
+        "target_price": alert.target_price,
+        "baseline_price": alert.baseline_price,
+        "target_percentage": alert.target_percentage,
+        "target_deal_score": alert.target_deal_score,
+        "channel": alert.channel,
+        "contact": alert.contact,
+    }
 
 
 @app.get("/api/alerts")
-def list_active_alerts():
-    """Returns active price drop alerts for debugging and monitoring."""
-    with get_session() as session:
-        alerts = session.exec(select(PriceAlert).where(PriceAlert.is_active == True)).all()
-        return [
-            {
-                "id": a.id,
-                "product_id": a.product_id,
-                "product_title": a.product_title,
-                "target_price": a.target_price,
-                "current_price": a.current_price,
-                "channel": a.channel,
-                "contact": a.contact,
-                "created_at": a.created_at.isoformat(),
-            }
-            for a in alerts
-        ]
+def list_active_alerts(
+    status: Optional[str] = None,
+    product_id: Optional[int] = None,
+    listing_id: Optional[int] = None,
+    contact: Optional[str] = None,
+):
+    """Returns price alerts with optional filtering by status, product, listing, or contact."""
+    from backend.services.alert_service import list_alerts
+    alerts = list_alerts(
+        status=status,
+        product_id=product_id,
+        listing_id=listing_id,
+        contact=contact,
+    )
+    return [
+        {
+            "id": a.id,
+            "product_id": a.product_id,
+            "listing_id": a.listing_id,
+            "product_title": a.product_title,
+            "alert_type": a.alert_type,
+            "target_price": a.target_price,
+            "baseline_price": a.baseline_price,
+            "target_percentage": a.target_percentage,
+            "target_deal_score": a.target_deal_score,
+            "current_price": a.current_price,
+            "status": a.status,
+            "is_active": a.is_active,
+            "is_persistent": a.is_persistent,
+            "cooldown_until": a.cooldown_until.isoformat() if a.cooldown_until else None,
+            "last_triggered_at": a.last_triggered_at.isoformat() if a.last_triggered_at else None,
+            "last_trigger_price": a.last_trigger_price,
+            "rearm_threshold_price": a.rearm_threshold_price,
+            "trigger_count": a.trigger_count,
+            "channel": a.channel,
+            "contact": a.contact,
+            "created_at": a.created_at.isoformat(),
+            "updated_at": a.updated_at.isoformat() if getattr(a, "updated_at", None) else None,
+        }
+        for a in alerts
+    ]
+
+
+@app.get("/api/alerts/{alert_id}")
+def get_single_alert(alert_id: int):
+    """Retrieves single alert state machine details by ID."""
+    from backend.services.alert_service import get_alert
+    alert = get_alert(alert_id)
+    if not alert:
+        raise HTTPException(status_code=404, detail="Alert not found")
+    return {
+        "id": alert.id,
+        "product_id": alert.product_id,
+        "listing_id": alert.listing_id,
+        "product_title": alert.product_title,
+        "alert_type": alert.alert_type,
+        "target_price": alert.target_price,
+        "baseline_price": alert.baseline_price,
+        "target_percentage": alert.target_percentage,
+        "target_deal_score": alert.target_deal_score,
+        "current_price": alert.current_price,
+        "status": alert.status,
+        "is_active": alert.is_active,
+        "is_persistent": alert.is_persistent,
+        "cooldown_until": alert.cooldown_until.isoformat() if alert.cooldown_until else None,
+        "last_triggered_at": alert.last_triggered_at.isoformat() if alert.last_triggered_at else None,
+        "last_trigger_price": alert.last_trigger_price,
+        "rearm_threshold_price": alert.rearm_threshold_price,
+        "trigger_count": alert.trigger_count,
+        "channel": alert.channel,
+        "contact": alert.contact,
+        "created_at": alert.created_at.isoformat(),
+        "updated_at": alert.updated_at.isoformat() if getattr(alert, "updated_at", None) else None,
+    }
+
+
+@app.post("/api/alerts/{alert_id}/pause")
+def pause_single_alert(alert_id: int):
+    """Transitions an alert to PAUSED state, suppressing all triggers."""
+    from backend.services.alert_service import pause_alert
+    alert = pause_alert(alert_id)
+    if not alert:
+        raise HTTPException(status_code=404, detail="Alert not found or cannot be paused")
+    return {"success": True, "alert_id": alert.id, "status": alert.status}
+
+
+@app.post("/api/alerts/{alert_id}/resume")
+def resume_single_alert(alert_id: int):
+    """Resumes a PAUSED alert back to ARMED state."""
+    from backend.services.alert_service import resume_alert
+    alert = resume_alert(alert_id)
+    if not alert:
+        raise HTTPException(status_code=404, detail="Alert not found or is not currently paused")
+    return {"success": True, "alert_id": alert.id, "status": alert.status}
 
 
 @app.delete("/api/alerts/{alert_id}")
 def delete_price_alert(alert_id: int):
-    """Deletes or deactivates a price drop alert by ID."""
+    """Deletes an alert by ID."""
+    from backend.services.alert_service import delete_alert
+    success = delete_alert(alert_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Alert not found")
+    return {"success": True, "message": "Alert deleted successfully", "deleted_id": alert_id}
+
+
+@app.post("/api/alerts/evaluate/{listing_id}")
+def evaluate_listing_alerts(listing_id: int):
+    """
+    Diagnostic endpoint: Evaluates active alerts against the latest observation of a listing.
+    """
+    from backend.services.alert_service import evaluate_alerts_for_observation
+    from backend.services.price_service import get_historical_price_summary
+    from backend.engine import evaluate_deal_intelligence
+
     with get_session() as session:
-        alert = session.get(PriceAlert, alert_id)
-        if not alert:
-            raise HTTPException(status_code=404, detail="Alert not found")
-        session.delete(alert)
-        session.commit()
-        return {"success": True, "message": "Alert deleted successfully", "deleted_id": alert_id}
+        listing = session.get(MerchantListing, listing_id)
+        if not listing:
+            raise HTTPException(status_code=404, detail=f"Listing #{listing_id} not found")
+
+        latest_obs = session.exec(
+            select(PriceObservation)
+            .where(PriceObservation.listing_id == listing_id)
+            .order_by(PriceObservation.observed_at.desc())
+        ).first()
+
+        if not latest_obs:
+            return {"success": True, "events_emitted": 0, "events": [], "message": "No observations found for listing"}
+
+        history_summary = get_historical_price_summary(
+            session=session,
+            listing_id=listing_id,
+            current_price=latest_obs.price,
+            current_mrp=latest_obs.mrp,
+        )
+        deal_res = evaluate_deal_intelligence(
+            current_price=latest_obs.price,
+            mrp=latest_obs.mrp,
+            history_summary=history_summary,
+            in_stock=latest_obs.in_stock,
+        )
+
+        product = session.get(Product, listing.product_id) if listing.product_id else None
+
+    events = evaluate_alerts_for_observation(
+        listing_id=listing_id,
+        product_id=listing.product_id,
+        current_price=latest_obs.price,
+        effective_price=latest_obs.effective_price or latest_obs.price,
+        in_stock=latest_obs.in_stock,
+        deal_score=deal_res.deal_score,
+        verdict=deal_res.verdict,
+        confidence=deal_res.confidence,
+        summary_reason=deal_res.summary_reason,
+        merchant=listing.merchant,
+        product_title=product.canonical_title if product else listing.title_at_merchant or "Product",
+        observed_at=latest_obs.observed_at,
+    )
+
+    return {
+        "success": True,
+        "listing_id": listing_id,
+        "events_emitted": len(events),
+        "events": [e.to_dict() for e in events],
+    }
 
 
 @app.get("/api/deals/live")

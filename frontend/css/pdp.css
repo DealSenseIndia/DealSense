@@ -2229,6 +2229,433 @@ input[type="email"].alert-text-input:focus {
 }
 
 /* ==========================================================================
+   DEALSENSE PRICE ALERT INTELLIGENCE SUITE (PHASE 3.3.1 / DESIGN.md)
+   ========================================================================== */
+
+.alert-sheet-drag-handle {
+  display: none;
+  width: 40px;
+  height: 4px;
+  background: #CBD5E1;
+  border-radius: 4px;
+  margin: 10px auto 0 auto;
+}
+
+.alert-type-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  background: #F1F5F9;
+  padding: 4px;
+  border-radius: 10px;
+  margin-top: 4px;
+}
+
+.alert-type-tab-btn {
+  padding: 8px 4px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #64748B;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.alert-type-tab-btn:hover {
+  color: #0F172A;
+}
+
+.alert-type-tab-btn.active {
+  background: #FFFFFF;
+  color: #166534;
+  border: 1px solid #BBF7D0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.alert-strategy-hint {
+  font-size: 11px;
+  color: #64748B;
+  margin: 8px 0 0 0;
+  line-height: 1.4;
+}
+
+.alert-score-preview-box {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+
+.alert-score-lead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.alert-score-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 800;
+  color: #16A34A;
+}
+
+.alert-score-slider {
+  width: 100%;
+  accent-color: #16A34A;
+  cursor: pointer;
+}
+
+/* Persistent Toggle Switch */
+.alert-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  user-select: none;
+}
+
+.alert-toggle-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.alert-toggle-slider {
+  position: relative;
+  width: 38px;
+  height: 22px;
+  background: #CBD5E1;
+  border-radius: 20px;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.alert-toggle-slider::before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 3px;
+  top: 3px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.alert-toggle-checkbox:checked + .alert-toggle-slider {
+  background: #16A34A;
+}
+
+.alert-toggle-checkbox:checked + .alert-toggle-slider::before {
+  transform: translateX(16px);
+}
+
+.alert-toggle-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.alert-toggle-text strong {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #1E293B;
+}
+
+.alert-toggle-text small {
+  font-size: 11px;
+  color: #64748B;
+}
+
+/* Active Alert Card in PDP */
+.pdp-active-alert-card {
+  margin-top: 14px;
+  border-radius: 16px;
+  border: 1.5px solid #E5E7EB;
+  background: #FFFFFF;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: fadeInModal 0.25s ease forwards;
+}
+
+.pdp-active-alert-card.alert-state-armed {
+  border-color: #BBF7D0;
+  background: #FFFFFF;
+}
+
+.pdp-active-alert-card.alert-state-triggered {
+  border-color: #86EFAC;
+  background: linear-gradient(180deg, #ECFDF3 0%, #FFFFFF 100%);
+  box-shadow: 0 4px 16px rgba(22, 163, 74, 0.12);
+}
+
+.pdp-active-alert-card.alert-state-cooldown {
+  border-color: #FDE68A;
+  background: linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%);
+}
+
+.pdp-active-alert-card.alert-state-paused {
+  border-color: #CBD5E1;
+  background: #F8FAFC;
+}
+
+.alert-card-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.alert-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.alert-status-pill.armed {
+  background: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
+}
+
+.alert-status-pill.hit {
+  background: #16A34A;
+  color: #FFFFFF;
+  border: 1px solid #15803D;
+}
+
+.alert-status-pill.cooldown {
+  background: #FEF3C7;
+  color: #B45309;
+  border: 1px solid #FDE68A;
+}
+
+.alert-status-pill.paused {
+  background: #F1F5F9;
+  color: #475569;
+  border: 1px solid #CBD5E1;
+}
+
+.pulse-dot-mini {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #16A34A;
+  box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+  animation: miniPulse 1.5s infinite;
+}
+
+@keyframes miniPulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 4px rgba(22, 163, 74, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+}
+
+.alert-card-target-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+}
+
+.alert-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: #F8FAFC;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+}
+
+.alert-metric-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.alert-metric-cell .lbl {
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.alert-metric-cell .val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.alert-metric-cell .val.green {
+  color: #16A34A;
+}
+
+.alert-proximity-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.alert-proximity-bar-track {
+  height: 6px;
+  background: #E2E8F0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.alert-proximity-bar-fill {
+  height: 100%;
+  background: #16A34A;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.alert-proximity-note {
+  font-size: 11px;
+  color: #64748B;
+  display: flex;
+  justify-content: space-between;
+}
+
+.alert-hit-banner {
+  background: #DCFCE7;
+  border: 1px solid #86EFAC;
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.alert-hit-headline {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #166534;
+}
+
+.alert-hit-savings {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: #15803D;
+}
+
+.alert-cooldown-box {
+  background: #FEF3C7;
+  border: 1px solid #FDE68A;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 11.5px;
+  color: #92400E;
+  line-height: 1.4;
+}
+
+.alert-cooldown-box strong {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+}
+
+.alert-actions-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.alert-btn-action {
+  flex: 1;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid #CBD5E1;
+  background: #FFFFFF;
+  color: #334155;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.alert-btn-action:hover {
+  background: #F1F5F9;
+  color: #0F172A;
+}
+
+.alert-btn-action.primary-green {
+  background: #16A34A;
+  color: #FFFFFF;
+  border-color: #15803D;
+}
+
+.alert-btn-action.primary-green:hover {
+  background: #15803D;
+}
+
+.alert-btn-action.danger-red {
+  color: #DC2626;
+  border-color: #FECACA;
+}
+
+.alert-btn-action.danger-red:hover {
+  background: #FEF2F2;
+  border-color: #F87171;
+}
+
+/* Mobile-First Bottom Sheet Responsive Adaptation */
+@media (max-width: 640px) {
+  .alert-modal-backdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .alert-sheet-drag-handle {
+    display: block;
+  }
+
+  .alert-modal-card {
+    border-radius: 20px 20px 0 0;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUpBottomSheet 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+@keyframes slideUpBottomSheet {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
    DEAL INTELLIGENCE GAUGE & SELLER TRUST SCORECARD
    ========================================================================== */
 .gauge-score-layout {

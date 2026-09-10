@@ -533,11 +533,14 @@ export function renderDetailPage(data, { onAnalyzeUrl } = {}) {
 
   currentProductContext = {
     productId: p.id || l.id,
+    listingId: l.id || null,
     productTitle: p.title || p.canonical_title || "Product",
     currentPrice: pr.current_price || 0,
     lowestPrice: pr.lowest_observed_price || Math.round((pr.current_price || 0) * 0.9),
     rating: p.rating,
     ratingsCount: p.ratings_count,
+    affiliateUrl: l.affiliate_url || l.clean_url || "#",
+    merchant: l.merchant || "Amazon",
   };
 
   // Breadcrumbs
@@ -758,6 +761,9 @@ function renderBottomCtaBanner(p, l, pr) {
       bCtaBtn.style.boxShadow = "0 4px 14px rgba(40, 116, 240, 0.35)";
     }
   }
+
+  // Phase 3.3.1 Alert Intelligence: Refresh Active Alert Card & buttons for this product/listing
+  refreshActiveAlertDisplay(currentProductContext.productId, currentProductContext.listingId);
 }
 
 function renderDiscountAuditCard(da) {
@@ -1950,6 +1956,40 @@ export function initPdpListeners() {
   const closeAlertBtn = document.getElementById("closeAlertModalBtn");
   const alertBackdrop = document.getElementById("priceAlertModalBackdrop");
 
+  // ==========================================================================
+  // PHASE 3.3.1 PRICE ALERT INTELLIGENCE SUITE CONTROLLER
+  // ==========================================================================
+  const openAlertBtn = document.getElementById("openPriceAlertBtn");
+  const ttbSetAlertBtn = document.getElementById("ttbSetAlertBtn");
+  const closeAlertBtn = document.getElementById("closeAlertModalBtn");
+  const alertBackdrop = document.getElementById("priceAlertModalBackdrop");
+
+  let selectedStrategy = "TARGET_PRICE";
+  let selectedChannel = "whatsapp";
+
+  const typeTabTarget = document.getElementById("typeTabTarget");
+  const typeTabPercent = document.getElementById("typeTabPercent");
+  const typeTabScore = document.getElementById("typeTabScore");
+
+  const secTarget = document.getElementById("alertSectionTargetPrice");
+  const secPercent = document.getElementById("alertSectionPercentageDrop");
+  const secScore = document.getElementById("alertSectionDealScore");
+
+  function switchStrategy(strategy) {
+    selectedStrategy = strategy;
+    if (typeTabTarget) typeTabTarget.classList.toggle("active", strategy === "TARGET_PRICE");
+    if (typeTabPercent) typeTabPercent.classList.toggle("active", strategy === "PERCENTAGE_DROP");
+    if (typeTabScore) typeTabScore.classList.toggle("active", strategy === "DEAL_SCORE");
+
+    if (secTarget) secTarget.style.display = strategy === "TARGET_PRICE" ? "block" : "none";
+    if (secPercent) secPercent.style.display = strategy === "PERCENTAGE_DROP" ? "block" : "none";
+    if (secScore) secScore.style.display = strategy === "DEAL_SCORE" ? "block" : "none";
+  }
+
+  if (typeTabTarget) typeTabTarget.addEventListener("click", () => switchStrategy("TARGET_PRICE"));
+  if (typeTabPercent) typeTabPercent.addEventListener("click", () => switchStrategy("PERCENTAGE_DROP"));
+  if (typeTabScore) typeTabScore.addEventListener("click", () => switchStrategy("DEAL_SCORE"));
+
   function openPriceAlertModal() {
     if (!alertBackdrop) return;
     const currentPrice = currentProductContext.currentPrice || 5000;
@@ -1961,6 +2001,10 @@ export function initPdpListeners() {
     const curPriceEl = document.getElementById("alertCurrentPriceDisplay");
     if (curPriceEl) curPriceEl.textContent = `₹${Math.round(currentPrice).toLocaleString("en-IN")}`;
 
+    const basePriceEl = document.getElementById("alertBaselinePriceDisplay");
+    if (basePriceEl) basePriceEl.textContent = `₹${Math.round(currentPrice).toLocaleString("en-IN")}`;
+
+    // Target Price Presets
     const defaultTarget = Math.round(currentPrice * 0.9);
     const targetInput = document.getElementById("alertTargetPriceInput");
     if (targetInput) targetInput.value = defaultTarget;
@@ -1971,6 +2015,20 @@ export function initPdpListeners() {
     if (p15) p15.textContent = `₹${Math.round(currentPrice * 0.85).toLocaleString("en-IN")}`;
     const pLow = document.getElementById("presetLowVal");
     if (pLow) pLow.textContent = `₹${Math.round(lowPrice).toLocaleString("en-IN")}`;
+
+    // Percentage Presets
+    const pctInput = document.getElementById("alertPercentageInput");
+    if (pctInput) pctInput.value = "10";
+
+    // Deal score slider
+    const scoreSlider = document.getElementById("alertScoreSlider");
+    const scoreDisplay = document.getElementById("alertScoreDisplay");
+    if (scoreSlider && scoreDisplay) {
+      scoreSlider.value = "80";
+      scoreDisplay.textContent = "80";
+    }
+
+    switchStrategy("TARGET_PRICE");
 
     alertBackdrop.style.display = "flex";
     alertBackdrop.setAttribute("aria-hidden", "false");
@@ -2004,10 +2062,10 @@ export function initPdpListeners() {
     });
   }
 
-  // Quick Preset Buttons
-  document.querySelectorAll(".alert-preset-pill").forEach((pill) => {
+  // Preset Handlers for Target Price
+  document.querySelectorAll("#alertSectionTargetPrice .alert-preset-pill").forEach((pill) => {
     pill.addEventListener("click", () => {
-      document.querySelectorAll(".alert-preset-pill").forEach((p) => p.classList.remove("active"));
+      document.querySelectorAll("#alertSectionTargetPrice .alert-preset-pill").forEach((p) => p.classList.remove("active"));
       pill.classList.add("active");
 
       const targetInput = document.getElementById("alertTargetPriceInput");
@@ -2021,8 +2079,39 @@ export function initPdpListeners() {
     });
   });
 
+  // Preset Handlers for Percentage Drop
+  document.querySelectorAll("#alertSectionPercentageDrop .alert-preset-pill").forEach((pill) => {
+    pill.addEventListener("click", () => {
+      document.querySelectorAll("#alertSectionPercentageDrop .alert-preset-pill").forEach((p) => p.classList.remove("active"));
+      pill.classList.add("active");
+      const val = pill.getAttribute("data-val");
+      const pctInput = document.getElementById("alertPercentageInput");
+      if (val && pctInput) pctInput.value = val;
+    });
+  });
+
+  // Deal Score Slider & Presets
+  const alertScoreSlider = document.getElementById("alertScoreSlider");
+  const alertScoreDisplay = document.getElementById("alertScoreDisplay");
+  if (alertScoreSlider && alertScoreDisplay) {
+    alertScoreSlider.addEventListener("input", (e) => {
+      alertScoreDisplay.textContent = e.target.value;
+    });
+  }
+
+  document.querySelectorAll("#alertSectionDealScore .alert-preset-pill").forEach((pill) => {
+    pill.addEventListener("click", () => {
+      document.querySelectorAll("#alertSectionDealScore .alert-preset-pill").forEach((p) => p.classList.remove("active"));
+      pill.classList.add("active");
+      const sc = pill.getAttribute("data-score");
+      if (sc && alertScoreSlider && alertScoreDisplay) {
+        alertScoreSlider.value = sc;
+        alertScoreDisplay.textContent = sc;
+      }
+    });
+  });
+
   // Channel Tabs (WhatsApp vs Email)
-  let selectedChannel = "whatsapp";
   const btnWa = document.getElementById("alertChannelWhatsApp");
   const btnEmail = document.getElementById("alertChannelEmail");
   const phoneGroup = document.getElementById("alertPhoneGroup");
@@ -2049,19 +2138,18 @@ export function initPdpListeners() {
     });
   }
 
-  // Submit Alert
+  // Submit Alert Trigger
   const submitBtn = document.getElementById("submitPriceAlertBtn");
   if (submitBtn) {
     submitBtn.addEventListener("click", async () => {
       const targetInput = document.getElementById("alertTargetPriceInput");
+      const pctInput = document.getElementById("alertPercentageInput");
+      const scoreSlider = document.getElementById("alertScoreSlider");
+      const persistToggle = document.getElementById("alertPersistentToggle");
       const phoneInput = document.getElementById("alertPhoneInput");
       const emailInput = document.getElementById("alertEmailInput");
 
-      const targetPrice = parseFloat(targetInput?.value);
-      if (!targetPrice || targetPrice <= 0) {
-        showToast("Please enter a valid target price.", "error");
-        return;
-      }
+      const isPersistent = persistToggle ? persistToggle.checked : false;
 
       let contact = "";
       if (selectedChannel === "whatsapp") {
@@ -2079,39 +2167,53 @@ export function initPdpListeners() {
         }
       }
 
+      const payload = {
+        product_id: currentProductContext.productId,
+        listing_id: currentProductContext.listingId,
+        product_title: currentProductContext.productTitle,
+        current_price: currentProductContext.currentPrice,
+        alert_type: selectedStrategy,
+        is_persistent: isPersistent,
+        channel: selectedChannel,
+        contact: contact,
+      };
+
+      if (selectedStrategy === "TARGET_PRICE") {
+        const targetPrice = parseFloat(targetInput?.value);
+        if (!targetPrice || targetPrice <= 0) {
+          showToast("Please enter a valid target price.", "error");
+          return;
+        }
+        payload.target_price = targetPrice;
+      } else if (selectedStrategy === "PERCENTAGE_DROP") {
+        const targetPct = parseFloat(pctInput?.value);
+        if (!targetPct || targetPct <= 0 || targetPct >= 100) {
+          showToast("Please enter a percentage drop between 1 and 95.", "error");
+          return;
+        }
+        payload.target_percentage = targetPct;
+        payload.baseline_price = currentProductContext.currentPrice;
+        payload.target_price = Math.round(currentProductContext.currentPrice * (1 - targetPct / 100));
+      } else if (selectedStrategy === "DEAL_SCORE") {
+        const targetScore = parseInt(scoreSlider?.value || "80", 10);
+        payload.target_deal_score = targetScore;
+        payload.target_price = currentProductContext.currentPrice;
+      }
+
       submitBtn.disabled = true;
-      submitBtn.innerHTML = `<span>⏳ Saving Alert...</span>`;
+      submitBtn.innerHTML = `<span>⏳ Arming Alert Engine...</span>`;
 
       try {
         const resp = await fetch("/api/alerts", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            product_id: currentProductContext.productId,
-            product_title: currentProductContext.productTitle,
-            target_price: targetPrice,
-            current_price: currentProductContext.currentPrice,
-            channel: selectedChannel,
-            contact: contact,
-          }),
+          body: JSON.stringify(payload),
         });
         const resData = await resp.json();
         if (resp.ok && resData.success) {
           closePriceAlertModal();
           showToast(resData.message, "success");
-
-          // Update trigger button states on PDP
-          if (openAlertBtn) {
-            openAlertBtn.textContent = `✓ Alert Active (₹${Math.round(targetPrice).toLocaleString("en-IN")})`;
-            openAlertBtn.style.background = "#DCFCE7";
-            openAlertBtn.style.borderColor = "#86EFAC";
-            openAlertBtn.style.color = "#15803D";
-          }
-          if (ttbSetAlertBtn) {
-            ttbSetAlertBtn.innerHTML = `<span>✓ Tracking Price (Target: ₹${Math.round(targetPrice).toLocaleString("en-IN")})</span>`;
-            ttbSetAlertBtn.style.background = "#D1FAE5";
-            ttbSetAlertBtn.style.color = "#047857";
-          }
+          refreshActiveAlertDisplay(currentProductContext.productId, currentProductContext.listingId);
         } else {
           showToast(resData.detail || "Failed to set alert.", "error");
         }
@@ -2119,8 +2221,206 @@ export function initPdpListeners() {
         showToast("Network error. Could not connect to alert service.", "error");
       } finally {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = `<span class="btn-bell-ico">🔔</span><span>Activate Price Drop Alert</span>`;
+        submitBtn.innerHTML = `<span class="btn-bell-ico">🔔</span><span>Arm Price Alert Trigger</span>`;
       }
     });
+  }
+
+  // Active Alert Display & Action Manager
+  async function refreshActiveAlertDisplay(productId, listingId) {
+    const card = document.getElementById("pdpActiveAlertCard");
+    const openAlertBtn = document.getElementById("openPriceAlertBtn");
+    const ttbSetAlertBtn = document.getElementById("ttbSetAlertBtn");
+    if (!card) return;
+
+    try {
+      const url = productId ? `/api/alerts?product_id=${productId}` : `/api/alerts?listing_id=${listingId}`;
+      const res = await fetch(url);
+      if (!res.ok) return;
+      const data = await res.json();
+      const alerts = data.alerts || [];
+
+      // Find any active or non-disabled alert
+      const activeAlert = alerts.find(a => ["ARMED", "TRIGGERED", "COOLDOWN", "PAUSED"].includes(a.status));
+      if (!activeAlert) {
+        card.style.display = "none";
+        if (openAlertBtn) {
+          openAlertBtn.textContent = "🔔 Track Price";
+          openAlertBtn.style.background = "";
+          openAlertBtn.style.borderColor = "";
+          openAlertBtn.style.color = "";
+        }
+        if (ttbSetAlertBtn) {
+          ttbSetAlertBtn.innerHTML = `<span class="bell-ring-ico">🔔</span><span>Get WhatsApp Alert When Price Drops</span>`;
+          ttbSetAlertBtn.style.background = "";
+          ttbSetAlertBtn.style.color = "";
+        }
+        return;
+      }
+
+      card.style.display = "flex";
+      card.className = `pdp-active-alert-card alert-state-${activeAlert.status.toLowerCase()}`;
+
+      const cur = currentProductContext.currentPrice || activeAlert.current_price;
+      const targetVal = activeAlert.target_price || 0;
+      const baseline = activeAlert.baseline_price || cur;
+
+      if (activeAlert.status === "ARMED") {
+        const deltaNeeded = Math.max(0, cur - targetVal);
+        const pctNeeded = cur > 0 ? ((deltaNeeded / cur) * 100).toFixed(1) : 0;
+        const proximityPct = baseline > targetVal ? Math.min(100, Math.max(0, Math.round(((baseline - cur) / (baseline - targetVal)) * 100))) : 50;
+
+        card.innerHTML = `
+          <div class="alert-card-header-row">
+            <span class="alert-status-pill armed"><span class="pulse-dot-mini"></span> ARMED • LIVE MONITORING</span>
+            <span style="font-size:11px;font-weight:700;color:#64748B;">${escapeHtml(activeAlert.channel.toUpperCase())}</span>
+          </div>
+          <h4 class="alert-card-target-title">Target: ₹${Math.round(targetVal).toLocaleString("en-IN")} ${activeAlert.alert_type === 'PERCENTAGE_DROP' ? `(${activeAlert.target_percentage}% drop)` : ''}</h4>
+          <div class="alert-metrics-grid">
+            <div class="alert-metric-cell">
+              <span class="lbl">Current Price</span>
+              <span class="val">₹${Math.round(cur).toLocaleString("en-IN")}</span>
+            </div>
+            <div class="alert-metric-cell">
+              <span class="lbl">Target Threshold</span>
+              <span class="val green">₹${Math.round(targetVal).toLocaleString("en-IN")}</span>
+            </div>
+          </div>
+          <div class="alert-proximity-bar-wrap">
+            <div class="alert-proximity-bar-track">
+              <div class="alert-proximity-bar-fill" style="width: ${proximityPct}%"></div>
+            </div>
+            <div class="alert-proximity-note">
+              <span>Needs ₹${Math.round(deltaNeeded).toLocaleString("en-IN")} drop (-${pctNeeded}%)</span>
+              <span>${proximityPct}% to target</span>
+            </div>
+          </div>
+          <div class="alert-actions-row">
+            <button type="button" class="alert-btn-action" id="cardPauseAlertBtn">⏸ Pause</button>
+            <button type="button" class="alert-btn-action danger-red" id="cardDeleteAlertBtn">🗑 Delete</button>
+          </div>
+        `;
+
+        if (openAlertBtn) {
+          openAlertBtn.textContent = `✓ Armed (₹${Math.round(targetVal).toLocaleString("en-IN")})`;
+          openAlertBtn.style.background = "#DCFCE7";
+          openAlertBtn.style.borderColor = "#86EFAC";
+          openAlertBtn.style.color = "#15803D";
+        }
+        if (ttbSetAlertBtn) {
+          ttbSetAlertBtn.innerHTML = `<span>✓ Price Alert Armed (Target: ₹${Math.round(targetVal).toLocaleString("en-IN")})</span>`;
+          ttbSetAlertBtn.style.background = "#D1FAE5";
+          ttbSetAlertBtn.style.color = "#047857";
+        }
+
+      } else if (activeAlert.status === "TRIGGERED") {
+        const savings = Math.max(0, baseline - cur);
+        const savingsPct = baseline > 0 ? ((savings / baseline) * 100).toFixed(1) : 0;
+        card.innerHTML = `
+          <div class="alert-card-header-row">
+            <span class="alert-status-pill hit">🎯 TARGET HIT</span>
+            <span style="font-size:11px;font-weight:700;color:#166534;">DEAL ACTIVE</span>
+          </div>
+          <div class="alert-hit-banner">
+            <span class="alert-hit-headline">Price Dropped to ₹${Math.round(cur).toLocaleString("en-IN")}!</span>
+            <span class="alert-hit-savings">Saved ₹${Math.round(savings).toLocaleString("en-IN")} (${savingsPct}% drop vs baseline)</span>
+          </div>
+          <div class="alert-actions-row">
+            <a href="${currentProductContext.affiliateUrl || '#'}" target="_blank" rel="noopener noreferrer" class="alert-btn-action primary-green">
+              Buy on ${escapeHtml(currentProductContext.merchant || 'Store')} Now →
+            </a>
+            <button type="button" class="alert-btn-action danger-red" id="cardDeleteAlertBtn">Dismiss</button>
+          </div>
+        `;
+
+      } else if (activeAlert.status === "COOLDOWN") {
+        const rearmPrice = activeAlert.rearm_threshold_price || Math.round(targetVal * 1.02);
+        card.innerHTML = `
+          <div class="alert-card-header-row">
+            <span class="alert-status-pill cooldown">⏳ COOLDOWN</span>
+            <span style="font-size:11px;font-weight:700;color:#92400E;">DUPLICATE SUPPRESSION</span>
+          </div>
+          <div class="alert-cooldown-box">
+            Target was triggered. Duplicate suppression active to prevent alert fatigue.
+            <br><strong>Auto-rearms</strong> when price bounces above <strong>₹${Math.round(rearmPrice).toLocaleString("en-IN")}</strong>.
+          </div>
+          <div class="alert-actions-row">
+            <button type="button" class="alert-btn-action" id="cardResumeAlertBtn">⚡ Force Re-Arm Now</button>
+            <button type="button" class="alert-btn-action danger-red" id="cardDeleteAlertBtn">🗑 Delete</button>
+          </div>
+        `;
+
+      } else if (activeAlert.status === "PAUSED") {
+        card.innerHTML = `
+          <div class="alert-card-header-row">
+            <span class="alert-status-pill paused">⏸ PAUSED</span>
+            <span style="font-size:11px;font-weight:700;color:#64748B;">INACTIVE</span>
+          </div>
+          <p style="font-size:12px;color:#64748B;margin:0;">Alert is currently paused. Background evaluation is suppressed.</p>
+          <div class="alert-actions-row">
+            <button type="button" class="alert-btn-action primary-green" id="cardResumeAlertBtn">▶ Resume Alert</button>
+            <button type="button" class="alert-btn-action danger-red" id="cardDeleteAlertBtn">🗑 Delete</button>
+          </div>
+        `;
+      }
+
+      // Attach button listeners
+      const pauseBtn = card.querySelector("#cardPauseAlertBtn");
+      if (pauseBtn) {
+        pauseBtn.onclick = async () => {
+          pauseBtn.disabled = true;
+          try {
+            const resp = await fetch(`/api/alerts/${activeAlert.id}/pause`, { method: "POST" });
+            if (resp.ok) {
+              showToast("Alert paused.", "info");
+              refreshActiveAlertDisplay(productId, listingId);
+            }
+          } catch {
+            showToast("Failed to pause alert.", "error");
+          } finally {
+            pauseBtn.disabled = false;
+          }
+        };
+      }
+
+      const resumeBtn = card.querySelector("#cardResumeAlertBtn");
+      if (resumeBtn) {
+        resumeBtn.onclick = async () => {
+          resumeBtn.disabled = true;
+          try {
+            const resp = await fetch(`/api/alerts/${activeAlert.id}/resume`, { method: "POST" });
+            if (resp.ok) {
+              showToast("Alert re-armed & active!", "success");
+              refreshActiveAlertDisplay(productId, listingId);
+            }
+          } catch {
+            showToast("Failed to resume alert.", "error");
+          } finally {
+            resumeBtn.disabled = false;
+          }
+        };
+      }
+
+      const delBtn = card.querySelector("#cardDeleteAlertBtn");
+      if (delBtn) {
+        delBtn.onclick = async () => {
+          delBtn.disabled = true;
+          try {
+            const resp = await fetch(`/api/alerts/${activeAlert.id}`, { method: "DELETE" });
+            if (resp.ok) {
+              showToast("Alert deleted.", "info");
+              refreshActiveAlertDisplay(productId, listingId);
+            }
+          } catch {
+            showToast("Failed to delete alert.", "error");
+          } finally {
+            delBtn.disabled = false;
+          }
+        };
+      }
+
+    } catch (err) {
+      console.warn("Could not check active alerts", err);
+    }
   }
 }

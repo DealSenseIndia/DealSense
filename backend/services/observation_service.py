@@ -515,7 +515,7 @@ def observe_listing(
             status = ObservationStatus.UNCHANGED_HEARTBEAT if is_heartbeat else ObservationStatus.SUCCESS
 
     # -------------------------------------------------------------------------
-    # Step 8: EVALUATE DEAL INTELLIGENCE (Downstream Analytics)
+    # Step 8: EVALUATE DEAL INTELLIGENCE & TRIGGER PRICE ALERTS
     # -------------------------------------------------------------------------
     deal_dict = None
     try:
@@ -535,6 +535,26 @@ def observe_listing(
             deal_dict = analysis_result.to_dict()
     except Exception as eval_err:
         logger.debug(f"Deal intelligence evaluation note for #{listing_id}: {eval_err}")
+
+    # Evaluate registered price drop alerts against fresh observation
+    try:
+        from backend.services.alert_service import evaluate_alerts_for_observation
+        evaluate_alerts_for_observation(
+            listing_id=listing_id,
+            product_id=prod_info.get("id") if prod_info else None,
+            current_price=extracted_price,
+            effective_price=extracted_price,
+            in_stock=is_in_stock,
+            deal_score=deal_dict.get("deal_score") if deal_dict else None,
+            verdict=deal_dict.get("verdict") if deal_dict else None,
+            confidence=deal_dict.get("confidence") if deal_dict else None,
+            summary_reason=deal_dict.get("summary_reason") if deal_dict else None,
+            merchant=merchant_name,
+            product_title=prod_info.get("canonical_title") if prod_info else title,
+            observed_at=now_utc,
+        )
+    except Exception as alert_err:
+        logger.warning(f"Alert evaluation note for listing #{listing_id}: {alert_err}")
 
     return ObservationResult(
         listing_id=listing_id,

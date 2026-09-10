@@ -67,6 +67,29 @@ def init_db() -> None:
                 if col not in existing_ml_cols:
                     conn.exec_driver_sql(f"ALTER TABLE merchant_listings ADD COLUMN {col} {col_type}")
 
+            # Safe auto-migration for price_alerts
+            cursor = conn.exec_driver_sql("PRAGMA table_info(price_alerts)")
+            existing_pa_cols = {row[1] for row in cursor.fetchall()}
+            pa_cols = {
+                "listing_id": "INTEGER",
+                "alert_type": "TEXT DEFAULT 'TARGET_PRICE'",
+                "baseline_price": "FLOAT",
+                "target_percentage": "FLOAT",
+                "target_deal_score": "INTEGER",
+                "status": "TEXT DEFAULT 'ARMED'",
+                "is_persistent": "BOOLEAN DEFAULT 0",
+                "cooldown_hours": "INTEGER DEFAULT 24",
+                "cooldown_until": "DATETIME",
+                "last_triggered_at": "DATETIME",
+                "last_trigger_price": "FLOAT",
+                "rearm_threshold_price": "FLOAT",
+                "trigger_count": "INTEGER DEFAULT 0",
+                "updated_at": "DATETIME",
+            }
+            for col, col_type in pa_cols.items():
+                if col not in existing_pa_cols:
+                    conn.exec_driver_sql(f"ALTER TABLE price_alerts ADD COLUMN {col} {col_type}")
+
             conn.commit()
     except Exception as e:
         print(f"Warning: SQLite auto-migration note: {e}")

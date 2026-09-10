@@ -293,13 +293,37 @@ class PriceAlert(SQLModel, table=True):
 
     id: Optional[int] = Field(default=None, primary_key=True)
     product_id: Optional[int] = Field(default=None, foreign_key="products.id", index=True)
+    listing_id: Optional[int] = Field(default=None, foreign_key="merchant_listings.id", index=True)
     product_title: str
-    target_price: float
+
+    # Alert criteria
+    alert_type: str = Field(default="TARGET_PRICE", index=True)  # TARGET_PRICE, PERCENTAGE_DROP, DEAL_SCORE, CROSS_STORE_OPPORTUNITY
+    target_price: Optional[float] = Field(default=None)
+    baseline_price: Optional[float] = Field(default=None)
+    target_percentage: Optional[float] = Field(default=None)
+    target_deal_score: Optional[int] = Field(default=None)
     current_price: float
-    channel: str = Field(default="whatsapp")  # 'whatsapp' or 'email'
-    contact: str  # Phone number or email address
+
+    # State Machine: ARMED, TRIGGERED, COOLDOWN, PAUSED, DISABLED
+    status: str = Field(default="ARMED", index=True)
     is_active: bool = Field(default=True)
+    is_persistent: bool = Field(default=False)
+    cooldown_hours: int = Field(default=24)
+    cooldown_until: Optional[datetime] = Field(default=None)
+    last_triggered_at: Optional[datetime] = Field(default=None)
+    last_trigger_price: Optional[float] = Field(default=None)
+    rearm_threshold_price: Optional[float] = Field(default=None)
+    trigger_count: int = Field(default=0)
+
+    # Destination
+    channel: str = Field(default="whatsapp")  # 'whatsapp', 'email', 'console'
+    contact: str  # Phone number or email address
+
     created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
+    updated_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc),
         nullable=False,
     )
