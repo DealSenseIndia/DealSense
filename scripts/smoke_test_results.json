@@ -1,0 +1,92 @@
+{
+  "test_1_amazon": {
+    "http_result": 200,
+    "extraction_result": "SUCCESS",
+    "observation_status": "SUCCESS",
+    "extracted_price": 4849.0,
+    "observation_id": 431,
+    "observed_at": "2026-09-10T11:20:05.612300+00:00",
+    "last_checked_at": "2026-09-10 11:20:05.612300",
+    "next_check_at": "2026-09-10 14:20:05.612300",
+    "failure_count": 0,
+    "latest_price_observation": {
+      "id": 431,
+      "price": 4849.0,
+      "mrp": 5995.0,
+      "source": "live_extraction",
+      "in_stock": true,
+      "observed_at": "2026-09-10 11:20:05.612300"
+    },
+    "observations_count_before": 30,
+    "observations_count_after": 31
+  },
+  "test_3_duplicate_protection": {
+    "http_result": 200,
+    "status": "UNCHANGED_SKIPPED",
+    "expected_status": "UNCHANGED_SKIPPED",
+    "is_skipped": true,
+    "count_before": 31,
+    "count_after": 31,
+    "duplicate_prevented": true,
+    "listing_last_checked_at": "2026-09-10 11:20:08.941041",
+    "listing_next_check_at": "2026-09-10 14:20:08.941041"
+  },
+  "test_2_flipkart": {
+    "http_result": 200,
+    "extraction_result": "UNCHANGED_SKIPPED",
+    "observation_status": "UNCHANGED_SKIPPED",
+    "extracted_price": 1799.0,
+    "observation_id": 359,
+    "observed_at": "2026-09-10T11:20:12.309775+00:00",
+    "last_checked_at": "2026-09-10 11:20:12.309775",
+    "next_check_at": "2026-09-10 19:20:12.309775",
+    "failure_count": 0,
+    "latest_price_observation": {
+      "id": 359,
+      "price": 1799.0,
+      "mrp": 2999.0,
+      "source": "live_heartbeat",
+      "in_stock": true,
+      "observed_at": "2026-09-10 11:02:13.028324"
+    },
+    "observations_count_before": 7,
+    "observations_count_after": 7
+  },
+  "test_4_failure_safety": {
+    "http_result": 200,
+    "observation_status": "EXTRACTION_FAILED_UNPRICED",
+    "error_message": "Valid numeric price could not be extracted from merchant.",
+    "observations_created": 0,
+    "failure_count": 1,
+    "last_error": "Price missing or non-positive in extraction",
+    "last_checked_at": "2026-09-10 11:20:12.978874",
+    "next_check_at": "2026-09-10 11:25:12.978874",
+    "backoff_verified": true
+  },
+  "test_5_worker_status": {
+    "http_result": 200,
+    "is_running": true,
+    "active_merchant_queues": {
+      "amazon": "ready",
+      "flipkart": "ready"
+    },
+    "stats": {
+      "scanned_today": 4,
+      "observations_recorded": 1,
+      "failed_today": 1,
+      "last_scan_at": "2026-09-10T11:20:12.978874+00:00",
+      "last_error": "Valid numeric price could not be extracted from merchant."
+    },
+    "stats_consistent": true
+  },
+  "database_integrity": {
+    "total_observations": 314,
+    "zero_price_observations": 0,
+    "null_price_observations": 0,
+    "synthetic_source_observations": 0,
+    "duplicate_observations": 2,
+    "total_merchant_listings": 217,
+    "total_products": 215,
+    "integrity_passed": false
+  }
+}

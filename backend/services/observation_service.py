@@ -18,7 +18,7 @@ import httpx
 from sqlmodel import Session, select
 
 from backend.database import get_session
-from backend.models import Product, ProductVariant, MerchantListing, PriceObservation
+from backend.models import Product, ProductVariant, MerchantListing, PriceObservation, PriceAlert
 from backend.services.merchant_adapters import adapter_registry
 from backend.services.price_service import record_price_observation, get_historical_price_summary
 from backend.services.product_identity import (
@@ -32,6 +32,69 @@ logger = logging.getLogger(__name__)
 
 # Minimum interval (hours) between unchanged price observations before recording a live_heartbeat
 HEARTBEAT_THRESHOLD_HOURS = 12.0
+
+# Priority Interval Ranges (seconds)
+TIER_INTERVALS = {
+    "HOT": 45 * 60,       # 45 minutes (midpoint of 30-60m)
+    "ACTIVE": 3 * 3600,   # 3 hours (midpoint of 2-4h)
+    "NORMAL": 8 * 3600,   # 8 hours (midpoint of 8-12h)
+    "COLD": 24 * 3600,    # 24 hours (midpoint of 24-48h)
+}
+
+
+def compute_failure_backoff_seconds(failure_count: int) -> int:
+    """Calculates deterministic backoff interval based on consecutive failure count."""
+    if failure_count <= 1:
+        return 5 * 60       # 5 minutes
+    elif failure_count == 2:
+        return 30 * 60      # 30 minutes
+    elif failure_count == 3:
+        return 2 * 3600     # 2 hours
+    elif failure_count == 4:
+        return 8 * 3600     # 8 hours
+    else:
+        return 24 * 3600    # 24 hours
+
+
+def determine_listing_priority(listing_id: int, product_id: Optional[int]) -> str:
+    """
+    Evaluates priority tier for a listing:
+    - HOT: Active PriceAlert or high deal score
+    - ACTIVE: High price volatility or homepage visibility
+    - COLD: Out of stock or inactive
+    - NORMAL: Standard catalog default
+    """
+    with get_session() as session:
+        # 1. Check for Active User Price Alerts
+        if product_id:
+            alert = session.exec(
+                select(PriceAlert).where(
+                    PriceAlert.product_id == product_id,
+                    PriceAlert.is_active == True,
+                )
+            ).first()
+            if alert:
+                return "HOT"
+
+        # 2. Check Listing Availability
+        listing = session.get(MerchantListing, listing_id)
+        if listing and listing.availability == "out_of_stock":
+            return "COLD"
+
+        # 3. Check Price Volatility in Last 14 Days
+        fourteen_days_ago = datetime.now(timezone.utc) - timedelta(days=14)
+        recent_obs = session.exec(
+            select(PriceObservation).where(
+                PriceObservation.listing_id == listing_id,
+                PriceObservation.observed_at >= fourteen_days_ago,
+            )
+        ).all()
+
+        distinct_prices = {round(o.price, 2) for o in recent_obs if o.price and o.price > 0}
+        if len(distinct_prices) >= 2:
+            return "ACTIVE"
+
+        return "NORMAL"
 
 
 class ObservationStatus(str, Enum):
@@ -231,9 +294,12 @@ def observe_listing(
         with get_session() as write_session:
             db_listing = write_session.get(MerchantListing, listing_id)
             if db_listing:
+                f_count = (getattr(db_listing, "failure_count", 0) or 0) + 1
                 db_listing.last_checked_at = now_utc
-                db_listing.failure_count = (getattr(db_listing, "failure_count", 0) or 0) + 1
+                db_listing.failure_count = f_count
                 db_listing.last_error = err_msg or str(err_status)
+                backoff_secs = compute_failure_backoff_seconds(f_count)
+                db_listing.next_check_at = now_utc + timedelta(seconds=backoff_secs)
                 write_session.add(db_listing)
                 write_session.commit()
 
@@ -262,9 +328,12 @@ def observe_listing(
         with get_session() as write_session:
             db_listing = write_session.get(MerchantListing, listing_id)
             if db_listing:
+                f_count = (getattr(db_listing, "failure_count", 0) or 0) + 1
                 db_listing.last_checked_at = now_utc
-                db_listing.failure_count = (getattr(db_listing, "failure_count", 0) or 0) + 1
+                db_listing.failure_count = f_count
                 db_listing.last_error = "Bot check leakage in title"
+                backoff_secs = compute_failure_backoff_seconds(f_count)
+                db_listing.next_check_at = now_utc + timedelta(seconds=backoff_secs)
                 write_session.add(db_listing)
                 write_session.commit()
 
@@ -284,9 +353,11 @@ def observe_listing(
             db_listing = write_session.get(MerchantListing, listing_id)
             if db_listing:
                 db_listing.availability = "out_of_stock"
+                db_listing.refresh_priority = "COLD"
                 db_listing.last_checked_at = now_utc
                 db_listing.failure_count = 0  # Valid extraction confirms stock state
                 db_listing.last_error = None
+                db_listing.next_check_at = now_utc + timedelta(seconds=TIER_INTERVALS["COLD"])
                 write_session.add(db_listing)
                 write_session.commit()
 
@@ -305,9 +376,12 @@ def observe_listing(
         with get_session() as write_session:
             db_listing = write_session.get(MerchantListing, listing_id)
             if db_listing:
+                f_count = (getattr(db_listing, "failure_count", 0) or 0) + 1
                 db_listing.last_checked_at = now_utc
-                db_listing.failure_count = (getattr(db_listing, "failure_count", 0) or 0) + 1
+                db_listing.failure_count = f_count
                 db_listing.last_error = "Price missing or non-positive in extraction"
+                backoff_secs = compute_failure_backoff_seconds(f_count)
+                db_listing.next_check_at = now_utc + timedelta(seconds=backoff_secs)
                 write_session.add(db_listing)
                 write_session.commit()
 
@@ -331,8 +405,12 @@ def observe_listing(
             with get_session() as write_session:
                 db_listing = write_session.get(MerchantListing, listing_id)
                 if db_listing:
+                    f_count = (getattr(db_listing, "failure_count", 0) or 0) + 1
                     db_listing.last_checked_at = now_utc
+                    db_listing.failure_count = f_count
                     db_listing.last_error = f"Variant mismatch: expected {var_info['variant_name']}, extracted {extracted_var.variant_name}"
+                    backoff_secs = compute_failure_backoff_seconds(f_count)
+                    db_listing.next_check_at = now_utc + timedelta(seconds=backoff_secs)
                     write_session.add(db_listing)
                     write_session.commit()
 
@@ -389,9 +467,13 @@ def observe_listing(
 
         if skip_observation:
             # Policy: Unchanged price within 12h updates last_checked_at without creating a duplicate row
+            priority = determine_listing_priority(listing_id, db_listing.product_id)
+            db_listing.refresh_priority = priority
             db_listing.last_checked_at = now_utc
             db_listing.failure_count = 0
             db_listing.last_error = None
+            interval = TIER_INTERVALS.get(priority, 8 * 3600)
+            db_listing.next_check_at = now_utc + timedelta(seconds=interval)
             if seller_name:
                 db_listing.seller_name = seller_name
             db_listing.delivery_fee = delivery_fee
@@ -415,11 +497,15 @@ def observe_listing(
             obs_id = obs.id
 
             # Update listing current state
+            priority = determine_listing_priority(listing_id, db_listing.product_id)
+            db_listing.refresh_priority = priority
             db_listing.current_price = extracted_price
             db_listing.availability = "in_stock"
             db_listing.last_checked_at = now_utc
             db_listing.failure_count = 0
             db_listing.last_error = None
+            interval = TIER_INTERVALS.get(priority, 8 * 3600)
+            db_listing.next_check_at = now_utc + timedelta(seconds=interval)
             if seller_name:
                 db_listing.seller_name = seller_name
             db_listing.delivery_fee = delivery_fee

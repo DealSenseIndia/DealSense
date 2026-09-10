@@ -80,9 +80,10 @@ def get_worker_status():
 
 
 @app.post("/api/worker/trigger-check/{listing_id}")
-def trigger_listing_check(listing_id: int):
+def trigger_listing_check(listing_id: int, force: bool = False):
     """Executes an immediate manual observation check on a specific listing."""
-    result = observe_listing(listing_id=listing_id, force=True)
+    result = observe_listing(listing_id=listing_id, force=force)
+    worker.record_manual_check(result)
     return result.to_dict()
 
 

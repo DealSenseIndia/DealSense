@@ -20,78 +20,22 @@ from sqlmodel import select, Session
 
 from backend.database import get_session
 from backend.models import MerchantListing, PriceAlert, PriceObservation
-from backend.services.observation_service import observe_listing, ObservationStatus, ObservationResult
+from backend.services.observation_service import (
+    observe_listing,
+    ObservationStatus,
+    ObservationResult,
+    TIER_INTERVALS,
+    compute_failure_backoff_seconds,
+    determine_listing_priority,
+)
 
 logger = logging.getLogger(__name__)
-
-# Priority Interval Ranges (seconds)
-TIER_INTERVALS = {
-    "HOT": 45 * 60,       # 45 minutes (midpoint of 30-60m)
-    "ACTIVE": 3 * 3600,   # 3 hours (midpoint of 2-4h)
-    "NORMAL": 8 * 3600,   # 8 hours (midpoint of 8-12h)
-    "COLD": 24 * 3600,    # 24 hours (midpoint of 24-48h)
-}
 
 # Merchant Spacing Configuration (seconds)
 MERCHANT_SPACING = {
     "amazon": (6.0, 10.0),
     "flipkart": (5.0, 8.0),
 }
-
-
-def compute_failure_backoff_seconds(failure_count: int) -> int:
-    """Calculates deterministic backoff interval based on consecutive failure count."""
-    if failure_count <= 1:
-        return 5 * 60       # 5 minutes
-    elif failure_count == 2:
-        return 30 * 60      # 30 minutes
-    elif failure_count == 3:
-        return 2 * 3600     # 2 hours
-    elif failure_count == 4:
-        return 8 * 3600     # 8 hours
-    else:
-        return 24 * 3600    # 24 hours
-
-
-def determine_listing_priority(listing_id: int, product_id: Optional[int]) -> str:
-    """
-    Evaluates priority tier for a listing:
-    - HOT: Active PriceAlert or high deal score
-    - ACTIVE: High price volatility or homepage visibility
-    - COLD: Out of stock or inactive
-    - NORMAL: Standard catalog default
-    """
-    with get_session() as session:
-        # 1. Check for Active User Price Alerts
-        if product_id:
-            alert = session.exec(
-                select(PriceAlert).where(
-                    PriceAlert.product_id == product_id,
-                    PriceAlert.is_active == True,
-                )
-            ).first()
-            if alert:
-                return "HOT"
-
-        # 2. Check Listing Availability
-        listing = session.get(MerchantListing, listing_id)
-        if listing and listing.availability == "out_of_stock":
-            return "COLD"
-
-        # 3. Check Price Volatility in Last 14 Days
-        fourteen_days_ago = datetime.now(timezone.utc) - timedelta(days=14)
-        recent_obs = session.exec(
-            select(PriceObservation).where(
-                PriceObservation.listing_id == listing_id,
-                PriceObservation.observed_at >= fourteen_days_ago,
-            )
-        ).all()
-
-        distinct_prices = {round(o.price, 2) for o in recent_obs if o.price and o.price > 0}
-        if len(distinct_prices) >= 2:
-            return "ACTIVE"
-
-        return "NORMAL"
 
 
 class ObservationWorker:
@@ -235,6 +179,18 @@ class ObservationWorker:
         jittered_spacing = random.uniform(spacing_range[0], spacing_range[1])
         self._last_request_time[merchant_slug] = now_ts + (jittered_spacing - spacing_range[0])
 
+    def record_manual_check(self, res: ObservationResult):
+        """Updates worker telemetry statistics after an observation check."""
+        now_utc = res.observed_at or datetime.now(timezone.utc)
+        with self._stats_lock:
+            self._stats["scanned_today"] += 1
+            self._stats["last_scan_at"] = now_utc.isoformat()
+            if res.status in (ObservationStatus.SUCCESS, ObservationStatus.UNCHANGED_HEARTBEAT):
+                self._stats["observations_recorded"] += 1
+            elif res.status not in (ObservationStatus.UNCHANGED_SKIPPED, ObservationStatus.OUT_OF_STOCK):
+                self._stats["failed_today"] += 1
+                self._stats["last_error"] = res.error_message or str(res.status)
+
     def _process_listing(self, listing_id: int, merchant_slug: str, product_id: Optional[int]):
         """Executes observation, records statistics, and updates next schedule."""
         lock = self._merchant_locks[merchant_slug]
@@ -244,8 +200,6 @@ class ObservationWorker:
         try:
             self._record_merchant_request_time(merchant_slug)
             res: ObservationResult = observe_listing(listing_id=listing_id)
-
-            now_utc = datetime.now(timezone.utc)
 
             # Update Circuit Breaker & Cooldown Tracking
             if res.status in (ObservationStatus.BLOCKED, ObservationStatus.RATE_LIMITED):
@@ -257,11 +211,11 @@ class ObservationWorker:
                 self._consecutive_blocks[merchant_slug] = 0
 
             # Calculate Next Schedule & Failure Backoff
+            now_utc = res.observed_at or datetime.now(timezone.utc)
             with get_session() as write_session:
                 db_listing = write_session.get(MerchantListing, listing_id)
                 if db_listing:
                     if res.status in (ObservationStatus.SUCCESS, ObservationStatus.UNCHANGED_HEARTBEAT, ObservationStatus.UNCHANGED_SKIPPED):
-                        # Determine priority tier and schedule normal refresh
                         priority = determine_listing_priority(listing_id, product_id)
                         db_listing.refresh_priority = priority
                         db_listing.failure_count = 0
@@ -273,7 +227,6 @@ class ObservationWorker:
                         db_listing.failure_count = 0
                         db_listing.next_check_at = now_utc + timedelta(seconds=TIER_INTERVALS["COLD"])
                     else:
-                        # Failure backoff
                         f_count = (getattr(db_listing, "failure_count", 0) or 0) + 1
                         db_listing.failure_count = f_count
                         db_listing.last_error = res.error_message or str(res.status)
@@ -284,14 +237,7 @@ class ObservationWorker:
                     write_session.commit()
 
             # Update Observability Statistics
-            with self._stats_lock:
-                self._stats["scanned_today"] += 1
-                self._stats["last_scan_at"] = now_utc.isoformat()
-                if res.status in (ObservationStatus.SUCCESS, ObservationStatus.UNCHANGED_HEARTBEAT):
-                    self._stats["observations_recorded"] += 1
-                elif res.status not in (ObservationStatus.UNCHANGED_SKIPPED, ObservationStatus.OUT_OF_STOCK):
-                    self._stats["failed_today"] += 1
-                    self._stats["last_error"] = res.error_message or str(res.status)
+            self.record_manual_check(res)
 
         finally:
             lock.release()
