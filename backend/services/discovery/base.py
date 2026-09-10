@@ -93,6 +93,34 @@ def compute_candidate_dedupe(
     return dedupe_key, clean_url, product_id, resolved_merchant
 
 
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+
+
+@dataclass
+class DiscoveryObservation:
+    """
+    Conceptual and operational model of a Discovery Observation.
+
+    SEMANTICS:
+    "DealSense discovered this product/listing at time T from source S."
+
+    CRITICAL DISTINCTION:
+    - DiscoveryObservation records product/listing presence and discovery provenance (source, method, timestamp).
+    - PriceObservation records verified, immutable merchant pricing at time T.
+    A DiscoveryObservation carries ZERO pricing guarantees and is NEVER treated as a PriceObservation or DealCandidate.
+    """
+    source_name: str
+    source_type: str = "category"
+    discovery_method: str = "bestseller"
+    discovered_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    product_id: Optional[int] = None
+    listing_id: Optional[int] = None
+    candidate_id: Optional[int] = None
+    dedupe_key: Optional[str] = None
+    candidate_url: Optional[str] = None
+
+
 class CandidatePayload(BaseModel):
     """
     Structured payload produced by discovery sources before intake queue insertion.
@@ -105,6 +133,9 @@ class CandidatePayload(BaseModel):
     mrp_hint: Optional[float] = None
     discovery_priority: float = 50.0
     source_name: str = "curated_seed"
+    source_type: str = "category"
+    discovery_method: str = "bestseller"
+    discovered_at: Optional[datetime] = None
 
     # Computed fields
     clean_url: Optional[str] = None
@@ -142,6 +173,8 @@ class CandidatePayload(BaseModel):
                 self.merchant_product_id = pid
             if not self.merchant or self.merchant == "Unknown":
                 self.merchant = resolved_merchant
+        if not self.discovered_at:
+            self.discovered_at = datetime.now(timezone.utc)
         return self
 
 
@@ -149,12 +182,51 @@ class DiscoverySource(ABC):
     """Abstract interface for all Autonomous Discovery sources."""
 
     source_name: str
-    source_type: str  # 'curated_seed', 'category_anchor', 'cuelinks_offer', etc.
+    source_type: str = "category"  # 'category', 'search', 'curated_seed', 'offer_intelligence'
+    discovery_method: str = "bestseller"  # 'bestseller', 'popular', 'trending', 'curated'
 
     @abstractmethod
     def fetch_candidates(self) -> List[CandidatePayload]:
         """Discovers and yields candidates as structured payloads."""
         pass
+
+    def discover_candidates(self) -> List[CandidatePayload]:
+        """Alias for fetch_candidates providing consistent discovery interface."""
+        return self.fetch_candidates()
+
+    def normalize_candidate(self, raw: Dict[str, Any]) -> Optional[CandidatePayload]:
+        """Normalizes a raw dictionary input into a valid CandidatePayload."""
+        url = raw.get("url") or raw.get("candidate_url")
+        if not url or not isinstance(url, str) or not url.strip():
+            return None
+        try:
+            return CandidatePayload(
+                candidate_url=url.strip(),
+                merchant=raw.get("merchant"),
+                category_hint=raw.get("category") or raw.get("category_hint"),
+                title_hint=raw.get("title") or raw.get("title_hint"),
+                price_hint=raw.get("price") or raw.get("price_hint"),
+                mrp_hint=raw.get("mrp") or raw.get("mrp_hint"),
+                discovery_priority=float(raw.get("priority") or raw.get("discovery_priority", 50.0)),
+                source_name=self.source_name,
+                source_type=raw.get("source_type", self.source_type),
+                discovery_method=raw.get("discovery_method", self.discovery_method),
+                discovered_at=raw.get("discovered_at"),
+            )
+        except Exception:
+            return None
+
+    def dedupe_key(self, product_id: str) -> str:
+        """Computes canonical deduplication key for this source."""
+        return f"{self.source_name.lower()}:{product_id.strip()}"
+
+    def source_metadata(self) -> Dict[str, Any]:
+        """Returns metadata description for this discovery source."""
+        return {
+            "source_name": self.source_name,
+            "source_type": self.source_type,
+            "discovery_method": self.discovery_method,
+        }
 
 
 class CuelinksOfferSource(DiscoverySource):
@@ -168,6 +240,7 @@ class CuelinksOfferSource(DiscoverySource):
     """
     source_name: str = "cuelinks_offers"
     source_type: str = "offer_intelligence"
+    discovery_method: str = "campaign"
 
     def fetch_candidates(self) -> List[CandidatePayload]:
         raise NotImplementedError(

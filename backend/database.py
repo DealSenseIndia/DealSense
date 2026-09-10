@@ -98,8 +98,18 @@ def init_db() -> None:
                 if col not in existing_pa_cols:
                     conn.exec_driver_sql(f"ALTER TABLE price_alerts ADD COLUMN {col} {col_type}")
 
-            # Safe auto-index for discovery_candidates
+            # Safe auto-index and column migration for discovery_candidates
             try:
+                cursor = conn.exec_driver_sql("PRAGMA table_info(discovery_candidates)")
+                existing_dc_cols = {row[1] for row in cursor.fetchall()}
+                dc_cols = {
+                    "source_type": "TEXT DEFAULT 'category'",
+                    "discovery_method": "TEXT DEFAULT 'bestseller'",
+                }
+                for col, col_type in dc_cols.items():
+                    if col not in existing_dc_cols:
+                        conn.exec_driver_sql(f"ALTER TABLE discovery_candidates ADD COLUMN {col} {col_type}")
+
                 conn.exec_driver_sql(
                     "CREATE INDEX IF NOT EXISTS ix_discovery_candidates_status_priority_next "
                     "ON discovery_candidates (status, discovery_priority, next_attempt_at);"

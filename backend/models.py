@@ -415,7 +415,9 @@ class DiscoveryCandidate(SQLModel, table=True):
     merchant_product_id: Optional[str] = Field(default=None, index=True)
     candidate_url: str
     clean_url: str
-    source_name: str = Field(index=True)              # 'curated_seed', 'category_anchor', etc.
+    source_name: str = Field(index=True)              # 'curated_seed', 'category_anchor', 'amazon', 'flipkart'
+    source_type: Optional[str] = Field(default="category", index=True)
+    discovery_method: Optional[str] = Field(default="bestseller", index=True)
     category_hint: Optional[str] = Field(default=None)
     title_hint: Optional[str] = Field(default=None)
     price_hint: Optional[float] = Field(default=None)

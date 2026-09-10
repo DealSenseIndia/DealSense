@@ -50,6 +50,8 @@ class CandidateQueueService:
             candidate_url=payload.candidate_url,
             clean_url=payload.clean_url or payload.candidate_url,
             source_name=payload.source_name,
+            source_type=getattr(payload, "source_type", "category"),
+            discovery_method=getattr(payload, "discovery_method", "bestseller"),
             category_hint=payload.category_hint,
             title_hint=payload.title_hint,
             price_hint=payload.price_hint,
