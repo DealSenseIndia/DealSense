@@ -316,8 +316,14 @@ class PriceAlert(SQLModel, table=True):
     trigger_count: int = Field(default=0)
 
     # Destination
-    channel: str = Field(default="whatsapp")  # 'whatsapp', 'email', 'console'
-    contact: str  # Phone number or email address
+    channel: str = Field(default="whatsapp")  # 'whatsapp', 'email', 'console', 'telegram'
+    contact: str  # Phone number, email address, or Telegram chat_id
+
+    # Telegram specific binding & tracking
+    telegram_chat_id: Optional[str] = Field(default=None, index=True)
+    telegram_username: Optional[str] = Field(default=None)
+    telegram_bind_token: Optional[str] = Field(default=None, index=True)
+    telegram_token_expires_at: Optional[datetime] = Field(default=None)
 
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc),
@@ -326,4 +332,24 @@ class PriceAlert(SQLModel, table=True):
     updated_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc),
         nullable=False,
+    )
+
+
+class AlertDeliveryLog(SQLModel, table=True):
+    """Audit log of all outbound notification delivery attempts across channels."""
+
+    __tablename__ = "alert_delivery_logs"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    alert_id: int = Field(foreign_key="price_alerts.id", index=True)
+    channel: str = Field(default="telegram", index=True)
+    recipient: str = Field(index=True)  # chat_id, email, phone
+    status: str = Field(index=True)      # SUCCESS, FAILED, BLOCKED, RATE_LIMITED
+    response_code: Optional[int] = None
+    response_body: Optional[str] = None
+    retry_count: int = Field(default=0)
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
+        nullable=False,
+        index=True,
     )

@@ -1,6 +1,6 @@
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sqlmodel import select
@@ -740,8 +740,21 @@ class PriceAlertRequest(BaseModel):
     target_deal_score: Optional[int] = None
     is_persistent: bool = False
     cooldown_hours: int = 24
-    channel: str = "whatsapp"  # "whatsapp", "email", "console"
-    contact: str
+    channel: str = "whatsapp"  # "whatsapp", "email", "console", "telegram"
+    contact: Optional[str] = None
+
+
+class TelegramBindRequest(BaseModel):
+    product_id: Optional[int] = None
+    listing_id: Optional[int] = None
+    product_title: str
+    target_price: Optional[float] = None
+    current_price: float
+    alert_type: str = "TARGET_PRICE"
+    target_percentage: Optional[float] = None
+    target_deal_score: Optional[int] = None
+    is_persistent: bool = False
+    cooldown_hours: int = 24
 
 
 @app.post("/api/alerts")
@@ -790,6 +803,82 @@ def create_price_alert(req: PriceAlertRequest):
     }
 
 
+@app.post("/api/alerts/telegram/bind-request")
+def create_telegram_bind_request(req: TelegramBindRequest):
+    """
+    Generates a secure deep-linking token and creates a PENDING_BINDING PriceAlert.
+    Returns the official Telegram deep-link URL (https://t.me/<bot>?start=b_<token>).
+    """
+    from datetime import datetime, timezone, timedelta
+    from backend.services.alert_service import create_alert
+    from backend.services.telegram_bot import generate_binding_token
+    from backend.config import settings
+
+    token = generate_binding_token()
+    now_utc = datetime.now(timezone.utc)
+    expires_at = now_utc + timedelta(minutes=30)
+
+    try:
+        alert = create_alert(
+            product_title=req.product_title,
+            current_price=req.current_price,
+            contact="pending",
+            channel="telegram",
+            product_id=req.product_id,
+            listing_id=req.listing_id,
+            alert_type=req.alert_type,
+            target_price=req.target_price,
+            target_percentage=req.target_percentage,
+            target_deal_score=req.target_deal_score,
+            is_persistent=req.is_persistent,
+            cooldown_hours=req.cooldown_hours,
+            status="PENDING_BINDING",
+            telegram_bind_token=token,
+            telegram_token_expires_at=expires_at,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    bot_user = settings.TELEGRAM_BOT_USERNAME or "DealSenseAlertBot"
+    deep_link = f"https://t.me/{bot_user}?start={token}"
+
+    return {
+        "success": True,
+        "alert_id": alert.id,
+        "bind_token": token,
+        "deep_link": deep_link,
+        "bot_username": bot_user,
+        "expires_at": expires_at.isoformat(),
+        "status": alert.status,
+    }
+
+
+@app.post("/api/telegram/webhook")
+async def telegram_webhook(
+    request: Request,
+    x_telegram_bot_api_secret_token: Optional[str] = Header(None),
+):
+    """
+    Inbound Telegram Bot webhook endpoint.
+    Verifies secret token header and dispatches update to telegram_bot service.
+    """
+    from backend.services.telegram_bot import handle_webhook_update
+
+    try:
+        body = await request.json()
+    except Exception:
+        raise HTTPException(status_code=400, detail="Malformed JSON body")
+
+    result = handle_webhook_update(
+        update_data=body,
+        secret_token_header=x_telegram_bot_api_secret_token,
+    )
+    if not result.get("ok") and result.get("status_code") == 401:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    return result
+
+
 @app.get("/api/alerts")
 def list_active_alerts(
     status: Optional[str] = None,
@@ -827,6 +916,9 @@ def list_active_alerts(
             "trigger_count": a.trigger_count,
             "channel": a.channel,
             "contact": a.contact,
+            "telegram_chat_id": a.telegram_chat_id,
+            "telegram_username": a.telegram_username,
+            "telegram_bind_token": a.telegram_bind_token,
             "created_at": a.created_at.isoformat(),
             "updated_at": a.updated_at.isoformat() if getattr(a, "updated_at", None) else None,
         }
@@ -862,6 +954,9 @@ def get_single_alert(alert_id: int):
         "trigger_count": alert.trigger_count,
         "channel": alert.channel,
         "contact": alert.contact,
+        "telegram_chat_id": alert.telegram_chat_id,
+        "telegram_username": alert.telegram_username,
+        "telegram_bind_token": alert.telegram_bind_token,
         "created_at": alert.created_at.isoformat(),
         "updated_at": alert.updated_at.isoformat() if getattr(alert, "updated_at", None) else None,
     }

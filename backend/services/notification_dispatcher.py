@@ -100,5 +100,55 @@ class TestConsoleDispatcher:
         self.dispatched_events.clear()
 
 
+class CompositeDispatcher:
+    """
+    Channel-aware composite dispatcher.
+    Routes AlertTriggerEvents to dedicated dispatchers based on event.channel.
+    Falls back to TestConsoleDispatcher for unmapped channels or local logging.
+    """
+    def __init__(self, fallback: Optional[NotificationDispatcher] = None):
+        self._dispatchers: Dict[str, NotificationDispatcher] = {}
+        self.fallback = fallback or TestConsoleDispatcher()
+
+    def register(self, channel: str, dispatcher: NotificationDispatcher) -> None:
+        self._dispatchers[channel.strip().lower()] = dispatcher
+
+    def get_dispatcher(self, channel: str) -> Optional[NotificationDispatcher]:
+        return self._dispatchers.get(channel.strip().lower())
+
+    def dispatch(self, event: AlertTriggerEvent) -> bool:
+        channel = (event.channel or "").strip().lower()
+        target = self._dispatchers.get(channel, self.fallback)
+        try:
+            return target.dispatch(event)
+        except Exception as exc:
+            logger.error(
+                f"[COMPOSITE DISPATCHER] Failed to dispatch alert #{event.alert_id} on channel {channel}: {exc}",
+                exc_info=True,
+            )
+            return False
+
+    def get_dispatched_events(self) -> List[AlertTriggerEvent]:
+        """Returns events from fallback console dispatcher if available."""
+        if hasattr(self.fallback, "get_dispatched_events"):
+            return self.fallback.get_dispatched_events()
+        return []
+
+    def clear(self) -> None:
+        """Clears in-memory dispatched events on fallback."""
+        if hasattr(self.fallback, "clear"):
+            self.fallback.clear()
+
+
+def create_default_dispatcher() -> CompositeDispatcher:
+    composite = CompositeDispatcher(fallback=TestConsoleDispatcher())
+    try:
+        from backend.services.telegram_dispatcher import TelegramDispatcher
+        composite.register("telegram", TelegramDispatcher())
+    except Exception as e:
+        logger.warning(f"Could not register TelegramDispatcher in default_dispatcher: {e}")
+    return composite
+
+
 # Default singleton dispatcher instance
-default_dispatcher = TestConsoleDispatcher()
+default_dispatcher = create_default_dispatcher()

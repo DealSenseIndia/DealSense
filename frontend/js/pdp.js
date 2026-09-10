@@ -2111,35 +2111,66 @@ export function initPdpListeners() {
     });
   });
 
-  // Channel Tabs (WhatsApp vs Email)
+  // Channel Tabs (WhatsApp vs Telegram vs Email)
   const btnWa = document.getElementById("alertChannelWhatsApp");
+  const btnTg = document.getElementById("alertChannelTelegram");
   const btnEmail = document.getElementById("alertChannelEmail");
   const phoneGroup = document.getElementById("alertPhoneGroup");
+  const tgGroup = document.getElementById("alertTelegramGroup");
   const emailInput = document.getElementById("alertEmailInput");
   const noteEl = document.getElementById("alertChannelNote");
+  const submitBtn = document.getElementById("submitPriceAlertBtn");
+
+  function resetSubmitBtnText() {
+    if (!submitBtn) return;
+    if (selectedChannel === "telegram") {
+      submitBtn.innerHTML = `<span>✈️</span><span>Arm via Telegram →</span>`;
+    } else {
+      submitBtn.innerHTML = `<span class="btn-bell-ico">🔔</span><span>Arm Price Alert Trigger</span>`;
+    }
+  }
 
   if (btnWa && btnEmail) {
     btnWa.addEventListener("click", () => {
       selectedChannel = "whatsapp";
       btnWa.classList.add("active");
+      if (btnTg) btnTg.classList.remove("active");
       btnEmail.classList.remove("active");
       if (phoneGroup) phoneGroup.style.display = "flex";
+      if (tgGroup) tgGroup.style.display = "none";
       if (emailInput) emailInput.style.display = "none";
       if (noteEl) noteEl.textContent = "⚡ We only send a WhatsApp message when the price drops below your target. Zero spam, ever.";
+      resetSubmitBtnText();
     });
+
+    if (btnTg) {
+      btnTg.addEventListener("click", () => {
+        selectedChannel = "telegram";
+        btnTg.classList.add("active");
+        btnWa.classList.remove("active");
+        btnEmail.classList.remove("active");
+        if (phoneGroup) phoneGroup.style.display = "none";
+        if (tgGroup) tgGroup.style.display = "block";
+        if (emailInput) emailInput.style.display = "none";
+        if (noteEl) noteEl.textContent = "✈️ We'll open Telegram with a secure link. Simply tap 'Start' to activate instant deal pings.";
+        resetSubmitBtnText();
+      });
+    }
 
     btnEmail.addEventListener("click", () => {
       selectedChannel = "email";
       btnEmail.classList.add("active");
       btnWa.classList.remove("active");
+      if (btnTg) btnTg.classList.remove("active");
       if (phoneGroup) phoneGroup.style.display = "none";
+      if (tgGroup) tgGroup.style.display = "none";
       if (emailInput) emailInput.style.display = "block";
       if (noteEl) noteEl.textContent = "✉️ We will email you an instant price-drop alert with direct affiliate checkout links.";
+      resetSubmitBtnText();
     });
   }
 
   // Submit Alert Trigger
-  const submitBtn = document.getElementById("submitPriceAlertBtn");
   if (submitBtn) {
     submitBtn.addEventListener("click", async () => {
       const targetInput = document.getElementById("alertTargetPriceInput");
@@ -2159,12 +2190,14 @@ export function initPdpListeners() {
           return;
         }
         contact = `+91 ${phone.slice(-10)}`;
-      } else {
+      } else if (selectedChannel === "email") {
         contact = emailInput?.value.trim() || "";
         if (!contact.includes("@") || !contact.includes(".")) {
           showToast("Please enter a valid email address.", "error");
           return;
         }
+      } else if (selectedChannel === "telegram") {
+        contact = "pending";
       }
 
       const payload = {
@@ -2200,6 +2233,34 @@ export function initPdpListeners() {
         payload.target_price = currentProductContext.currentPrice;
       }
 
+      // Telegram specific deep-link flow
+      if (selectedChannel === "telegram") {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span>⏳ Generating Telegram Link...</span>`;
+        try {
+          const resp = await fetch("/api/alerts/telegram/bind-request", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          const resData = await resp.json();
+          if (resp.ok && resData.success) {
+            closePriceAlertModal();
+            window.open(resData.deep_link, "_blank");
+            showToast("Opening Telegram! Tap 'Start' in the bot to complete arming.", "success");
+            refreshActiveAlertDisplay(currentProductContext.productId, currentProductContext.listingId);
+          } else {
+            showToast(resData.detail || "Failed to generate Telegram link.", "error");
+          }
+        } catch (err) {
+          showToast("Network error. Could not connect to Telegram service.", "error");
+        } finally {
+          submitBtn.disabled = false;
+          resetSubmitBtnText();
+        }
+        return;
+      }
+
       submitBtn.disabled = true;
       submitBtn.innerHTML = `<span>⏳ Arming Alert Engine...</span>`;
 
@@ -2221,7 +2282,7 @@ export function initPdpListeners() {
         showToast("Network error. Could not connect to alert service.", "error");
       } finally {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = `<span class="btn-bell-ico">🔔</span><span>Arm Price Alert Trigger</span>`;
+        resetSubmitBtnText();
       }
     });
   }

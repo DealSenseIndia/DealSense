@@ -892,6 +892,9 @@
             <button type="button" class="alert-channel-btn active" data-channel="whatsapp" id="alertChannelWhatsApp">
               <span class="wa-ico">🟢</span> WhatsApp (Instant)
             </button>
+            <button type="button" class="alert-channel-btn" data-channel="telegram" id="alertChannelTelegram">
+              <span class="tg-ico">✈️</span> Telegram Bot
+            </button>
             <button type="button" class="alert-channel-btn" data-channel="email" id="alertChannelEmail">
               <span class="mail-ico">✉️</span> Email Alert
             </button>
@@ -902,6 +905,9 @@
             <div class="phone-input-group" id="alertPhoneGroup">
               <span class="country-code">+91</span>
               <input type="tel" id="alertPhoneInput" class="alert-text-input" placeholder="98765 43210" maxlength="10">
+            </div>
+            <div id="alertTelegramGroup" class="telegram-hint-box" style="display:none; padding:10px 14px; background:rgba(0,136,204,0.08); border:1px solid rgba(0,136,204,0.25); border-radius:8px; font-size:13px; color:#0088cc; line-height:1.4;">
+              ✈️ Tap <strong>Arm via Telegram</strong> below. We will open Telegram with a secure one-time link to arm your alert instantly with the DealSense Bot.
             </div>
             <input type="email" id="alertEmailInput" class="alert-text-input" placeholder="your.name@example.com" style="display:none;">
             <p class="alert-security-note" id="alertChannelNote">

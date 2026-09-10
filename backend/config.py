@@ -40,6 +40,15 @@ class Settings:
     # Cache duration for in-memory deals feed
     DEAL_REFRESH_INTERVAL_MINUTES: int = int(os.getenv("DEAL_REFRESH_INTERVAL", "120"))
 
+    # ── Telegram Delivery Configuration ──
+    TELEGRAM_BOT_TOKEN: str = os.getenv("TELEGRAM_BOT_TOKEN", "")
+    TELEGRAM_BOT_USERNAME: str = os.getenv("TELEGRAM_BOT_USERNAME", "DealSenseAlertBot")
+    TELEGRAM_WEBHOOK_SECRET: str = os.getenv("TELEGRAM_WEBHOOK_SECRET", "")
+    TELEGRAM_API_BASE_URL: str = os.getenv("TELEGRAM_API_BASE_URL", "https://api.telegram.org")
+
+    # Application Base URL for link backs
+    APP_BASE_URL: str = os.getenv("APP_BASE_URL", "https://dealsense.in")
+
 
 settings = Settings()
 

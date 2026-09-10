@@ -85,6 +85,10 @@ def init_db() -> None:
                 "rearm_threshold_price": "FLOAT",
                 "trigger_count": "INTEGER DEFAULT 0",
                 "updated_at": "DATETIME",
+                "telegram_chat_id": "TEXT",
+                "telegram_username": "TEXT",
+                "telegram_bind_token": "TEXT",
+                "telegram_token_expires_at": "DATETIME",
             }
             for col, col_type in pa_cols.items():
                 if col not in existing_pa_cols:

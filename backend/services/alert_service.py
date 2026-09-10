@@ -29,6 +29,7 @@ class AlertType(str, Enum):
 
 
 class AlertStatus(str, Enum):
+    PENDING_BINDING = "PENDING_BINDING"
     ARMED = "ARMED"
     TRIGGERED = "TRIGGERED"
     COOLDOWN = "COOLDOWN"
@@ -49,7 +50,7 @@ def compute_recovery_threshold(target_price: Optional[float]) -> Optional[float]
 def create_alert(
     product_title: str,
     current_price: float,
-    contact: str,
+    contact: Optional[str] = None,
     channel: str = "whatsapp",
     product_id: Optional[int] = None,
     listing_id: Optional[int] = None,
@@ -59,6 +60,11 @@ def create_alert(
     target_deal_score: Optional[int] = None,
     is_persistent: bool = False,
     cooldown_hours: int = 24,
+    status: Optional[str] = None,
+    telegram_chat_id: Optional[str] = None,
+    telegram_username: Optional[str] = None,
+    telegram_bind_token: Optional[str] = None,
+    telegram_token_expires_at: Optional[datetime] = None,
     session: Optional[Session] = None,
 ) -> PriceAlert:
     """
@@ -66,7 +72,10 @@ def create_alert(
     """
     contact_clean = (contact or "").strip()
     if not contact_clean:
-        raise ValueError("Recipient contact (phone number or email) is required.")
+        if channel.lower() == "telegram" and telegram_bind_token:
+            contact_clean = "pending"
+        else:
+            raise ValueError("Recipient contact (phone number or email) is required.")
 
     valid_channels = ("whatsapp", "email", "console", "telegram")
     if channel.lower() not in valid_channels:
@@ -107,6 +116,14 @@ def create_alert(
     rearm_thresh = compute_recovery_threshold(calc_target)
     now_utc = datetime.now(timezone.utc)
 
+    # Determine initial status
+    if status:
+        init_status = status
+    elif telegram_bind_token:
+        init_status = AlertStatus.PENDING_BINDING.value
+    else:
+        init_status = AlertStatus.ARMED.value
+
     alert = PriceAlert(
         product_id=product_id,
         listing_id=listing_id,
@@ -117,8 +134,8 @@ def create_alert(
         target_percentage=float(target_percentage) if target_percentage is not None else None,
         target_deal_score=int(target_deal_score) if target_deal_score is not None else None,
         current_price=baseline,
-        status=AlertStatus.ARMED.value,
-        is_active=True,
+        status=init_status,
+        is_active=(init_status != AlertStatus.PENDING_BINDING.value),
         is_persistent=is_persistent,
         cooldown_hours=max(1, int(cooldown_hours)),
         cooldown_until=None,
@@ -128,6 +145,10 @@ def create_alert(
         trigger_count=0,
         channel=channel.lower(),
         contact=contact_clean,
+        telegram_chat_id=telegram_chat_id,
+        telegram_username=telegram_username,
+        telegram_bind_token=telegram_bind_token,
+        telegram_token_expires_at=telegram_token_expires_at,
         created_at=now_utc,
         updated_at=now_utc,
     )
