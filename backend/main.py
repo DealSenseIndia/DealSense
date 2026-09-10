@@ -17,15 +17,35 @@ from backend.models import (
     Setup,
     SetupItem,
 )
+from contextlib import asynccontextmanager
 from backend.service import ingest_and_evaluate
 from backend.search import search_catalog
 from backend.setup_engine import build_smart_setup, SetupRequest
 from backend.services.deals_crawler import get_live_deals_feed, refresh_deals_feed
+from backend.services.observation_worker import worker
+from backend.services.observation_service import observe_listing
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    try:
+        from scripts.build_html import build_html
+        build_html()
+    except Exception as e:
+        print(f"Warning: HTML auto-build skipped: {e}")
+    # Start autonomous price observation background worker
+    worker.start()
+    yield
+    # Graceful shutdown on application exit
+    worker.stop()
+
 
 app = FastAPI(
     title="Deal Intelligence Engine",
     description="Automated shopping intelligence and deal verification API for Indian e-commerce.",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 # Enable CORS for local web and extension development
@@ -48,21 +68,22 @@ class AnalyzeProductRequest(BaseModel):
     force_refresh: bool = False
 
 
-@app.on_event("startup")
-def on_startup():
-    init_db()
-    try:
-        from scripts.build_html import build_html
-        build_html()
-    except Exception as e:
-        print(f"Warning: HTML auto-build skipped: {e}")
-    # Note: Unofficial background scraping thread (DealsScheduler) removed.
-    # Deal data is loaded directly from verified database records.
-
-
 @app.get("/api/health")
 def health_check():
     return {"status": "ok", "service": "Deal Intelligence Backend"}
+
+
+@app.get("/api/worker/status")
+def get_worker_status():
+    """Returns real-time runtime diagnostics and queue states for the observation worker."""
+    return worker.get_status()
+
+
+@app.post("/api/worker/trigger-check/{listing_id}")
+def trigger_listing_check(listing_id: int):
+    """Executes an immediate manual observation check on a specific listing."""
+    result = observe_listing(listing_id=listing_id, force=True)
+    return result.to_dict()
 
 
 @app.get("/api/homepage")

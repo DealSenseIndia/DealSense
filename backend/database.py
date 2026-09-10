@@ -9,7 +9,11 @@ DATA_DIR.mkdir(exist_ok=True)
 DB_PATH = DATA_DIR / "deal_intelligence.db"
 DATABASE_URL = f"sqlite:///{DB_PATH.as_posix()}"
 
-engine = create_engine(DATABASE_URL, echo=False)
+engine = create_engine(
+    DATABASE_URL,
+    echo=False,
+    connect_args={"check_same_thread": False, "timeout": 30.0},
+)
 
 
 def init_db() -> None:
@@ -18,6 +22,10 @@ def init_db() -> None:
 
     try:
         with engine.connect() as conn:
+            # Enable SQLite Write-Ahead Logging (WAL) and busy timeout
+            conn.exec_driver_sql("PRAGMA journal_mode=WAL;")
+            conn.exec_driver_sql("PRAGMA busy_timeout=10000;")
+
             # Safe auto-migration for products
             cursor = conn.exec_driver_sql("PRAGMA table_info(products)")
             existing_prod_cols = {row[1] for row in cursor.fetchall()}
@@ -50,6 +58,10 @@ def init_db() -> None:
                 "is_f_assured": "BOOLEAN DEFAULT 0",
                 "coupons_json": "TEXT",
                 "delivery_fee": "FLOAT DEFAULT 0.0",
+                "next_check_at": "DATETIME",
+                "failure_count": "INTEGER DEFAULT 0",
+                "refresh_priority": "TEXT DEFAULT 'NORMAL'",
+                "last_error": "TEXT",
             }
             for col, col_type in ml_cols.items():
                 if col not in existing_ml_cols:

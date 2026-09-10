@@ -147,6 +147,10 @@ class MerchantListing(SQLModel, table=True):
     source_confidence: str = Field(default="high")
     active: bool = Field(default=True)
     last_checked_at: Optional[datetime] = None
+    next_check_at: Optional[datetime] = Field(default=None, index=True)
+    failure_count: int = Field(default=0)
+    refresh_priority: str = Field(default="NORMAL", index=True)
+    last_error: Optional[str] = None
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc),
         nullable=False,
