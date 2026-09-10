@@ -414,3 +414,71 @@ def _handle_help(
     )
     send_telegram_reply(chat_id, text, bot_token, api_base_url, http_client=http_client)
     return {"ok": True, "action": "help_sent"}
+
+
+def get_bot_info(bot_token: Optional[str] = None) -> Dict[str, Any]:
+    """Retrieves basic bot identity via getMe."""
+    token = bot_token or settings.TELEGRAM_BOT_TOKEN
+    if not token:
+        return {"ok": False, "error": "TELEGRAM_BOT_TOKEN is not configured"}
+    url = f"{settings.TELEGRAM_API_BASE_URL.rstrip('/')}/bot{token}/getMe"
+    try:
+        with httpx.Client(timeout=5.0) as client:
+            resp = client.get(url)
+            return resp.json()
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
+
+
+def set_webhook(
+    webhook_url: str,
+    secret_token: Optional[str] = None,
+    bot_token: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Registers an HTTPS endpoint with Telegram setWebhook."""
+    token = bot_token or settings.TELEGRAM_BOT_TOKEN
+    secret = secret_token or settings.TELEGRAM_WEBHOOK_SECRET
+    if not token:
+        return {"ok": False, "error": "TELEGRAM_BOT_TOKEN is not configured"}
+    url = f"{settings.TELEGRAM_API_BASE_URL.rstrip('/')}/bot{token}/setWebhook"
+    payload: Dict[str, Any] = {
+        "url": webhook_url,
+        "allowed_updates": ["message"],
+    }
+    if secret:
+        payload["secret_token"] = secret
+    try:
+        with httpx.Client(timeout=10.0) as client:
+            resp = client.post(url, json=payload)
+            return resp.json()
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
+
+
+def get_webhook_info(bot_token: Optional[str] = None) -> Dict[str, Any]:
+    """Retrieves current Telegram webhook registration status via getWebhookInfo."""
+    token = bot_token or settings.TELEGRAM_BOT_TOKEN
+    if not token:
+        return {"ok": False, "error": "TELEGRAM_BOT_TOKEN is not configured"}
+    url = f"{settings.TELEGRAM_API_BASE_URL.rstrip('/')}/bot{token}/getWebhookInfo"
+    try:
+        with httpx.Client(timeout=5.0) as client:
+            resp = client.get(url)
+            return resp.json()
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
+
+
+def delete_webhook(bot_token: Optional[str] = None) -> Dict[str, Any]:
+    """Removes webhook registration via deleteWebhook."""
+    token = bot_token or settings.TELEGRAM_BOT_TOKEN
+    if not token:
+        return {"ok": False, "error": "TELEGRAM_BOT_TOKEN is not configured"}
+    url = f"{settings.TELEGRAM_API_BASE_URL.rstrip('/')}/bot{token}/deleteWebhook"
+    try:
+        with httpx.Client(timeout=5.0) as client:
+            resp = client.post(url, json={"drop_pending_updates": True})
+            return resp.json()
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
+

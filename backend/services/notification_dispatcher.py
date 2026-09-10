@@ -118,6 +118,13 @@ class CompositeDispatcher:
 
     def dispatch(self, event: AlertTriggerEvent) -> bool:
         channel = (event.channel or "").strip().lower()
+        if channel == "telegram" and "telegram" not in self._dispatchers:
+            try:
+                from backend.services.telegram_dispatcher import TelegramDispatcher
+                self._dispatchers["telegram"] = TelegramDispatcher()
+            except Exception as exc:
+                logger.error(f"[COMPOSITE DISPATCHER] Failed to load TelegramDispatcher: {exc}")
+
         target = self._dispatchers.get(channel, self.fallback)
         try:
             return target.dispatch(event)
@@ -140,15 +147,5 @@ class CompositeDispatcher:
             self.fallback.clear()
 
 
-def create_default_dispatcher() -> CompositeDispatcher:
-    composite = CompositeDispatcher(fallback=TestConsoleDispatcher())
-    try:
-        from backend.services.telegram_dispatcher import TelegramDispatcher
-        composite.register("telegram", TelegramDispatcher())
-    except Exception as e:
-        logger.warning(f"Could not register TelegramDispatcher in default_dispatcher: {e}")
-    return composite
-
-
 # Default singleton dispatcher instance
-default_dispatcher = create_default_dispatcher()
+default_dispatcher = CompositeDispatcher(fallback=TestConsoleDispatcher())
