@@ -1,0 +1,2107 @@
+[
+  {
+    "id": 823,
+    "name": "Lenovo India",
+    "domain": "lenovo.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 6.54,
+    "best_epc": 6.54,
+    "payout": "3.0",
+    "payout_type": "Per Sale(%)",
+    "cookie": "1 Day",
+    "categories": [
+      "Electronics"
+    ],
+    "score": 94,
+    "sub_scores": {
+      "relevance": 25,
+      "availability": 20,
+      "epc": 20,
+      "aov": 15,
+      "breadth": 7,
+      "platform": 3,
+      "cookie": 4
+    }
+  },
+  {
+    "id": 4094,
+    "name": "Marks and Spencer",
+    "domain": "marksandspencer.in",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 3.61,
+    "epc_90d": 4.41,
+    "best_epc": 4.41,
+    "payout": "13.64",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Fashion"
+    ],
+    "score": 92,
+    "sub_scores": {
+      "relevance": 24,
+      "availability": 20,
+      "epc": 20,
+      "aov": 13,
+      "breadth": 7,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 2588,
+    "name": "Tata Cliq",
+    "domain": "tatacliq.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.32,
+    "epc_90d": 0.74,
+    "best_epc": 0.74,
+    "payout": "3.75",
+    "payout_type": "Per Sale(%)",
+    "cookie": "7 Days",
+    "categories": [
+      "Electronics",
+      "Fashion"
+    ],
+    "score": 86,
+    "sub_scores": {
+      "relevance": 24,
+      "availability": 20,
+      "epc": 10,
+      "aov": 13,
+      "breadth": 10,
+      "platform": 4,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 4164,
+    "name": "Vijay Sales",
+    "domain": "vijaysales.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.26,
+    "best_epc": 0.26,
+    "payout": "4.31",
+    "payout_type": "Per Sale(%)",
+    "cookie": "7 days",
+    "categories": [
+      "Electronics"
+    ],
+    "score": 85,
+    "sub_scores": {
+      "relevance": 25,
+      "availability": 20,
+      "epc": 7,
+      "aov": 15,
+      "breadth": 10,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 4360,
+    "name": "Acer",
+    "domain": "acer.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.31,
+    "epc_90d": 0.91,
+    "best_epc": 0.91,
+    "payout": "2.63",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Electronics"
+    ],
+    "score": 83,
+    "sub_scores": {
+      "relevance": 25,
+      "availability": 20,
+      "epc": 10,
+      "aov": 15,
+      "breadth": 5,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 891,
+    "name": "Nykaa Beauty",
+    "domain": "nykaa.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 1.42,
+    "epc_90d": 1.23,
+    "best_epc": 1.42,
+    "payout": "4.2",
+    "payout_type": "Per Sale(%)",
+    "cookie": "7 Days",
+    "categories": [
+      "Health & Beauty"
+    ],
+    "score": 83,
+    "sub_scores": {
+      "relevance": 24,
+      "availability": 20,
+      "epc": 13,
+      "aov": 10,
+      "breadth": 7,
+      "platform": 4,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 107,
+    "name": "Pepperfry",
+    "domain": "pepperfry.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.09,
+    "epc_90d": 0.14,
+    "best_epc": 0.14,
+    "payout": "262.5",
+    "payout_type": "Per Sale",
+    "cookie": "30days",
+    "categories": [
+      "Home & Kitchen"
+    ],
+    "score": 80,
+    "sub_scores": {
+      "relevance": 23,
+      "availability": 20,
+      "epc": 4,
+      "aov": 15,
+      "breadth": 10,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 4232,
+    "name": "Boat",
+    "domain": "boat-lifestyle.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.66,
+    "epc_90d": 0.42,
+    "best_epc": 0.66,
+    "payout": "6.0",
+    "payout_type": "Per Sale(%)",
+    "cookie": "1 Day",
+    "categories": [
+      "Electronics"
+    ],
+    "score": 79,
+    "sub_scores": {
+      "relevance": 25,
+      "availability": 20,
+      "epc": 10,
+      "aov": 10,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 4
+    }
+  },
+  {
+    "id": 5586,
+    "name": "Sleepwell",
+    "domain": "mysleepwell.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.24,
+    "best_epc": 0.24,
+    "payout": "9.0",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Home & Kitchen"
+    ],
+    "score": 78,
+    "sub_scores": {
+      "relevance": 23,
+      "availability": 20,
+      "epc": 7,
+      "aov": 15,
+      "breadth": 5,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 9568,
+    "name": "Ajio Gram",
+    "domain": "ajio.com",
+    "access": "open",
+    "affiliated": false,
+    "epc_7d": 1.36,
+    "epc_90d": 1.3,
+    "best_epc": 1.36,
+    "payout": "9.0",
+    "payout_type": "Per Sale(%)",
+    "cookie": "1 Day",
+    "categories": [
+      "Fashion"
+    ],
+    "score": 76,
+    "sub_scores": {
+      "relevance": 24,
+      "availability": 14,
+      "epc": 13,
+      "aov": 7,
+      "breadth": 10,
+      "platform": 4,
+      "cookie": 4
+    }
+  },
+  {
+    "id": 2339,
+    "name": "HP India",
+    "domain": "hp.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 51.64,
+    "epc_90d": 9.19,
+    "best_epc": 51.64,
+    "payout": "1.88",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Electronics"
+    ],
+    "score": 75,
+    "sub_scores": {
+      "relevance": 25,
+      "availability": 0,
+      "epc": 20,
+      "aov": 15,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 11211,
+    "name": "Asus India",
+    "domain": "asus.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.9,
+    "epc_90d": 0.25,
+    "best_epc": 0.9,
+    "payout": "1.58",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Electronics"
+    ],
+    "score": 75,
+    "sub_scores": {
+      "relevance": 25,
+      "availability": 20,
+      "epc": 10,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 1269,
+    "name": "Dell",
+    "domain": "dell.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 16.42,
+    "epc_90d": 13.87,
+    "best_epc": 16.42,
+    "payout": "2.25",
+    "payout_type": "Per Sale(%)",
+    "cookie": "1 day",
+    "categories": [
+      "Electronics"
+    ],
+    "score": 74,
+    "sub_scores": {
+      "relevance": 25,
+      "availability": 0,
+      "epc": 20,
+      "aov": 15,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 4
+    }
+  },
+  {
+    "id": 6250,
+    "name": "Switcher Studio",
+    "domain": "switcherstudio.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 16.44,
+    "best_epc": 16.44,
+    "payout": "19140.3",
+    "payout_type": "Per Sale",
+    "cookie": "30 Days",
+    "categories": [
+      "Others"
+    ],
+    "score": 74,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 20,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 3907,
+    "name": "Nykaa Fashion",
+    "domain": "nykaafashion.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.02,
+    "epc_90d": 0.14,
+    "best_epc": 0.14,
+    "payout": "4.2",
+    "payout_type": "Per Sale(%)",
+    "cookie": "7days",
+    "categories": [
+      "Fashion"
+    ],
+    "score": 73,
+    "sub_scores": {
+      "relevance": 24,
+      "availability": 20,
+      "epc": 4,
+      "aov": 10,
+      "breadth": 7,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 238,
+    "name": "Godrej Interio",
+    "domain": "interio.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 2.07,
+    "epc_90d": 4.5,
+    "best_epc": 4.5,
+    "payout": "3.0",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Home & Kitchen"
+    ],
+    "score": 72,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 20,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 4225,
+    "name": "Sleepycat",
+    "domain": "sleepycat.in",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 9.06,
+    "epc_90d": 3.68,
+    "best_epc": 9.06,
+    "payout": "3.0",
+    "payout_type": "Per Sale(%)",
+    "cookie": "7 Days",
+    "categories": [
+      "Home & Kitchen"
+    ],
+    "score": 72,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 20,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 817,
+    "name": "Amazon India",
+    "domain": "amazon.in",
+    "access": "pending",
+    "affiliated": false,
+    "epc_7d": 0.43,
+    "epc_90d": 0.61,
+    "best_epc": 0.61,
+    "payout": "3.17",
+    "payout_type": "Per Sale(%)",
+    "cookie": "1 day",
+    "categories": [
+      {
+        "id": 1,
+        "name": "Fashion"
+      },
+      {
+        "id": 4,
+        "name": "Electronics"
+      },
+      {
+        "id": 8,
+        "name": "Health & Beauty"
+      },
+      {
+        "id": 9,
+        "name": "Home & Kitchen"
+      }
+    ],
+    "score": 72,
+    "sub_scores": {
+      "relevance": 24,
+      "availability": 6,
+      "epc": 10,
+      "aov": 13,
+      "breadth": 10,
+      "platform": 5,
+      "cookie": 4
+    }
+  },
+  {
+    "id": 101,
+    "name": "Myntra",
+    "domain": "myntra.com",
+    "access": "pending",
+    "affiliated": false,
+    "epc_7d": 1.11,
+    "epc_90d": 0.48,
+    "best_epc": 1.11,
+    "payout": "7.5",
+    "payout_type": "Per Sale(%)",
+    "cookie": "1day",
+    "categories": [
+      "Health & Beauty",
+      "Fashion"
+    ],
+    "score": 69,
+    "sub_scores": {
+      "relevance": 24,
+      "availability": 6,
+      "epc": 13,
+      "aov": 7,
+      "breadth": 10,
+      "platform": 5,
+      "cookie": 4
+    }
+  },
+  {
+    "id": 1918,
+    "name": "Bewakoof",
+    "domain": "bewakoof.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.23,
+    "epc_90d": 0.32,
+    "best_epc": 0.32,
+    "payout": "11.55",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Minutes",
+    "categories": [
+      "Fashion"
+    ],
+    "score": 69,
+    "sub_scores": {
+      "relevance": 24,
+      "availability": 20,
+      "epc": 7,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 4,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 2523,
+    "name": "bluehost",
+    "domain": "bluehost.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 3.33,
+    "epc_90d": 1.75,
+    "best_epc": 3.33,
+    "payout": "49.88",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Others"
+    ],
+    "score": 68,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 16,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 6233,
+    "name": "Samsung AOS",
+    "domain": "google.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 6.96,
+    "epc_90d": 5.27,
+    "best_epc": 6.96,
+    "payout": "0.75",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Electronics"
+    ],
+    "score": 67,
+    "sub_scores": {
+      "relevance": 25,
+      "availability": 0,
+      "epc": 20,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 1,
+    "name": "Flipkart",
+    "domain": "flipkart.com",
+    "access": "pending",
+    "affiliated": false,
+    "epc_7d": 0.34,
+    "epc_90d": 0.24,
+    "best_epc": 0.34,
+    "payout": "6.0",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 minutes",
+    "categories": [
+      "Health & Beauty",
+      "Food & Grocery",
+      "Flowers & Gifts",
+      "Books",
+      "Fashion",
+      "Baby & Kids",
+      "Electronics",
+      "Home & Kitchen"
+    ],
+    "score": 67,
+    "sub_scores": {
+      "relevance": 24,
+      "availability": 6,
+      "epc": 7,
+      "aov": 13,
+      "breadth": 10,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 4879,
+    "name": "Dot & Key",
+    "domain": "dotandkey.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.79,
+    "epc_90d": 2.98,
+    "best_epc": 2.98,
+    "payout": "10.5",
+    "payout_type": "Per Sale(%)",
+    "cookie": "1 Day",
+    "categories": [
+      "Health & Beauty"
+    ],
+    "score": 67,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 16,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 3,
+      "cookie": 4
+    }
+  },
+  {
+    "id": 3618,
+    "name": "Mivi",
+    "domain": "mivi.in",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 2.04,
+    "epc_90d": 1.5,
+    "best_epc": 2.04,
+    "payout": "5.25",
+    "payout_type": "Per Sale(%)",
+    "cookie": "3 Days",
+    "categories": [
+      "Electronics"
+    ],
+    "score": 66,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 16,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 3,
+      "cookie": 3
+    }
+  },
+  {
+    "id": 3910,
+    "name": "Whirlpool India",
+    "domain": "whirlpool.in",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 1.3,
+    "best_epc": 1.3,
+    "payout": "1.05",
+    "payout_type": "Per Sale(%)",
+    "cookie": "24 Hrs",
+    "categories": [
+      "Electronics"
+    ],
+    "score": 64,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 13,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 3,
+      "cookie": 4
+    }
+  },
+  {
+    "id": 1808,
+    "name": "Wonderchef",
+    "domain": "wonderchef.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.58,
+    "best_epc": 0.58,
+    "payout": "10.5",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Home & Kitchen"
+    ],
+    "score": 64,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 10,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 2589,
+    "name": "Ajio",
+    "domain": "ajio.com",
+    "access": "pending",
+    "affiliated": false,
+    "epc_7d": 0.42,
+    "epc_90d": 0.36,
+    "best_epc": 0.42,
+    "payout": "9.0",
+    "payout_type": "Per Sale(%)",
+    "cookie": "1 Day",
+    "categories": [
+      "Fashion"
+    ],
+    "score": 63,
+    "sub_scores": {
+      "relevance": 24,
+      "availability": 6,
+      "epc": 7,
+      "aov": 7,
+      "breadth": 10,
+      "platform": 5,
+      "cookie": 4
+    }
+  },
+  {
+    "id": 9548,
+    "name": "MyTrainPal",
+    "domain": "mytrainpal.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.52,
+    "best_epc": 0.52,
+    "payout": "1.05",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Travel"
+    ],
+    "score": 62,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 10,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 11908,
+    "name": "Apollo.io",
+    "domain": "apollo.io",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.53,
+    "best_epc": 0.53,
+    "payout": "12760.2",
+    "payout_type": "Per Sale",
+    "cookie": "30 Days",
+    "categories": [
+      "Others"
+    ],
+    "score": 62,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 10,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 3902,
+    "name": "RealMe",
+    "domain": "realme.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.42,
+    "epc_90d": 0.27,
+    "best_epc": 0.42,
+    "payout": "1.58",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Electronics"
+    ],
+    "score": 60,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 7,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 4,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 11176,
+    "name": "Milton",
+    "domain": "milton.in",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.41,
+    "best_epc": 0.41,
+    "payout": "10.43",
+    "payout_type": "Per Sale(%)",
+    "cookie": "7 Days",
+    "categories": [
+      "Home & Kitchen"
+    ],
+    "score": 59,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 7,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 3956,
+    "name": "Havells",
+    "domain": "havells.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.4,
+    "epc_90d": 0.38,
+    "best_epc": 0.4,
+    "payout": "3.0",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Others"
+    ],
+    "score": 59,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 7,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 9496,
+    "name": "Indusind Bajaj Tiger Credit Card",
+    "domain": "bank.in",
+    "access": "open",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 1.57,
+    "best_epc": 1.57,
+    "payout": "675.0",
+    "payout_type": "Per Lead",
+    "cookie": "30 Days",
+    "categories": [
+      "Finance"
+    ],
+    "score": 59,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 14,
+      "epc": 13,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 9503,
+    "name": "Nourish Mantra",
+    "domain": "nourishmantra.in",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.23,
+    "best_epc": 0.23,
+    "payout": "47.25",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Health & Beauty"
+    ],
+    "score": 59,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 7,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 2206,
+    "name": "Clovia",
+    "domain": "clovia.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.49,
+    "best_epc": 0.49,
+    "payout": "7.88",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30days",
+    "categories": [
+      "Fashion"
+    ],
+    "score": 59,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 7,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 3,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 9800,
+    "name": "Sintra.ai",
+    "domain": "sintra.ai",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.06,
+    "best_epc": 0.06,
+    "payout": "21.0",
+    "payout_type": "Per Sale",
+    "cookie": "30 Days",
+    "categories": [
+      "Home & Kitchen"
+    ],
+    "score": 58,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 4,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 4098,
+    "name": "Plum Goodness",
+    "domain": "plumgoodness.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.05,
+    "epc_90d": 0.07,
+    "best_epc": 0.07,
+    "payout": "15.0",
+    "payout_type": "Per Sale(%)",
+    "cookie": "1 Day",
+    "categories": [
+      "Health & Beauty"
+    ],
+    "score": 57,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 4,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 4
+    }
+  },
+  {
+    "id": 43689,
+    "name": "Dell Store",
+    "domain": "dellstore.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "6.0",
+    "payout_type": "Per Sale(%)",
+    "cookie": "1 Day",
+    "categories": [
+      "Electronics"
+    ],
+    "score": 55,
+    "sub_scores": {
+      "relevance": 25,
+      "availability": 0,
+      "epc": 1,
+      "aov": 15,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 4
+    }
+  },
+  {
+    "id": 8613,
+    "name": "Deel",
+    "domain": "deel.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "31900.5",
+    "payout_type": "Per Sale",
+    "cookie": "30 Days",
+    "categories": [
+      "Others"
+    ],
+    "score": 55,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 27381,
+    "name": "Esimx",
+    "domain": "esimx.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "10.69",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Electronics"
+    ],
+    "score": 55,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 29548,
+    "name": "Safeshellvpn",
+    "domain": "safeshellvpn.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "35.63",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Services"
+    ],
+    "score": 55,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 56436,
+    "name": "Digihaat",
+    "domain": "digihaat.in",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "10.5",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Electronics",
+      "Fashion"
+    ],
+    "score": 55,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 3946,
+    "name": "Zebronics",
+    "domain": "zebronics.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "2.25",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Electronics"
+    ],
+    "score": 55,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 78595,
+    "name": "Milld",
+    "domain": "milld.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "82.5",
+    "payout_type": "Per Sale",
+    "cookie": "30 Days",
+    "categories": [
+      "Grocery & Food",
+      "Food & Grocery"
+    ],
+    "score": 55,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 2248,
+    "name": "Decathlon",
+    "domain": "decathlon.in",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "2.25",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Fashion"
+    ],
+    "score": 55,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 24955,
+    "name": "Bee-link",
+    "domain": "bee-link.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "3.0",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Electronics"
+    ],
+    "score": 55,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 4081,
+    "name": "Ondc Bajaj Finserv Ecommerce",
+    "domain": "bajajfinservmarkets.in",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "6.3",
+    "payout_type": "Per Sale",
+    "cookie": "30 Days",
+    "categories": [
+      "Others"
+    ],
+    "score": 55,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 37498,
+    "name": "Agaro",
+    "domain": "agarolifestyle.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "5.25",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Home & Kitchen",
+      "Health & Beauty"
+    ],
+    "score": 55,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 4670,
+    "name": "Rage Coffee",
+    "domain": "ragecoffee.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "18.75",
+    "payout_type": "Per Sale(%)",
+    "cookie": "7 Days",
+    "categories": [
+      "Food & Grocery"
+    ],
+    "score": 55,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 4412,
+    "name": "marksandspencer",
+    "domain": "marksandspencer.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 days",
+    "categories": [],
+    "score": 55,
+    "sub_scores": {
+      "relevance": 24,
+      "availability": 0,
+      "epc": 1,
+      "aov": 13,
+      "breadth": 7,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 5050,
+    "name": "Plush",
+    "domain": "plushforher.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "5.25",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Health & Beauty"
+    ],
+    "score": 55,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 42568,
+    "name": "Alohi Fax Plus",
+    "domain": "fax.plus",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "1276.02",
+    "payout_type": "Per Sale",
+    "cookie": "30 Days",
+    "categories": [
+      "Services"
+    ],
+    "score": 55,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 29362,
+    "name": "Air Doctor",
+    "domain": "air-dr.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "1212.22",
+    "payout_type": "Per Sale",
+    "cookie": "30 Days",
+    "categories": [
+      "Travel"
+    ],
+    "score": 55,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 5270,
+    "name": "Padel Market",
+    "domain": "padelmarket.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "3.75",
+    "payout_type": "Per Sale(%)",
+    "cookie": "1 Day",
+    "categories": [
+      "Sports"
+    ],
+    "score": 54,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 4
+    }
+  },
+  {
+    "id": 4635,
+    "name": "Parallels",
+    "domain": "parallels.com",
+    "access": "open",
+    "affiliated": true,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "11.25",
+    "payout_type": "Per Sale(%)",
+    "cookie": "1days",
+    "categories": [
+      "Others"
+    ],
+    "score": 54,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 20,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 4
+    }
+  },
+  {
+    "id": 61633,
+    "name": "Aceros-de-hispania",
+    "domain": "aceros-de-hispania.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Others"
+    ],
+    "score": 53,
+    "sub_scores": {
+      "relevance": 25,
+      "availability": 0,
+      "epc": 1,
+      "aov": 15,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 58253,
+    "name": "Acergadget-store-global",
+    "domain": "acergadget-store-global.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Electronics"
+    ],
+    "score": 53,
+    "sub_scores": {
+      "relevance": 25,
+      "availability": 0,
+      "epc": 1,
+      "aov": 15,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 60792,
+    "name": "Dx-racer",
+    "domain": "dx-racer.cz",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Gaming"
+    ],
+    "score": 53,
+    "sub_scores": {
+      "relevance": 25,
+      "availability": 0,
+      "epc": 1,
+      "aov": 15,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 2767,
+    "name": "Click & Grow",
+    "domain": "clickandgrow.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 83.94,
+    "best_epc": 83.94,
+    "payout": "15.0",
+    "payout_type": "Per Sale(%)",
+    "cookie": "45 days",
+    "categories": [
+      "Others"
+    ],
+    "score": 52,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 20,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 3
+    }
+  },
+  {
+    "id": 77175,
+    "name": "Sleepwellness",
+    "domain": "sleepwellness.com.sg",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Health & Beauty"
+    ],
+    "score": 51,
+    "sub_scores": {
+      "relevance": 23,
+      "availability": 0,
+      "epc": 1,
+      "aov": 15,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 6092,
+    "name": "Nykaa Beauty CPI",
+    "domain": "google.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.04,
+    "epc_90d": 0.04,
+    "best_epc": 0.04,
+    "payout": "7.5",
+    "payout_type": "Per Install",
+    "cookie": "NA",
+    "categories": [
+      "Fashion"
+    ],
+    "score": 51,
+    "sub_scores": {
+      "relevance": 24,
+      "availability": 0,
+      "epc": 4,
+      "aov": 10,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 3
+    }
+  },
+  {
+    "id": 3693,
+    "name": "Aceblend",
+    "domain": "aceblend.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 2.97,
+    "best_epc": 2.97,
+    "payout": "12.75",
+    "payout_type": "Per Sale(%)",
+    "cookie": "30 Days",
+    "categories": [
+      "Food & Grocery"
+    ],
+    "score": 50,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 16,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 71336,
+    "name": "Boattrader",
+    "domain": "boattrader.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Others"
+    ],
+    "score": 48,
+    "sub_scores": {
+      "relevance": 25,
+      "availability": 0,
+      "epc": 1,
+      "aov": 10,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 64709,
+    "name": "Boatsandoutboards",
+    "domain": "boatsandoutboards.co.uk",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Others"
+    ],
+    "score": 48,
+    "sub_scores": {
+      "relevance": 25,
+      "availability": 0,
+      "epc": 1,
+      "aov": 10,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 2351,
+    "name": "Netmeds",
+    "domain": "netmeds.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.01,
+    "best_epc": 0.01,
+    "payout": "4.73",
+    "payout_type": "Per Sale(%)",
+    "cookie": "1 day",
+    "categories": [
+      "Health & Beauty"
+    ],
+    "score": 37,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 4,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 4
+    }
+  },
+  {
+    "id": 5696,
+    "name": "Homes and Villas",
+    "domain": "marriott.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "2.25",
+    "payout_type": "Per Sale(%)",
+    "cookie": "7days",
+    "categories": [
+      "Travel"
+    ],
+    "score": 35,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 5
+    }
+  },
+  {
+    "id": 3926,
+    "name": "Fiverr",
+    "domain": "fiverr.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "1482.03",
+    "payout_type": "Per Sale",
+    "cookie": "1 Day",
+    "categories": [
+      "Others"
+    ],
+    "score": 34,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 4
+    }
+  },
+  {
+    "id": 35937,
+    "name": "Ayushcare",
+    "domain": "ayushcare.in",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Health & Beauty"
+    ],
+    "score": 32,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 32376,
+    "name": "Amplechairs",
+    "domain": "amplechairs.co.in",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Home & Kitchen"
+    ],
+    "score": 32,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 29289,
+    "name": "Admitad Onboarding Affiliate Offer",
+    "domain": "admitad.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.13",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Services"
+    ],
+    "score": 32,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 31182,
+    "name": "Digitalshopi",
+    "domain": "digitalshopi.in",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Others"
+    ],
+    "score": 32,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 67130,
+    "name": "Mip",
+    "domain": "mip.institute",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Education"
+    ],
+    "score": 32,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 64931,
+    "name": "Godrejinterio",
+    "domain": "godrejinterio.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Home & Kitchen"
+    ],
+    "score": 32,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 56689,
+    "name": "Jagaro",
+    "domain": "jagaro.de",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Flowers & Gifts"
+    ],
+    "score": 32,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 62868,
+    "name": "Greensoulcbd.uk",
+    "domain": "www.greensoulcbd.uk",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Health & Beauty"
+    ],
+    "score": 32,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 59023,
+    "name": "Plumguide",
+    "domain": "plumguide.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Travel"
+    ],
+    "score": 32,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 68580,
+    "name": "Plumbing-deals",
+    "domain": "plumbing-deals.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Home & Kitchen"
+    ],
+    "score": 32,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 27315,
+    "name": "Plumbingsell",
+    "domain": "plumbingsell.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Home & Kitchen"
+    ],
+    "score": 32,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  },
+  {
+    "id": 72920,
+    "name": "Plumchefkitchen",
+    "domain": "plumchefkitchen.com",
+    "access": "not_applied",
+    "affiliated": false,
+    "epc_7d": 0.0,
+    "epc_90d": 0.0,
+    "best_epc": 0.0,
+    "payout": "0.15",
+    "payout_type": "Per Click",
+    "cookie": "30 minutes",
+    "categories": [
+      "Others"
+    ],
+    "score": 32,
+    "sub_scores": {
+      "relevance": 12,
+      "availability": 0,
+      "epc": 1,
+      "aov": 7,
+      "breadth": 5,
+      "platform": 5,
+      "cookie": 2
+    }
+  }
+]

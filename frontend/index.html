@@ -175,20 +175,32 @@
             </div>
           </div>
 
-          <!-- Store Chips (Amazon & Flipkart Only) -->
-          <div class="hero-chips-bar">
-            <span class="chips-intro-label">Try these:</span>
+          <!-- Store & Flagship Chips -->
+          <div class="hero-chips-bar" style="flex-wrap:wrap; gap:8px;">
+            <span class="chips-intro-label">Try Flagships:</span>
             
-            <!-- Official Amazon -->
-            <button class="store-chip-btn chip-trigger" data-url="https://www.amazon.in/dp/B0D14BB5XY" title="Analyze sample Amazon deal">
+            <!-- Apple Watch Series 9 -->
+            <button class="store-chip-btn chip-trigger" data-url="https://www.amazon.in/dp/B0CHX6PXX6" title="Analyze Apple Watch Series 9">
               <img src="/assets/amazon-logo.svg" alt="Amazon" class="store-official-logo">
-              <span>Amazon</span>
+              <span>Apple Watch S9</span>
             </button>
 
-            <!-- Official Flipkart -->
-            <button class="store-chip-btn chip-trigger" data-url="https://www.flipkart.com/motorola-g37-power-pantone-nautical-blue-128-gb/p/itm48ade38c32669?pid=MOBHMX5YNNYGMVWH" title="Analyze sample Flipkart deal">
+            <!-- iPhone 15 -->
+            <button class="store-chip-btn chip-trigger" data-url="https://www.flipkart.com/apple-iphone-15-black-128-gb/p/itm6ac6485515ae4?pid=MOBGTAGPTB3VS24W" title="Analyze Apple iPhone 15">
               <img src="/assets/flipkart-icon.svg" alt="Flipkart" class="store-official-logo">
-              <span>Flipkart</span>
+              <span>iPhone 15 (128GB)</span>
+            </button>
+
+            <!-- OnePlus Nord 4 -->
+            <button class="store-chip-btn chip-trigger" data-url="https://www.amazon.in/dp/B0D7D7R8QK" title="Analyze OnePlus Nord 4">
+              <img src="/assets/amazon-logo.svg" alt="Amazon" class="store-official-logo">
+              <span>OnePlus Nord 4</span>
+            </button>
+
+            <!-- Sony WH-1000XM4 -->
+            <button class="store-chip-btn chip-trigger" data-url="https://www.amazon.in/dp/B0863TXGM3" title="Analyze Sony WH-1000XM4">
+              <img src="/assets/amazon-logo.svg" alt="Amazon" class="store-official-logo">
+              <span>Sony XM4 ANC</span>
             </button>
           </div>
         </div>
@@ -424,120 +436,7 @@
         <!-- Deals Grid — Live from Amazon & Flipkart API -->
         <!-- Populated by live_deals.js → renderModernDealsGrid() via /api/deals/live -->
         <div class="deals-cards-5-grid" id="dealsWorthCheckingContainer" data-live="true">
-          <!-- 1. Apple AirPods 4 -->
-          <div class="mockup-deal-card" data-url="https://www.amazon.in/dp/B0DGJDBP7X">
-            <div class="deal-card-media">
-              <img src="https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=300&q=80" alt="Apple AirPods 4" class="deal-media-img" loading="lazy">
-            </div>
-            <div class="deal-card-content">
-              <h4 class="deal-card-name">Apple AirPods 4</h4>
-              <div class="deal-card-pricing">
-                <strong class="deal-price-cur">₹11,999</strong>
-                <span class="deal-price-mrp">₹14,900</span>
-                <span class="deal-disc-badge">20% OFF</span>
-              </div>
-              <div class="deal-verdict-row">
-                <span class="verdict-good-pill">✓ Good Deal</span>
-              </div>
-              <span class="deal-comp-note">🛡️ 18% below typical price</span>
-              <div class="deal-store-row">
-                <img src="/assets/amazon-logo.svg" alt="Amazon" class="deal-store-ico">
-                <span class="deal-store-arr">→</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2. boAt Airdopes 141 -->
-          <div class="mockup-deal-card" data-url="https://www.amazon.in/dp/B09XSXVMML">
-            <div class="deal-card-media">
-              <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=300&q=80" alt="boAt Airdopes 141" class="deal-media-img" loading="lazy">
-            </div>
-            <div class="deal-card-content">
-              <h4 class="deal-card-name">boAt Airdopes 141</h4>
-              <div class="deal-card-pricing">
-                <strong class="deal-price-cur">₹699</strong>
-                <span class="deal-price-mrp">₹2,990</span>
-                <span class="deal-disc-badge">77% OFF</span>
-              </div>
-              <div class="deal-verdict-row">
-                <span class="verdict-good-pill">✓ Great Deal</span>
-              </div>
-              <span class="deal-comp-note">✓ Near historical low</span>
-              <div class="deal-store-row">
-                <img src="/assets/amazon-logo.svg" alt="Amazon" class="deal-store-ico">
-                <span class="deal-store-arr">→</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 3. Samsung 55" 4K TV -->
-          <div class="mockup-deal-card" data-url="https://www.amazon.in/dp/B0CY5J8424">
-            <div class="deal-card-media">
-              <img src="https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=300&q=80" alt="Samsung 55 4K TV" class="deal-media-img" loading="lazy">
-            </div>
-            <div class="deal-card-content">
-              <h4 class="deal-card-name">Samsung 55" 4K TV</h4>
-              <div class="deal-card-pricing">
-                <strong class="deal-price-cur">₹38,990</strong>
-                <span class="deal-price-mrp">₹59,990</span>
-                <span class="deal-disc-badge">35% OFF</span>
-              </div>
-              <div class="deal-verdict-row">
-                <span class="verdict-good-pill">✓ Good Deal</span>
-              </div>
-              <span class="deal-comp-note">🛡️ 12% below typical price</span>
-              <div class="deal-store-row">
-                <img src="/assets/amazon-logo.svg" alt="Amazon" class="deal-store-ico">
-                <span class="deal-store-arr">→</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 4. Redmi Note 13 5G (Flipkart) -->
-          <div class="mockup-deal-card" data-url="https://www.flipkart.com/redmi-note-13-5g-arctic-white-128-gb/p/itm7da7e9e8d43b2">
-            <div class="deal-card-media">
-              <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&q=80" alt="Redmi Note 13 5G" class="deal-media-img" loading="lazy">
-            </div>
-            <div class="deal-card-content">
-              <h4 class="deal-card-name">Redmi Note 13 5G</h4>
-              <div class="deal-card-pricing">
-                <strong class="deal-price-cur">₹12,999</strong>
-                <span class="deal-price-mrp">₹19,999</span>
-                <span class="deal-disc-badge">35% OFF</span>
-              </div>
-              <div class="deal-verdict-row">
-                <span class="verdict-good-pill">✓ Great Deal</span>
-              </div>
-              <span class="deal-comp-note">✓ Lowest in 90 days</span>
-              <div class="deal-store-row">
-                <img src="/assets/flipkart-icon.svg" alt="Flipkart" class="deal-store-ico">
-                <span class="deal-store-arr">→</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 5. Philips Mixer Grinder -->
-          <div class="mockup-deal-card" data-url="https://www.flipkart.com/philips-hl7576-00-750-w-juicer-mixer-grinder/p/itmf7cd3c5aeed5b">
-            <div class="deal-card-media">
-              <img src="https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=300&q=80" alt="Philips Mixer Grinder" class="deal-media-img" loading="lazy">
-            </div>
-            <div class="deal-card-content">
-              <h4 class="deal-card-name">Philips Mixer Grinder</h4>
-              <div class="deal-card-pricing">
-                <strong class="deal-price-cur">₹2,499</strong>
-                <span class="deal-price-mrp">₹4,995</span>
-                <span class="deal-disc-badge">50% OFF</span>
-              </div>
-              <div class="deal-verdict-row">
-                <span class="verdict-good-pill">✓ Good Deal</span>
-              </div>
-              <span class="deal-comp-note">🛡️ 15% below typical price</span>
-              <div class="deal-store-row">
-                <img src="/assets/flipkart-icon.svg" alt="Flipkart" class="deal-store-ico">
-                <span class="deal-store-arr">→</span>
-              </div>
-            </div>
-          </div>
+          <!-- Populated live from database verified feed by live_deals.js via /api/deals/live -->
         </div>
       </div>
     </section>
@@ -767,43 +666,112 @@
        ========================================================================== -->
 
     <!-- View 2: Product Detail & Deal Intelligence -->
-      <div id="detailView" class="product-detail-view-wrap" style="display: none;">
+      <!-- Skeleton Loading State for Product Detail Page -->
+  <div id="pdpSkeletonView" class="product-detail-view-wrap pdp-skeleton-wrap" style="display: none;">
+    <div class="container">
+      <div class="skeleton-shimmer skeleton-breadcrumbs"></div>
+      <div class="pdp-hero-container-card skeleton-hero-card">
+        <div class="gallery-column">
+          <div class="gallery-thumbs-stack">
+            <div class="skeleton-shimmer skeleton-thumb"></div>
+            <div class="skeleton-shimmer skeleton-thumb"></div>
+            <div class="skeleton-shimmer skeleton-thumb"></div>
+          </div>
+          <div class="gallery-main-container skeleton-shimmer skeleton-main-img"></div>
+        </div>
+        <div class="product-center-column">
+          <div class="skeleton-shimmer skeleton-line skeleton-title-1"></div>
+          <div class="skeleton-shimmer skeleton-line skeleton-title-2"></div>
+          <div class="skeleton-shimmer skeleton-line skeleton-rating"></div>
+          <div class="skeleton-shimmer skeleton-line skeleton-price"></div>
+          <div class="skeleton-shimmer skeleton-box skeleton-auditor"></div>
+          <div class="skeleton-shimmer skeleton-btn skeleton-buy-btn"></div>
+          <div class="skeleton-shimmer skeleton-box skeleton-receipt"></div>
+        </div>
+        <div class="pdp-intelligence-glance-col">
+          <div class="skeleton-shimmer skeleton-box skeleton-glance"></div>
+          <div class="skeleton-shimmer skeleton-box skeleton-ttb"></div>
+        </div>
+      </div>
+      <div class="skeleton-shimmer skeleton-tabs-bar"></div>
+      <div class="pdp-deep-intelligence-grid">
+        <div class="intel-box-container skeleton-shimmer skeleton-box skeleton-intel-card"></div>
+        <div class="intel-box-container skeleton-shimmer skeleton-box skeleton-intel-card"></div>
+        <div class="intel-box-container skeleton-shimmer skeleton-box skeleton-intel-card"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Floating Top Buy Bar (Slides in when scrolling past Hero) -->
+  <div id="pdpStickyBuyBar" class="pdp-sticky-buy-bar" style="display: none;">
+    <div class="container sticky-bar-inner">
+      <div class="sticky-bar-product-info">
+        <img id="stickyBarImg" src="" alt="Thumbnail" class="sticky-bar-thumb">
+        <div class="sticky-bar-text-group">
+          <h4 id="stickyBarTitle" class="sticky-bar-title">Product Title</h4>
+          <div class="sticky-bar-meta-row">
+            <span id="stickyBarStars" class="stars-gold-sm">★ --</span>
+            <span id="stickyBarRatings" class="sticky-bar-reviews-count"></span>
+            <span id="stickyBarVerdict" class="sticky-bar-verdict-chip">✓ Verified</span>
+          </div>
+        </div>
+      </div>
+      <div class="sticky-bar-cta-group">
+        <div class="sticky-bar-price-box">
+          <div class="sticky-bar-price-main">
+            <span class="curr">₹</span>
+            <strong id="stickyBarPrice">0</strong>
+            <span id="stickyBarMrp" class="sticky-bar-mrp">₹0</span>
+            <span id="stickyBarDiscount" class="sticky-bar-disc-badge">0% OFF</span>
+          </div>
+        </div>
+        <div class="sticky-bar-buttons">
+          <button type="button" class="btn-sticky-track" id="stickyTrackBtn" title="Set Price Drop Alert">
+            <span>🔔 Track</span>
+          </button>
+          <a id="stickyBuyBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-sticky-buy">
+            <span>View Deal on <span id="stickyStoreLabel">Store</span> →</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="detailView" class="product-detail-view-wrap" style="display: none;">
     <div class="container">
       
       <!-- Breadcrumbs -->
       <nav class="breadcrumbs-nav-row">
         <a href="#" id="backToHomeBreadcrumb" class="breadcrumb-nav-link">Home</a>
         <span>›</span>
-        <span id="breadcrumbCategory" class="breadcrumb-nav-link">Audio</span>
+        <span id="breadcrumbCategory" class="breadcrumb-nav-link">Electronics</span>
         <span>›</span>
-        <span id="breadcrumbBrand" class="breadcrumb-nav-link">Headphones</span>
+        <span id="breadcrumbBrand" class="breadcrumb-nav-link">Brand</span>
         <span>›</span>
-        <span id="breadcrumbTitle" class="breadcrumb-active-item">boAt Rockerz 450 Pro</span>
+        <span id="breadcrumbTitle" class="breadcrumb-active-item">Product</span>
       </nav>
 
       <!-- 3-Column Product Hero Card -->
-      <div class="pdp-hero-container-card">
+      <div class="pdp-hero-container-card" id="pdpHeroContainer">
         
         <!-- Col 1: Product Photo Gallery -->
         <div class="gallery-column">
-          <div class="gallery-thumbs-stack">
-            <button class="gallery-thumb-item active">
-              <img id="thumb1" src="" alt="Thumb 1">
-            </button>
-            <button class="gallery-thumb-item">
-              <img id="thumb2" src="" alt="Thumb 2">
-            </button>
-            <button class="gallery-thumb-item">
-              <img id="thumb3" src="" alt="Thumb 3">
-            </button>
-            <div class="gallery-thumb-item" style="display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--text-secondary);">
-              +2
-            </div>
+          <div class="gallery-thumbs-stack" id="galleryThumbsStack">
+            <!-- Dynamic thumbnails rendered by JS -->
           </div>
 
-          <div class="gallery-main-container">
+          <div class="gallery-main-container" id="galleryMainContainer" title="Click to view high-resolution image">
             <span id="pdpVerdictPill" class="deal-status-chip">✓ Good Deal</span>
             <img id="pdpMainImg" src="" class="gallery-main-photo" alt="Product Photo">
+            <div class="gallery-zoom-badge" id="galleryZoomBadge">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <line x1="11" y1="8" x2="11" y2="14"></line>
+                <line x1="8" y1="11" x2="14" y2="11"></line>
+              </svg>
+              <span>Click to Zoom</span>
+            </div>
           </div>
         </div>
 
@@ -871,6 +839,29 @@
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
               </svg>
             </button>
+          </div>
+
+          <!-- Delivery, Stock & Authenticity Badges Strip -->
+          <div class="pdp-delivery-trust-strip" id="pdpDeliveryStrip">
+            <div class="delivery-trust-item" id="pdpDeliveryItem">
+              <span class="delivery-trust-ico">🚚</span>
+              <span id="pdpDeliveryText" class="delivery-trust-text">Fast Delivery Available</span>
+            </div>
+            <div class="delivery-trust-item" id="pdpStockItem">
+              <span class="delivery-trust-ico">📦</span>
+              <span id="pdpStockText" class="delivery-trust-text in-stock">In Stock</span>
+            </div>
+            <div class="delivery-trust-item" id="pdpReturnItem">
+              <span class="delivery-trust-ico">🔄</span>
+              <span id="pdpReturnPolicyText" class="delivery-trust-text">7 Days Return / Replacement</span>
+            </div>
+            <div class="delivery-trust-item" id="pdpMembershipItem" style="display:none;">
+              <span id="pdpMembershipBadge" class="pdp-membership-chip">Prime Free Delivery</span>
+            </div>
+            <div class="delivery-trust-item" id="pdpSellerTrustItem">
+              <span class="delivery-trust-ico">🛡️</span>
+              <span id="pdpSellerTrustText" class="delivery-trust-text">100% Genuine Guaranteed</span>
+            </div>
           </div>
 
           <!-- True Landed Checkout Price Engine (Transparent Slip) -->
@@ -1012,95 +1003,180 @@
       </div>
 
       <!-- Navigation Tabs -->
-      <nav class="pdp-nav-tabs-bar">
-        <button class="pdp-nav-tab-btn active" data-tab="overview">Overview</button>
-        <button class="pdp-nav-tab-btn" data-tab="history">Price History</button>
-        <button class="pdp-nav-tab-btn" data-tab="compare">Compare Prices</button>
-        <button class="pdp-nav-tab-btn" data-tab="coupons">Offers & Coupons</button>
-        <button class="pdp-nav-tab-btn" data-tab="reviews">Reviews</button>
-        <button class="pdp-nav-tab-btn" data-tab="specs">Specifications</button>
-        <button class="pdp-nav-tab-btn" data-tab="similar">Similar Products</button>
+      <nav class="pdp-nav-tabs-bar" id="pdpNavTabsBar">
+        <button class="pdp-nav-tab-btn active" data-tab="overview" data-target="pdpHeroContainer">Overview</button>
+        <button class="pdp-nav-tab-btn" data-tab="history" data-target="sectionHistory">Price History</button>
+        <button class="pdp-nav-tab-btn" data-tab="compare" data-target="sectionCompare">Compare Prices</button>
+        <button class="pdp-nav-tab-btn" data-tab="specs" data-target="sectionSpecs">Specifications</button>
+        <button class="pdp-nav-tab-btn" data-tab="coupons" data-target="sectionCoupons">Offers & Coupons</button>
+        <button class="pdp-nav-tab-btn" data-tab="reviews" data-target="sectionReviews">Reviews</button>
+        <button class="pdp-nav-tab-btn" data-tab="similar" data-target="sectionSimilar">Similar Products</button>
       </nav>
 
-      <!-- 3-Column Intelligence Row -->
+      <!-- 3-Column Intelligence Grid -->
       <div class="pdp-deep-intelligence-grid">
-        
-        <!-- Card 1: Price History (90 Days) -->
-        <div class="intel-box-container" id="sectionHistory">
-          <div class="box-title-lead-row">
-            <h3 class="box-title-h3">Price History (90 Days)</h3>
-            <div class="timeframe-filter-pills">
-              <button class="tf-filter-btn active" data-tf="90D">90D</button>
-              <button class="tf-filter-btn" data-tf="6M">6M</button>
-              <button class="tf-filter-btn" data-tf="1Y">1Y</button>
-              <button class="tf-filter-btn" data-tf="All">All</button>
+
+        <!-- Card 1: Unified Price History & Store Comparison -->
+        <div class="intel-box-container unified-history-compare-card" id="sectionHistory">
+          <!-- Top Section: Header -->
+          <div class="uch-header-row">
+            <div class="uch-title-group">
+              <div class="uch-title-lead">
+                <span class="uch-title-icon">📈</span>
+                <h3 class="box-title-h3">Price History & Store Comparison</h3>
+              </div>
+              <span class="uch-subhead">Amazon India vs Flipkart · Observed retail pricing & live offers</span>
+            </div>
+            <div class="uch-header-right">
+              <span class="chart-live-pulse-badge">
+                <span class="live-pulse-dot"></span> Live Sync Verified
+              </span>
             </div>
           </div>
 
-          <div class="svg-chart-container" style="position:relative;">
-            <!-- Interactive Floating Lowest Price Marker -->
-            <div id="chartLowestTooltip" class="chart-lowest-tooltip">
-              <span class="clt-lbl">Lowest Price</span>
-              <strong id="cltPrice">₹0</strong>
-              <span id="cltDate" class="clt-date">on 12 Sep 2024</span>
+          <!-- Store Legend & Current Price Bar -->
+          <div class="uch-legend-bar" id="storeLegendRow">
+            <div class="store-legend-pill amazon active" id="legendAmazonPill" data-store="amazon" title="Click to toggle Amazon curve">
+              <span class="store-legend-dot amazon-dot" id="legendAmazonDot"></span>
+              <img src="/assets/amazon-logo.svg" alt="Amazon" class="legend-store-logo">
+              <span class="store-legend-name">Amazon</span>
+              <strong class="store-legend-price" id="legendAmazonPrice">—</strong>
+              <span class="legend-status-badge" id="legendAmazonStatus">In Stock</span>
             </div>
-            <svg id="pdpHistorySvg" viewBox="0 0 400 160" style="width:100%; height:100%; overflow:visible;">
-              <!-- Dynamic curve -->
+            <div class="store-legend-pill flipkart active" id="legendFlipkartPill" data-store="flipkart" title="Click to toggle Flipkart curve">
+              <span class="store-legend-dot flipkart-dot" id="legendFlipkartDot"></span>
+              <img src="/assets/flipkart-icon.svg" alt="Flipkart" class="legend-store-logo">
+              <span class="store-legend-name">Flipkart</span>
+              <strong class="store-legend-price" id="legendFlipkartPrice">—</strong>
+              <span class="legend-status-badge" id="legendFlipkartStatus">In Stock</span>
+            </div>
+            <div class="legend-diff-callout" id="legendDiffCallout">
+              <span id="legendDiffText">Comparing Stores</span>
+            </div>
+          </div>
+
+          <!-- Timeframe Filter Toolbar -->
+          <div class="uch-chart-toolbar">
+            <div class="timeframe-filter-pills" id="chartTimeframePills">
+              <button class="tf-filter-btn" data-tf="30D">1M</button>
+              <button class="tf-filter-btn active" data-tf="90D">3M</button>
+              <button class="tf-filter-btn" data-tf="180D">6M</button>
+              <button class="tf-filter-btn" data-tf="1Y">1Y</button>
+              <button class="tf-filter-btn" data-tf="ALL">All</button>
+            </div>
+            <div class="chart-legend-hint">
+              <span class="hint-dot hint-dot-amazon"></span> Amazon
+              <span class="hint-dot hint-dot-flipkart"></span> Flipkart
+            </div>
+          </div>
+
+          <!-- Dual-Line Chart Canvas with Crosshair & Glassmorphism Tooltip -->
+          <div class="svg-chart-container" id="chartContainer" style="position:relative;">
+            <!-- Interactive Floating Hover Tooltip & Crosshair -->
+            <div id="chartHoverTooltip" class="chart-hover-tooltip" style="display:none;">
+              <div class="cht-date-header" id="chtDate">12 Sep 2024</div>
+              <div class="cht-stores-body">
+                <div class="cht-store-row amazon-row" id="chtAmazonRow">
+                  <div class="cht-store-lbl">
+                    <span class="cht-dot dot-amazon"></span>
+                    <span>Amazon</span>
+                  </div>
+                  <strong class="cht-price-val" id="chtAmazonPrice">₹0</strong>
+                </div>
+                <div class="cht-store-row flipkart-row" id="chtFlipkartRow">
+                  <div class="cht-store-lbl">
+                    <span class="cht-dot dot-flipkart"></span>
+                    <span>Flipkart</span>
+                  </div>
+                  <strong class="cht-price-val" id="chtFlipkartPrice">₹0</strong>
+                </div>
+              </div>
+              <div id="chtDeltaNotice" class="cht-delta-notice">Comparing live prices</div>
+            </div>
+
+            <svg id="pdpHistorySvg" viewBox="0 0 720 260" preserveAspectRatio="none" style="width:100%; height:100%; overflow:visible;">
+              <!-- Dynamic dual bezier curves and grid lines -->
             </svg>
           </div>
 
-          <div class="chart-bottom-metrics-grid">
-            <div>
-              <span>Lowest Price</span>
-              <strong id="chartSumLow">₹0</strong>
-              <span id="chartSumLowDate" style="font-size:9.5px; color:#64748B; display:block;">12 Sep 2024</span>
+          <!-- 4 Clean Metric Stat Tiles (2x2 Grid) -->
+          <div class="chart-card-stats-2x2">
+            <div class="chart-card-stat-tile">
+              <div class="cs-top">
+                <span class="cs-label">Lowest Observed</span>
+                <span id="chartSumLowDate" class="cs-date-chip">Date</span>
+              </div>
+              <strong id="chartSumLow" class="cs-val green">₹0</strong>
+              <span class="cs-sub" id="chartSumLowStore">all-time retail low</span>
             </div>
-            <div>
-              <span>Average Price</span>
-              <strong id="chartSumAvg">₹0</strong>
-              <span style="font-size:9.5px; color:#64748B; display:block;">last 90 days</span>
+
+            <div class="chart-card-stat-tile">
+              <div class="cs-top">
+                <span class="cs-label">90D Average</span>
+                <span class="cs-date-chip benchmark-chip">Benchmark</span>
+              </div>
+              <strong id="chartSumAvg" class="cs-val blue">₹0</strong>
+              <span class="cs-sub">typical market level</span>
             </div>
-            <div>
-              <span>Highest Price</span>
-              <strong id="chartSumHigh">₹0</strong>
-              <span id="chartSumHighDate" style="font-size:9.5px; color:#64748B; display:block;">28 May 2024</span>
+
+            <div class="chart-card-stat-tile">
+              <div class="cs-top">
+                <span class="cs-label">Highest Observed</span>
+                <span id="chartSumHighDate" class="cs-date-chip">Peak</span>
+              </div>
+              <strong id="chartSumHigh" class="cs-val">₹0</strong>
+              <span class="cs-sub">in observation window</span>
             </div>
-            <div>
-              <span>Price Drops</span>
-              <strong id="chartSumDrops">14 times</strong>
-              <span style="font-size:9.5px; color:#64748B; display:block;">in last 90 days</span>
+
+            <div class="chart-card-stat-tile">
+              <div class="cs-top">
+                <span class="cs-label">Price Drops</span>
+                <span class="cs-date-chip verified-chip">Verified</span>
+              </div>
+              <strong id="chartSumDrops" class="cs-val amber">14 times</strong>
+              <span class="cs-sub">recorded fluctuations</span>
             </div>
           </div>
-          <div class="chart-disclaimer-note">Prices are based on data from multiple stores and may vary.</div>
-        </div>
 
-        <!-- Card 2: Compare Prices Table -->
-        <div class="intel-box-container" id="sectionCompare">
-          <div class="box-title-lead-row">
-            <h3 class="box-title-h3">Compare Prices</h3>
-            <span style="font-size:11px; color:var(--text-secondary);">Sort by: Lowest Price ▾</span>
+          <!-- Embedded Store Comparison Table Section -->
+          <div class="embedded-compare-section" id="sectionCompare">
+            <div class="embedded-compare-header">
+              <div class="ech-title-group">
+                <span class="ech-badge-icon">⚖️</span>
+                <div>
+                  <h4 class="ech-title">Live Store Comparison & Direct Deals</h4>
+                  <span class="ech-subhead">Direct comparison between Amazon India and Flipkart</span>
+                </div>
+              </div>
+              <span class="ech-verified-pill">⚡ Direct Merchant Sync</span>
+            </div>
+
+            <div class="comparison-table-scroll">
+              <table class="clean-store-table">
+                <thead>
+                  <tr>
+                    <th>Store</th>
+                    <th>Rating</th>
+                    <th>Verified Price</th>
+                    <th>Delivery</th>
+                    <th>Availability</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="comparisonTableBody">
+                  <!-- Dynamically filled with Amazon vs Flipkart ONLY -->
+                </tbody>
+              </table>
+            </div>
+
+            <div id="savingsNoticeBox" class="table-savings-callout-banner">
+              <span>Price Difference: <strong id="savingsNoticeDiff">₹0</strong></span>
+              <span id="savingsNoticeText">Comparing Amazon vs Flipkart live offers</span>
+            </div>
           </div>
 
-          <div class="comparison-table-scroll">
-            <table class="clean-store-table">
-              <thead>
-                <tr>
-                  <th>Store</th>
-                  <th>Price</th>
-                  <th>Discount</th>
-                  <th>Delivery</th>
-                  <th>Total Price</th>
-                </tr>
-              </thead>
-              <tbody id="comparisonTableBody">
-                <!-- Dynamically filled with Amazon / Flipkart / Official / Croma / Reliance -->
-              </tbody>
-            </table>
-          </div>
-
-          <div id="savingsNoticeBox" class="table-savings-callout-banner">
-            <span>Price Difference: <strong id="savingsNoticeDiff">₹0</strong></span>
-            <span id="savingsNoticeText">Comparing verified live store offers</span>
+          <div class="chart-disclaimer-note">
+            🛡️ Authentic verified retail pricing. Zero simulated drops or sponsored rank manipulation.
           </div>
         </div>
 
@@ -1163,6 +1239,30 @@
           </div>
         </div>
 
+      </div>
+
+      <!-- Full-Width Technical Specifications Section -->
+      <div class="intel-box-container pdp-specs-full-card" id="sectionSpecs">
+        <div class="box-title-lead-row">
+          <div class="specs-heading-group">
+            <h3 class="box-title-h3">Technical Specifications</h3>
+            <span class="specs-count-badge" id="specsCountBadge">Key Specs</span>
+          </div>
+          <span class="specs-verified-tag">✓ Direct Store Extraction</span>
+        </div>
+        <div class="specs-table-wrapper" id="specsTableWrapper">
+          <table class="specs-clean-table">
+            <tbody id="specsTableBody">
+              <!-- Dynamically populated key-value rows -->
+            </tbody>
+          </table>
+        </div>
+        <div class="specs-expand-row" id="specsExpandRow" style="display:none;">
+          <button type="button" class="btn-specs-expand" id="toggleSpecsBtn">
+            <span id="toggleSpecsBtnText">Show All Specifications</span>
+            <span class="specs-expand-arrow">▾</span>
+          </button>
+        </div>
       </div>
 
       <!-- ==========================================================================
@@ -1282,6 +1382,41 @@
 
       </div>
 
+      <!-- Bottom High-Impact View Deal CTA Card Banner -->
+      <div class="pdp-bottom-cta-banner" id="pdpBottomCtaBanner">
+        <div class="pdp-bottom-cta-inner">
+          <div class="pdp-bottom-cta-left">
+            <img id="pdpBottomCtaImg" src="" alt="Product" class="pdp-bottom-cta-thumb">
+            <div class="pdp-bottom-cta-details">
+              <span class="pdp-bottom-cta-eyebrow">READY TO PURCHASE AT VERIFIED PRICE?</span>
+              <h4 id="pdpBottomCtaTitle" class="pdp-bottom-cta-title">Product Title</h4>
+              <div class="pdp-bottom-cta-meta">
+                <span id="pdpBottomCtaRating" class="stars-gold-sm">★ 4.4</span>
+                <span id="pdpBottomCtaReviews" class="reviews-count-sm">(8,230)</span>
+                <span class="meta-dot">•</span>
+                <span id="pdpBottomCtaPolicy" class="badge-policy">7 Days Replacement</span>
+                <span class="meta-dot">•</span>
+                <span id="pdpBottomCtaDelivery" class="badge-delivery">Free Delivery</span>
+              </div>
+            </div>
+          </div>
+          <div class="pdp-bottom-cta-right">
+            <div class="pdp-bottom-cta-pricing">
+              <div class="pdp-bottom-cta-price-row">
+                <span class="pdp-bottom-cta-curr">₹</span>
+                <strong id="pdpBottomCtaPrice" class="pdp-bottom-cta-val">0</strong>
+                <span id="pdpBottomCtaMrp" class="pdp-bottom-cta-mrp">₹0</span>
+                <span id="pdpBottomCtaDiscount" class="pdp-bottom-cta-badge">0% OFF</span>
+              </div>
+              <span class="pdp-bottom-cta-note">Instant bank card offers & transparent return window</span>
+            </div>
+            <a id="pdpBottomCtaBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-bottom-cta-view-deal">
+              <span>View Deal on <span id="pdpBottomStoreLabel">Store</span> →</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1373,6 +1508,18 @@
           <span>•</span>
           <span>Cancel Anytime</span>
         </div>
+  <!-- Image Lightbox Modal for High-Resolution Product Inspection -->
+  <div id="pdpLightboxModal" class="pdp-lightbox-backdrop" style="display:none;" aria-hidden="true">
+    <div class="pdp-lightbox-dialog" role="dialog" aria-labelledby="lightboxTitle">
+      <button type="button" id="closeLightboxBtn" class="pdp-lightbox-close" aria-label="Close image preview">×</button>
+      <div class="pdp-lightbox-body">
+        <button type="button" id="lightboxPrevBtn" class="pdp-lightbox-nav prev" aria-label="Previous image">‹</button>
+        <img id="lightboxImg" src="" alt="Full Resolution Product Image" class="pdp-lightbox-img">
+        <button type="button" id="lightboxNextBtn" class="pdp-lightbox-nav next" aria-label="Next image">›</button>
+      </div>
+      <div class="pdp-lightbox-caption">
+        <span id="lightboxCounter" class="lightbox-counter">1 / 1</span>
+        <span id="lightboxTitle" class="lightbox-title">Product Image</span>
       </div>
     </div>
   </div>

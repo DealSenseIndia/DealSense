@@ -1,0 +1,2196 @@
+{
+  "phase2_auth": {
+    "http_status": 200,
+    "status": "ok",
+    "version": "3.0",
+    "publisher_id": 272211,
+    "currency": "INR"
+  },
+  "channel_317867": {
+    "id": 317867,
+    "name": "DealSense \u2014 India's Most Accurate Deal Intelligence Engine",
+    "status": "approved",
+    "url": "https://dealsense-fawn.vercel.app/",
+    "category": "Website / Blog"
+  },
+  "candidates_by_merchant": {
+    "Amazon India": [
+      {
+        "id": 59199,
+        "name": "Amazingco",
+        "domain": "amazingco.me",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 67279,
+        "name": "Amazingred",
+        "domain": "amazingred.ru",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 6272,
+        "name": "Amazon - CA",
+        "domain": "amazon.ca",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 8,
+        "name": "Amazon UK",
+        "domain": "amazon.co.uk",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.13",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 9,
+        "name": "Amazon US",
+        "domain": "amazon.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "6.38",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 34833,
+        "name": "amazingself",
+        "domain": "amazingself.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 31086,
+        "name": "Amazingclubs",
+        "domain": "amazingclubs.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 817,
+        "name": "Amazon India",
+        "domain": "amazon.in",
+        "status": null,
+        "access_status": "pending",
+        "payout": "3.17",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 11799,
+        "name": "Amazon Mexico",
+        "domain": "amazon.com.mx",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 6393,
+        "name": "Amazon Sweden",
+        "domain": "amazon.se",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 32805,
+        "name": "Amazon Belgium",
+        "domain": "com.be",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 5647,
+        "name": "Amazon Germany",
+        "domain": "amazon.de",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Sale",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 2997,
+        "name": "Amazon Prime Web",
+        "domain": "primevideo.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "2.63",
+        "payout_currency": "INR",
+        "payout_type": "Per Sale",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 28775,
+        "name": "Omazonia",
+        "domain": "omazonia.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 4217,
+        "name": "amazfit",
+        "domain": "amazfit.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 32801,
+        "name": "Amazon Netherlands",
+        "domain": "amazon.nl",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 27893,
+        "name": "Amazgifts",
+        "domain": "amazgifts.de",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 56791,
+        "name": "Amazon_Seller_B07P1XFYJP_PB",
+        "domain": "amazon.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "7.2",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 56792,
+        "name": "Amazon_Seller_B0987FCQQW_PB",
+        "domain": "amazon.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "7.2",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 56795,
+        "name": "Amazon_Seller_B0C77XGD1H_PB",
+        "domain": "amazon.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "6.0",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 56793,
+        "name": "Amazon_Seller_B0C7GFMP8Z_PB",
+        "domain": "amazon.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "6.0",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 56821,
+        "name": "Amazon_Seller_B0CV3ZJ2PN_LV",
+        "domain": "amazon.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "12.0",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 33405,
+        "name": "Amazon_Seller_B0DD78Y3L5_PB",
+        "domain": "amazon.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "6.0",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 56822,
+        "name": "Amazon_Seller_B0DT14FRPG_LV",
+        "domain": "amazon.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "12.0",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 56794,
+        "name": "Amazon_Seller_B0DX23JJVM_PB",
+        "domain": "amazon.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "6.0",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 16450,
+        "name": "Amadine",
+        "domain": "amadine.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 33404,
+        "name": "Aragon AI",
+        "domain": "aragon.ai",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "22.5",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 64776,
+        "name": "Wamazing",
+        "domain": "wamazing.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 31821,
+        "name": "Amoonic",
+        "domain": "amoonic.de",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 66493,
+        "name": "Amronet",
+        "domain": "amronet.pl",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      }
+    ],
+    "Flipkart": [
+      {
+        "id": 1,
+        "name": "Flipkart",
+        "domain": "flipkart.com",
+        "status": null,
+        "access_status": "pending",
+        "payout": "6.0",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 66947,
+        "name": "Flipkart Seller Kids",
+        "domain": "flipkart.com",
+        "status": null,
+        "access_status": "open",
+        "payout": "712.5",
+        "payout_currency": "INR",
+        "payout_type": "Per Sale",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 38854,
+        "name": "SBI Flipkart Credit Card",
+        "domain": "sbicard.com",
+        "status": null,
+        "access_status": "open",
+        "payout": "1890.0",
+        "payout_currency": "INR",
+        "payout_type": "Per Lead",
+        "deeplink_allowed": false
+      }
+    ],
+    "Myntra": [
+      {
+        "id": 101,
+        "name": "Myntra",
+        "domain": "myntra.com",
+        "status": null,
+        "access_status": "pending",
+        "payout": "7.5",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 23787,
+        "name": "Mantraroma",
+        "domain": "mantraroma.shop",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 9548,
+        "name": "MyTrainPal",
+        "domain": "mytrainpal.com",
+        "status": null,
+        "access_status": "open",
+        "payout": "1.05",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 17740,
+        "name": "Mytransfers",
+        "domain": "mytransfers.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 72447,
+        "name": "Onze-montreal",
+        "domain": "onze-montreal.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 21004,
+        "name": "mytrauringstore",
+        "domain": "mytrauringstore.de",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 15889,
+        "name": "Mantrasupplements",
+        "domain": "mantrasupplements.co.uk",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 78332,
+        "name": "Mintrx",
+        "domain": "mintrx.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 74534,
+        "name": "Mymira",
+        "domain": "mymira.fr",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 59871,
+        "name": "Mistral",
+        "domain": "mistral.com.br",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 9800,
+        "name": "Sintra.ai",
+        "domain": "sintra.ai",
+        "status": null,
+        "access_status": "open",
+        "payout": "21.0",
+        "payout_currency": "INR",
+        "payout_type": "Per Sale",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 5021,
+        "name": "central",
+        "domain": "central.co.th",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 27380,
+        "name": "mistral",
+        "domain": "mistral.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 9503,
+        "name": "Nourish Mantra",
+        "domain": "nourishmantra.in",
+        "status": null,
+        "access_status": "open",
+        "payout": "47.25",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 75274,
+        "name": "Wantra",
+        "domain": "wantra.jp",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 66762,
+        "name": "Miniraty",
+        "domain": "miniraty.pl",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 11256,
+        "name": "mactrade",
+        "domain": "mactrade.de",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 66770,
+        "name": "Miniratka",
+        "domain": "miniratka.pl",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 76528,
+        "name": "Myaurafuel",
+        "domain": "myaurafuel.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 4965,
+        "name": "Toys Central",
+        "domain": "toycentral.com.hk",
+        "status": null,
+        "access_status": "open",
+        "payout": "4.35",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 8581,
+        "name": "Baby Central - HK",
+        "domain": "babycentral.com.hk",
+        "status": null,
+        "access_status": "open",
+        "payout": "4.35",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 58654,
+        "name": "Kontramarka",
+        "domain": "kontramarka.ua",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 70912,
+        "name": "Myparallelle",
+        "domain": "myparallelle.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 36866,
+        "name": "Centralhoteles",
+        "domain": "centralhoteles.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 9397,
+        "name": "Schicker-mineral",
+        "domain": "schicker-mineral.de",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.13",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 5850,
+        "name": "myBRA - CPS",
+        "domain": "my-bras.com",
+        "status": null,
+        "access_status": "open",
+        "payout": "5.25",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 72697,
+        "name": "Contractorforeman",
+        "domain": "contractorforeman.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 59809,
+        "name": "Centraldeconcursos",
+        "domain": "centraldeconcursos.com.br",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 64379,
+        "name": "Montcalmcollection",
+        "domain": "montcalmcollection.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 29565,
+        "name": "Contractorforemancms",
+        "domain": "contractorforemancms.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      }
+    ],
+    "Tata CLiQ": [
+      {
+        "id": 2588,
+        "name": "Tata Cliq",
+        "domain": "tatacliq.com",
+        "status": null,
+        "access_status": "open",
+        "payout": "3.75",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 78431,
+        "name": "Tataura",
+        "domain": "tataura.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 73126,
+        "name": "Clipp",
+        "domain": "clipp.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 68985,
+        "name": "Clixo",
+        "domain": "clixo.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 66635,
+        "name": "Clineo",
+        "domain": "clineo.pl",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 35809,
+        "name": "Cliove",
+        "domain": "cliove.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 17498,
+        "name": "tataharperskincare",
+        "domain": "tataharperskincare.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 79765,
+        "name": "Abc-clinic",
+        "domain": "abc-clinic.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 2767,
+        "name": "Click & Grow",
+        "domain": "clickandgrow.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "15.0",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 29187,
+        "name": "Clicksy.uk",
+        "domain": "www.clicksy.uk",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 11412,
+        "name": "Climatuo",
+        "domain": "climatuo.it",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 6579,
+        "name": "Clinique",
+        "domain": "clinique.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "2.01",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 63334,
+        "name": "Cliphair",
+        "domain": "cliphair.co.uk",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 2829,
+        "name": "Cliradex",
+        "domain": "cliradex.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "7.5",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 59579,
+        "name": "Kare-click",
+        "domain": "kare-click.fr",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 43790,
+        "name": "clinique",
+        "domain": "clinique.de",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 67861,
+        "name": "Click-yummy",
+        "domain": "click-yummy.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 63262,
+        "name": "Click4gap",
+        "domain": "click4gap.co.uk",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 7575,
+        "name": "Clickgolf",
+        "domain": "clickgolf.co.uk",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "6.36",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 73863,
+        "name": "Clickroam",
+        "domain": "clickroam.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 6180,
+        "name": "ClickInks - US",
+        "domain": "clickinks.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "7.5",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 62748,
+        "name": "Clickbasin",
+        "domain": "clickbasin.co.uk",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 11355,
+        "name": "Clim-planete",
+        "domain": "clim-planete.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.13",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 12005,
+        "name": "Climonline",
+        "domain": "climonline.fr",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 77152,
+        "name": "ClipperPro",
+        "domain": "clipperpro.com",
+        "status": null,
+        "access_status": "open",
+        "payout": "15.0",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 27388,
+        "name": "clickferry",
+        "domain": "clickferry.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 75330,
+        "name": "Calmia-clinic",
+        "domain": "calmia-clinic.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 10418,
+        "name": "Climamarket",
+        "domain": "climamarket.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.13",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 27724,
+        "name": "Clinicdress",
+        "domain": "clinicdress.de",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 63868,
+        "name": "Clinisoothe",
+        "domain": "clinisoothe.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      }
+    ],
+    "AJIO": [
+      {
+        "id": 2589,
+        "name": "Ajio",
+        "domain": "ajio.com",
+        "status": null,
+        "access_status": "pending",
+        "payout": "9.0",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 9568,
+        "name": "Ajio Gram",
+        "domain": "ajio.com",
+        "status": null,
+        "access_status": "open",
+        "payout": "9.0",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": false
+      },
+      {
+        "id": 26265,
+        "name": "Aziocorp",
+        "domain": "aziocorp.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 14503,
+        "name": "Ajforexea",
+        "domain": "ajforexea.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 72536,
+        "name": "Aiongear",
+        "domain": "aiongear.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "payout_type": "Per Click",
+        "deeplink_allowed": true
+      }
+    ],
+    "Nykaa": [
+      {
+        "id": 891,
+        "name": "Nykaa Beauty",
+        "domain": "nykaa.com",
+        "status": null,
+        "access_status": "open",
+        "payout": "4.2",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 3907,
+        "name": "Nykaa Fashion",
+        "domain": "nykaafashion.com",
+        "status": null,
+        "access_status": "open",
+        "payout": "4.2",
+        "payout_currency": "%",
+        "payout_type": "Per Sale(%)",
+        "deeplink_allowed": true
+      },
+      {
+        "id": 6092,
+        "name": "Nykaa Beauty CPI",
+        "domain": "google.com",
+        "status": null,
+        "access_status": "not_applied",
+        "payout": "7.5",
+        "payout_currency": "INR",
+        "payout_type": "Per Install",
+        "deeplink_allowed": false
+      }
+    ]
+  },
+  "selected_campaigns": {
+    "Amazon India": 817,
+    "Flipkart": 1,
+    "Tata CLiQ": 2588,
+    "Nykaa": 891,
+    "Nykaa Fashion": 3907,
+    "Myntra": 101,
+    "AJIO": 2589
+  },
+  "detailed_campaigns": {
+    "Amazon India": {
+      "id": 817,
+      "name": "Amazon India",
+      "domain": "amazon.in",
+      "status": null,
+      "access_status": "pending",
+      "payout_type": "Per Sale(%)",
+      "payout": "3.17",
+      "payout_currency": "%",
+      "cookie_duration": "1 day",
+      "tracking_time": "48 Hours",
+      "validation_time": "45 days",
+      "payment_time": "15 days",
+      "deeplink_allowed": true,
+      "conversion_flow": {
+        "Step 1": "User clicks on your tracking link",
+        "Step 2": "User lands on the advertiser website and purchase any product within cookie period",
+        "Step 3": "User successfully paid and receive his/her purchase\r\n"
+      },
+      "platforms": {
+        "allowed": [
+          "Web",
+          "Mobile Web",
+          "Android App",
+          "iOS App"
+        ],
+        "disallowed": []
+      },
+      "media": {
+        "allowed": [
+          "Text Link",
+          "Banner",
+          "Deals",
+          "Coupons",
+          "Social Media"
+        ],
+        "disallowed": [
+          "Cashback, Reward Points, Incentives, Charity",
+          "Email (Text)",
+          "Custom Email (Text)",
+          "Email (HTML)",
+          "Custom Email (HTML)",
+          "POP Traffic",
+          "Native Ads",
+          "Facebook Ads",
+          "SEM - Brand Keyword(s)",
+          "SEM - Generic Keyword(s)",
+          "SEM - Brand + Generic Keyword(s)"
+        ]
+      },
+      "payout_categories": [
+        {
+          "name": "Bill Payments",
+          "payout_type": "Per Sale(%)",
+          "payout": "19.01",
+          "is_header": false
+        },
+        {
+          "name": "Watches",
+          "payout_type": "Per Sale(%)",
+          "payout": "3.8",
+          "is_header": false
+        },
+        {
+          "name": "Apparel & Accessories",
+          "payout_type": "Per Sale(%)",
+          "payout": "3.74",
+          "is_header": false
+        },
+        {
+          "name": "Coach Products",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": true
+        },
+        {
+          "name": "B01MCQUG7L, B07WDJZY5Q, B07WDK2QZ7, B07WDK3ZS2, B07WDK3ZS6, B07WDKJKSG, B07WDKKJ45, B07WDKKWPQ, B07WDKL741, B07WDKL8T4, B07WDKLDCN, B07WDKLDRX, B07WDKLM55, B07WDKLRM4, B07WDKLXFR, B07WDKLZPN, B07WDKM1D2, B07WDKMGWR, B07WFN1T88, B07WFNTGLL, B07WFNZX2R, B07WFP331D, B07WFPL2VW, B07WFPL9PB, B07WFPLDPR, B07WFPLL2H, B07WFPLL3C, B07WFPLSVX, B07WFPLTN5, B07WFPLWFB, B07WFPLYKX, B07WFPM2WQ, B07WFPM5H5, B07WFPM8BP, B07WFPMC92, B07WFPMGQQ, B07WFPMJBH, B07WFPMJCH, B07WFPMQB1, B07WFPMQPC, B07WFPN277, B07WGMMQGP, B07WGMXVFK, B07WGNJF9L, B07WGNX639, B07WGNYCPN, B07WGP1S6V, B07WGP3P6C, B07WGPBNTC, B07WGPDDQH, B07WGPFNLC, B07WGPHYPG, B07WGPJ82V, B07WGPJPR3, B07WGPJV3H, B07WGPKC7H, B07WGPKCQM, B07WGPKFJC, B07WGPKK2P, B07WGPKLFL, B07WGPKMP5, B07WGPKNGT, B07WGPKNH2, B07WGPKSG8, B07WGPKSJM, B07WGPKSZB, B07WGPKSZS, B07WGPKTS4, B07WGPKWB3, B07WGPKWC8, B07WGPL2N7, B07WGPL8HK, B07WGPLN76, B07WGPLWLR, B07WHNJ4ZK, B07WHPL866, B07WHPLH66, B07WHPLH6D, B07WHPM2QT, B07WHPP6FJ, B07WHPQCTC, B07WHPVM7N, B07WHPWKDK, B07WHPY1SZ, B07WHPZ5MR, B07WHQ95CM, B07WHQBZLS, B07WHQCK9G, B07WHQD713, B07WHQDYV4, B07WHQFRRD, B07WHQHNZC, B07WHQJP9C, B07WHQLR7G, B07WHQLX7G, B07WHQMR25, B07WHQQL3Y, B07WHQR58X, B07WHQRCZD, B07WHQRN1B, B07WHQRNXG, B07WHQRPHJ, B07WHQRXVM, B07WHQS4LB, B07WHQT79H, B07WHQVTRQ, B07WHQWCXH, B07WHQWXL7, B07WHQZ93Z, B07WHR5RKH, B07WHR5ZG7, B07WHR7XCK, B07WHR9QZH, B07WHR9ZJ9, B07WHRBD7D, B07WHRBD95, B07WHRG92T, B07WHRHBLH, B07WHRHBLY, B07WHRL6Q4, B07WHRLGTX, B07WHRNJJN, B07WHRNZ89, B07WHRQ6ZQ, B07WHRQ7WS, B07WHRR6VW, B07WHRXTJV, B07WHRZ7XX, B07WHRZRD7, B07WHS35V6, B07WHS4MC4, B07WHS6QT7, B07WHS6WHF, B07WHS7MZ1, B07WHS7MZ4, B07WHS7T3J, B07WHS99FG, B07WHSCG2C, B07WHSDXQD, B07WHSJXLF, B07WHSLTYS, B07WHSNYL5, B07WHSNYLY, B07WHSQ5X3, B07WHSQDH8, B07WHSQWLW, B07WHSR1NR, B07WJTB99S, B07WJTMPPP, B07WJV5KPL, B07WJV6P1R, B07WJVPC6G, B07WJVY42H, B07WJVZZVY, B07WJWFL2V, B07WJWRNVK, B07WJXKQPZ, B07WJXKQRN, B085J17VVQ, B085J19DPV, B085J1RJV6, B085J3GN6X, B086971Z7R, B086978F35, B08697MJFD, B08697QP9B, B09G93H3BR, B09G95PVDX, B09G97M122, B09G984RNC, B09G99B791, B09G99CW2N, B09G9BFKZN, B09G9BL5CP, B09G9BQS98, B09G9D8KRQ, B09G9FPGTN, B09G9HD6PD, B09G9HDN4Q, B09G9HRYFZ, B09G9JJT7M, B09V4B6K53, B09V4KHL1B, B09V4MXBSN, B0B9H5MB4Z, B0B9H64WMB, B0BDHV1TZ4, B0BDHX8Z63, B0BDHXT4B5, B0BDHY3LFJ, B0BDHY5BHF, B0BDJ16DY4, B0BDJ1B1CS, B0BDJ1DFMT, B0BDJ213TX, B0BDJ22G36, B0BDJ3R6QW, B0BDJ48V1N, B0BDJ52N7F, B0BDJ54W8Y, B0BDJ55SNV, B0BDJ5HSFH, B0BDJ6N5D6, B0BDJ6ZMCC, B0BDJ7P6NG, B0BDJ83Y4Z, B0BDJ8WMV7, B0BDJ8YDF6, B0BDJ9ZX8L, B0BDJB5KHG, B0BDJBGBF3, B0BDJBXLSJ, B0BDJDXLCD, B0BDJDZ7RH, B0BDJF3WKV, B0BDJFTGK6, B0BDJFZ11C, B0BDJGSK1J, B0BDJGX2XZ, B0BDJH1NCQ, B0BDJH3V3Q, B0BDJH6GL8, B0BDJHC1VV, B0BDJJ5VF6, B0BDJJ7X53, B0BDJJDX3C, B0BDJJLDYZ, B0BDJKF6G6, B0BDJKL7KM, B0BDJKL7KY, B0BDJMSBXY, B0BDJPYT2J, B0BDJPZ4RC, B0BDJQHJZZ, B0BDJS1D9Y, B0BDJS3MRM, B0BDJVSDMY, B0BDJVX14D, B0BDJYGBC2, B0BDJYHP2H, B0BDK2FB2T, B0BDK2FSZ5, B0BDK62PDX, B0BDK62STN, B0BDK63CBS, B0BDK63WMS, B0BDK64JGN, B0BDK8LKPJ, B0BKJRHV2M, B0BKKHFGCP, B0BPS4YLQT, B0BQ3MMPX6, B0BQ3MT8P2, B0BQ3PJJDQ, B0BQ3PYMCZ, B0BQ3Q5NDH, B0BQ3RC28F, B0BR87V71Q, B0BR88WGC5, B0BRSLH4B5, B0BSTTK7HS, B0BSTVXFWD, B0BT9CXXXX, B0BT9FDZ8N, B0BXQ1KHTM, B0BXQ1ZL9N, B0BXQ21S3B, B0BXQ25XQL, B0BXQ2GTKS, B0BXQ2V3NJ, B0BZWBSNJN, B0BZWCJDRB, B0BZWGCY2L, B0C1GHPN58, B0C1GJYYY1, B0C1GKQ79V, B0C2VH4DPM, B0C467KFNM, B0C4FFBXV8, B0C4FK9HHG, B0C5M1Y9V3, B0C5RJDJPV, B0C5RJHD7D, B0C5RK3X6F, B0C5XM26J9, B0C5XNP22C, B0C6QTYTZF, B0C7QCHGLF, B0C7QD7TD2, B0C7QGVVW4, B0C7QLL8QJ, B0C8HMXM7J, B0C8HPY6QS, B0C8J6QJGN, B0C8J7NSHB, B0C8J81CDM, B0C8MN3QK4, B0C8MTTPF2, B0C9J97S7Q, B0C9J97Z2D, B0C9J9CZR6, B0C9J9WPX3, B0C9JD8324, B0C9JDHZTB, B0C9JFBGSJ, B0C9JFM6X6, B0C9JFWBH7, B0CBKKBGWZ, B0CBKKJ67M, B0CBKL4R94, B0CBKLM7PP, B0CBKMGD4F, B0CBKMP5RR, B0CBMFV9KW, B0CBMG2JFF, B0CBMG2W2B, B0CBMG7NR2, B0CBMGH56K, B0CBMH1YSN, B0CBRN65NP, B0CBRR54KF, B0CC4XR7PM, B0CC527M7B, B0CC9D9XQP, B0CC9F9YV3, B0CDRVG19T, B0CDS9PTRQ, B0CDS9QQVL, B0CDSC8Y7V, B0CDXHYHZ6, B0CDXKF7KM, B0CF8L7PPR, B0CF8M9DMS, B0CF8MJW2Y, B0CG16HZHS, B0CG5KJ25C, B0CG5L7N9Z, B0CG8Z72CC, B0CGLSCXNM, B0CGLT2DGC, B0CGLTLBNL, B0CGLW71NZ, B0CGRNJNXS, B0CGRPB2ZC, B0CHFBKXHP, B0CHJN2HNZ, B0CHJPZXX5, B0CHM729GT, B0CHM745CT, B0CHQKRVMQ, B0CHRLKNXC, B0CHWV2WYK, B0CHWV3L2R, B0CHWWNKS6, B0CHWWVSLF, B0CHWWW471, B0CHWYHQTH, B0CHWYXK1R, B0CHWZ24KQ, B0CHWZ86W2, B0CHWZCY43, B0CHX1K2ZC, B0CHX1W1XY, B0CHX1XQQ8, B0CHX2DRGV, B0CHX2F5QT, B0CHX2WQLX, B0CHX2XFJJ, B0CHX3D519, B0CHX3QB9M, B0CHX3RP9R, B0CHX3TW6X, B0CHX3X7TL, B0CHX41VNZ, B0CHX45NRR, B0CHX488V6, B0CHX4CRND, B0CHX5J2ND, B0CHX5R7C2, B0CHX68YG9, B0CHX6M6C8, B0CHX6N27Y, B0CHX6NQMD, B0CHX6V9HN, B0CHX6X2WW, B0CHX75CR7, B0CHX7FDD7, B0CHX7J4TL, B0CHX7NG26, B0CHX7R6ZW, B0CHX7RJLP, B0CHX7STQQ, B0CHX7V9TY, B0CHX7V9V9, B0CHX8CK97, B0CHX8JCXN, B0CHX8SYQJ, B0CHX9FZQ7, B0CHX9L7Y4, B0CHX9MF1L, B0CHX9N436, B0CHXB1PT6, B0CHXB2R62, B0CHXCR9CX, B0CHXCWTMW, B0CHXDTGPW, B0CHXDVMVP, B0CHXDW1B6, B0CHXF9Q4H, B0CHYVKZ85, B0CHYW56PR, B0CJ6SHZFS, B0CJ6T135W, B0CJLXV264, B0CJM22D8K, B0CJMDD8MX, B0CJMGP6QJ, B0CJMGTMHS, B0CJMGYH7J, B0CJMHGM69, B0CJMJQ1QD, B0CJML9S4F, B0CJTYRJ1B, B0CJTYWQ2P, B0CJTYZV94, B0CKTNF613, B0CKTPK4FG, B0CL49S6XC, B0CM6PSG1K, B0CMZN8MYN, B0CN1C2BG1, B0CN1CKKD9, B0CNX6WVG5, B0CNX6WVZF, B0CNX79YGX, B0CNX7BZ7R, B0CNX7K9NC, B0CNX82VVQ, B0CNX84MF4, B0CNX88T71, B0CNX89QR8, B0CP7TDP12, B0CP7TH3YB, B0CP7VP1VV, B0CP7VSGXG, B0CP7W1LFB, B0CP7W9ZDZ, B0CP7WCMB3, B0CP7WM3ZQ, B0CP7X5RGD, B0CP93KXT7, B0CP95ZVQY, B0CP96MCKX, B0CP97SBB9, B0CPPG45Q6, B0CPPJZFXX, B0CQ2C1L58, B0CQG4RX37, B0CQG79KT8, B0CQG9N4Z3, B0CQM5N68L, B0CQM658LW, B0CQM6GXZB, B0CQP38JRG, B0CQPDGYLD, B0CQPFZ2MF, B0CQPG5XKF, B0CQPGF6SY, B0CQPGG8KG, B0CQPH2YSY, B0CQPHMWR3, B0CQPHWB81, B0CQPM5WMB, B0CQPP6JTH, B0CQPP73S8, B0CQPPZWVD, B0CQVP5ZZF, B0CQVPXW4C, B0CQVQBFBB, B0CQVRKCSY, B0CQVSKCBW, B0CQVSPVR7, B0CQYGF1QY, B0CQYGPGPP, B0CQYMMP94, B0CQYMVLQ4, B0CQYN9QDQ, B0CQYNM3ZF, B0CRPWDHP3, B0CRQ7QSZ7, B0CRQ7RH64, B0CRQ838Z9, B0CRQ85N3F, B0CRQ8874B, B0CRQ8Q3QP, B0CRQ8R766, B0CRQ95DLZ, B0CRQF6G9D, B0CRQFC3MN, B0CRQFGKXG, B0CRQFR6F4, B0CRQG4MDN, B0CRQG58T8, B0CRQG5DWS, B0CRQGT6QT, B0CRQH5LGP, B0CS5VFZMT, B0CS5XW6TN, B0CS5Y7H6T, B0CS5Z3T4M, B0CS5Z4GD3, B0CS5ZZMN8, B0CS62KYQY, B0CS678M6W, B0CS68W626, B0CS69DGSW, B0CS69HKRH, B0CS69QQTG, B0CS6FDBMW, B0CS6H3Y9G, B0CS6JW9YQ, B0CS6M53JV, B0CS6M6JLF, B0CSDQ434W, B0CSDQG3JN, B0CSDQVGZ1, B0CSDQY4X7, B0CSDS3XW1, B0CSDS6VGW, B0CSDS7MRS, B0CSDSD747, B0CSDSJ31L, B0CSDSSY1H, B0CSDSZW3Q, B0CSDT6NDQ, B0CSKJ9SF1, B0CSKJM6DL, B0CSKJZD2L, B0CSKJZH44, B0CSKKNLTT, B0CSSD9QJR, B0CT3SB6F5, B0CT5SL8R2, B0CT5T86RD, B0CT5W2T2F, B0CTZLFLRV, B0CTZM5B5J, B0CTZQPZNX, B0CTZSWZFC, B0CV3BQ8DY, B0CV3DZ1HM, B0CV3F2NX2, B0CV3F5TQ8, B0CV3F7QTP, B0CV3F9BC2, B0CV3J345X, B0CV3JC8ZQ, B0CV3KNL27, B0CVKVGZP1, B0CVL3488L, B0CVL6M79T, B0CVL7G8GG, B0CVL9MSCK, B0CVLGH36G, B0CW3GQR3K, B0CW3H8YKD, B0CW3JRLH1, B0CW5F732B, B0CW61C6LK, B0CWPB4X2Q, B0CWPB9M2P, B0CWPBBQ3M, B0CWPBKYRL, B0CWPC2W5V, B0CWPC8CVG, B0CWPCFSM3, B0CWPCHBCQ, B0CWPCJFF2, B0CWPCQP77, B0CWPCXZS1, B0CWPD4QWK, B0CWPD9PTK, B0CWPDFBK7, B0CWPDH74H, B0CWPDYS2C, B0CWPF57J2, B0CWPF945W, B0CX1Y49P2, B0CX27M63L, B0CX2L28HH, B0CXHVPLG3, B0CXHWTBFC, B0CXHXKG6C, B0CXHY4T7Q, B0CY1ZDY5P, B0CY228896, B0CY299SKS, B0CY98HKMF, B0CY9BQ3Q6, B0CY9BX3S1, B0CY9C2KPS, B0CY9CB6ZF, B0CY9D1GF4, B0CY9FQ1PW, B0CY9HH912, B0CYBBB82G, B0CYBKWQ2V, B0CYBKWQ2X, B0CYBLHZPW, B0CYBN6ZBY, B0CYBYL168, B0CZRMXZF6, B0CZRNP4B3, B0CZRPGZ1Q, B0CZS3B3PY, B0CZS4GZ9H, B0CZS4V2Y8, B0CZS4VHP4, B0CZS56249, B0CZS6BMPB, B0D1CQFPB9, B0D1CS3NX1, B0D1CSXJRX, B0D1CTHN28, B0D2D54Q5M, B0D2RNYRQN, B0D3GX1VFM, B0D3GY8SC1, B0D3GYZ82S, B0D3GZ7G25, B0D3J5PTSX, B0D3J6424N, B0D3J6NDYS, B0D3J7HS89, B0D3J8145K, B0D3J8HYDD, B0D3J97VSS, B0D3J9FN5C, B0D3RFLZLM, B0D3WVGD5H, B0D3WXQN8N, B0D41KRRNM, B0D41LYP6N, B0D41M2TMD, B0D4DYNLM4, B0D4F157QT, B0D4F25Y4H, B0D4QY1FTF, B0D4QZ4DKG, B0D4QZN78X, B0D4QZTH8K, B0D4QZWP8N, B0D53B6HVF, B0D53FBV6F, B0D53M1ZQX, B0D53Y9W5D, B0D54DBLRV, B0D54F4B44, B0D54G9YTS, B0D54GQVRN, B0D5HJWDQQ, B0D5HM2BXD, B0D5HMXD53, B0D5HP289W, B0D5HQGNHT, B0D5M88QS8, B0D5M8RS55, B0D5M9Z545, B0D5MBKCTT, B0D5MBNWNX, B0D5XPJVCN, B0D5XSCM12, B0D5XXFGRX, B0D5YCYS1G, B0D5YD7QSS, B0D5YDJ5QM, B0D5YDT6XK, B0D5YF238N, B0D5YFZ946, B0D6392VSM, B0D63995Z4, B0D63F3WCN, B0D66RDWT6, B0D66RJRGL, B0D6R8PGSB, B0D6R98C8F, B0D6R9RGN8, B0D6R9XCXX, B0D6VGBWNZ, B0D6VKL4HH, B0D73QFLDD, B0D73TQLFZ, B0D78V5YFR, B0D78VJQ93, B0D78VSVGS, B0D78VYHPY, B0D78W21GC, B0D78W2HF5, B0D78WCNZZ, B0D78WCQ3J, B0D78WD7PY, B0D78WKY12, B0D78WZHRT, B0D78X544X, B0D78X5CMJ, B0D78Y577J, B0D7CSNLLL, B0D7CWN52H, B0D7CZ1C8H, B0D7M6TL64, B0D7M7K7MY, B0D7M81CJX, B0D7M82NTQ, B0D7M8LG8S, B0D7MCXVZ9, B0D7VGCPDL, B0D7VGZS69, B0D7VH5RL6, B0D7VJ72XK, B0D7VK8W41, B0D7VKMLGD, B0D7VKSZGW, B0D7Z8CJP8, B0D7Z8FJZ9, B0D7Z8GTQN, B0D8123CLN, B0D812DY6P, B0D812G7FL, B0D8134JH8, B0D813539C, B0D813HQFN, B0D81JPDKX, B0D81K17MT, B0D83M6WVX, B0D83Q3DT9, B0D83Q4RXP, B0D83R44SL, B0D83X3PR7, B0D83XH55L, B0D83XND3V, B0D83Y629M, B0D83Y6P15, B0D83YD1TF, B0D83ZJQNW, B0D83ZJSF8, B0D83ZN7TR, B0D83ZQFHJ, B0D8417LHP, B0D841JT7X, B0D841Z76B, B0D8JJDTHG, B0D8JM1G7Z, B0D8JM6BHN, B0D8JMT145, B0D91WC6BF, B0D91X16NZ, B0D91YCRH7, B0D93VRKPZ, B0D93VZ74X, B0D93W38PK, B0D93WGXC9, B0D93WPSR8, B0D93Y9VWZ, B0D9455CRW, B0D945V84N, B0D947DTLT, B0D9482G3M, B0D9HMJ8DN, B0D9HMNFD7, B0D9HMVKFG, B0D9HPQCF6, B0D9HPWZS1, B0D9HS95B6, B0D9HT785B, B0D9KHQ4M1, B0D9KJXN82, B0D9KKXJSY, B0D9ND2LCZ, B0D9NFLZMQ, B0D9W7Y3XM, B0DBHWF7KN, B0DBHY3WVH, B0DBHYQ65L, B0DBHZ5N18, B0DBQK66TQ, B0DBQV643J, B0DBR1CMQ2, B0DBR75NY6, B0DC1GNY41, B0DC71Y7ML, B0DCGG7CNW, B0DCGGP82Z, B0DCGGVTQ1, B0DCGH5H2T, B0DCVWRVZ2, B0DCVXQB31, B0DCVXXB7G, B0DCZL2R8L, B0DCZNK5JY, B0DCZP88D1, B0DDT7VQP3, B0DDT9WGZD, B0DDTVBGSQ, B0DDTXJ2MX, B0DDTXNGYN, B0DDTXW9WH, B0DDTZF6G1, B0DDTZQ4DC, B0DDTZS27P, B0DDTZT8BY, B0DDTZTVG9, B0DDTZZG2X, B0DF2YB1T8, B0DF2ZNHBY, B0DF7D1664, B0DF7HWHD2, B0DF7HWHD4, B0DFBWNPPK, B0DFC1HFDM, B0DFH4F7Y9, B0DFH5PZLB, B0DFH6P7CW, B0DFN5FYW7, B0DFNPCQ8P, B0DFNSSZZ7, B0DFNVFPGL, B0DFQ9CJF9, B0DFQCC71X, B0DFQD3FZQ, B0DFQF3ST2, B0DFQF3WLK, B0DFY3XCB6, B0DG25DQ4C, B0DG2D3Z91, B0DG2GWV7T, B0DG2GY6VZ, B0DG3KZG8K, B0DG3NZY63, B0DG86Z5GB, B0DG8CS4L4, B0DGHQ717F, B0DGHSQDFR, B0DGHT4K6Q, B0DGHTBK1Q, B0DGHW2SRL, B0DGHXHZNL, B0DGHYDZR9, B0DGHYPFYB, B0DGHYQQ6J, B0DGHYSLTF, B0DGHZWBYB, B0DGJ197P6, B0DGJ1BY5T, B0DGJ393NL, B0DGJ3L6LR, B0DGJ3NWM4, B0DGJ3RDPP, B0DGJ3THPR, B0DGJ3XCLR, B0DGJ54GQW, B0DGJ57571, B0DGJ57J83, B0DGJ58SMG, B0DGJ5MDWH, B0DGJ6151N, B0DGJ63CXK, B0DGJ65N7V, B0DGJ6CMJK, B0DGJ6FKJN, B0DGJ6JS1D, B0DGJ7TGDR, B0DGJ7X1DX, B0DGJ7YRZ1, B0DGJ8DP1M, B0DGJ8F36W, B0DGJ8JQZD, B0DGJ8N32F, B0DGJ8QKSF, B0DGJ8SYS6, B0DGJ8VWBX, B0DGJ8YZDF, B0DGJBN8TV, B0DGJBY734, B0DGJBZLD1, B0DGJC3HKR, B0DGJC8DG8, B0DGJCSH8R, B0DGJD5QXD, B0DGJD75G2, B0DGJGRDDS, B0DGJGVK8T, B0DGJH5C9K, B0DGJH8RYG, B0DGJH94KM, B0DGJHBDTS, B0DGJHBX5Y, B0DGJJM5HZ, B0DGJKT2V7, B0DGLJ1K6M, B0DGLJZ2RJ, B0DGLKBH4L, B0DGLKNHVN, B0DGLZWDN3, B0DGMDKWG6, B0DGMDL1JZ, B0DGMFVQ8Q, B0DGMQB5RG, B0DGQMMPB9, B0DGQMYHS4, B0DGQN8S7Y, B0DGQP5B1J, B0DGQPV58L, B0DGX92NBH, B0DGX9F1T6, B0DGX9F1WK, B0DGX9JJW8, B0DGX9VVFV, B0DGXB3KPQ, B0DGXB3RTG, B0DGXB4SX1, B0DGXBSYHS, B0DHSB1NGG, B0DHSC7QRB, B0DHVX144Z, B0DHVXBXTV, B0DJGYNPCR, B0DJMHZ86C, B0DJMKSSW2, B0DJMKZD6N, B0DJML1GKY, B0DJML8X77, B0DJML9RPL, B0DJMLK4TT, B0DJMLPWNP, B0DJMLSF5H, B0DJMLYWFG, B0DJP8QVLF, B0DJP9Q3Z9, B0DJPB44TB, B0DK5DYHFP, B0DK5H4YTH, B0DKP5T9F9, B0DKP72YJ3, B0DKP92X7X, B0DMFKJ99G, B0DMFMGP26, B0DQWQF3J7, B0DQWQZK22, B0DQWR6WXH, B0DQWVXJGV, B0DRD7R4DS, B0DRD8ZLV6, B0DRDC897Z, B0DSKMF8N7, B0DSKN7MWS, B0DSKNHX1T, B0DSKQ1JBN, B0DTHS6HHT, B0DTHT72W2, B0DTHTDGH7, B0DTHV1R8C, B0DTHVDBSW, B0DTHVHZC5, B0DTHW9L2L, B0DTHWR415, B0DX5MYCRG, B0DX6KT96K, B0DX6NWSRL, B0DX6QQMGK, B0DX6R6QC2, B0DX74KNC4, B0DX74SQ4F, B0DX791PX9, B0DX798LW2, B0DXQD673M, B0DXQG24ZN, B0DXQG457V, B0DXQH1DBS, B0DXQHMRCP, B0DXQJ1M7H, B0DY7HL4LY, B0DY7JX8V2, B0DY7KJTLG, B0DYDMKM5X, B0DYDNMHN2, B0DYDNZQW8, B0DYDP175R, B0DYDP9DXS, B0DYDPFP2Y, B0DYDPLVM5, B0DYDPRHRF, B0DYDPZWWV, B0DYDQ3SMM, B0DYDQ5XWR, B0DYDQGZSF, B0DYDQQ4W1, B0DYDQRZ64, B0DYDQTMY5, B0DYDS1TGR, B0DYV4177R, B0DZD1PD83, B0F18VTN7P, B0F18Y9YMX, B0F193QT32, B0F1XMGQSP, B0F217GQKB, B0F21983TP, B0F219X5FJ, B0F21BDZ7K, B0F2268KPJ, B0F226X5LW, B0F227ZWTB, B0F3P2ZL2X, B0F3P52HHS, B0F3P5KQNS, B0F5HQW3GZ, B0F5HTQZDG, B0F5HVFVKH, B0F79B9RHN, B0F79BBKZ8, B0F79CBNKH, B0F79GXPG2, B0F79RQH2T, B0F79ZX5XG, B0F7FBM986, B0F7FC7644, B0F7FF8KLT, B0F7LL5ZXX, B0F7LMJSK7, B0F7LMLR28, B0F7LP76Y9, B0F8QXCB1N, B0F8R2CBYM, B0F8R2LSBY, B0F8R32Y22, B0F945QD5Z, B0F946MXB1, B0FB9DBDYP, B0FB9FP3G5, B0FDKZ82MJ, B0FDKZMMYC, B0FDKZMMYK, B0FDL2JJ34, B0FDL2QW3X, B0FDL3J5SS, B0FDL4D22W, B0FDL4DKK2, B0FDL56M5C, B0FDL5FSVD, B0FFBGTF38, B0FGCRRG7M, B0FH2BVGM7, B0FH2C5MPQ, B0FH2DB5VP, B0FH2HR576, B0FHH72DYW, B0FHHNHLDY, B0FHHP58JC, B0FHHQMLFV, B0FHW5YVPJ, B0FHW62KN7, B0FHW7K3S3, B0FHW7RSPN, B0FJ89Y956, B0FJ8B9K12, B0FJ8BR4FT, B0FJ8D44C3, B0FLHX4FDP, B0FLHZJKW9, B0FLHZJMT2, B0FLJ53GJ4, B0FLJCZN4C, B0FLJDBJW7, B0FLJLR5R3, B0FLJM1MDN, B0FLJVZR6H, B0FM781SVX, B0FM891BQF, B0FNMLMSP1, B0FNMM7T5P, B0FNMN6D5K, B0FNMNWQZV, B0FNMP4BC4, B0FNMP9YHZ, B0FNMPFNWT, B0FNMQB11K, B0FNMQLSW1, B0FNMQW9HW, B0FNMR6KTQ, B0FNMSC6YR, B0FQF2ZJWT, B0FQF331K6, B0FQF5DG3P, B0FQF9B6K3, B0FQF9TJ65, B0FQF9ZLD7, B0FQF9ZY2X, B0FQFBDQJ1, B0FQFBHQMJ, B0FQFH6CV1, B0FQFHZ2C3, B0FQFJ87HN, B0FQFJG6WN, B0FQFJGP8S, B0FQFJKBVY, B0FQFL4HMP, B0FQFLQ2CQ, B0FQFLWN5Z, B0FQFLYV1S, B0FQFLZNKL, B0FQFNQ5LX, B0FQFNQTTK, B0FQFPHB1W, B0FQFQ576F, B0FQFQF6D1, B0FQFQQN24, B0FQFTV1NP, B0FQFV2XKS, B0FQFVRC1B, B0FQFVX9ZZ, B0FQFW4MVJ, B0FQFYXCC4, B0FQFYYPZF, B0FQG1K1FM, B0FQG1LPVF, B0FQG1TPG9, B0FQG1VB5Y, B0FQG1YHYR, B0FQG8LLXS, B0FQG8MVMC, B0FQG8WM6R, B0FQG8XCJ1, B0FQG9FPFJ",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": false
+        },
+        {
+          "name": "Excluded Mobiles ",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": true
+        },
+        {
+          "name": "B008ALAHA4, B00B1NKV04, B00VUKLYCM, B00VUKM0P2, B01BGISJ4S, B01BGJ2XT4, B01BGJE0N6, B01BLASHQG, B01BLB19SI, B01M72VEQR, B073ZG91BW, B078BB9S11, B078BBX2TH, B07HD2GF99, B07K2MJ8FK, B07K2NH6ZN, B07K2PK3BV, B07XFYZLTJ, B07XS6BN15, B07XS6QF9M, B07XS8MC3S, B07Z71PCQ9, B081FWVSG8, B082LTQNTT, B082M4L473, B082PRF461, B082PRRMMB, B08D7GNCV2, B08J5K326S, B08J5KM2GJ, B08J5VJG1C, B08J66ZXG6, B08J6F9N3N, B08N5T6CZ6, B08N5W4NNB, B08N5XSG8Z, B08Q25PFBF, B08Q28HGM9, B08V1ZWDZW, B08V21T6FK, B0932MJCXH, B0932NXGK9, B0932PXJ9H, B09BTMC5R9, B09BTMSV1X, B09BTNQ6MM, B09BTQ16M5, B09G93K5D5, B09G93LS13, B09G93MDP5, B09G942P11, B09G958JQB, B09G95J6QD, B09G95JT9X, B09G95SVWB, B09G9717T5, B09G97GZ8Q, B09G97RDR9, B09G982GFS, B09G999SM2, B09G99DR3T, B09G99FVLV, B09G9BX757, B09G9CJM37, B09G9CKLRV, B09G9CTML9, B09G9CVML5, B09G9CXKCQ, B09G9DXG76, B09G9F65MG, B09G9FXS9G, B09G9G58KQ, B09G9G88GD, B09G9H7FNX, B09G9HGL5F, B09G9HN533, B09G9HTYVV, B09G9J9BW2, B09G9NHR55, B09G9QFDVK, B09G9RWJMK, B09HHF2LZR, B09HHF5H2S, B09HHFQ2HW, B09HHFR9XM, B09HHG99SC, B09HHGLLYL, B09HHH56YN, B09HHHCNFQ, B09HHHGM66, B09HHHV827, B09V3KXRCP, B09V45F5MF, B09V46J8SM, B09V471196, B09V471L2K, B09V47YSFC, B09V48635G, B09V49MVC8, B09V4B9GF3, B09V4BX76B, B09V4D952H, B09V4DBCF9, B09V4DC47T, B09V4FNFHN, B09V4H3NZ5, B09V4H7YWG, B09V4JW485, B09V4K1S59, B09V4MKTV4, B09V4PYYJ1, B09V4Q2WD6, B09V4QLB1P, B09V4QZN7T, B09V4S5VW1, B09V4S643N, B09V4SGLTR, B09V4TPQZV, B09V4TSXWX, B09V4V2H9R, B09V4ZMNXS, B0B25N3HS2, B0B3B8VZW2, B0B3BLY13H, B0B3BMKMGP, B0B3BNDM4J, B0B3BQ11LP, B0B3BQT33C, B0B3BS9BRW, B0B3BXKV8W, B0B3C6FBPF, B0B3C9ZHJZ, B0BDHMSFB3, B0BDHTVPY9, B0BDHWMPPF, B0BDHWY697, B0BDHWYLTB, B0BDHX2S8R, B0BDHZG5T9, B0BDHZH5LP, B0BDHZQRGY, B0BDJ1S7MS, B0BDJ2HX3J, B0BDJ3FXTQ, B0BDJ5NPP9, B0BDJ72KHM, B0BDJ7MSDX, B0BDJ7SHRQ, B0BDJBN9B9, B0BDJBNFR7, B0BDJGF8KB, B0BDJJRW6K, B0BDJJSQT3, B0BDJTCR9X, B0BDJW781X, B0BDJWCMG4, B0BDJWHCGP, B0BDJWK5N4, B0BDJWQ4TZ, B0BDJYST4G, B0BDJZJZVL, B0BDK2Y1Q9, B0BDK37XQ6, B0BDK96RF2, B0BDKB68HG, B0BDKFJVTL, B0BDKFPTFQ, B0BDKGHK85, B0BDKGNDTV, B0BDKGNMJQ, B0BDKHQ5W1, B0BDKHY1HH, B0BDKJFFX9, B0BDKJGJHP, B0BDKKRRTM, B0BDKKTM6B, B0BDKKV1BK, B0BDKLJXH1, B0BDKLMXVD, B0BDKNPML5, B0BDKNRL45, B0BDKNZDLS, B0BDKRJBHF, B0BDKRQ984, B0BDKRVZ53, B0BDKSLQ1X, B0BDKSNF9V, B0BDKSNKJ3, B0BDKSPDXH, B0BDKWPBPL, B0BJLDFNVL, B0BJLDRX6Q, B0BJLDV263, B0BJLDVX2S, B0BJLDZK7N, B0BJLF5Z2X, B0BJLF8K57, B0BJLFBYV1, B0BJLGFVX1, B0BJLGK18N, B0BJLGZJKH, B0BJLH667T, B0BJLHDT5K, B0BJLHFZLF, B0BJLHHQ3J, B0BJLHP48C, B0BJLJWYHD, B0BJLJXPM3, B0BJLKV244, B0BJLXM3YR, B0BJLXQJB5, B0BJLZV5C3, B0BJM15HHH, B0BJM15Q5X, B0BJM1756S, B0BJM3K67T, B0BJM3N9N5, B0BJM3NBMT, B0BJM3XJQ3, B0BJM63DF8, B0BJM6GWBT, B0BJM7T9VR, B0BJM9YQX3, B0BJMC644T, B0BJMC8MH8, B0BJMCH7W9, B0BJMCKYCY, B0BJMCMCZH, B0BJMD4X36, B0BJMFBV6X, B0BJMGG19R, B0BJMGXLYZ, B0BJMGZTQ8, B0BJMJC2M4, B0BJMK7CT2, B0BJMMHSGM, B0BJMN32Y2, B0BJMN3WXM, B0BJMN52CS, B0BJMN69WF, B0BJMQ9XHG, B0BJMQD4WB, B0BJMSFMHH, B0BJMVHRN9, B0BJMVHVJ4, B0BJN4GZ1R, B0BSHGR4CL, B0BSHHH88S, B0BSHHL4TY, B0BSHHSH36, B0BSHJSMTW, B0BSHSD25X, B0BSHVCXN9, B0BSHWLLLS, B0BSHY24D2, B0BSHYHXW1, B0BSJ1Y4YX, B0BSJ3FD8W, B0BSJ4YLJP, B0BSJ8C7SK, B0C75BRT1Z, B0C75GV58R, B0C75JKRWQ, B0C75M38B6, B0C75N3M8W, B0C75YN898, B0C764GYX2, B0C767F6NS, B0C768BBF5, B0C76D5QPG, B0CHWYTKWT, B0CHWZ55D6, B0CHWZ5J8Q, B0CHX15FNX, B0CHX15SJM, B0CHX1J1NN, B0CHX1KKKV, B0CHX1XDYN, B0CHX3Q1PD, B0CHX3SQLY, B0CHX47J1P, B0CHX4FQZ6, B0CHX52CKN, B0CHX5JTSS, B0CHX5QTNX, B0CHX8R5G6, B0CHX9G1MF, B0CHXDXZ3Q, B0CHXFHY9N, B0CHXHGRF2, B0CHXY3DCP, B0CHXY64PV, B0CHXYFW5P, B0CHXZHK59, B0CHXZJ4PX, B0CHXZJCWC, B0CHXZSKTP, B0CHXZTLJZ, B0CHXZTLK4, B0CHXZTSX5, B0CHXZVDLT, B0CHXZWZ4Z, B0CHXZY62G, B0CHXZY653, B0CHXZYXWX, B0CHXZZS1D, B0CHY111SJ, B0CHY11534, B0CHY11HVX, B0CHY11W7J, B0CHY11W85, B0CHY11Z6T, B0CHY13JX8, B0CHY13KKG, B0CHY13T9W, B0CHY1H976, B0CHY1JWYN, B0CHY1MKBP, B0CHY1NC2F, B0CHY1NVLP, B0CHY1P89N, B0CHY1P9W9, B0CHY1PQJ8, B0CHY1R9PQ, B0CHY1SNJ2, B0CHY1SNKB, B0CHY1V4FX, B0CHY1WVGY, B0CHY1Y4FR, B0CHY1YWY2, B0CHY1Z3FW, B0CHY1ZG1H, B0CHY1ZNT4, B0CHY1ZVX4, B0CHY1ZVXM, B0CHY21QGK, B0CHY22BTR, B0CHY22NL9, B0CHY24BC4, B0CHY262JH, B0CHY26GPD, B0CHY26LK8, B0CHY27FW9, B0CHY28H1K, B0CHY28L59, B0CHY29TPH, B0CHY29Z51, B0CHY2B7W5, B0CHY2B7XC, B0CHY2BJ81, B0CHY2C8X5, B0CHY2CX9W, B0CHY2GWFQ, B0CHY2H14N, B0CHY2HDZV, B0CHY2PD6V, B0CHY2RX7M, B0CHY2SJCY, B0CHY2TCXQ, B0CHY2VRLF, B0CHY2VRLK, B0CHY2XTB1, B0CHY2YK52, B0CHY2YN6K, B0CHY2YN9G, B0CHY2YXF9, B0CHY32885, B0CHY32DRT, B0CHY32Q5T, B0CHY347P9, B0CHY34FCD, B0CHY34RBM, B0CHY351P6, B0CHY3675V, B0CHY37BYB, B0CHY38T31, B0CHY39HL2, B0CHY3C6JN, B0CHY3FKTD, B0CHY3GK4T, B0CHY3HKWD, B0CHY3LN62, B0CHY3NNTX, B0CHY4826J, B0CHY4B5MG, B0CHY4BVKK, B0CHY4BYG4, B0CHY4C66D, B0CHY4D5LV, B0CHY4FRTG, B0CHY4HZCQ, B0CHY4KNW2, B0CHY4KRBT, B0CHY4SJLX, B0CHY4XZ9W, B0CHY4XZBN, B0CHY5YHKV, B0CHY631CG, B0CL7DZXB2, B0CM5J5QXD, B0CM5JBGCT, B0CM5JLSNS, B0CM5K8ZPZ, B0CM5KDPF9, B0CM5NCRJD, B0CM5NR4SW, B0CM5Q77TT, B0CM5QG1Y1, B0CM5QWD5Q, B0CM5QZ48F, B0CM5R2QXS, B0CM5R9RJK, B0CM5RTLM1, B0CM5S13ZL, B0CM5S7HF6, B0CM5SRXP8, B0CM5SZ7CP, B0CM5VYBTY, B0CM5W2YDJ",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": false
+        },
+        {
+          "name": "PC List",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": true
+        },
+        {
+          "name": "B00316263Y, B005HXFARS, B005JK5O3O, B005KWHJES, B005LJQM3Y, B005LJQMZC, B005LJQNQU, B005QRA5IY, B00608XLUM, B008FWPJQK, B008JCVF0U, B008JCVGMW, B008JCVGYU, B008Y8TF88, B00EVSQMMW, B00G25IJ9G, B00GG57JO8, B00GG59HU2, B00ILAA0QU, B00K0AL3PQ, B00KGZZ824, B00MEHFIPY, B00MFNJN8K, B00NBR6RDS, B00SISEOLC, B00SISQAX2, B00VK1MZ10, B00VK1PQ5C, B014DY5Y7M, B015SG1R52, B017HS2M7Q, B017HSSHS4, B01BMF1URI, B01CSNWFI6, B01D5H8HR2, B01D5H8P0G, B01DEWVZ2C, B01DF26V7A, B01DF29XFW, B01GABPPQG, B01J82IYLW, B01JIP44OU, B01M07O739, B01MCUSD3L, B01N2B99ZR, B01N48791I, B06X3WJ3GQ, B071JQFXC4, B071VMP1Z4, B071Z8M4KX, B07234XXJF, B072N7JVFW, B073H6WMBF, B073HBMJV7, B073HDQBD5, B073JPC6R2, B073JPC6R3, B073JQQK1Q, B073JQXC1J, B073R7ZHVC, B073XGT189, B073XH6361, B0749BMLYY, B074GW5D44, B074PRNKBW, B074ZF7PVZ, B0756S4BM7, B0758DDXS1, B0758F7KK7, B0758FJZTY, B075F5X8BR, B075F6TB7F, B075MYT1BM, B075YZXXFB, B075Z25PQK, B0769GYG3N, B078H6G134, B07966M8XH, B079KFP4BT, B07B275VN9, B07B2XRFRV, B07B88KQZ8, B07B8GKZ9G, B07C8VBHCB, B07CRG7MBR, B07DFW3MDD, B07DFYJRQV, B07DFYSGS3, B07DL1KC3H, B07DM3PSYP, B07DVYNYPW, B07F1P8KNV, B07F2DLH2P, B07F38XGVT, B07FCDSV5X, B07FDYM3MM, B07FLZPVG4, B07GQD4K6L, B07GZHQFYR, B07GZHWG6R, B07GZRR6NP, B07JQKQ91F, B07JQKR35P, B07KG4XWT4, B07KG8CHZ7, B07KSY4J42, B07KT15C84, B07KY2KP8M, B07KY3FNQP, B07L8JTZ4H, B07L8KNP5F, B07L8LTS3J, B07L97H18D, B07LCDC8GK, B07LCNWYMK, B07LDHVWTF, B07LDJJ4JP, B07MBB9RSH, B07MCXXH7S, B07MGHR3M7, B07MJ5HH97, B07N2QMS1R, B07N68PX9S, B07N6KCJM4, B07N6NMSQ3, B07N7W8618, B07NP45KKF, B07PDYT7C8, B07PNHXYQQ, B07PRKCRQV, B07PY8PQ5L, B07Q2LXTDF, B07Q2PC166, B07Q4Q8YH9, B07Q5TP5RQ, B07Q6MWN5C, B07Q95M9QY, B07Q95M9QZ, B07QCWY5XV, B07QHNNLH3, B07QJYB8BC, B07QZ3CZ48, B07R3DMZSQ, B07R5Z87VJ, B07R6MY2Y6, B07R7T6ZLW, B07RK725F8, B07RMH1BMS, B07RMH1F26, B07RMHXKMK, B07RQCXCR2, B07S13PJ3W, B07SGY8VP6, B07SJ68JL4, B07SMSCDPV, B07SPCV89W, B07SYLLXD1, B07T5DKR5D, B07TCN5VR9, B07TFW1KML, B07TX9DN24, B07TXM4XYG, B07TZG1CYN, B07TZJ1CMC, B07V9P9CF2, B07VQVZYW2, B07W4HCZ34, B07W5VGCV2, B07W6VVN6R, B07W7Z6DVL, B07WBWRYJK, B07WG5V653, B07WG751F5, B07WM95FT6, B07WN3KDBB, B07X35F44J, B07X48HNNG, B07XMP3ZB2, B07XY2MFZC, B07YMMHZFN, B07YNTJ8ZM, B07YNV1L55, B07YNV41FT, B07YNV5Q1M, B07YNV5Q1N, B07YNVQJZY, B07YNWC1S8, B07YX7DL1C, B07Z1KSNP6, B07Z5XHNK6, B07ZH7X1P1, B07ZP9H682, B07ZPDX8TQ, B07ZPG8RYV, B07ZYL6KT7, B0811LP51K, B0814ZH3Q5, B0814ZY6FP, B0816GH1MC, B081TMRZP3, B081Z3NTH6, B0825C59SV, B0829QJRTV, B082B4WPNS, B082FZSCYM, B082PPYW22, B082PQ6S5X, B082QNS45Z, B082SY45TV, B08398QPWX, B083GQDG3R, B083GQGT3Z, B083T5G5PM, B0841KQR1Z, B0842633G3, B084BVXCBF, B084HJF136, B084J4FSK5, B084J4MKZG, B084Q3Q7SL, B085RN9GRX, B085YFCGNF, B086WN7BK6, B086WNVCVM, B087VKB9G9, B088FLHXJX, B088FLHXJY, B088FM4QG4, B088TP7JYJ, B088TP9G81, B089BWNHM5, B089W3JFJ7, B08BY5WPFS, B08C7CCDN1, B08CHPGTSF, B08CPLTK9B, B08CSJWWRN, B08CVD2H13, B08CY11SBK, B08CZHGHKH, B08D7DG92N, B08DM43V32, B08F7PPGBQ, B08FB2LNSZ, B08FB2W671, B08FB35HB9, B08FMM3Z7S, B08FMMDNGV, B08FMNJSTQ, B08FT31ZK6, B08FTG3QX7, B08FY4FG5X, B08GK9LCRW, B08GZBQG2F, B08HCZNCK7, B08HD28LJ6, B08HJ1ST92, B08HPV3LYN, B08HSHDZST, B08JMC1988, B08JMF7RF2, B08JMFH2PZ, B08JQLB5CG, B08JQM8SMH, B08JQN8DGZ, B08JTMCSM9, B08K8Q8HT1, B08K969L6V, B08KVNR81B, B08L1W3W3P, B08L1WVGS7, B08L4SBJRY, B08L7TD4ZJ, B08LKS2N86, B08LVH8P6H, B08LYQCJR9, B08M3DT7FJ, B08MD23PMW, B08MSXS85Z, B08MTCKDYN, B08MTLLSL8, B08N5ZFXDP, B08NCZX2B9, B08NTCMKKM, B08NXLWHQQ, B08P63D2VY, B08P6TM8H4, B08PCSGV3V, B08PKFVY3F, B08PVN4SHC, B08QCDYM4G, B08R22ZJCB, B08R64BPZD, B08RB1X85X, B08RHPDNVV, B08RWCZ6SY, B08S3TZSGM, B08S74GTBT, B08SM1CLKT, B08SMGMMVT, B08TDJ5BVF, B08V8DJBK3, B08V8DKV1Q, B08VGNYQSW, B08VGQ159Z, B08VHYQCB8, B08VJH4H6F, B08VNL25YB, B08VRG72G5, B08VRK5BXG, B08VRMK55F, B08VRSB16P, B08WD18LJZ, B08WRSMVKW, B08X4T8JPR, B08X7D5R67, B08XK6HWLG, B08XMSKKMM, B08Y5TS3W9, B08Y6JBY21, B08Y6TNVVZ, B08YYP8J1N, B08YYQ3WFG, B08YYSX5XX, B08YYVW968, B08Z3CMD8N, B08Z774YYY, B08ZJ8C341, B08ZKJWKG2, B0914YV5D2, B0915YYB74, B0918JGYN8, B0922Y96ZR, B092323NG1, B092HMD4Q7, B092HN3SPJ, B092TYNY69, B092X94QNQ, B092XRRZ6C, B093C171PL, B093DTRS4K, B093SGQDSF, B094CRYSGN, B094YFFSMY, B095HBHKHB, B095L426R1, B095L5Z9CP, B095N9RXNF, B095NBR8QM, B095NBZKHR, B095YDRK6R, B095YF73RM, B096V8Y76N, B096Y48N1P, B09734DJ3M, B09735ZGQ3, B097D69GJ1, B097DTJRWZ, B097GT888J, B097JPDQR8, B097P93K31, B097ZQTDVZ, B0981XSZJ7, B0983J7HJ9, B098DM64S8, B098Q69SBV, B098QZZ4NJ, B098TMN71F, B098TV3L96, B098XN8SC8, B098XR32X2, B098XRF5NX, B098XT65BC, B099957NM6, B099PJQXGY, B099RNMDR9, B099RVKJ8C, B099WD32FX, B09B125CFJ, B09B3F46P2, B09B5BS6G4, B09B5CPV71, B09B5YL75Z, B09B9SD1QH, B09BVJXWYK, B09BW334ML, B09C3F3N2N, B09CCSWRGS, B09DDCQFMT, B09DFMDM4F, B09DPYCVRS, B09F3ND2JH, B09F6BLGRL, B09F6D21BY, B09F9RJLW7, B09F9RMTW8, B09F9RW3TL, B09FKVQ2CJ, B09G6VHLRN, B09G9BWDJT, B09GFVB6N8, B09GRHF34H, B09H4DVF43, B09H4DZS2Z, B09H4Q36DC, B09H4RMZTV, B09HBVWWQ5, B09HBYC99B, B09HCHR9JP, B09HCJX2L1, B09HDBZYSY, B09HMGNC2J, B09HML47NB, B09HN6QB25, B09HXXXYX8, B09HZZTV98, B09J2S4FCF, B09J2SCZ4D, B09J2SKRQM, B09JC6Z7R9, B09JGNL1QZ, B09JGNNFBJ, B09KG9SMBV, B09KH58JZR, B09KZYG416, B09LHXTXMX, B09LHZWR7T, B09LJ1TPN6, B09LYST55M, B09MM6P76N, B09MT6WGMZ, B09MWH6RBF, B09N7KCNL6, B09N9SFDBT, B09NBQRN53, B09NL5TWD2, B09NN9HJZJ, B09NNSM134, B09NNT5338, B09NNTG36Z, B09NNTGWL6, B09NYJZZC2, B09NYK3CF2, B09NYK9WFC, B09NYKZ7M8, B09NZV378R, B09P1JZ4VR, B09P4939DQ, B09P53B3M5, B09P5HV86J, B09P8M18QM, B09PHMLHZ9, B09PL677CS, B09PL79D2X, B09PL8CPSC, B09PQD3VC3, B09PTH3LZB, B09PTSTZJQ, B09PVKL9WW, B09PVMZNJ4, B09PZYGSXB, B09Q1271BR, B09Q62LFQP, B09Q68KJ2W, B09Q8XMFHB, B09QJ3Z2PK, B09QMQ4K4W, B09QSY8CTB, B09QXGPRFZ, B09QYTJD4L, B09R24HMNW, B09R24JBYV, B09RH4GCDY, B09RH8SRX2, B09RQRZW2X, B09RSP87WG, B09SFX5Z63, B09SGBBM47, B09SGF7SMV, B09SHWXWR8, B09SPWS5D6, B09ST2KNS2, B09SZ8GMVF, B09TKFW4PR, B09TP3R2XQ, B09TQT5GVM, B09TRT9NT8, B09TT3X7MF, B09TT6BFDX, B09TWCT9JR, B09VH69RYC, B09VT5DH5C, B09VYYHTFB, B09VZBGL1N, B09VZDPXSK, B09WDHMP94, B09WHN1FCG, B09WQTFT18, B09WR89F5X, B09WRDR3S5, B09WRJ7BMK, B09WRLJ51R, B09WVDVH4F, B09XBD522D, B09XJ1LM7R, B09XKH1R5N, B09XXZR6LX, B09Y14JLP3, B09Y1JJ4HK, B09Y8MV934, B09YKYJX7Y, B09YLCXLKY, B09YLFHFDW, B09YP3FRK8, B09YRWPFX7, B09YRXBB3X, B09YRYCWF8, B09YRZ2ZLV, B09YVFXQ7M, B09Z6WZG1R, B09Z7TRQ6Z, B09ZB5DGSY, B09ZB5ZSDG, B09ZB6DZF4, B09ZB77DH6, B09ZJ1P3TV, B0B12K5BPM, B0B12Q8K2X, B0B12R9FGM, B0B12RR9Z7, B0B12S9WP1, B0B14SGH8F, B0B14SPQGZ, B0B163TQJB, B0B18W9RVC, B0B1B7V73G, B0B1MX1M7R, B0B1P3DC9F, B0B24NB2JW, B0B2K64ZLZ, B0B2LH7XZW, B0B2PJ31MB, B0B2PJQ224, B0B2RBYR89, B0B2V9221B, B0B2W1P5G9, B0B2W2JC6S, B0B2WQFHB2, B0B31CMHY7, B0B3637SB5, B0B3N3GDL5, B0B3TB1RMQ, B0B42WK9VN, B0B4B8NDG8, B0B4G44RFS, B0B538HW92, B0B53BZDW1, B0B5664RFQ, B0B58J9WYK, B0B58JGBC7, B0B5RF438M, B0B5X7VZRX, B0B69DG42Z, B0B6DSPWB2, B0B6T1GTH1, B0B71J6MQ1, B0B759NFV7, B0B75YQ5BL, B0B7DPSPTY, B0B7DRPBW3, B0B7FGND3X, B0B7FJ68Z3, B0B7FJFVFG, B0B7J6VKVL, B0B7J99SKB, B0B8DK8GDW, B0B8DMF47G, B0B8HJPNZD, B0B8JKZFPT, B0B8TNWJFG, B0B8VW9DN8, B0B8Z498WQ, B0B936Q35S, B0B936SLST, B0B936X2XH, B0B938GDKL, B0B96H8MDV, B0B96HCWZC, B0B96HMW3Z, B0B96ZVHFS, B0B9737MB6, B0B9H3GPQR, B0B9H3PMFM, B0B9H6GMGL, B0B9H84Y6S, B0B9R1SNG7, B0B9RHNNWC, B0B9S75GT4, B0B9T219C2, B0BB2JRVM7, B0BB2Q4S3V, B0BB2Q8M4F, B0BB2T31V3, B0BB6HR4HX, B0BB7XXWWC, B0BB82GSFG, B0BBVF6681, B0BBVQYCGT, B0BBW521YC, B0BC1VG5QF, B0BC2B91VF, B0BC2C14D8, B0BC3NYGGM, B0BC9QY5KH, B0BCG3W4L5, B0BCGKRK3R, B0BCGSKC5P, B0BCGZN4CD, B0BCKPBKD5, B0BCL738VN, B0BCPTHQGK, B0BCVJ3PVP, B0BCVJRYFM, B0BCVJYPHY, B0BCZM52WY, B0BD5BL3Y8, B0BDS8MY8J, B0BFRSC84C, B0BFWL6W66, B0BG62HMDJ, B0BG8Z2DTD, B0BGBJ3LD5, B0BGHYFDBT, B0BGR6RTT4, B0BGRZX4TH, B0BGS28H74, B0BGS3SMD4, B0BGS4GSMJ, B0BGSD5N46, B0BGST4S6K, B0BGXDR83B, B0BGYDSJBQ, B0BGYJHNY8, B0BH3N69W1, B0BH8V3GLQ, B0BHLD5MGK, B0BHNPVSLK, B0BJ23JTXX, B0BJ9DWSBQ, B0BJDKG3GZ, B0BJF85YRR, B0BJKPRM9G, B0BJTGNXKX, B0BKQRF51Z, B0BKQRQCGQ, B0BKQTRCQV, B0BL1BW6FK, B0BLCV3M77, B0BLLH74WV, B0BLNKCMQD, B0BLNKMBDS, B0BLNKY3NR, B0BLNLLJR8, B0BLNMXT67, B0BLPDTX6R, B0BLS2P293, B0BLSV23B8, B0BM6L26WG, B0BM9LK1MR, B0BML3QTFX, B0BMM1JZTQ, B0BN11RJG3, B0BN126D29, B0BN3DMT1T, B0BN6KGZFN, B0BN76TTK9, B0BN7FX268, B0BNDJFXVN, B0BNJ3JMTB, B0BNJ68KBJ, B0BNJB6DHW, B0BNL4TD7S, B0BNLH1PNB, B0BNPLVGXH, B0BNXFN826, B0BPD8T6WM, B0BPDKSJW4, B0BPFR7MHD, B0BPFR7R2W, B0BPGRWXJK, B0BPGWN5XC, B0BPHN4D42, B0BPM8GMFC, B0BPXQ9QJ5, B0BPY71CB9, B0BPY8NCPF, B0BPYBKCPJ, B0BPYBL1ZV, B0BQ7G5DJX, B0BQY17XPB, B0BR59KJQ2, B0BR5CMNNT, B0BR5GFXBS, B0BR5R1D9L, B0BRCX1WJT, B0BRCYSDJ5, B0BRG2Y1T5, B0BRJSNL8W, B0BRKNZ6YH, B0BRT3DV21, B0BRVF7PYH, B0BS6CRKC8, B0BSGRKSV5, B0BSNPJCRX, B0BSNPRJYN, B0BSPP3F33, B0BSRYWBQ6, B0BSSCML1P, B0BSVCMX5R, B0BSVCZMNS, B0BT527WCG, B0BTLXCK6D, B0BTT81ZR7, B0BTW849XN, B0BV27R32P, B0BV6ZM7F4, B0BV74221T, B0BVB1Z1L6, B0BVBPZYGR, B0BVBQ5TH6, B0BVK5DM6D, B0BVMMQ466, B0BVMPS87N, B0BVTWH4ML, B0BW4B7YZH, B0BWF9SCKG, B0BWFBDW88, B0BWFC2ZTM, B0BWJXJTFS, B0BWNBYWJZ, B0BWVHMNRQ, B0BXB23RH3, B0BXB32W33, B0BXDHNDR1, B0BXFCJ2ZW, B0BXGY76GX, B0BXSKCHNL, B0BXXN718K, B0BY2NR6S1, B0BY597592, B0BYDGGLNT, B0BYF7BB5Q, B0BYJN986V, B0BYJSD8FQ, B0BYJSZFS8, B0BYSJBJV6, B0BYSPJ4QZ, B0BYW58N75, B0BYXGCRSN, B0BZ83GXP3, B0BZW7LKRB, B0C14RHW4H, B0C17KVSWG, B0C1G6XHLD, B0C1G8CX2W, B0C1KDSGH8, B0C23JN62Z, B0C23MGYWM, B0C23NQKP4, B0C243H161, B0C2J52PB2, B0C2J5YB66, B0C2J7SF5K, B0C2TYJHYS, B0C2YXN5SV, B0C37PXR3H, B0C3H2WG4L, B0C3MB4HVZ, B0C3XGNGZM, B0C3XV3VQY, B0C4JJCFWQ, B0C538GX6G, B0C539RCKF, B0C53B5JQK, B0C53BGPV6, B0C53CSY71, B0C58D424R, B0C58JNWF6, B0C5JN5T58, B0C5PTCK2S, B0C5RB559P, B0C5RD1VPF, B0C5RHXN9W, B0C61CMPV6, B0C66FDFZ3, B0C69W4G8L, B0C69WWHHQ, B0C6J2F3JL, B0C6LQSDMS, B0C6MFK8PT, B0C6QY4TTP, B0C6T2HNGH, B0C6TSVB83, B0C6YFWQ1F, B0C6YGTBK5, B0C6YH1K7G, B0C74P6SV7, B0C77G1HV8, B0C78BCCSG, B0C7CYT55P, B0C812LLZ9, B0C8145VTX, B0C816PXYS, B0C8178SH8, B0C81HCWS6, B0C81P1C65, B0C81TXG7P, B0C823VQN6, B0C85KFLGR, B0C8CGDKD1, B0C8JP11QV, B0C8MQYMVF, B0C8NN61GN, B0C8P2KGGZ, B0C9CNP929, B0C9HVY1D8, B0C9HY4GNR, B0C9J4Z3VN, B0C9LVQ7HK, B0C9LXM9CY, B0C9LZ3GV5, B0C9MNT48D, B0C9TZTMPQ, B0C9V3437T, B0C9XFTWYQ, B0C9YMYRRG, B0CBG5BZMZ, B0CBG6LFC1, B0CBH8JV48, B0CBRW2P3S, B0CBV6QNMF, B0CC4ST62Y, B0CC8V7JVX, B0CC9NNGJ7, B0CCBQVMW9, B0CCBS7CZZ, B0CCJN1VGQ, B0CCNWLMC9, B0CCP1Q94X, B0CCRD233N, B0CCYFC75B, B0CCYG6NLB, B0CD1R3HVN, B0CD1S9RMV, B0CD21FYM2, B0CD21VMGR, B0CD22PWD9, B0CDGY4V6Q, B0CDL3LWCS, B0CDLGB7MN, B0CDQFDDMJ, B0CDQFFVZ9, B0CDQFJQSP, B0CDQGH4W4, B0CDQGX9PJ, B0CDQH6VTD, B0CDQHHQ6H, B0CDSCVPRP, B0CF1M3S6S, B0CF27TLRY, B0CF2CXR3Y, B0CF58L3H4, B0CF5Y2HHZ, B0CF9T1JHK, B0CFFNF3NH, B0CFM7T16G, B0CFM8S5X2, B0CFQVLG49, B0CG1W1NKY, B0CG3L9K8Z, B0CG4CGRKL, B0CG4MCD5L, B0CG5K9P92, B0CG92FQL3, B0CG942JRS, B0CG9D18K8, B0CGDQN3MK, B0CGNP4CVF, B0CGRDZ38H, B0CGRGZDSY, B0CGTYRB1S, B0CGTZJYH4, B0CH1DPF51, B0CH1FD1RX, B0CH1FLT2H, B0CH3PK1QQ, B0CH8L6YR2, B0CH8NNTZQ, B0CH9WVB22, B0CHB98LJS, B0CHK19SJF, B0CHK271F2, B0CHRNMQNQ, B0CHRQ48LL, B0CHRYM58Z, B0CHWLNX46, B0CHWPRFV2, B0CHWPYBFV, B0CHWR2KJD, B0CHWR2KJF, B0CHWWHZBQ, B0CHXCPJ6N, B0CJ3GDB3Y, B0CJ56L3XL, B0CJ75CHYX, B0CJ7GHHB7, B0CJCBZ73S, B0CJCDB66J, B0CJF8JFVD, B0CJJSC8W7, B0CJJSH4NS, B0CJJTX9FH, B0CJM3D8C9, B0CJNXWVWT, B0CJP9LW82, B0CJVD8GQX, B0CJVG1KLM, B0CJXS969K, B0CK4GTZT6, B0CK73H3ZB, B0CK7X2W4P, B0CK86M7KW, B0CK95QDXC, B0CKDYR5TP, B0CKHY8TF5, B0CKNQPTG3, B0CKQVZHVC, B0CKVVYY4W, B0CKW629CC, B0CKW9HPQF, B0CKW9W5MS, B0CKXBLX3Z, B0CKXCT2R3, B0CKYNM9M9, B0CL2HNC31, B0CL2HP1J4, B0CL593XYP, B0CL6XN9T5, B0CL71YPPY, B0CLRXPG4P, B0CLS6M1JN, B0CLV4XQFK, B0CLY9657Z, B0CLYF1JRH, B0CM3DZD7Q, B0CM9QR95M, B0CM9VWVC6, B0CMTWHP5P, B0CMTWPKCJ, B0CMTXW7JP, B0CMTZ96L9, B0CNCP6CJL, B0CNS4PF3R, B0CNTGN4SW, B0CNZWKVJL, B0CNZZQ61T, B0CP112P1Y, B0CP7TR2FJ, B0CP92L9YH, B0CP97WYHJ, B0CP9LRSZG, B0CPPJ3ZWT, B0CPSG7JGJ, B0CPVPR3V9, B0CPY8YPNJ, B0CPYKV4NW, B0CQ2SYVD2, B0CQ2T68WY, B0CQ2T85DF, B0CQ2TCKLK, B0CQ2TY8XM, B0CQ2VB42V, B0CQ3TLNRG, B0CQ4QR69Q, B0CQ59RVNZ, B0CQ5CHWFC, B0CQ7KRQWT, B0CQ8V4Q41, B0CQCV98NW, B0CQFWN59L, B0CQG7M38G, B0CQM1SC8T, B0CQPB76VD, B0CQPDTQ26, B0CR48ZXKT, B0CRGYJMSC, B0CRH95W14, B0CRPNSS2V, B0CRRPDWCP, B0CS9QR77M",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": false
+        },
+        {
+          "name": "CE Asin List",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": true
+        },
+        {
+          "name": "B0012TP5EO, B0043E6PLC, B004EMK6YU, B005HCG8XE, B0067LVN1Q, B006FEFO9W, B006FEFQEK, B006FEGE5A, B006FEGEOG, B006L1UXB8, B006L1W3FW, B006R4VAZM, B006R4VBOM, B006TQNOR0, B0073QKWUW, B0073QKZ04, B0073QL1UC, B0073QLIRS, B0073QM46M, B007HGK096, B007M5UZX8, B007M5V1UO, B007PZM894, B0085VZ1GO, B0085VZ29U, B0085W15RC, B008A6THZU, B008DJYNV2, B008ET8JPW, B008ET8KBU, B008ET92KS, B008LN5LDY, B008LQOYKW, B008MWO42I, B008MWO4DW, B008P7J3E4, B008P7J3NU, B008P7J416, B008P7J48Y, B008P7J4OI, B008P7J52Y, B008P7J5KG, B008P7J5X8, B008R6306U, B008R631W8, B008X0AHOI, B009J8RAB6, B009J8RG4C, B009J8RGGA, B009NDH09E, B009OAQSOE, B009OE4L6C, B009OE4LEE, B009P2KRKC, B009P2KS6U, B009P2KSFQ, B009P2KSTC, B009P2KT28, B009PJBP60, B009PJEE2C, B009VDB5ZQ, B009Z6AFFK, B00A47UEJQ, B00A47UFAO, B00A47UFT0, B00A47UGAS, B00A47UGV2, B00A47UHAM, B00A47UHSE, B00A47UI9W, B00A47UIXI, B00A47UJZK, B00A47UKDQ, B00A47UKTK, B00A47ULDK, B00A47ULSA, B00A47UM9I, B00A47UMIY, B00A47UN06, B00A47UNBU, B00A47UNQA, B00A47UO28, B00A5IQ1Q4, B00A7PF5IA, B00A7PF6KM, B00A7PFDLE, B00A7PFR2O, B00A7PFRYM, B00A7PFSXW, B00A7PGBDI, B00A7PGC14, B00A7PGD04, B00A7PGH6E, B00A7PGI18, B00A7PGKE8, B00A7PGT6M, B00A7PGU84, B00A7PGVTC, B00A7PGY6M, B00A7PH77W, B00A7PHCG8, B00A7PHG5U, B00A7PHGOQ, B00A7PHHKO, B00A7PHIDK, B00A7PHJ2U, B00A7PHWP4, B00A7PHZCY, B00A7PI27G, B00A7PI3CU, B00AAAXTOE, B00AAAXV4C, B00AFABKDQ, B00AFABKO0, B00AFABLA8, B00AFABLNU, B00AFABN5G, B00AFABNHO, B00AFABNU6, B00AFABOEQ, B00AHWLY6K, B00AMEV5BM, B00AR8A7MG, B00AR8AAPU, B00AR8AAXM, B00AR8AHQW, B00AR8AJYM, B00B1ANSDY, B00B1ANZKK, B00B1AO0LS, B00B1AO2I4, B00B1AO3HY, B00B7G5AII, B00B80RPGS, B00B80RQ7Q, B00B80RR6G, B00B80RT8W, B00B80RU86, B00B80RVT4, B00B80RYN2, B00BG7KFBK, B00CDKDP02, B00CDKE6XC, B00CDKE8I0, B00CDKJ6WS, B00CDL3IWQ, B00CJ5DTSE, B00D1MXW68, B00DYPNHUS, B00E3QK9ZS, B00EKACEF0, B00EU74CB2, B00F15AECS, B00F15AF22, B00F15AFPY, B00F15AGTE, B00F97U1CG, B00FA0B90A, B00FA2BHM8, B00FDQKI8A, B00FQIW09A, B00FYF3CL0, B00FYR8YTS, B00FZQJP14, B00G275I7U, B00G527ZIC, B00H0BPXFY, B00H0CZEW0, B00HLXXAEC, B00ICB6E6S, B00IJXXXUY, B00JEX5874, B00K63CGNU, B00KOOO3K0, B00KOOYT86, B00KOPMRKW, B00KPSL3RG, B00KPSLTZC, B00KPSSP2W, B00KPSSPZY, B00KPSSQAI, B00KPSSQRG, B00KPSSR20, B00KPTL3NO, B00L405XOS, B00L4794EG, B00L47978E, B00L479B08, B00LEHRSJO, B00LEHRZ3I, B00LEHS3AW, B00LEHS4D8, B00LEHS7CG, B00LEHS8TS, B00LEHS9SS, B00LEHSA9Q, B00LEHSALE, B00LEHSCF8, B00LEHSCTE, B00LEHSDBG, B00LEHSDSO, B00LEHSERO, B00LEHSFB4, B00LEHSFVE, B00LEHSH80, B00LEHSHMG, B00LEHSI4S, B00LEHSIP2, B00LEHSJ10, B00LEHSJGK, B00LEHSJZG, B00LEHSKE6, B00LEHSKXM, B00LLYZCXO, B00LLYZDAQ, B00LLYZDQA, B00LLYZE3C, B00LLYZEJ6, B00LLYZF04, B00LLYZFEA, B00LLYZFT0, B00LLYZG8K, B00LLYZGMQ, B00LLYZIBA, B00LLYZIP6, B00LLYZKB8, B00LLYZLZS, B00LNTU0GQ, B00LNTU1VK, B00LNTU2JG, B00LNTU35O, B00LNTU3SQ, B00LNTU4YO, B00LNTU5SY, B00LNTU6ME, B00LNTU7CS, B00LNTUE1W, B00LSJ7CMG, B00LSJ7S4I, B00LSJFI6I, B00LSJGWTA, B00LSJN572, B00LSJNSIS, B00LSJVHAE, B00LSJXX6K, B00LSJY0JE, B00LSJY1H0, B00LTRVMF0, B00LTRVNH2, B00LTRVOE4, B00LTRVQBK, B00LTRVR50, B00LTRVSSQ, B00LTRVTN0, B00LTRVW5K, B00LTRVWV4, B00LTRVXOU, B00LTRVYK8, B00LTRVZI4, B00LTRW21S, B00LTRW5AQ, B00LTRW6XW, B00LTRW7VS, B00LTRWFIS, B00LTRWND0, B00LVYFW16, B00LVYFYKA, B00LVYFZBI, B00LVYFZX6, B00LVYG1S4, B00LVYG23I, B00LVYG2G0, B00LVYG2TM, B00LVYG42C, B00LVYG4EA, B00LVYG4Q8, B00LVYG544, B00LVYG5YY, B00LVYG6C0, B00LVYG7F6, B00LVYG7O2, B00LVYG8PK, B00LVYG90Y, B00LVYG9SG, B00LVYGASK, B00LX0C00O, B00LX13110, B00LX3DN9S, B00M52J2QY, B00M96KSJ6, B00MTKZBOY, B00N1VKDFC, B00N3Y8OS0, B00N3YA4EM, B00N3YL1LC, B00N834WQO, B00N8PBJ5Y, B00N9WQNN4, B00NBMB51C, B00NBMBDAK, B00NBMBHBA, B00NBMBM4C, B00NBMBQ7U, B00NBMDRPO, B00NKYMRCM, B00NL5X8DW, B00NL5XBPM, B00NL5XF30, B00NL5XKSU, B00NL5XPS0, B00NLBRUT4, B00NM9J7UK, B00NM9KLCS, B00NM9L370, B00NM9M21Q, B00NM9MIGK, B00NM9MNQU, B00NM9MZWW, B00NM9N4HM, B00NN7C4TW, B00NNKVV6Q, B00NPOH4KW, B00NPOHH40, B00O21PWAG, B00O21SU6E, B00O22SWZ2, B00O8CDXAU, B00OKCE8N4, B00OLHQJD0, B00OLP0GKY, B00OLUNDTK, B00OPT1PA6, B00OPT1WAY, B00OPT224Y, B00OPT2HF8, B00OT9E9UA, B00OT9ERZW, B00OT9FA26, B00OT9FJ4K, B00OT9FPU8, B00OT9FX2S, B00OT9GC8W, B00OT9GICM, B00OT9H0F6, B00OT9HONY, B00OT9IRZI, B00OT9IYYW, B00OT9J5AY, B00OT9KAHG, B00OT9KH8S, B00OT9KPZI, B00OT9L660, B00OT9NQ8Q, B00OT9NY9W, B00OXR08LM, B00P10QOYK, B00P1KGR8I, B00P1KGVEI, B00P1LU6NO, B00P2D2Z80, B00P2DEGSM, B00P618RYO, B00P6198CY, B00PCBMI7K, B00PCQEWUQ, B00PCQF228, B00PCQF37W, B00PCQF49Y, B00PK24T3C, B00PK24YEQ, B00PK253VE, B00PLJWSYG, B00PRO333K, B00PRO3CI6, B00PU1GUJ4, B00PU1KGSK, B00PU1L05S, B00PU1L6Y8, B00PU1LDJG, B00PU1M9EY, B00PVKTOR4, B00Q6626J0, B00Q662H08, B00Q662L54, B00QA1NCFS, B00QA1NHZS, B00QA1NV3Q, B00QA1NZXC, B00QA9696Y, B00QA96CUC, B00QAAV5XU, B00QAHPJOY, B00QHXYHNA, B00QHXYQEA, B00QHXYU8M, B00QHXZ9KK, B00QHXZCZM, B00QHXZJU0, B00R4NDU7Q, B00R5QNRYS, B00R5QNW8E, B00R5QO6WU, B00R6045XU, B00RBLS5A8, B00RCL567M, B00RCL5BWW, B00RE448IA, B00RE44F8I, B00RE44KOM, B00RE44QE6, B00RLGFACO, B00RLGG4PQ, B00RLGGJEW, B00RLGGZ82, B00RMQH4D6, B00RXGTN3E, B00RXGTSD4, B00S15XOTA, B00SGQ4BK0, B00SGQ4W0E, B00SGQ5MXU, B00SUYVUGG, B00SUYW3XU, B00SWEFDL2, B00SWEFHAE, B00SWEFKCE, B00SY2DGCK, B00SY2DKA8, B00SY2DN5U, B00SY2DPJO, B00T4332PY, B00TOD9U4G, B00TOD9X4S, B00TODA2QG, B00UHODO5C, B00VE5LCCU, B00VN0CKAO, B00VQO41UO, B00WQOR4GG, B00WUA08SW, B00WW3YN1U, B00Y9P8CQQ, B00Y9P8XRE, B00Y9P9UXU, B00Y9PAB3I, B00Y9PAE6W, B00Y9PAOB2, B00Y9PAZ7U, B00Y9PB7OK, B00Y9PBHTK, B00ZFR1BGA, B00ZIMS7K0, B00ZOPZSSU, B0107NS7NG, B0107NSBVY, B0107NSF7O, B0107NSLK0, B0107NSOPC, B0107NSS3A, B0107NT1MC, B0107NT4OM, B0107NTLAY, B0107NTRK8, B0107NTXJS, B010T3ZWZU, B010UNTCLE, B015AAV3PA, B015RGF6Q4, B016D4KCA4, B016XZP3DY, B016ZLKJSU, B01A5GJS74, B01IR81ADW, B01IR81AEG, B01JEKO1WY, B01LF927AU, B01LPQAXOU, B01LSXOZOY, B01LW06I1S, B01LW2O7D4, B01LWE0QJK, B01MF8590A, B01MUWAEXL, B01N2VM7UH, B01N4WJ6Y1, B01NC3A1X4, B06XK8RY1Q, B06XKC8S71, B071HT7TZ9, B071KC3BR2, B071NZPNPP, B071ZZ4RYL, B072KZ373J, B075FLSFS3, B075FW6P7S, B075V4N1CJ, B07662S64Q, B076D7JQ4N, B077D94Q68, B077DMQ2F3, B0798PSWWF, B079T5S9KQ, B07BNLKS7V, B07CVWXGCP, B07GFPW3L5, B07GLPJ37N, B07GLPJC7N, B07KJSM6XL, B07KXFDX56, B07L9YSDDC, B07MC84GZH, B07MC84QPL, B07MCL5F6X, B07MZRNVQQ, B07NHVP6KW, B07QPDLZDX, B07R8MF114, B07R9RS1M6, B07RY7Q5YV, B07SBJB18D, B07SVFSZ24, B07SWC5454, B07SZF18DT, B07T3G24ZX, B07T3G5GN7, B07T3GYG1S, B07TLMRB7Z, B07VJ9VDF8, B07VQ89LR4, B07W5YP7TS, B07W814YFS, B07WD8SLD5, B07WGD8QQS, B07WGD8QQT, B07WGDGC92, B07X2NBQYK, B07XT5TDF2, B07XZ12KZ7, B07YWYGJYD, B07YWYS7QP, B0816XMGDZ, B0816YMD45, B081D3VB77, B081D424T2, B081N7Y4R3, B0821Z9KWX, B0821ZJR98, B0821ZYFS2, B0822V56FQ, B0824QD8K7, B082GBYJ62, B082T6CKGK, B082YCTZJR, B083471XNX, B083G1NDTK, B083G1VSS2, B083G1WGLF, B083G25P9L, B083WLFFT5, B083WNGQXC, B0843P8N6T, B084LGQBZM, B084TPPSQS, B084V7BX9Z, B084VJT92G, B085V1JD27, B0861S3BJ1, B0861SL97J, B0886P9T5N, B0886PBPGW, B089J88J9V, B089PYVGNW, B089WZK2RW, B08B97BVJF, B08B98715P, B08BGCS3J7, B08BKSLPSW, B08BKT2KB5, B08BKTN26D, B08BKTW31W, B08BKV4S4F, B08BKV8WX1, B08BKVGHV3, B08BKVJ73X, B08BLP2J7P, B08BXLMNJY, B08BYXGT6V, B08C7RK6TJ, B08CHFTJHZ, B08CKXHS69, B08CL8XF75, B08CVN1YRH, B08D11J8KC, B08D14ZB73, B08D3WJG5B, B08D3X2W6S, B08D4KHSYS, B08D7QST4Q, B08D7RF862, B08D7RKJ33, B08DDSCCRT, B08DDSTKSM, B08DDT1Q1Z, B08DM383L2, B08DP658HP, B08DV96RP8, B08DYCWC9R, B08FMN5ZQM, B08GJ2PGP9, B08GQ8G5D4, B08GQ8MHK9, B08GQB8432, B08HXSSSPF, B08KG935SL, B08KPG86Z6, B08KPGSZF8, B08KRR59JG, B08KWGTTH3, B08KX3Z84G, B08L5CRR6R, B08L7BF3RV, B08NHMFTV2, B08NQJVWGQ, B08PWG9Y7G, B08QSKDKFT, B08SMC7R5S, B08VMVFFCW, B08W9C1DVQ, B08WRNBTYW, B08X1FMC6K, B08X6ZYWBD, B08XK66FV1, B08XLV4NTG, B08XMBG9SV, B08Y8KNFRN, B08Y8LHLR2, B08YQZPDGK, B0912VMP4V, B091FPXVHT, B091FPZQP7, B0963R8D3Z, B096LSHQRQ, B096LWG3WW, B0977DC7Y5, B097RLDNNT, B097TN23WN, B0981C6KNN, B09873S3S4, B0989PN4G9, B098PCK1YG, B099S17W6S, B099S32MWJ, B09B5DRJQY, B09BKZCSXP, B09BLCL2WY, B09BNTJNJL, B09BQTPR88, B09BR9B7FH, B09BR9NQ37, B09BRCCB8B, B09BVLTBH1, B09C3NVP26, B09C3QQ58B, B09C3S9JQQ, B09C693228, B09CMTKT9X, B09CMVSQL2, B09CMW4D4K, B09CMWCX8H, B09CPV5L75, B09D9QZLZJ, B09DD573SY, B09DVWXLX3, B09F3PTNHN, B09FHRY2RF, B09FLBJDNZ, B09G18T1W4, B09G6528NC, B09GB3K3QL, B09GG4BJ5D, B09GNH7VHQ, B09H4RD6TQ, B09H5PG724, B09HMGHFB6, B09M7DH9LJ, B09M8VKLDT, B09MK5F19F, B09N9BKYN9, B09NN7P711, B09NTN659M, B09P3V9P81, B09P654T53, B09P66B7W6, B09PF1TK41, B09PNL6G9J, B09PV84DMX, B09QCGC1YM, B09QKWB3ZX, B09RB1DDZ2, B09SF79M6Q, B09SLTRQWF, B09ST1X14N, B09T6NH99B, B09T6NX8W2, B09TPB5GF6, B09TXYDSPQ, B09V53NWJH, B09V55ZGB9, B09V7V499N, B09V7V9CF7, B09V7VK8VZ, B09V7WJ3LT, B09V7WJD8Q, B09V7WQP6K, B09V7WYQ9P, B09V7WYYKY, B09V7X4RFV, B09V7XWHYN, B09VH1Q7CM, B09VLFF7B2, B09W2PNLLQ, B09W2PR62L, B09W2QMXBW, B09W2QRVPM, B09W2QXTCX, B09W2R14PB, B09W2R759V, B09W2R916D, B09W2RMXPY, B09W2RSF87, B09W2RW5TQ, B09W2S8QQW, B09W2S8XM2, B09W2SCNWY, B09W2SKYN9, B09W2SRXQG, B09W2T428Q, B09W2YSQX7, B09W99B3Z2, B09W99RHR1, B09W99X7P2, B09W9BNNPC, B09W9BPWTT, B09W9BRR7V, B09W9BXB83, B09W9DNV4Y, B09W9DVQRT, B09WMM2LBL, B09WMMCY97, B09WMMGR6V, B09WMNN2SX, B09WMP9VD1, B09WMPC8ZY, B09WMPG452, B09WMPHFMQ, B09WMPMZ5Z, B09WMQLDJZ, B09WMQLMLX, B09WMQP5KB, B09WMQVT6N, B09WMR1LCQ, B09WMR4W7Q, B09WMR9FH6, B09WMRBQKH, B09WMRG1LT, B09WMRHGLS, B09WMRJP83, B09WMRMZGV, B09WMRQ4NG, B09WMRSZS8, B09WMSGHP2, B09WMSJ8RK, B09WN95QFY, B09WN9G5P8, B09WNBBJR2, B09WNBN6D2, B09WNBN6D4, B09WNCGMYP, B09WNCPB2N, B09WNCRDXJ, B09WNCSN7C, B09WNCW1DK, B09WNCWTK8, B09WNCX3QH, B09WNCZV1J, B09WND24NB, B09WND9W15, B09WNDF8LF, B09WNDPYW5, B09WNDS41W, B09WNDWFLM, B09WNFDG5K, B09WNFSH4F, B09WQ4BBK8, B09WQK4QZP, B09WQMD7Y1, B09WQPP4BZ, B09WQRMDTN, B09WQWYMVZ, B09WQYGBKV, B09WR294SQ, B09WR7KYXC, B09XBLS8XY, B09XBMHYD7, B09XBMXQ34, B09XBPGYV8, B09ZDLCDW2, B09ZHWH7P9, B0B18J6P9T, B0B1JDGK3D, B0B1JDTBWQ, B0B1JG7VMY, B0B1QPDK2L, B0B2WG4R8P, B0B2WSXZB7, B0B38MM267, B0B38NNRR5, B0B38PYBZ8, B0B38Q883N, B0B4K9BG18, B0B4N73H4R, B0B4Z2N3V9, B0B4Z5GV5G, B0B77BNN3T, B0B77BVKJG, B0B77FZ8WN, B0B7JTWLMJ, B0B86BY96T, B0B8J8DPYF, B0B8XS55J6, B0B9BJWKLM, B0BB8F4MXH, B0BB8JTVJR, B0BBD52R4J, B0BBD63SJJ, B0BBFGZ929, B0BC1MDYWS, B0BC2CT6JJ, B0BC4S6S2R, B0BCDNKKJ9, B0BCFFJZT8, B0BCWBYTYY, B0BD4P959Y, B0BD8ZPFJQ, B0BD95GL4M, B0BDDGQ1HJ, B0BDF8VZ9Z, B0BF5JQJL3, B0BF5LFXJ5, B0BFXLQDJ8, B0BGRWL5D7, B0BJVWV3XX, B0BKK76D28, B0BKKL48P3, B0BKKPRMM6, B0BKWNVDBB, B0BLY369X3, B0BPMNL6P9, B0BQ78W27C, B0BQ793LCM, B0BQRKDM1V, B0BQRKDM1W, B0BQYVVFHV, B0BR5QFTF4, B0BRHKZ4BM, B0BRJSC6K8, B0BRNTS21D, B0BS3Z4XK7, B0BS6QR7DF, B0BS6RFKKL, B0BS6TBHND, B0BSFBRVSG, B0BSN3GPP5, B0BSN4Q96G, B0BSN4RNX5, B0BSNNT9JY, B0BSXHQZSW, B0BSXJDWTJ, B0BSXJTN3J, B0BT221YHQ, B0BT22PQF8, B0BV2RHG93, B0BV2RJV1B, B0BV2T296T, B0BVRHX8R6, B0BW8FGJNG, B0BWJ21D2S, B0BWMMTKRG, B0BWMQLW3K, B0BX4MKQ8C, B0BX4NHPBS, B0BX4P547B, B0BXCV98YL, B0BY2MSTBL, B0BY2PV73N, B0BZMJV6CV, B0BZW3R544, B0C1VP7FCX, B0C1VQLHT7, B0C1VS1YQW, B0C2FFQJ9P, B0C2FTQ3WJ, B0C2HJSQJ8, B0C2HJZWMX, B0C2J1Y3QN, B0C2PY81VR, B0C2PZ2QDQ, B0C2Q1S99M, B0C2Q2MSJ6, B0C2Q47RP4, B0C2Q613YC, B0C4F87829, B0C4FHHG2N, B0C4FHT3QK, B0C4GCLC64, B0C4TD43X1, B0C58FZDZP, B0C5LXY4LK, B0C69CGV89, B0C6F6RLQJ, B0C6TV3QWL, B0C6TWVXL4, B0C6V1Q2PF, B0C77T4XX1, B0C77V7VWN, B0C77WKTCJ, B0C7BXMDGH, B0C8BDB9WZ, B0C8BFBH85, B0C8J4X46Q, B0C8J7GMDY, B0C9272M4T, B0C9LVMM4P, B0C9ML9KCP, B0C9MS5YRS, B0C9Q9GFDR, B0CBSD915P, B0CCYRXGWV, B0CCYT872J, B0CD3XVQDB, B0CD43JY5L, B0CDL5WS8B, B0CDL77CJ6, B0CDM161Z1, B0CDM1FL5J, B0CDM2FLTB, B0CDM2MYLS, B0CDM2N51P, B0CDM38NSK, B0CDPPBZC9, B0CF5PPMCW, B0CF5SXHDV, B0CF8Y8VB3, B0CFFHDWTX, B0CGLPBN7C, B0CGLPWL7F, B0CGLQH91Q, B0CGN8FMJ8, B0CHP3ZT74, B0CHRJ5C1T, B0CKFC2WG2, B0CL6JJHB3, B0CM9KGZMT, B0CMDDT18R, B0CMTG1RX9, B0CN8ZWC72, B0CNSVTNSC, B0CNTMF36V, B0CNXY8JLG, B0CP52DMY2, B0CP9M9KQ8, B0CPJH9QY2, B0CQC3LYHT, B0CQC3VY3F, B0CQG4P8QY, B0CQG7XM27, B0CQJKYDGV, B0CQSYPFSQ, B0CQSZG9Y5, B0CQYMH72C, B0CQYS8GVH, B0CR9HF8VY, B0CS9GQ5Y2, B0CSPF2BNZ, B0CSYHF57L, B0CSZ7QM2S, B0CT2YZYVJ, B0CT3ZF5TZ, B0CT59YVZ3, B0CT5FH6Q5, B0CTMPFFCX, B0CTQ912VY, B0CVNF431X, B0CVQ8DX8H, B0CVQJR1XL, B0CW62L3B9, B0CW9V32MP, B0CWP1B1F8",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": false
+        },
+        {
+          "name": "LA  Asin List",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": true
+        },
+        {
+          "name": "B077S2MH8W, B077S4X3J1, B077S5CVBQ, B0784P2Q51, B0784Q4HD6, B07H4168Y1",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": false
+        },
+        {
+          "name": "Excluded Audible Memberships",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": true
+        },
+        {
+          "name": "B0CX58MTNN, B0CX59H5W7, B0CX59SD6C, B0CX5BZXLF, B0D6VGQDF4, B0D6VJ6FYG, B0D6VJ6SD1, B0D6VJCZW3, B0DLW1L5PR, B0DLW427YG, B0DLW44CGS, B0DLW4QD72, B0DMFCPF1W, B0DMFD8L7J, B0DMFDNDD5, B0DMFJCCRP, B0DPFRLMML, B0DPFSCQJP, B0DPFSH2X3, B0DPFSJV2Z, B0DPFST37Y, B0DPFTHDBX, B0DPFTYQN7, B0DPFV3T4V, B0DPFVDFT3, B0DPS62DYH, B0DPS7FB4J, B0DQ8MGRNX, B0DQ8MJYXF, B0DQ8MPQFF, B0DQ8R1DB5, B0DQ8S38R8, B0DQ8S77V6, B0DQ8V5NLV, B0DQ8W9CTT, B0DQ8XPRYF, B0DQV5WJ99, B0DQV6PQ8M, B0DQV8FQBG, B0DQV8QJRR, B0DQV98B4S, B0DQV9T66N, B0DRKL9FQH, B0DRKM9R41, B0DRKNZFT2, B0DS64XMV8, B0DS65KZ8B, B0DS67Z8W2, B0DSBVGKVF, B0DSKKGS1Y, B0DSKML64B, B0DSKMLB6Q, B0DSKMM5ZL, B0DSKN3PKW, B0DSKN89B7, B0DSKNFNGV, B0DSKNLFBG, B0DSKNQ4YR, B0DSKNR7FV, B0DSKNVWK7, B0DW471L9F, B0DW478NDF, B0DW47CJBW, B0DW47JCHW, B0DW47XR3X, B0DW48MM7C, B0DX5R87P8, B0DX655V11, B0DX6P3RX9, B0DX6S111L, B0F134C6R6, B0F135PGDX, B0F1CP5Q5D, B0F1CPCTCX, B0F1D7R312, B0F1D9LCK3, B0F1D9PQZZ, B0F1D9Q5G4, B0F1D9Y6BL, B0F1DBWL8D, B0F1DDG97W, B0F1DDJTSJ, B0F1DDVNYF, B0F1Z259NF, B0F1Z3QTM8, B0F2HBM3D5, B0F2HBYZ8B, B0F2HCGXTB, B0F2HDFMFC, B0F2HDWBNK, B0F2HFRD4P, B0F2T5RBCW, B0F2T5S162, B0F2T61RZD, B0F2T674FJ, B0F2T6TV4M, B0F2T7B9TM, B0F3P4D4R3, B0F3P58715, B0F3P5BPN3, B0F3X4R33R, B0F3X54YTF, B0F3XB7T5Q, B0F3XP9GRT, B0F4CWD6V3, B0F53RRM5B, B0F53SH9LJ, B0F53YXN58, B0F5Q2F8G2, B0F5Q5FWT4, B0F5WNYJF8, B0F5WQ1L6N, B0F5WRTGCG, B0F5WSDY93, B0F5WTG8RG, B0F6YK5LLX, B0F6YLWLSL, B0F6YNLBBK, B0F6YNZ6MN, B0F6YP7JCK, B0F6YPX2X5, B0F6YQ2YSL, B0F6YQ4RS2, B0F6YQ8JQJ, B0F6YQ9WHB, B0F6YQBZF5, B0F6YQPK9G, B0F6YR8WP2, B0F6YWDMXF, B0F6YWXVY2, B0F7FBM986, B0F7FC7644, B0F7FF8KLT, B0F83HMDDR, B0F83J33RW, B0F8TQ1PLK, B0F8TW4Y81, B0F8V419K6, B0F9F4NYCW, B0F9TS623W, B0F9TSLK2L, B0F9TT7Z5Q, B0F9TVTWP3, B0FB41SQN1, B0FB42K578, B0FB436KMF, B0FB437XS2, B0FBR69B2R, B0FBRM15FH, B0FC5QGMZ1, B0FC5TBWG5, B0FC5TDB9P, B0FC5XCLXG, B0FC5XDV5R, B0FC5XK9WZ, B0FC6TYPPX, B0FC6XHHSV, B0FCMJT7R7, B0FCMK41N9, B0FCMKL5DV, B0FCMKNCJ4, B0FCMKSH2M, B0FCMKSP7V, B0FCML3CQJ, B0FCML4Z2G, B0FCML66W9, B0FCMLCVC7, B0FCMLCX46, B0FCMMJ3TC, B0FCTBLML4, B0FCTHQS2L, B0FCTNDMW2, B0FCTS8CVJ, B0FCTSQ5XS, B0FCTVLTFF, B0FCTVPVGH, B0FCTYZJWQ, B0FCV2D79G, B0FCV2GP8P, B0FDB6BHS5, B0FDB765TN, B0FDB8V6PS, B0FDB9H277, B0FDB9H9Z7, B0FDB9T213, B0FDB9ZCTD, B0FDBB2VRC, B0FDL2MC4D, B0FDL2ST2X, B0FDL2T146, B0FDL3MWL1, B0FDL3VZR8, B0FDL4B5B2, B0FDL54NGG, B0FDL5K6SV, B0FDL5T1PF, B0FDVHBXBP, B0FDW146QZ, B0FDW1X2KC, B0FDW81P71, B0FDWHFS68, B0FG2LPC6K, B0FG2NBVBN, B0FG2NDHJM, B0FG2PFMG2, B0FG83Z587, B0FG844D9M, B0FG84J6DC, B0FG857KTH, B0FG85LK3T, B0FG86JJMT, B0FHB4F4TN, B0FHB53VL7, B0FHB5982P, B0FHB59PXX, B0FHB5V36G, B0FHB6HZYM, B0FHPPPW7D, B0FHPQ9PQ9, B0FHPQJL7B, B0FHPQV7QV, B0FHWBBBJM, B0FHWBCQJJ, B0FHWFV5VS, B0FHWH82SN, B0FHWHDKQ2, B0FHWKQW6S, B0FHWL8KDV, B0FHWLQCGH, B0FHWM5XJR, B0FHWMBFLJ, B0FHWMP2LR, B0FHWNNV2P, B0FJFRYXFK, B0FJFSDYVC, B0FJFSHJ6Z, B0FJFSNNMX, B0FJFT4VDY, B0FJFTMG59, B0FJFVBSF4, B0FJFVLPQP, B0FJFVYJ89, B0FL7YFTXH, B0FL7YZF3G, B0FLJC9LSZ, B0FLJJW3QB, B0FLXGVY2D, B0FLXJ686S, B0FM87WD75, B0FM88VR1K, B0FN7QTRPY, B0FT3DXJM3, B0FT3J2W97, B0FTR2PJTV, B0FTR5NGHJ, B0FTRMJNPX, B0FTRN7L8Q, B0FTRYH3XM, B0FYGBGBBN, B0FYGBSKFB, B0FYGC3YWR, B0FYGGJZV4, B0FZSKTV1S, B0FZSWZZW2, B0FZSXYV6K, B0FZT1D63F, B0FZT1LXPZ, B0G26FN2MK, B0G26JXRTX, B0G29VSZF6, B0G2B12DSQ, B0G2B1S4YL, B0G2B251KD, B0G2B2QVLL, B0G2B39291, B0G2B39Q4H, B0G2B4JX1F, B0G2BBWKCP, B0G2C893L2, B0G2C8K5HJ, B0G2C9ZS7K, B0G2CB88TC, B0G2CDMJXJ, B0G2CGPZ9V, B0G2RMPPND, B0G2RR9KSL, B0G2RW4Z54, B0G49VLFSG, B0G49VMCZ3, B0G49YZTTW, B0G4B8957C, B0G4BC5WCV, B0G4BDQ4BH, B0G4BLW168, B0G4BWMQDZ, B0G5G25YBQ, B0G5G2KMQN, B0G5G5C89T, B0G5G7LCJQ, B0G5G7LNCV, B0G5G8ZV1G, B0GF1V7BCC, B0GF1ZHRGG, B0GF216T4Q, B0GF22T5WM, B0GF23R9B6, B0GF24HNK2, B0GF24LR6D, B0GF24NJHN, B0GF24NXX8, B0GF25NBWT, B0GF27G7WW, B0GF293B8F, B0GF29GBSQ, B0GF2D2RKY, B0GF2H24ZJ, B0GL85WGTZ, B0GL867NV5, B0GL86QFC4, B0GL87VP7N, B0GL88WCV8, B0GL89JY6X, B0GL8BF2X2, B0GL8BNV58, B0GL8CMJ66, B0GL8FNY5G, B0GL8G49LV, B0GL8GCDDP, B0GL8GLL7V, B0GL8GXNTS, B0GL8H3XFN, B0GL8H5TY1, B0GL8HZF8R, B0GL8J486T, B0GL8KP32R, B0GL8L8G9V, B0GL8SGHMT, B0GMJ48317, B0GMJCN3S9, B0GVFQD1JK, B0GVFVND7C, B0GVFZXB9J, B0GVG27VS7",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.32",
+          "is_header": false
+        },
+        {
+          "name": "Excluded Mobiles",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.32",
+          "is_header": true
+        },
+        {
+          "name": "Cell Phones & Service",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.63",
+          "is_header": false
+        },
+        {
+          "name": "Amazon Fresh | Amazon Fresh | Amazon Fresh | Amazon Fresh | Pantry",
+          "payout_type": "Per Sale(%)",
+          "payout": "1.27",
+          "is_header": false
+        },
+        {
+          "name": "Bicycles & Heavy Gym Equipment | Tires & Rims",
+          "payout_type": "Per Sale(%)",
+          "payout": "1.58",
+          "is_header": false
+        },
+        {
+          "name": "Home & Garden | Kitchen & Housewares",
+          "payout_type": "Per Sale(%)",
+          "payout": "1.52",
+          "is_header": false
+        },
+        {
+          "name": "Furniture",
+          "payout_type": "Per Sale(%)",
+          "payout": "1.52",
+          "is_header": false
+        },
+        {
+          "name": "Luggage",
+          "payout_type": "Per Sale(%)",
+          "payout": "1.52",
+          "is_header": false
+        },
+        {
+          "name": "Home",
+          "payout_type": "Per Sale(%)",
+          "payout": "1.52",
+          "is_header": false
+        },
+        {
+          "name": "Industrial & Scientific",
+          "payout_type": "Per Sale(%)",
+          "payout": "1.52",
+          "is_header": false
+        },
+        {
+          "name": "Sports & Outdoors",
+          "payout_type": "Per Sale(%)",
+          "payout": "1.52",
+          "is_header": false
+        },
+        {
+          "name": "Computers | Electronics | Home Entertainment | Large Appliances",
+          "payout_type": "Per Sale(%)",
+          "payout": "2.22",
+          "is_header": false
+        },
+        {
+          "name": "Musical Instruments | Wireless Accessories",
+          "payout_type": "Per Sale(%)",
+          "payout": "2.54",
+          "is_header": false
+        },
+        {
+          "name": "Grocery",
+          "payout_type": "Per Sale(%)",
+          "payout": "2.98",
+          "is_header": false
+        },
+        {
+          "name": "Pet Supplies",
+          "payout_type": "Per Sale(%)",
+          "payout": "2.98",
+          "is_header": false
+        },
+        {
+          "name": "Baby",
+          "payout_type": "Per Sale(%)",
+          "payout": "2.98",
+          "is_header": false
+        },
+        {
+          "name": "Car & Motorbike",
+          "payout_type": "Per Sale(%)",
+          "payout": "3.74",
+          "is_header": false
+        },
+        {
+          "name": "Health & Beauty",
+          "payout_type": "Per Sale(%)",
+          "payout": "2.98",
+          "is_header": false
+        },
+        {
+          "name": "Personal Care Appliances",
+          "payout_type": "Per Sale(%)",
+          "payout": "3.74",
+          "is_header": false
+        },
+        {
+          "name": "Toys & Games",
+          "payout_type": "Per Sale(%)",
+          "payout": "3.74",
+          "is_header": false
+        },
+        {
+          "name": "Books",
+          "payout_type": "Per Sale(%)",
+          "payout": "3.74",
+          "is_header": false
+        },
+        {
+          "name": "All Other Categories",
+          "payout_type": "Per Sale(%)",
+          "payout": "3.17",
+          "is_header": false
+        },
+        {
+          "name": "Beauty",
+          "payout_type": "Per Sale(%)",
+          "payout": "3.74",
+          "is_header": false
+        },
+        {
+          "name": "Luxury Beauty",
+          "payout_type": "Per Sale(%)",
+          "payout": "3.74",
+          "is_header": false
+        },
+        {
+          "name": "Shoes",
+          "payout_type": "Per Sale(%)",
+          "payout": "3.74",
+          "is_header": false
+        },
+        {
+          "name": "Amazon Gift Cards | Amazon Money | Email Gift Cards | Gold & Silver Coins | Physical Gift Cards | Prime | Video Games \u2013 Consoles",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": false
+        },
+        {
+          "name": "B07PGQ6MQ8",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": false
+        }
+      ],
+      "important_info_html": "<b>Tracking Details:</b><br><ul><li>The respective payouts are applicable for both Desktop and Mobile website.</li><li>Please note your commission can take up-to 72 hours after your shipment has been dispatched for delivery to track.&nbsp;</li><li>Amazon has stopped receiving queries related to missing sales&nbsp;</li><li>No commission is payable on personal purchases and Amazon doesn't allow passing commission back to users in any form of cashback, reward points, incentives, charity etc</li><li>No brand bidding, cookie stuffing, junk/pop/adware traffic (Media Buying), malware practices, reselling is allowed</li><li>Promotional E-mailers should NOT have Amazon in sender name or subject line</li></ul>The below mentioned practices is strictly not allowed by Amazon: <br>1. Modifying contents of Amazon page. Few examples given below: <br>a. Displaying additional content similar and not limited to price tracker graph / Associate site logo within Amazon page <br>b. Adding additional BUY NOW button / radio button on Amazon page <br>c. Collecting any customer information like email / mobile number by including a form on Amazon page <br>2. Price tracking <br>a. Displaying historical Amazon prices on your site / on the plug-in panel <br>3. Traffic diversion in any form is NOT allowed through the plug-in - once the customer is already on Amazon.in, ie, <br>a. Sending customers to other marketplaces by offering price alerts / coupons <br>b. Sending customers to your own / other Associate sites offering price alerts / coupons <br>c. Sending customers to other Amazon pages through deal details etc. <br>4. Loading a \u201cpage-under or pop-under\u201d / \u201cpop-up\u201d / \u201coverlay\u201d / \u201cnew tab\u201d with associate tag, when customer is already on Amazon <br><br>Below are few more points that are the reason for deductions from Amazon: <br><br><i>Site info</i><br> \u00b7 Correct submission of complete Publisher lists inclusive of all tags, their corresponding websites (URLs), email ID of the publisher. <br>\u00b7 All the sources from which traffic will be driven must be declared beforehand. <br><i><br>Personal Orders</i><br> \u00b7 Do not refer orders purchased for personal use, resale, or commercial use, or to your friends, relatives, employees, contractors, or business relations. <i>Framing</i><br> \u00b7 Tag blocks performed due to Non-compliant, Mobile apps. Mobile apps are not allowed in Sub Affiliates Publisher Networks. <br><i><br>Masking</i><br>  \t&nbsp;&nbsp;&nbsp;\u201c30. You will not cloak, hide, spoof, or otherwise obscure the URL of your site containing Special Links (including by use of a redirecting page) such that we cannot reasonably determine the site from which a customer clicks through such Special Link to the Amazon Site \" <br><i><br>Relations</i><br> \u00b7 Accounts already closed for OA Violations on Associates or one of the other Amazon marketing programs, being on boarded through Sub Affiliate Publisher networks. <br><i><br>Browser extension/ Plugin</i><br> \u00b7 Cease traffic referrals in violation of&nbsp;  <a href=\"https://affiliate-program.amazon.in/help/operating/agreement\" target=\"_blank\" rel=\"noopener noreferrer\">Associates Program Operating Agreement</a>&nbsp;11. Limited License \u2013 3. Associates Program IP License (\u201cLicense\u201d) C. PA API Usage Requirements. (iii) Usage Requirements. (iv) You will not, without our express prior written approval, use any Product Advertising Content or Special Link, or otherwise link to the Amazon Site, or in connection with : (a) any client-side software application (eg, a browser plug-in, helper object, toolbar, extension, component, or any other application executable or installable by an end user) on any device, including computers, mobile phones, tablets, or other handheld devices (other than Approved Mobile Applications); or (b) any television set-top box (eg, digital video recorders, cable or satellite boxes, streaming video players, blu-ray players, or dvd players) or Internet-enabled television (eg, GoogleTV, Sony Bravia, Panasonic Viera Cast, or Vizio Internet Apps)). <br><i><br>Trademarks</i><br> \u00b7 Stay in compliance with respect to&nbsp;  <a href=\"https://affiliate-program.amazon.in/help/operating/agreement\" target=\"_blank\" rel=\"noopener noreferrer\">Associates Program Operating Agreement</a>  &nbsp;11. Limited License \u2013 1. Subject to the terms of this Operating Agreement and solely for the limited purposes of advertising Products on, and directing end users to, the Amazon Site in connection with the Program, we hereby grant you a limited, revocable, non-transferable, non-sub licensable, non-exclusive, royalty-free license to (a) copy and display the Content solely on your site; and (b) use only those of our trademarks and logos that we may make available to you as part of Content (those trademarks and logos, collectively, \u201cAmazon Marks\u201d) solely on your site and in accordance with the&nbsp;  <a href=\"https://affiliate-program.amazon.in/help/operating/amazonmarks\" target=\"_blank\" rel=\"noopener noreferrer\">Associates Program Trademark Guidelines. </a><br><br><b>Please note Amazon will not approve/validate commission if your correct traffic source/referral URL is not shared with Cuelinks during registration. In case you are promoting Amazon campaign apart from domain shared with us during registration, kindly send an email to us at operations@cuelinks.com or write to your account manager mentioning your updated domain(s)/referral URL/correct source of traffic, we will update the same at our end and will let you know, post which you can start promoting the campaign.</b><br><br><div><br></div><b>As per Amazon operating policy, kindly promote campaigns using affiliate links on open groups / open domains only (not on closed group, example: closed facebook group) to ensure you don't loose out on commission. As Amazon reviews all the traffic sources, transactions may get rejected if publishers don't comply with Amazon policies. In-case of any questions you can reach out to your AM or write to us on&nbsp;   </b><b>operations </b><b>@cuelinks.com </b><br><br><b>As per Amazon Affiliate terms, promoting campaign on Mobile app (iOS and Android) is not allowed. Conversions would get rejected at the time of validations by Amazon due to non compliance of terms. </b><br><br><b>As per Amazon operating policy, publishers must not use a link shortening service in a manner that makes it unclear that you are linking to an Amazon Site. Hence, any use of tiny URLs or change in format in any form using external tools for affiliate links is prohibited. You can use shorten links from the Cuelinks panel. <br></b><b><br><br>Allowed/Disallowed Media:<br></b><br><br> Cashback, Reward Points, Incentives, Charity - Forbidden <br>Email (Text) - Allowed <br>Custom Email (Text) - Allowed <br>Email (HTML) - Allowed <br>Custom Email (HTML) - Forbidden <br>POP Traffic - Forbidden <br>Native Ads - Forbidden <br>Social Media - Forbidden <br>Facebook Ads - Forbidden <br>SEM - Brand Keyword(s) - Forbidden <br>SEM - Generic Keyword(s) - Forbidden <br>SEM - Brand + Generic Keyword(s) - Forbidden <br>Brand Bidding, Cookie Stuffing, Junk/pop/adware traffic (Media Buying), malware practices, reselling, orders placed through search engines - Forbidden <br><br>Note - Amazon Fresh - No commission",
+      "important_info_plain": "Tracking Details:\n* The respective payouts are applicable for both Desktop and Mobile website.\n* Please note your commission can take up-to 72 hours after your shipment has been dispatched for delivery to track.&nbsp;\n* Amazon has stopped receiving queries related to missing sales&nbsp;\n* No commission is payable on personal purchases and Amazon doesn't allow passing commission back to users in any form of cashback, reward points, incentives, charity etc\n* No brand bidding, cookie stuffing, junk/pop/adware traffic (Media Buying), malware practices, reselling is allowed\n* Promotional E-mailers should NOT have Amazon in sender name or subject lineThe below mentioned practices is strictly not allowed by Amazon:\n1. Modifying contents of Amazon page. Few examples given below:\na. Displaying additional content similar and not limited to price tracker graph / Associate site logo within Amazon page\nb. Adding additional BUY NOW button / radio button on Amazon page\nc. Collecting any customer information like email / mobile number by including a form on Amazon page\n2. Price tracking\na. Displaying historical Amazon prices on your site / on the plug-in panel\n3. Traffic diversion in any form is NOT allowed through the plug-in - once the customer is already on Amazon.in, ie,\na. Sending customers to other marketplaces by offering price alerts / coupons\nb. Sending customers to your own / other Associate sites offering price alerts / coupons\nc. Sending customers to other Amazon pages through deal details etc.\n4. Loading a \u201cpage-under or pop-under\u201d / \u201cpop-up\u201d / \u201coverlay\u201d / \u201cnew tab\u201d with associate tag, when customer is already on Amazon\nBelow are few more points that are the reason for deductions from Amazon:\nSite info\n\u00b7 Correct submission of complete Publisher lists inclusive of all tags, their corresponding websites (URLs), email ID of the publisher.\n\u00b7 All the sources from which traffic will be driven must be declared beforehand.\nPersonal Orders\n\u00b7 Do not refer orders purchased for personal use, resale, or commercial use, or to your friends, relatives, employees, contractors, or business relations. Framing\n\u00b7 Tag blocks performed due to Non-compliant, Mobile apps. Mobile apps are not allowed in Sub Affiliates Publisher Networks.\nMasking\n&nbsp;&nbsp;&nbsp;\u201c30. You will not cloak, hide, spoof, or otherwise obscure the URL of your site containing Special Links (including by use of a redirecting page) such that we cannot reasonably determine the site from which a customer clicks through such Special Link to the Amazon Site \"\nRelations\n\u00b7 Accounts already closed for OA Violations on Associates or one of the other Amazon marketing programs, being on boarded through Sub Affiliate Publisher networks.\nBrowser extension/ Plugin\n\u00b7 Cease traffic referrals in violation of&nbsp;  Associates Program Operating Agreement&nbsp;11. Limited License \u2013 3. Associates Program IP License (\u201cLicense\u201d) C. PA API Usage Requirements. (iii) Usage Requirements. (iv) You will not, without our express prior written approval, use any Product Advertising Content or Special Link, or otherwise link to the Amazon Site, or in connection with : (a) any client-side software application (eg, a browser plug-in, helper object, toolbar, extension, component, or any other application executable or installable by an end user) on any device, including computers, mobile phones, tablets, or other handheld devices (other than Approved Mobile Applications); or (b) any television set-top box (eg, digital video recorders, cable or satellite boxes, streaming video players, blu-ray players, or dvd players) or Internet-enabled television (eg, GoogleTV, Sony Bravia, Panasonic Viera Cast, or Vizio Internet Apps)).\nTrademarks\n\u00b7 Stay in compliance with respect to&nbsp;  Associates Program Operating Agreement  &nbsp;11. Limited License \u2013 1. Subject to the terms of this Operating Agreement and solely for the limited purposes of advertising Products on, and directing end users to, the Amazon Site in connection with the Program, we hereby grant you a limited, revocable, non-transferable, non-sub licensable, non-exclusive, royalty-free license to (a) copy and display the Content solely on your site; and (b) use only those of our trademarks and logos that we may make available to you as part of Content (those trademarks and logos, collectively, \u201cAmazon Marks\u201d) solely on your site and in accordance with the&nbsp;  Associates Program Trademark Guidelines.\nPlease note Amazon will not approve/validate commission if your correct traffic source/referral URL is not shared with Cuelinks during registration. In case you are promoting Amazon campaign apart from domain shared with us during registration, kindly send an email to us at operations@cuelinks.com or write to your account manager mentioning your updated domain(s)/referral URL/correct source of traffic, we will update the same at our end and will let you know, post which you can start promoting the campaign.\nAs per Amazon operating policy, kindly promote campaigns using affiliate links on open groups / open domains only (not on closed group, example: closed facebook group) to ensure you don't loose out on commission. As Amazon reviews all the traffic sources, transactions may get rejected if publishers don't comply with Amazon policies. In-case of any questions you can reach out to your AM or write to us on&nbsp;   operations @cuelinks.com\nAs per Amazon Affiliate terms, promoting campaign on Mobile app (iOS and Android) is not allowed. Conversions would get rejected at the time of validations by Amazon due to non compliance of terms.\nAs per Amazon operating policy, publishers must not use a link shortening service in a manner that makes it unclear that you are linking to an Amazon Site. Hence, any use of tiny URLs or change in format in any form using external tools for affiliate links is prohibited. You can use shorten links from the Cuelinks panel.\nAllowed/Disallowed Media:\nCashback, Reward Points, Incentives, Charity - Forbidden\nEmail (Text) - Allowed\nCustom Email (Text) - Allowed\nEmail (HTML) - Allowed\nCustom Email (HTML) - Forbidden\nPOP Traffic - Forbidden\nNative Ads - Forbidden\nSocial Media - Forbidden\nFacebook Ads - Forbidden\nSEM - Brand Keyword(s) - Forbidden\nSEM - Generic Keyword(s) - Forbidden\nSEM - Brand + Generic Keyword(s) - Forbidden\nBrand Bidding, Cookie Stuffing, Junk/pop/adware traffic (Media Buying), malware practices, reselling, orders placed through search engines - Forbidden\nNote - Amazon Fresh - No commission",
+      "missing_trans_allowed": null,
+      "missing_trans_claim_window": null
+    },
+    "Flipkart": {
+      "id": 1,
+      "name": "Flipkart",
+      "domain": "flipkart.com",
+      "status": null,
+      "access_status": "pending",
+      "payout_type": "Per Sale(%)",
+      "payout": "6.0",
+      "payout_currency": "%",
+      "cookie_duration": "30 minutes",
+      "tracking_time": "15 min",
+      "validation_time": "60 days",
+      "payment_time": "30 days",
+      "deeplink_allowed": true,
+      "conversion_flow": {
+        "Step 1": "User clicks on your tracking link",
+        "Step 2": "User lands on the advertiser website and purchase any product within cookie period",
+        "Step 3": "User successfully paid and receive his/her purchase"
+      },
+      "platforms": {
+        "allowed": [
+          "Web",
+          "Mobile Web",
+          "Android App",
+          "iOS App"
+        ],
+        "disallowed": []
+      },
+      "media": {
+        "allowed": [
+          "Text Link",
+          "Banner",
+          "Deals",
+          "Coupons",
+          "Cashback, Reward Points, Incentives, Charity",
+          "Email (Text)",
+          "Custom Email (Text)",
+          "Email (HTML)",
+          "Custom Email (HTML)",
+          "Native Ads",
+          "Social Media"
+        ],
+        "disallowed": [
+          "POP Traffic",
+          "Facebook Ads",
+          "SEM - Brand Keyword(s)",
+          "SEM - Generic Keyword(s)",
+          "SEM - Brand + Generic Keyword(s)"
+        ]
+      },
+      "payout_categories": [
+        {
+          "name": "Payout for New User & Existing User ( DESKTOP / MOBILE WEBSITE / MOBILE APPS)",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": true
+        },
+        {
+          "name": "Grocery (Sugar, Atta, Tea, Coffee, Rice, Oil) - Live in Delhi, Pune, Kolkata, Lucknow, Ahmedabad, Mumbai, Chennai, Patna, Hyderabad, Bengaluru, Vellore, Tirupati, Jaipur, Chandigarh, Vadodara, Allahabad)",
+          "payout_type": "Per Sale(%)",
+          "payout": "1.5",
+          "is_header": false
+        },
+        {
+          "name": "Hyperlocal",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": false
+        },
+        {
+          "name": "Books & General Merchandise (Toys And School Supplies, SportFitness, Makeup Fragrances, Industrial & Scientific, HouseHoldSupplies, \r\nHealthcare, Grooming, Food And Nutrition, Books Media, BabyCare, Auto Accessorys)",
+          "payout_type": "Per Sale(%)",
+          "payout": "3.75",
+          "is_header": false
+        },
+        {
+          "name": "Home (House Hold, Home Improvement Tool, Home Furnishing, Home Decor)",
+          "payout_type": "Per Sale(%)",
+          "payout": "2.25",
+          "is_header": false
+        },
+        {
+          "name": "Furniture (Bed, Sofa, Shoe Cabinet, Bookshelf, Kitchen Cabinet, Cupboard, Bean Bag, Stool, TV Mount, Coffee Table, Office Study Table)",
+          "payout_type": "Per Sale(%)",
+          "payout": "2.25",
+          "is_header": false
+        },
+        {
+          "name": "Core Electronics - Automobile, Camera, IT Accessory, IT Peripheral, Laptop & Desktop, Personal Health Care, Storage, Tablet",
+          "payout_type": "Per Sale(%)",
+          "payout": "2.25",
+          "is_header": false
+        },
+        {
+          "name": "User maximum earn commission on Core Electronics",
+          "payout_type": "Per Sale",
+          "payout": "150.0",
+          "is_header": false
+        },
+        {
+          "name": "Emerging Electronics - Audio, Gaming, IOT, Mobile Protection, Power Bank, Rest of Mobile Accessories, SHA [Smart Home Automation], Video",
+          "payout_type": "Per Sale(%)",
+          "payout": "2.25",
+          "is_header": false
+        },
+        {
+          "name": "User maximum earn commission on Emerging Electronics",
+          "payout_type": "Per Sale",
+          "payout": "150.0",
+          "is_header": false
+        },
+        {
+          "name": "Fashion & Lifestyle (Kid's Footwear)",
+          "payout_type": "Per Sale(%)",
+          "payout": "7.5",
+          "is_header": false
+        },
+        {
+          "name": "Fashion & Lifestyle (Rest of the Super Categories)",
+          "payout_type": "Per Sale(%)",
+          "payout": "6.0",
+          "is_header": false
+        },
+        {
+          "name": "Large Appliances - Television, Refrigerator, Washing Machine & Air Conditioner",
+          "payout_type": "Per Sale(%)",
+          "payout": "2.25",
+          "is_header": false
+        },
+        {
+          "name": "User maximum earn commission on Large Appliances",
+          "payout_type": "Per Sale",
+          "payout": "150.0",
+          "is_header": false
+        },
+        {
+          "name": "Flipkart Gift Card",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": false
+        },
+        {
+          "name": "Apple Audio Devices",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": false
+        },
+        {
+          "name": "User maximum earn commission on Mobile Tier A",
+          "payout_type": "Per Sale",
+          "payout": "75.0",
+          "is_header": false
+        },
+        {
+          "name": "Mobile Tier B - Redmi A5(MOBHB2HGCDC45QQ3),\r\nRedmi A5(MOBHB2HGH5DCFNWZ),\r\nRedmi A5(MOBHB2HGCWUUBBUM),\r\nRedmi A5(MOBHB2HGNGFWXSGA),\r\nRedmi A5(MOBHB2HGZY5PDGBR),\r\nRedmi A5(MOBHB2HGG8RN2GUC),\r\nSamsung Galaxy A36 5G(MOBH9RNG5BH5JHPE),\r\nSamsung Galaxy A36 5G(MOBH9RNGJZSYWDKR),\r\nSamsung Galaxy A36 5G(MOBH9RNG8NGYKDEQ),\r\nSamsung Galaxy A36 5G(MOBH9RNGFN76WMFF),\r\nSamsung Galaxy A36 5G(MOBH9RNGK9ACFMRQ),\r\nSamsung Galaxy A36 5G(MOBH9RNGMSYW6BVB),\r\nSamsung Galaxy A36 5G(MOBH9RNG3KTYVZKE),\r\nSamsung Galaxy A36 5G(MOBH9RNGWSX2XDZX),\r\nVivo T4 Lite 5G(MOBHDY9FCZV9HPM9),\r\nVivo T4 Lite 5G(MOBHDY9F2NKVDSYE),\r\nVivo T4 Lite 5G(MOBHDY9FP7WFPCEE),\r\nVivo T4 Lite 5G(MOBHDY9FWXVJYCFM),\r\nVivo T4 Lite 5G(MOBHDY9FPSBK8D4E),\r\nVivo T4 Lite 5G(MOBHDY9FNTHSYQCV),\r\nOPPO K13 Turbo Pro 5G(MOBHEP9WEM5ZXDMZ),\r\nOPPO K13 Turbo Pro 5G(MOBHEP9WPESR5YHV),\r\nOPPO K13 Turbo Pro 5G(MOBHEP9W5YVWKW7J),\r\nOPPO K13 Turbo Pro 5G(MOBHEP9WSHND47SQ),\r\nOPPO K13 Turbo Pro 5G(MOBHEP9WWZ7GUD4R),\r\nOPPO K13 Turbo Pro 5G(MOBHEP9WGUVYBKD8),\r\nRealme P4 Pro 5G(MOBHERXKZCGAA4QC),\r\nRealme P4 Pro 5G(MOBHERXKQUSFA6GM),\r\nRealme P4 Pro 5G(MOBHERXKXPYUPFQG),\r\nRealme P4 Pro 5G(MOBHERXKVQED7HGC),\r\nRealme P4 Pro 5G(MOBHERXKCPGRQCYZ),\r\nRealme P4 Pro 5G(MOBHERXK3YKZUWWZ),\r\nRealme P4 Pro 5G(MOBHERXKUV3RGG5F),\r\nRealme P4 Pro 5G(MOBHERXKMUKYHPU8),\r\nRealme P4 Pro 5G(MOBHERXKFEKTNPNH),\r\nRedmi A5(MOBHFKGTC2C7Y6TG),\r\nRedmi A5(MOBHFKGTEXFPRECW),\r\nRedmi A5(MOBHFKGTMYUXNYXU),\r\nPOCO C85 5G(MOBHHWYSM9YV9QZ9),\r\nPOCO C85 5G(MOBHHWYSPT9X4GB3),\r\nPOCO C85 5G(MOBHHWYSV7EGQ63W),\r\nPOCO C85 5G(MOBHHWYS2CRXPX8C),\r\nPOCO C85 5G(MOBHHWYSKGGRFVXN),\r\nPOCO C85 5G(MOBHHWYSZNNKT8CJ),\r\nPOCO C85 5G(MOBHHWYSSXXSECJE),\r\nPOCO C85 5G(MOBHHWYSRWXYG7GE),\r\nPOCO C85 5G(MOBHHWYSHAKCRM4Q),\r\nVivo T4 Lite 5G(MOBHJ8QDSPMWNJZ8),\r\nVivo T4 Lite 5G(MOBHJ8QD9JTVTUEX),\r\nVivo V70 Elite(MOBHK7E7GFACWJAY),\r\nVivo V70 Elite(MOBHK7E7QKFMWGE9),\r\nVivo V70 Elite(MOBHK7E7Y7KFSGGQ),\r\nVivo V70 Elite(MOBHK7E76G5PPGYZ),\r\nVivo V70 Elite(MOBHK7E7AFAQXXZK),\r\nVivo V70 Elite(MOBHK7E7EPMQ92HA),\r\nVivo V70 Elite(MOBHK7E7Y2VYVEJV),\r\nVivo V70 Elite(MOBHK7E77YFNRGGS),\r\nPoco C85X(MOBHHFC8JKRZRGFG),\r\nPoco C85X(MOBHHFC8S2U92G5M),\r\nPoco C85X(MOBHHFC8MQWQ6ZUH),\r\nPoco C85X(MOBHHFC82ZZHCZDX),\r\nPoco C85X(MOBHHFC8CJSWHCEJ),\r\nPoco C85X(MOBHHFC85FVQZUSC),\r\nVivo V70 FE(MOBHHPSHDZWCGN43),\r\nVivo V70 FE(MOBHHPSHVGYMKB6E),\r\nVivo V70 FE(MOBHHPSHWDF2PWHM),\r\nVivo V70 FE(MOBHHPSHXXTNT7YP),\r\nVivo V70 FE(MOBHHPSHQGXKZGXZ),\r\nVivo V70 FE(MOBHHPSHHZ6JH6VN),\r\nREDMI Note 15 SE 5G(MOBHHAFATAJXVPAK),\r\nREDMI Note 15 SE 5G(MOBHHAFAYA6UYMB9),\r\nREDMI Note 15 SE 5G(MOBHHAFAWYEGSZDZ),\r\nREDMI Note 15 SE 5G(MOBHHAFAQQPFFYKF),\r\nREDMI Note 15 SE 5G(MOBHHAFACACMRBJJ),\r\nREDMI Note 15 SE 5G(MOBHHAFAF63SZA5U),\r\nREDMI Note 15 SE 5G(MOBHHAFAWGRRGRMU),\r\nREDMI Note 15 SE 5G(MOBHHAFAWFUPPTBE),\r\nREDMI Note 15 SE 5G(MOBHHAFA9MZKBZAH),\r\nVivo T5 Pro 5G(MOBHM4FZPA8A7KVS),\r\nVivo T5 Pro 5G(MOBHM4FZVHBWFRHM),\r\nVivo T5 Pro 5G(MOBHM4FZRMHBQHP5),\r\nVivo T5 Pro 5G(MOBHM4FZHYYZW8YZ),\r\nVivo T5 Pro 5G(MOBHM4FZTRCGHUTG),\r\nVivo T5 Pro 5G(MOBHM4FZQVGR3RJ5),\r\nPOCO C85 5G(MOBHMGG5DNYPWU9Q),\r\nPOCO C85 5G(MOBHMGG5UZHEVJBK),\r\nPOCO C85 5G(MOBHMGG5GUM8R5GJ),\r\nPOCO C85 5G(MOBHMGG5HZK65TMX),\r\nPOCO C85 5G(MOBHMGG5ZM2KRGEG),\r\nPOCO C85 5G(MOBHMGG5UNCKYGPH),\r\nPOCO C85 5G(MOBHMGG5ZE4MHZUB),\r\nPOCO C85 5G(MOBHMGG55EG8Y8R8),\r\nPOCO C85 5G(MOBHMGG5CR7GHJHN),\r\nREDMI Note 15 SE 5G(MOBHN52FTTUWZGBA),\r\nREDMI Note 15 SE 5G(MOBHN52FR8YCYGSZ),\r\nREDMI Note 15 SE 5G(MOBHN52FDHRHXYKD),\r\nREDMI Note 15 SE 5G(MOBHN52F84BRGFEG),\r\nREDMI Note 15 SE 5G(MOBHN52FBUDPFNXC),\r\nREDMI Note 15 SE 5G(MOBHN52FS8S3WUPB),\r\nREDMI Note 15 SE 5G(MOBHN52FUSYGZSZD),\r\nREDMI Note 15 SE 5G(MOBHN52FMT5ZSDSW),\r\nREDMI Note 15 SE 5G(MOBHN52FYUMHG9WD),\r\nHMD VIBE2 5G(MOBHN6XYZXVBYZHA),\r\nHMD VIBE2 5G(MOBHN6XYHR2G4DPH),\r\nHMD VIBE2 5G(MOBHN6XYY52DMZKH),\r\nHMD VIBE2 5G(MOBHN6XYGKZEYC64),\r\nHMD VIBE2 5G(MOBHN6XYSHFH3BNJ),\r\nHMD VIBE2 5G(MOBHN6XYNGZQCBWB),\r\nPoco C85X(MOBHMGG5GHZKTSDZ),\r\nPoco C85X(MOBHMGG5SMZEFPTQ),\r\nPoco C85X(MOBHMGG5PYZRFMKU),\r\nPoco C85X(MOBHMGG5JUYG9DCY),\r\nPoco C85X(MOBHMGG5BR94DQRY),\r\nPoco C85X(MOBHMGG5NGH9MQBY),\r\nrealme 16T 5G(MOBHN4XWZUSTFFNJ),\r\nrealme 16T 5G(MOBHN4XWTT882MCE),\r\nrealme 16T 5G(MOBHN4XWYB6WEQTM),\r\nrealme 16T 5G(MOBHN4XWNXGJGPZX),\r\nrealme 16T 5G(MOBHN4XWWCX2WRHG),\r\nrealme 16T 5G(MOBHN4XWEVJWYPAM),\r\nrealme 16T 5G(MOBHN4XWHKKYHNGR),\r\nrealme 16T 5G(MOBHN4XW8GNQQXCP),\r\nrealme 16T 5G(MOBHN4XW4YRU3ABP),\r\nSamsung Galaxy A36 5G(MOBHNJ8FRCKPXUAS),\r\nSamsung Galaxy A36 5G(MOBHNJ8FMV7RRDBA),\r\nSamsung Galaxy A36 5G(MOBHNJ8FASRHRJZS),\r\nSamsung Galaxy A36 5G(MOBHNJ8FTGCB8SUP),\r\nrealme 16x 5G(MOBHNVEDKYZYZHDF),\r\nrealme 16x 5G(MOBHNVEDY8RSX4E5),\r\nrealme 16x 5G(MOBHNVEDTAZQYXPV),\r\nrealme 16x 5G(MOBHNVEDZQBZ4SNY),\r\nrealme 16x 5G(MOBHNVEDJFBDSGFT),\r\nrealme 16x 5G(MOBHNVEDT4PZF88H),\r\nVivo V70 FE(MOBHMF7DHNNDNHHJ),\r\nVivo V70 FE(MOBHME4YEZF8JGHS),\r\nVivo V70 FE(MOBHME46D9NMFGJX),\r\nVivo V70 FE(MOBHME48GASN6JUG),\r\nvivo V70 5G(MOBHMGHKUVHVUXXX),\r\nVivo V70 Elite(MOBHME45WMYHDVA7),\r\nVivo V70 FE(MOBHN62B4WRPGJR6),\r\nVivo V70 FE(MOBHMGHWUMUYCWSG),\r\nVivo V70 FE(MOBHMHJFHXWDH8S9),\r\nVivo V70 Elite(MOBHME4NK5UEZRHN),\r\nVivo V70 FE(MOBHZFFH4MRXJ8DB),\r\nVivo V70 FE(MOBHZFFH8ZT8QZCR),\r\nVivo V70 FE(MOBHZFFHGXCAJDHT),\r\nVivo V70 FE(MOBHZFFHH5CXYZDB),\r\nVivo V70 FE(MOBHZFFHH3UZ2FZQ),\r\nVivo V70 FE(MOBHZFFHZ5ZXJZC3),\r\nOPPO Reno16 5G(MOBHZMBRFYYSGE2Y),\r\nOPPO Reno16 5G(MOBHZMBRUXGP4JEU),\r\nOPPO Reno16 5G(MOBHZMBRBETH2USJ),\r\nOPPO Reno16 5G(MOBHZMBRQ63HUMVQ),\r\nOPPO Reno16 5G(MOBHZMBRFJK9WQPR),\r\nOPPO Reno16 5G(MOBHZMBR6KNRJYZV),\r\nOPPO Reno16c 5G(MOBHZMBRJENF5PYK),\r\nOPPO Reno16c 5G(MOBHZMBRZX9P5WGU),\r\nOPPO Reno16c 5G(MOBHZMBRQFXPEWGR),\r\nOPPO Reno16c 5G(MOBHZMBRUYMZCNR9),\r\nOPPO Reno16c 5G(MOBHZMBRYCHUSQEF),\r\nOPPO Reno16c 5G(MOBHZMBRZXJHNNKY),\r\nOPPO Reno16c 5G(MOBHZMBRFSTWZANJ),\r\nOPPO Reno16c 5G(MOBHZMBRRFTBYMDJ),\r\nOPPO Reno16c 5G(MOBHZMBR6AGMEDDZ),\r\nrealme P4s 5G(MOBHPBHAFUZTDTPX),\r\nrealme P4s 5G(MOBHPBHATYTBGZXN),\r\nrealme P4s 5G(MOBHPBHAPFJPCA4E),\r\nrealme P4s 5G(MOBHPBHAGEJZ4KWF),\r\nrealme P4s 5G(MOBHPBHARTPRKMA8),\r\nrealme P4s 5G(MOBHPBHAEHZXGFCV),\r\nLava Virat V1 Pro 5G(MOBHQDFAP3AAZUFG \u00a0 \u00a0),\r\nLava Virat V1 Pro 5G(MOBHQDFAGHJJMSJG \u00a0 \u00a0),\r\nLava Virat V1 Pro 5G(MOBHQDFAP3AAZUFG),\r\nLava Virat V1 Pro 5G(MOBHQDFAGHJJMSJG),\r\nSamsung Galaxy F70 Pro\u00a05G(MOBHZ8YSHHX6C4KX),\r\nSamsung Galaxy F70 Pro\u00a05G(MOBHZ8YSNQQDFHFT),\r\nSamsung Galaxy F70 Pro\u00a05G(MOBHZ8YSEBSR9U77),\r\nSamsung Galaxy F70 Pro\u00a05G(MOBHZ8YSB7NVXSGY),\r\nSamsung Galaxy F70 Pro\u00a05G(MOBHZ8YSUXXHYGBR),\r\nSamsung Galaxy F70 Pro\u00a05G(MOBHZ8YSJ2AJQEBZ)",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.38",
+          "is_header": false
+        },
+        {
+          "name": "MOTOROLA Signature(MOBHGVJY37KPCFHB),\r\nMOTOROLA Signature(MOBHGVJYTCM8BZQF),\r\nMOTOROLA Signature(MOBHGVJYGVP6G2NY),\r\nMOTOROLA Signature(MOBHGVJY6SUYWYTK),\r\nMOTOROLA Signature(MOBHGVJYGJYGSV8X),\r\nMOTOROLA Signature(MOBHGVJYRCA9AUCG),\r\nMotorola Edge 70 pro +(MOBHHXQRQJX8USUW),\r\nMotorola Edge 70 pro +(MOBHHXQRYAYXMA86),\r\nMotorola Edge 70 pro +(MOBHHXQRSGJ3MDV7)",
+          "payout_type": "Per Sale",
+          "payout": "150.0",
+          "is_header": false
+        },
+        {
+          "name": "Mobile Tier A - Motorola G06 Power(MOBHFSCECY35PFSB),\r\nMotorola G06 Power(MOBHFSCEW8DQVKDZ),\r\nMotorola G06 Power(MOBHFSCEDQXXDXUQ),\r\nRealme P4x 5G(MOBHHTPHPSEFFZJA),\r\nRealme P4x 5G(MOBHHTPHYT457HJN),\r\nRealme P4x 5G(MOBHHTPHQ94KD9HB),\r\nRealme P4x 5G(MOBHHTPHPGSDJJUC),\r\nRealme P4x 5G(MOBHHTPHXHFUNPSB),\r\nRealme P4x 5G(MOBHHTPHUPFCS6GJ),\r\nRealme P4x 5G(MOBHHTPHZDHND92D),\r\nRealme P4x 5G(MOBHHTPHKGSMJA3J),\r\nRealme P4x 5G(MOBHHTPHYUEJYUAV),\r\nVivo X300(MOBHHZBC6RGX2S83),\r\nVivo X300(MOBHHZBCZYZHY24Q),\r\nVivo X300(MOBHHZBCAAZK5MU2),\r\nVivo X300(MOBHHZBCNHH5VMFZ),\r\nVivo X300(MOBHHZBCACFNAZZG),\r\nVivo X300(MOBHHZBCT62B3HYR),\r\nVivo X300(MOBHHZBCW6ZDZPC6),\r\nVivo X300(MOBHHZBCQRGMFFHY),\r\nVivo X300(MOBHHZBCRTA4QAFQ),\r\nVivo X300 Pro(MOBHHZBCYBWTZ3F7),\r\nVivo X300 Pro(MOBHHZBCNHJVGGCD),\r\nrealme P4 Power 5G(MOBHJHSHMQDGQSAD),\r\nrealme P4 Power 5G(MOBHJHSHGN2UUGX8),\r\nrealme P4 Power 5G(MOBHJHSH4HHMYHEG),\r\nrealme P4 Power 5G(MOBHJHSHPRM435M6),\r\nrealme P4 Power 5G(MOBHJHSH2THUTPUU),\r\nrealme P4 Power 5G(MOBHJHSHGVSSMYW9),\r\nrealme P4 Power 5G(MOBHJHSHGY5GKFFK),\r\nrealme P4 Power 5G(MOBHJHSHUERM43UB),\r\nrealme P4 Power 5G(MOBHJHSHZ2C6HGKF),\r\nSamsung Galaxy F70e 5G(MOBHK55ANBSGUGCJ),\r\nSamsung Galaxy F70e 5G(MOBHK55AG6VHCDYG),\r\nSamsung Galaxy F70e 5G(MOBHK55AS9FDDYFE),\r\nSamsung Galaxy F70e 5G(MOBHK55ADSJPFVBS),\r\nGoogle Pixel 10a(MOBHK7FHYUEFHSZG),\r\nGoogle Pixel 10a(MOBHK7FHRFDZ8CYY),\r\nGoogle Pixel 10a(MOBHK7FH66BBP4PE),\r\nGoogle Pixel 10a(MOBHK7FHFTXREG7T),\r\nSamsung Galaxy S26 5G(MOBHKGAPDXGWGVMC),\r\nSamsung Galaxy S26 5G(MOBHKGAPAZ3N7GNF),\r\nSamsung Galaxy S26 5G(MOBHKGAPMGQUBJTQ),\r\nSamsung Galaxy S26 5G(MOBHKGAPUSBAHSUM),\r\nSamsung Galaxy S26 5G(MOBHKGAPFVDATGBR),\r\nSamsung Galaxy S26 5G(MOBHKGAP89XKG7BB),\r\nSamsung Galaxy S26 5G(MOBHKGAPH5JGKK3E),\r\nSamsung Galaxy S26 5G(MOBHKGAP4VP3KRAJ),\r\nSamsung Galaxy S26+ 5G(MOBHKGAPHK5QZ3AR),\r\nSamsung Galaxy S26+ 5G(MOBHKGAPSUWSYAVH),\r\nSamsung Galaxy S26+ 5G(MOBHKGAPB8KGXFUW),\r\nSamsung Galaxy S26+ 5G(MOBHKGAPB2BGWTGR),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPUGH5KGWK),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPHZHYA5GQ),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPRHSYRRH4),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPBMXRGGXZ),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPUXRHVXHZ),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPGSJRTV6E),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPMASN63J5),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPAUFFEHR5),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPVZXYFYD5),\r\nOppo K14 5G(MOBHKQYYEP5PV9RH),\r\nOppo K14 5G(MOBHKQYY9JJPHATW),\r\nOppo K14 5G(MOBHKQYY9S6MVDHH),\r\nOppo K14 5G(MOBHKQYYNFMURAYF),\r\nOppo K14 5G(MOBHKQYYPHXEGF7W),\r\nOppo K14 5G(MOBHKQYYPFBYDP3Z),\r\nOppo K14 5G(MOBHKQYYTYEXAVMG),\r\nOppo K14 5G(MOBHKQYYS6KNAPHZ),\r\nSamsung Galaxy S26 Ultra 5G(MOBHHY6NNGPJXHZM),\r\nSamsung Galaxy S26 Ultra 5G(MOBHHY6NSUJJXZKS),\r\nrealme P4 Lite 5G(MOBHHFBUHTZG3GTN),\r\nrealme P4 Lite 5G(MOBHHFBUUUQNXRGX),\r\nrealme P4 Lite 5G(MOBHHFBUDHTKZZDZ),\r\nrealme P4 Lite 5G(MOBHHFBUFXBGDWBV),\r\nrealme P4 Lite 5G(MOBHHFBUAZUXKQ5P),\r\nrealme P4 Lite 5G(MOBHHFBUKRW2G8DX),\r\nrealme P4 Lite 5G(MOBHHHU9GMFBHH7T),\r\nrealme P4 Lite 5G(MOBHHHU9JBQATGFU),\r\nrealme P4 Lite 5G(MOBHHHU9ZHHHMGGG),\r\nrealme P4 Lite 5G(MOBHHHU93JGCQGUM),\r\nrealme P4 Lite 5G(MOBHHHU9ZZVKKDWT),\r\nrealme P4 Lite 5G(MOBHHHU9Y2XCZVAJ),\r\nrealme P4R 5G(MOBHMYR3EJZ8J2ES),\r\nrealme P4R 5G(MOBHMYR3WJZZMJCK),\r\nrealme P4R 5G(MOBHMYR337CQEU8E),\r\nrealme P4R 5G(MOBHMYR3NMRPYBY4),\r\nrealme P4R 5G(MOBHMYR3MZ62YN7F),\r\nrealme P4R 5G(MOBHMYR3NPFHTFHE),\r\nrealme P4R 5G(MOBHMYR3NGRA6CGK),\r\nrealme P4R 5G(MOBHMYR3ZUEXFHCM),\r\nrealme P4R 5G(MOBHMYR3M5QYWBGD),\r\nRealme P4x 5G(MOBHHWGMECHS3DZJ),\r\nRealme P4x 5G(MOBHHWGMCXRADYYG),\r\nRealme P4x 5G(MOBHHWGMD2SAKRCJ),\r\nRealme P4x 5G(MOBHHWGMSNNCU5ZQ),\r\nRealme P4x 5G(MOBHHWGMJA4GNTVD),\r\nRealme P4x 5G(MOBHHWGMEFWZNZ4R),\r\nPOCO C81(MOBHMYWR2GCKNVWK),\r\nPOCO C81(MOBHMYWRYFQZG9PP),\r\nPOCO C81(MOBHMYWRFE7GZVJF),\r\nPoco C81x(MOBHMYWRWPE4S8G6),\r\nPoco C81x(MOBHMYWRXCQBZ7D2),\r\nrealme P4 Power 5G(MOBHN7A8E2QAXYCZ),\r\nrealme P4 Power 5G(MOBHN7A8ZPRTDQSD),\r\nrealme P4 Power 5G(MOBHN7A8QB7ZQBMQ),\r\nrealme P4 Power 5G(MOBHN8YRNFNCF8QV),\r\nrealme P4 Power 5G(MOBHN7A8SZU7BRH6),\r\nrealme P4 Power 5G(MOBHN8YRKQMFAHAU),\r\nrealme P4 Power 5G(MOBHN7A8KWXBASES),\r\nrealme P4 Power 5G(MOBHN8YZK2PPDEBJ),\r\nRealme P4x 5G(MOBHN7A8H9WAG4PD),\r\nRealme P4x 5G(MOBHN7A8WK5SGBYN),\r\nRealme P4x 5G(MOBHN7A8GXPNGYW4),\r\nRealme P4x 5G(MOBHN7A8HYC9BPAU),\r\nRealme P4x 5G(MOBHN7A8P2KPBEVZ),\r\nRealme P4x 5G(MOBHN7A8XGT43KXX),\r\nRealme P4x 5G(MOBHN8YRJQHY39YM),\r\nRealme P4x 5G(MOBHN8YRGUFWXSNC),\r\nrealme P4 Lite 5G(MOBHN7A8SZ7F9C7T),\r\nrealme P4 Lite 5G(MOBHN7A8CMJGRACT),\r\nrealme P4 Lite 5G(MOBHN7A8PBUWNHG5),\r\nrealme P4 Lite 5G(MOBHN7A8MNWG6FFH),\r\nrealme P4 Lite 5G(MOBHN7A8YFWPC9ZV),\r\nrealme P4 Lite 5G(MOBHN7A8AG9TYTW6),\r\nMotorola g37 power(MOBHHVFYC3QU3CAQ),\r\nMotorola g37 power(MOBHHVFYGN57RYAH),\r\nMotorola g37 power(MOBHHVFYHG7QUTDZ),\r\nMotorola g37 power(MOBHMHG6CCNS5UWR),\r\nMotorola g37 power(MOBHMHG6KZXMFNKF),\r\nMotorola g37 power(MOBHMHG65H7QGMHS),\r\nMotorola g37 power(MOBHMX5Y6G5HKRFS),\r\nMotorola g37 power(MOBHMX5YNNYGMVWH),\r\nMotorola g37 power(MOBHMX5YXCBREREH),\r\nVivo X300 FE(MOBHMKZ8KFFYHSZ5),\r\nVivo X300 FE(MOBHMKZ8QBZCHJHZ),\r\nVivo X300 FE(MOBHMKZ8CGVGTRBF),\r\nVivo X300 FE(MOBHMKZ8XZA9YY3C),\r\nVivo X300 FE(MOBHMKZ8HGPZDPZK),\r\nVivo X300 FE(MOBHMKZ89GMYKBMG),\r\nVivo X300 Ultra(MOBHMKZ8SQQXZSR3),\r\nVivo X300 Ultra(MOBHMKZ8K8YRHE4P),\r\nVivo X300 Ultra(MOBHMME9HYCGYWMJ),\r\nMotorola G06 Power(MOBHN973VRPBQTKY),\r\nMotorola G06 Power(MOBHN973FFYHGUGG),\r\nMotorola G06 Power(MOBHN973UQNPMAAN),\r\nSamsung Galaxy F70e 5G(MOBHMGHQPNBA9RPY),\r\nSamsung Galaxy F70e 5G(MOBHMGHQ7MHMMHJZ),\r\nSamsung Galaxy F70e 5G(MOBHMGHQF8KKB99Q),\r\nSamsung Galaxy F70e 5G(MOBHMGHQ9NY7Q4JR),\r\nMotorola g77 power(MOBHZNDFKFBFTBHF),\r\nMotorola g77 power(MOBHZNDFQUUACV4Z),\r\nMotorola g77 power(MOBHZNDFR7K9NSGH),\r\nMotorola g77 power(MOBHZNDFDUZ2ZKFZ),\r\nMotorola g77 power(MOBHNEZPY2XEQHKG),\r\nMotorola g77 power(MOBHNEZPDE4ZW8KA),\r\nMotorola g77 power(MOBHNEZPKXSZXFY6),\r\nMotorola g77 power(MOBHZNDFQGJRV8ZH),\r\nrealme P4R 5G(MOBHP2V864KVEWSG),\r\nrealme P4R 5G(MOBHP2V8BYYCWHPP),\r\nrealme P4R 5G(MOBHP2V8SRWKXMSF),\r\nMotorola edge 70 pro(MOBHN973YGSQZH7U),\r\nMotorola edge 70 pro(MOBHN9734ZPCKBAC),\r\nMotorola edge 70 pro(MOBHN973MHGP4S2S),\r\nMotorola edge 70 pro(MOBHN973JRZJXD9Y),\r\nMotorola edge 70 pro(MOBHN973YUTCVRVP),\r\nMotorola edge 70 pro(MOBHN9739XAPWTP3),\r\nPOCO M8 Power 5G(MOBHPCYN7CHENHFF),\r\nPOCO M8 Power 5G(MOBHPCYNBFXP5TG9),\r\nPOCO M8 Power 5G(MOBHPCYNPNCJG2UV),\r\nPOCO M8 Power 5G(MOBHPCYNSNYCGRDN),\r\nPOCO M8 Power 5G(MOBHPCYNPTEZQTHC),\r\nPOCO M8 Power 5G(MOBHPCYNFWHRJD8C),\r\nSamsung Galaxy S26+ 5G(MOBHZVAGMXHJ3SR4),\r\nSamsung Galaxy S26+ 5G(MOBHZVAGZCVMEFYW),\r\nSamsung Galaxy S26+ 5G(MOBHZVAGZVBZCKGF),\r\nSamsung Galaxy S26+ 5G(MOBHZVAGXSHDDUPH),\r\nVivo X300 FE(MOBHQYFNFVCHHFYC),\r\nVivo X300 FE(MOBHQYFNGEVZV3VK),\r\nVivo X300 FE(MOBHQYFNKHC7JFDZ),\r\nGoogle Pixel 11(MOBHPHNV4FA6ZKGF),\r\nGoogle Pixel 11(MOBHPHNVBH6BSZ4M),\r\nGoogle Pixel 11(MOBHPHNVEC2P4WV3),\r\nGoogle Pixel 11(MOBHPHNVKVFNMHM3),\r\nGoogle Pixel 11(MOBHPHNVKY9PHBXD),\r\nGoogle Pixel 11(MOBHPHNVYZSFXPGY),\r\nNothing Phone (4a)(MOBHK7DDGFM46V5M),\r\nNothing Phone (4a)(MOBHK7DDJDQBDTWF),\r\nNothing Phone (4a)(MOBHK7DDCE4EREEK),\r\nNothing Phone (4a)(MOBHK7DDRAKBHNT5),\r\nNothing Phone (4a)(MOBHM2ZU8YYYQRCJ),\r\nNothing Phone (4a)(MOBHM2ZUSN6EFFVG),\r\nNothing Phone (4a)(MOBHM2ZUKS9DZ7HV),\r\nNothing Phone (4a)(MOBHM2ZU4VKVQ4JV),\r\nNothing Phone (4a)(MOBHM2ZUSXGAN4DY),\r\nNothing Phone (4a)(MOBHM2ZUJCAWYH4E),\r\nNothing Phone (4a)(MOBHM2ZUZRZARU6Z),\r\nNothing Phone (4a)(MOBHM2ZUY8AQJV7F),\r\nNothing Phone (4a)(MOBHM2ZUECQGQB6R),\r\nNothing Phone (4a)(MOBHM2ZUF4WSKQEY),\r\nNothing Phone (4a)(MOBHZAWYHMRFGNFF),\r\nNothing Phone (4a)(MOBHZAWYGYRAH4PY),\r\nNothing Phone (4a)(MOBHZAWYZG6ZRHSA),\r\nNothing Phone (4a)(MOBHZAWYUQDFFTRB),\r\nNothing Phone (4a)(MOBHZAWYHRHFGS4X),\r\nNothing Phone (4a)(MOBHZAWYHWYKGGWD),\r\nNothing Phone (4a)(MOBHZAWYGU9RENGN),\r\nNothing Phone (4a)(MOBHZAWYPQ3DQ6DS),\r\nNothing Phone (4a)(MOBHZAWYWRAW9YGT),\r\nNothing Phone (4a)(MOBHZAWYVBT49JSC),\r\nNothing Phone (4a)(MOBHP9NHUZ6JZZBY),\r\nPOCO C81x(MOBHMYWRXCQBZ7D2),\r\nPOCO C81x(MOBHMYWRWPE4S8G6),\r\nPOCO C81x(MOBHMYWRWPE4S8G6),\r\nPOCO C81x(MOBHMYWRXCQBZ7D2).",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.75",
+          "is_header": false
+        },
+        {
+          "name": "User maximum earn commission on Mobile Tier B",
+          "payout_type": "Per Sale",
+          "payout": "75.0",
+          "is_header": false
+        },
+        {
+          "name": "Any Other Mobile Phone",
+          "payout_type": "Per Sale",
+          "payout": "0.0",
+          "is_header": false
+        },
+        {
+          "name": "Categories not mentioned",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": false
+        }
+      ],
+      "important_info_html": "<b>Flipkart campaign does not help with the missing transactions. </b><br><br><b>Tracking Details&nbsp;</b><ul><li>Please note your commission can take up-to 72 hours after your shipment has been dispatched for delivery to track for Flipkart.</li></ul><ul><li>Please note that Flipkart does not allow to advertise affiliate links as a cashback offer.</li></ul><ul><li>New Customer is defined as the 1st order/transaction done by a customer on Flipkart.com in the last 6 months (counting from the date of transaction).&nbsp;</li></ul><ul><li>Affiliate tracking on all Mobile Apps is possible only through Deeplink Affiliate URLs</li></ul><ul><li>You will not receive any referral payouts (affiliate commission) for purchases done on the following: Mobile Recharges, Value Added Services, Flipkart First subscription, iOS &amp; Windows App Installs (both Direct as well as Fallback), and/or any other products/ services/categories notified by us.</li></ul><br><b>Conversion Flow:<br><br></b><div>1. User makes a purchase on Website/ Mobile site/App</div><div>2. Sale is counted &amp; added <br><br></div>",
+      "important_info_plain": "Flipkart campaign does not help with the missing transactions.\nTracking Details&nbsp;\n* Please note your commission can take up-to 72 hours after your shipment has been dispatched for delivery to track for Flipkart.\n* Please note that Flipkart does not allow to advertise affiliate links as a cashback offer.\n* New Customer is defined as the 1st order/transaction done by a customer on Flipkart.com in the last 6 months (counting from the date of transaction).&nbsp;\n* Affiliate tracking on all Mobile Apps is possible only through Deeplink Affiliate URLs\n* You will not receive any referral payouts (affiliate commission) for purchases done on the following: Mobile Recharges, Value Added Services, Flipkart First subscription, iOS &amp; Windows App Installs (both Direct as well as Fallback), and/or any other products/ services/categories notified by us.\nConversion Flow:\n1. User makes a purchase on Website/ Mobile site/App2. Sale is counted &amp; added",
+      "missing_trans_allowed": null,
+      "missing_trans_claim_window": null
+    },
+    "Tata CLiQ": {
+      "id": 2588,
+      "name": "Tata Cliq",
+      "domain": "tatacliq.com",
+      "status": null,
+      "access_status": "open",
+      "payout_type": "Per Sale(%)",
+      "payout": "3.75",
+      "payout_currency": "%",
+      "cookie_duration": "7 Days",
+      "tracking_time": "5 min",
+      "validation_time": "60 days",
+      "payment_time": "90 days",
+      "deeplink_allowed": true,
+      "conversion_flow": {
+        "Step 1": "User clicks on your tracking link",
+        "Step 2": "User lands on the advertiser website and purchase any product within cookie period",
+        "Step 3": "User successfully paid and receive his/her purchase"
+      },
+      "platforms": {
+        "allowed": [
+          "Web",
+          "Mobile Web",
+          "Android App"
+        ],
+        "disallowed": [
+          "iOS App"
+        ]
+      },
+      "media": {
+        "allowed": [
+          "Text Link",
+          "Banner",
+          "Deals",
+          "Coupons",
+          "Cashback, Reward Points, Incentives, Charity",
+          "Email (Text)",
+          "Native Ads",
+          "Social Media"
+        ],
+        "disallowed": [
+          "Custom Email (Text)",
+          "Email (HTML)",
+          "Custom Email (HTML)",
+          "POP Traffic",
+          "Facebook Ads",
+          "SEM - Brand Keyword(s)",
+          "SEM - Generic Keyword(s)",
+          "SEM - Brand + Generic Keyword(s)"
+        ]
+      },
+      "payout_categories": [
+        {
+          "name": "Coins, Gift Vouchers, Fine Jewellery",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": false
+        },
+        {
+          "name": "Payout",
+          "payout_type": "Per Sale(%)",
+          "payout": "3.75",
+          "is_header": false
+        }
+      ],
+      "important_info_html": "<div>Tracking - Online</div><div><b><br></b></div><div>Reselling/bulk buying is not allowed</div><div><b><br></b></div><div>Coupons Policy - Coupons shared by the Cuelinks team and coupons mentioned on the website (generic) are only payable. Please note, Coupon code not provided by Cuelinks and are not available on advertiser website will not be paid.</div><div><b><br></b></div><div>Brand Bidding/ PPC/ Meta ads etc is strictly prohibited<br><br>Validation Criteria -&nbsp;<span>Successfully delivered a sale<br><br></span>Attribution - As per&nbsp;Client CRM</div>",
+      "important_info_plain": "Tracking - Online\nReselling/bulk buying is not allowed\nCoupons Policy - Coupons shared by the Cuelinks team and coupons mentioned on the website (generic) are only payable. Please note, Coupon code not provided by Cuelinks and are not available on advertiser website will not be paid.\nBrand Bidding/ PPC/ Meta ads etc is strictly prohibited\nValidation Criteria -&nbsp;Successfully delivered a sale\nAttribution - As per&nbsp;Client CRM",
+      "missing_trans_allowed": null,
+      "missing_trans_claim_window": null
+    },
+    "Nykaa": {
+      "id": 891,
+      "name": "Nykaa Beauty",
+      "domain": "nykaa.com",
+      "status": null,
+      "access_status": "open",
+      "payout_type": "Per Sale(%)",
+      "payout": "4.2",
+      "payout_currency": "%",
+      "cookie_duration": "7 Days",
+      "tracking_time": "5 Mins",
+      "validation_time": "45 Days",
+      "payment_time": "60 Days",
+      "deeplink_allowed": true,
+      "conversion_flow": {
+        "Step 1": "User clicks on the link",
+        "Step 2": "User visit the merchant website",
+        "Step 3": "User buys a product"
+      },
+      "platforms": {
+        "allowed": [
+          "Web",
+          "Mobile Web",
+          "Android App"
+        ],
+        "disallowed": [
+          "iOS App"
+        ]
+      },
+      "media": {
+        "allowed": [
+          "Text Link",
+          "Banner",
+          "Deals",
+          "Coupons",
+          "Cashback, Reward Points, Incentives, Charity"
+        ],
+        "disallowed": [
+          "Email (Text)",
+          "Custom Email (Text)",
+          "Email (HTML)",
+          "Custom Email (HTML)",
+          "POP Traffic",
+          "Native Ads",
+          "Social Media",
+          "Facebook Ads",
+          "SEM - Brand Keyword(s)",
+          "SEM - Generic Keyword(s)",
+          "SEM - Brand + Generic Keyword(s)"
+        ]
+      },
+      "payout_categories": [
+        {
+          "name": "Existing User",
+          "payout_type": "Per Sale(%)",
+          "payout": "2.1",
+          "is_header": false
+        },
+        {
+          "name": "New User",
+          "payout_type": "Per Sale(%)",
+          "payout": "4.2",
+          "is_header": false
+        }
+      ],
+      "important_info_html": "<li>Tracking - Online</li><li>Reselling/bulk buying is not allowed</li><li>Coupons Policy - Coupons shared by the Cuelinks team and coupons mentioned on the website (generic) are only payable.&nbsp;</li><li>Please note, Coupon code not provided by Cuelinks and are not available on advertiser website will not be paid.</li><li>Brand Bidding/ PPC/ Meta ads etc is strictly prohibited</li><li></li>",
+      "important_info_plain": "* Tracking - Online\n* Reselling/bulk buying is not allowed\n* Coupons Policy - Coupons shared by the Cuelinks team and coupons mentioned on the website (generic) are only payable.&nbsp;\n* Please note, Coupon code not provided by Cuelinks and are not available on advertiser website will not be paid.\n* Brand Bidding/ PPC/ Meta ads etc is strictly prohibited\n*",
+      "missing_trans_allowed": null,
+      "missing_trans_claim_window": null
+    },
+    "Nykaa Fashion": {
+      "id": 3907,
+      "name": "Nykaa Fashion",
+      "domain": "nykaafashion.com",
+      "status": null,
+      "access_status": "open",
+      "payout_type": "Per Sale(%)",
+      "payout": "4.2",
+      "payout_currency": "%",
+      "cookie_duration": "7days",
+      "tracking_time": "48 Hours",
+      "validation_time": "75 Days",
+      "payment_time": "90 Days",
+      "deeplink_allowed": true,
+      "conversion_flow": {
+        "Step 1": "User clicks on your tracking link",
+        "Step 2": "User lands on the advertiser website and purchase any product within cookie period",
+        "Step 3": "User successfully paid and receive his/her purchase"
+      },
+      "platforms": {
+        "allowed": [
+          "Web",
+          "Mobile Web"
+        ],
+        "disallowed": [
+          "Android App",
+          "iOS App"
+        ]
+      },
+      "media": {
+        "allowed": [
+          "Text Link",
+          "Banner",
+          "Deals",
+          "Coupons",
+          "Cashback, Reward Points, Incentives, Charity",
+          "Email (Text)",
+          "Social Media"
+        ],
+        "disallowed": [
+          "Custom Email (Text)",
+          "Email (HTML)",
+          "Custom Email (HTML)",
+          "POP Traffic",
+          "Native Ads",
+          "Facebook Ads",
+          "SEM - Brand Keyword(s)",
+          "SEM - Generic Keyword(s)",
+          "SEM - Brand + Generic Keyword(s)"
+        ]
+      },
+      "payout_categories": [
+        {
+          "name": "New User",
+          "payout_type": "Per Sale(%)",
+          "payout": "4.2",
+          "is_header": false
+        },
+        {
+          "name": "Existing User",
+          "payout_type": "Per Sale(%)",
+          "payout": "2.1",
+          "is_header": false
+        }
+      ],
+      "important_info_html": "<div><b>Tracking -&nbsp;</b>Offline</div><div><b><br></b></div><div><b>Allowed-Disallowed Media:</b></div><div><br></div><div>Brand Bidding - Forbidden</div><div>SEM - Forbidden</div><div>M-site - Allowed</div><div>Geos - Pan India</div><div>Cookie time -&nbsp;7 DAYS</div><div>Payout Applicable for all users</div><div>Payout applicable on all products</div><div>Help with the missing transaction - Yes</div><div>Cashback applicable on payment with store credit/gift cards - No<br><br></div><br><div>Coupons Policy - Coupons shared by the Cuelinks team and coupons mentioned on the website (generic) are only payable.&nbsp;Please note, Coupon code not provided by Cuelinks and are not available on advertiser website will not be paid..<br><br>Reselling/bulk buying is not allowed<br><br>BRAND BIDDING is strictly not allowed, If caught bidding on NYKAA FASHION or any other keyword with NYKAA as a part of the keyword, All payments (pending and Due)&nbsp;will be nullified.<br><br>Terms:&nbsp;<ul><li>Nykaa Omniture report is final truth of source for validation</li><li>Payout only on successful delivered sales.</li><li>Payout is not applicable if you pay with Nykaa Credits and Gift Cards</li><li>Payout on Nykaa App Orders: Not Applicable</li><li>Payout is applicable Thrice per unique user per month basis email, phone number and address</li><li>No payout for Bulk Transactions</li><li>100% cancellation on Brand bidding and PPC violations<br></li><li>Mixed panel report frequency - Every Next Day.&nbsp;</li><li>Final source of attribution - Mixed panel reports.&nbsp;</li></ul></div>",
+      "important_info_plain": "Tracking -&nbsp;Offline\nAllowed-Disallowed Media:\nBrand Bidding - ForbiddenSEM - ForbiddenM-site - AllowedGeos - Pan IndiaCookie time -&nbsp;7 DAYSPayout Applicable for all usersPayout applicable on all productsHelp with the missing transaction - YesCashback applicable on payment with store credit/gift cards - No\nCoupons Policy - Coupons shared by the Cuelinks team and coupons mentioned on the website (generic) are only payable.&nbsp;Please note, Coupon code not provided by Cuelinks and are not available on advertiser website will not be paid..\nReselling/bulk buying is not allowed\nBRAND BIDDING is strictly not allowed, If caught bidding on NYKAA FASHION or any other keyword with NYKAA as a part of the keyword, All payments (pending and Due)&nbsp;will be nullified.\nTerms:&nbsp;\n* Nykaa Omniture report is final truth of source for validation\n* Payout only on successful delivered sales.\n* Payout is not applicable if you pay with Nykaa Credits and Gift Cards\n* Payout on Nykaa App Orders: Not Applicable\n* Payout is applicable Thrice per unique user per month basis email, phone number and address\n* No payout for Bulk Transactions\n* 100% cancellation on Brand bidding and PPC violations\n* Mixed panel report frequency - Every Next Day.&nbsp;\n* Final source of attribution - Mixed panel reports.&nbsp;",
+      "missing_trans_allowed": null,
+      "missing_trans_claim_window": null
+    },
+    "Myntra": {
+      "id": 101,
+      "name": "Myntra",
+      "domain": "myntra.com",
+      "status": null,
+      "access_status": "pending",
+      "payout_type": "Per Sale(%)",
+      "payout": "7.5",
+      "payout_currency": "%",
+      "cookie_duration": "1day",
+      "tracking_time": "48 hours",
+      "validation_time": "60 Days",
+      "payment_time": "90 Days",
+      "deeplink_allowed": true,
+      "conversion_flow": {
+        "Step 1": "User clicks on your tracking link",
+        "Step 2": "User lands on the advertiser website and purchase any product within cookie period",
+        "Step 3": "User successfully paid and receive his/her purchase"
+      },
+      "platforms": {
+        "allowed": [
+          "Web",
+          "Mobile Web",
+          "Android App",
+          "iOS App"
+        ],
+        "disallowed": []
+      },
+      "media": {
+        "allowed": [
+          "Text Link",
+          "Banner",
+          "Deals",
+          "Coupons",
+          "Cashback, Reward Points, Incentives, Charity",
+          "Email (Text)",
+          "Custom Email (Text)",
+          "Email (HTML)",
+          "Custom Email (HTML)",
+          "Native Ads",
+          "Social Media"
+        ],
+        "disallowed": [
+          "POP Traffic",
+          "Facebook Ads",
+          "SEM - Brand Keyword(s)",
+          "SEM - Generic Keyword(s)",
+          "SEM - Brand + Generic Keyword(s)"
+        ]
+      },
+      "payout_categories": [
+        {
+          "name": "Silver & Gold Jewellery & Coins, Gift Card,Myncash, Other Categories",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": false
+        },
+        {
+          "name": "JEWELLERY - Ethnic, Western, Fine",
+          "payout_type": "Per Sale(%)",
+          "payout": "1.5",
+          "is_header": false
+        },
+        {
+          "name": "ACCESSORIES - All Accessories",
+          "payout_type": "Per Sale(%)",
+          "payout": "1.5",
+          "is_header": false
+        },
+        {
+          "name": "APPAREL - Men Casual wear Men Work wear Men Formal wear Men Sports wear Women Casual wear Women Work wear Women Formal wear Women Sports wear",
+          "payout_type": "Per Sale(%)",
+          "payout": "2.25",
+          "is_header": false
+        },
+        {
+          "name": "FOOTWEAR - Men Formal footwear Men Sports footwear Men Casual footwear Women Casual footwear Women Formal foowear Women Sports footwear",
+          "payout_type": "Per Sale(%)",
+          "payout": "2.25",
+          "is_header": false
+        },
+        {
+          "name": "KIDS WEAR - Boys All Clothing, Footwear, Grooming, Toys",
+          "payout_type": "Per Sale(%)",
+          "payout": "3.0",
+          "is_header": false
+        },
+        {
+          "name": "BEAUTY & PERSONAL CARE - Men's Grooming Appliances Hair Bath & Body Makeup Mom & Baby Skin Care Wellness Beauty Accessories Fragrance Ingestibles",
+          "payout_type": "Per Sale(%)",
+          "payout": "3.0",
+          "is_header": false
+        },
+        {
+          "name": "HOME- Kitchen Appliances Kitchen & Housewares Home Furnishing Outdoors DIY & Tools",
+          "payout_type": "Per Sale(%)",
+          "payout": "3.75",
+          "is_header": false
+        },
+        {
+          "name": "Existing User",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": true
+        },
+        {
+          "name": "Silver & Gold Jewellery & Coins, Gift Card,Myncash, Other Categories",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": false
+        },
+        {
+          "name": "JEWELLERY - Ethnic, Western, Fine",
+          "payout_type": "Per Sale(%)",
+          "payout": "1.5",
+          "is_header": false
+        },
+        {
+          "name": "ACCESSORIES - All Accessories Electronics Gourmet",
+          "payout_type": "Per Sale(%)",
+          "payout": "1.5",
+          "is_header": false
+        },
+        {
+          "name": "APPAREL - Men Casual wear Men Work wear Men Formal wear Men Sports wear Women Casual wear Women Work wear Women Formal wear Women Sports wear",
+          "payout_type": "Per Sale(%)",
+          "payout": "2.25",
+          "is_header": false
+        },
+        {
+          "name": "KIDS WEAR - Boys All Clothing, Footwear, Grooming, Toys Girls All Clothing, Footwear, Grooming, Toys",
+          "payout_type": "Per Sale(%)",
+          "payout": "6.0",
+          "is_header": false
+        },
+        {
+          "name": "FOOTWEAR - Men Formal footwear Men Sports footwear Men Casual footwear Women Casual footwear Women Formal foowear Women Sports footwear",
+          "payout_type": "Per Sale(%)",
+          "payout": "6.0",
+          "is_header": false
+        },
+        {
+          "name": "BEAUTY & PERSONAL CARE - Men's Grooming Appliances Hair Bath & Body Makeup Mom & Baby Skin Care Wellness Beauty Accessories Fragrance Ingestibles",
+          "payout_type": "Per Sale(%)",
+          "payout": "6.75",
+          "is_header": false
+        },
+        {
+          "name": "HOME- Kitchen Appliances Kitchen & Housewares Home Furnishing Outdoors DIY & Tools",
+          "payout_type": "Per Sale(%)",
+          "payout": "7.5",
+          "is_header": false
+        },
+        {
+          "name": "New Users",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": true
+        }
+      ],
+      "important_info_html": "<b>Note:</b><br><ul><li>Transactions would get tracked on mobile as well as desktop site.<br></li><li>The attribution window is changed to&nbsp;<b>1day.</b>No cookie hijacking allowed.<br></li><li>Cookie intervention to same session will not be consider for attribution logic.</li><li>Pop ups,pop under ,pop behind,cookie stuffing are strictly prohibited.<br></li><li>Bounce rate traffic will not be considered for attribution logic,bounce rate to be maintained by 35%.</li><li>All URL must carry affiliate ID's</li><li>Publisher website should not contain sexually explicit data.</li><li>P2P torrent website should never be used to promote the campaign.</li><li>No commission will be payable when the transaction is done from Internet Explorer</li><li>Payout is not applicable if you pay with Myntra Credits and Gift Cards</li><li>Payout is calculated on order amount excluding what is paid via wallets credits or gift vouchers</li></ul><br><b>Note -&nbsp;</b>Commission is Not applicable if you pay with Myntra&nbsp;Credits and Gift Cards<br><br><b>Please note&nbsp;</b><b>that&nbsp;</b><b>no offers or creatives related to Myntra are shared or promoted on Telegram.<br></b><br><b>Important note - This campaign is budget based campaign, please let us know before promoting.<br></b><br><b>Attribution model from&nbsp;Last Click</b><b>&nbsp;to&nbsp;</b><b>Add to Cart</b><b>&nbsp;attribution</b><br><br>",
+      "important_info_plain": "Note:\n* Transactions would get tracked on mobile as well as desktop site.\n* The attribution window is changed to&nbsp;1day.No cookie hijacking allowed.\n* Cookie intervention to same session will not be consider for attribution logic.\n* Pop ups,pop under ,pop behind,cookie stuffing are strictly prohibited.\n* Bounce rate traffic will not be considered for attribution logic,bounce rate to be maintained by 35%.\n* All URL must carry affiliate ID's\n* Publisher website should not contain sexually explicit data.\n* P2P torrent website should never be used to promote the campaign.\n* No commission will be payable when the transaction is done from Internet Explorer\n* Payout is not applicable if you pay with Myntra Credits and Gift Cards\n* Payout is calculated on order amount excluding what is paid via wallets credits or gift vouchers\nNote -&nbsp;Commission is Not applicable if you pay with Myntra&nbsp;Credits and Gift Cards\nPlease note&nbsp;that&nbsp;no offers or creatives related to Myntra are shared or promoted on Telegram.\nImportant note - This campaign is budget based campaign, please let us know before promoting.\nAttribution model from&nbsp;Last Click&nbsp;to&nbsp;Add to Cart&nbsp;attribution",
+      "missing_trans_allowed": null,
+      "missing_trans_claim_window": null
+    },
+    "AJIO": {
+      "id": 2589,
+      "name": "Ajio",
+      "domain": "ajio.com",
+      "status": null,
+      "access_status": "pending",
+      "payout_type": "Per Sale(%)",
+      "payout": "9.0",
+      "payout_currency": "%",
+      "cookie_duration": "1 Day",
+      "tracking_time": "5 min",
+      "validation_time": "45 days",
+      "payment_time": "60 days",
+      "deeplink_allowed": true,
+      "conversion_flow": {
+        "Step 1": "User clicks on your tracking link",
+        "Step 2": "User lands on the advertiser website and purchase any product within cookie period",
+        "Step 3": "User successfully paid and receive his/her purchase"
+      },
+      "platforms": {
+        "allowed": [
+          "Web",
+          "Mobile Web",
+          "Android App",
+          "iOS App"
+        ],
+        "disallowed": []
+      },
+      "media": {
+        "allowed": [
+          "Text Link",
+          "Banner",
+          "Deals",
+          "Coupons",
+          "Cashback, Reward Points, Incentives, Charity",
+          "Email (Text)"
+        ],
+        "disallowed": [
+          "Custom Email (Text)",
+          "Email (HTML)",
+          "Custom Email (HTML)",
+          "POP Traffic",
+          "Native Ads",
+          "Social Media",
+          "Facebook Ads",
+          "SEM - Brand Keyword(s)",
+          "SEM - Generic Keyword(s)",
+          "SEM - Brand + Generic Keyword(s)"
+        ]
+      },
+      "payout_categories": [
+        {
+          "name": "Alliance and Employee codes ",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": false
+        },
+        {
+          "name": "Tech",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": false
+        },
+        {
+          "name": "Gold and Silver Jewelry, Coins, and Bars",
+          "payout_type": "Per Sale",
+          "payout": "0.0",
+          "is_header": false
+        },
+        {
+          "name": "Gold and Silver  / Fine Gold & Silver Jewelry",
+          "payout_type": "Per Sale(%)",
+          "payout": "0.0",
+          "is_header": true
+        },
+        {
+          "name": "Existing User",
+          "payout_type": "Per Sale(%)",
+          "payout": "4.5",
+          "is_header": false
+        },
+        {
+          "name": "New User",
+          "payout_type": "Per Sale(%)",
+          "payout": "9.0",
+          "is_header": false
+        }
+      ],
+      "important_info_html": "AJIO &amp; RELIANCE TRENDS Brand bidding on GOOGLE/BING is not allowed<br><br><div>Coupons Policy - Coupons shared by the Cuelinks team and coupons mentioned on the website (generic) are only payable. Please note, Coupon code not provided by Cuelinks and are not available on advertiser website will not be paid. <br><br><b>Commission will get tracked at lower amount and will be correct during validations. <br></b><br><b>Tracking -&nbsp;</b> Online <br>App tracking : offline <br><br><b>Allowed - Disallowed Media :&nbsp;</b><br> Adult - Forbidden <br>SEM - Forbidden <br>API traffic - Forbidden <br>Toolbar - Forbidden <br>PopUp / ClickUnder - Forbidden <br>App Track - Forbidden <br>PPC / D2M - Forbidden<br><br><div>The commission&nbsp;includes shipping charges for now; we will fix that and rectify it at the time of validation.<br><br><span>Exclusion: Alliance Code | EMP Code (Not Payable)<br><br></span>Validation will be as per CRM report<br><br>Note :<br><br><span>Bidding on Branded keywords on Google AdWords and Facebook is prohibited<br></span><span>Running of Search ads on Brand + Generic keywords is prohibited<br></span><span>Traffic redirection is prohibited<br></span><span>Cookie stuffing is prohibited<br></span>Any orders received from bot/fraudulent ways shall not be accounted<br>&nbsp;<br>*Important information&nbsp;<br><b>Alliance and Employee codes are non-payable (Commission will be tracked at \"0\")</b></div><br><br><div><b><u>Attribution/Cookie Window:</u></b></div><div>&nbsp;</div><div>Current: 2-day (48-hour)</div><div><span><b>New Effective from 1</b><b>st</b><b> July: 1-day (24-hour)</b></span></div></div>",
+      "important_info_plain": "AJIO &amp; RELIANCE TRENDS Brand bidding on GOOGLE/BING is not allowed\nCoupons Policy - Coupons shared by the Cuelinks team and coupons mentioned on the website (generic) are only payable. Please note, Coupon code not provided by Cuelinks and are not available on advertiser website will not be paid.\nCommission will get tracked at lower amount and will be correct during validations.\nTracking -&nbsp; Online\nApp tracking : offline\nAllowed - Disallowed Media :&nbsp;\nAdult - Forbidden\nSEM - Forbidden\nAPI traffic - Forbidden\nToolbar - Forbidden\nPopUp / ClickUnder - Forbidden\nApp Track - Forbidden\nPPC / D2M - Forbidden\nThe commission&nbsp;includes shipping charges for now; we will fix that and rectify it at the time of validation.\nExclusion: Alliance Code | EMP Code (Not Payable)\nValidation will be as per CRM report\nNote :\nBidding on Branded keywords on Google AdWords and Facebook is prohibited\nRunning of Search ads on Brand + Generic keywords is prohibited\nTraffic redirection is prohibited\nCookie stuffing is prohibited\nAny orders received from bot/fraudulent ways shall not be accounted\n&nbsp;\n*Important information&nbsp;\nAlliance and Employee codes are non-payable (Commission will be tracked at \"0\")\nAttribution/Cookie Window:&nbsp;Current: 2-day (48-hour)New Effective from 1st July: 1-day (24-hour)",
+      "missing_trans_allowed": null,
+      "missing_trans_claim_window": null
+    }
+  },
+  "link_conversions": {
+    "Amazon India": {
+      "http_status": 200,
+      "affiliated": false,
+      "campaign_id_returned": null,
+      "status_message": null,
+      "tracking_url_generated": true
+    },
+    "Flipkart": {
+      "http_status": 200,
+      "affiliated": false,
+      "campaign_id_returned": null,
+      "status_message": null,
+      "tracking_url_generated": true
+    },
+    "Myntra": {
+      "http_status": 200,
+      "affiliated": false,
+      "campaign_id_returned": null,
+      "status_message": null,
+      "tracking_url_generated": true
+    },
+    "Tata CLiQ": {
+      "http_status": 200,
+      "affiliated": true,
+      "campaign_id_returned": null,
+      "status_message": null,
+      "tracking_url_generated": true
+    },
+    "AJIO": {
+      "http_status": 200,
+      "affiliated": false,
+      "campaign_id_returned": null,
+      "status_message": null,
+      "tracking_url_generated": true
+    },
+    "Nykaa": {
+      "http_status": 200,
+      "affiliated": true,
+      "campaign_id_returned": null,
+      "status_message": null,
+      "tracking_url_generated": true
+    },
+    "Nykaa Fashion": {
+      "http_status": 200,
+      "affiliated": true,
+      "campaign_id_returned": null,
+      "status_message": null,
+      "tracking_url_generated": true
+    }
+  },
+  "subid_findings": {
+    "http_status": 200,
+    "supported_params": [
+      "subid",
+      "subid2",
+      "subid3",
+      "subid4",
+      "subid5"
+    ],
+    "received_in_query": {
+      "subid": [
+        "prod_101"
+      ],
+      "subid2": [
+        "list_202"
+      ],
+      "subid3": [
+        "hero_btn"
+      ],
+      "subid4": [
+        "mobile_web"
+      ],
+      "subid5": [
+        "v1_test"
+      ]
+    }
+  }
+}

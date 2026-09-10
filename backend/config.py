@@ -21,8 +21,8 @@ class Settings:
     CACHE_TTL_MINUTES: int = int(os.getenv("CACHE_TTL_MINUTES", "60"))
 
     # Direct Affiliate Credentials
-    # Replace with your actual Amazon Associates tracking ID (e.g. 'dealintel01-21')
-    AMAZON_AFFILIATE_TAG: str = os.getenv("AMAZON_AFFILIATE_TAG", "dealintel-21")
+    # Must be set explicitly in .env once an official Associates Store ID is verified.
+    AMAZON_AFFILIATE_TAG: str = os.getenv("AMAZON_AFFILIATE_TAG", "")
 
     # Replace with your direct Flipkart Affiliate ID if approved
     FLIPKART_AFFILIATE_ID: str = os.getenv("FLIPKART_AFFILIATE_ID", "dealintel")

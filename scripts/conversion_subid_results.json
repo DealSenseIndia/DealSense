@@ -1,0 +1,100 @@
+{
+  "conversions": {
+    "Flipkart": {
+      "http_status": 200,
+      "affiliated": false,
+      "campaign_id_expected": 1,
+      "campaign_id_returned": null,
+      "status_message": null,
+      "tracking_url_generated": true,
+      "params_detected": [
+        "cid",
+        "source",
+        "url"
+      ]
+    },
+    "Amazon India": {
+      "http_status": 200,
+      "affiliated": false,
+      "campaign_id_expected": 817,
+      "campaign_id_returned": null,
+      "status_message": null,
+      "tracking_url_generated": true,
+      "params_detected": [
+        "cid",
+        "source",
+        "url"
+      ]
+    },
+    "Tata CLiQ": {
+      "http_status": 200,
+      "affiliated": true,
+      "campaign_id_expected": 2588,
+      "campaign_id_returned": null,
+      "status_message": null,
+      "tracking_url_generated": true,
+      "params_detected": [
+        "cid",
+        "source",
+        "url"
+      ]
+    },
+    "Nykaa Beauty": {
+      "http_status": 200,
+      "affiliated": true,
+      "campaign_id_expected": 891,
+      "campaign_id_returned": null,
+      "status_message": null,
+      "tracking_url_generated": true,
+      "params_detected": [
+        "cid",
+        "source",
+        "url"
+      ]
+    },
+    "Nykaa Fashion": {
+      "http_status": 200,
+      "affiliated": true,
+      "campaign_id_expected": 3907,
+      "campaign_id_returned": null,
+      "status_message": null,
+      "tracking_url_generated": true,
+      "params_detected": [
+        "cid",
+        "source",
+        "url"
+      ]
+    }
+  },
+  "subid_tests": {
+    "parameters_in_redirect": {
+      "subid": [
+        "prod_1001"
+      ],
+      "subid2": [
+        "list_2002"
+      ],
+      "subid3": [
+        "deal_hero"
+      ],
+      "subid4": [
+        "mobile_web"
+      ],
+      "subid5": [
+        "ab_test_v1"
+      ]
+    },
+    "http_status": 200,
+    "data_keys": [
+      "tracking_url",
+      "original_url",
+      "affiliated",
+      "campaign",
+      "affiliate_url"
+    ],
+    "long_subid_handled": {
+      "subid_len": 60,
+      "subid2_len": 120
+    }
+  }
+}

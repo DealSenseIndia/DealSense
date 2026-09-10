@@ -11,7 +11,7 @@ let activeCategory = "all";
 let activeDealType = "all";
 
 export async function fetchLiveDeals({ category = "all", dealType = "all", onDealClick, onSetupClick } = {}) {
-  const container = document.getElementById("liveDealsContainer");
+  const container = document.getElementById("liveDealsContainer") || document.getElementById("dealsWorthCheckingContainer");
   const visibleCountEl = document.getElementById("visibleDealsCount");
   const lastCheckedEl = document.getElementById("scannerLastChecked");
   const nextScanEl = document.getElementById("scannerNextScan");
@@ -76,7 +76,7 @@ export async function fetchLiveDeals({ category = "all", dealType = "all", onDea
 }
 
 export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {}) {
-  const container = document.getElementById("liveDealsContainer");
+  const container = document.getElementById("liveDealsContainer") || document.getElementById("dealsWorthCheckingContainer");
   if (!container) return;
 
   container.innerHTML = "";
@@ -110,10 +110,9 @@ export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {})
         <img src="${merchantLogo}" alt="${escapeHtml(deal.merchant)}" class="deal-card-merchant-logo">
         <img src="${deal.image_url}" alt="${escapeHtml(deal.title)}" class="deal-card-thumb-img" loading="lazy">
       </div>
-      <div class="deal-card-body">
         <div class="deal-card-cat-brand">
           <span>${escapeHtml(deal.brand || deal.category)}</span>
-          <span style="color:#16A34A; font-weight:750;">★ ${deal.rating || 4.4}</span>
+          ${deal.rating ? `<span style="color:#16A34A; font-weight:750;">★ ${deal.rating}</span>` : ""}
         </div>
         <h3 class="deal-card-title-text" title="${escapeHtml(deal.title)}">${escapeHtml(deal.title)}</h3>
         
@@ -268,7 +267,7 @@ export function initLiveDeals({ onDealClick, onSetupClick } = {}) {
       dealPills.forEach((p) => p.classList.remove("active"));
       pill.classList.add("active");
       const filterKey = pill.getAttribute("data-filter") || "trending";
-      filterDealsWorthChecking(filterKey);
+      filterDealsWorthChecking(filterKey, { onDealClick, onSetupClick });
     });
   });
 
@@ -334,33 +333,22 @@ export function initLiveDeals({ onDealClick, onSetupClick } = {}) {
   fetchLiveDeals({ category: "all", dealType: "all", onDealClick, onSetupClick });
 }
 
-function filterDealsWorthChecking(filterKey) {
-  const cards = document.querySelectorAll("#dealsWorthCheckingContainer .mockup-deal-card");
-  cards.forEach((card, idx) => {
-    if (filterKey === "trending" || filterKey === "more") {
-      card.style.display = "flex";
-    } else if (filterKey === "under_999") {
-      // boAt Airdopes 141 @ ₹699 (idx 1)
-      card.style.display = idx === 1 ? "flex" : "none";
-    } else if (filterKey === "under_2499") {
-      // boAt (699), Philips Mixer (2499)
-      card.style.display = (idx === 1 || idx === 4) ? "flex" : "none";
-    } else if (filterKey === "under_5000") {
-      // boAt, Philips Mixer, Redmi
-      card.style.display = (idx === 1 || idx === 3 || idx === 4) ? "flex" : "none";
-    } else if (filterKey === "electronics") {
-      // AirPods, boAt, Samsung TV, Redmi (all electronics)
-      card.style.display = (idx === 0 || idx === 1 || idx === 2 || idx === 3) ? "flex" : "none";
-    } else if (filterKey === "home") {
-      // Show indices 3, 4
-      card.style.display = (idx === 3 || idx === 4) ? "flex" : "none";
-    } else if (filterKey === "best_deals" || filterKey === "price_drops") {
-      card.style.display = "flex";
-    } else if (filterKey === "fashion") {
-      // No fashion-only items in current set — show all
-      card.style.display = "flex";
-    } else {
-      card.style.display = "flex";
-    }
-  });
+function filterDealsWorthChecking(filterKey, { onDealClick, onSetupClick } = {}) {
+  let filtered = currentDeals;
+  if (filterKey === "under_999") {
+    filtered = currentDeals.filter((d) => d.price < 1000);
+  } else if (filterKey === "under_2499") {
+    filtered = currentDeals.filter((d) => d.price < 2500);
+  } else if (filterKey === "under_5000") {
+    filtered = currentDeals.filter((d) => d.price < 5000);
+  } else if (filterKey === "electronics") {
+    filtered = currentDeals.filter((d) => ["mobiles", "laptops", "audio", "smartwatches", "tvs"].includes((d.category || "").toLowerCase()));
+  } else if (filterKey === "home") {
+    filtered = currentDeals.filter((d) => ["appliances", "home"].includes((d.category || "").toLowerCase()));
+  } else if (filterKey === "best_deals") {
+    filtered = currentDeals.filter((d) => (d.deal_score || 0) >= 80);
+  } else if (filterKey === "price_drops") {
+    filtered = currentDeals.filter((d) => (d.price_drop_amount || 0) > 0);
+  }
+  renderModernDealsGrid(filtered, { onDealClick, onSetupClick });
 }

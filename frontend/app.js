@@ -8,12 +8,12 @@ import { checkDeal } from "./js/api.js";
 import { startAnalyzingAnimation, finishAnalyzingAnimation } from "./js/animations.js";
 import { initRecentProduct, saveRecentProduct } from "./js/recent.js";
 import { initOmniSearch } from "./js/search.js";
-import { renderDetailPage, initPdpListeners } from "./js/pdp.js";
+import { renderDetailPage, initPdpListeners, showPdpSkeleton, hidePdpSkeleton } from "./js/pdp.js";
 import { initSetupBuilder } from "./js/setup_builder.js";
 import { initLiveDeals } from "./js/live_deals.js";
 import { initTrackedDealsDrawer } from "./js/tracked_deals.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+function initApp() {
   // 1. Initialize View Router & Navigation
   let setupInitialized = false;
   const nav = initNavigation({
@@ -50,12 +50,38 @@ document.addEventListener("DOMContentLoaded", () => {
     const headerDropdown = document.getElementById("headerSearchDropdown");
     if (headerDropdown) headerDropdown.style.display = "none";
 
-    startAnalyzingAnimation(heroSubmitBtn);
+    const homeView = document.getElementById("homeView");
+    const isHomeVisible = homeView && homeView.style.display !== "none";
+
+    if (isHomeVisible) {
+      startAnalyzingAnimation(heroSubmitBtn);
+    } else {
+      showPdpSkeleton();
+    }
 
     try {
-      const data = await checkDeal(url);
-      finishAnalyzingAnimation(heroSubmitBtn, true, () => {
+      // Allow the button animation at least 1.2s to smoothly cycle status steps when on homepage
+      const minAnimDelay = isHomeVisible ? 1250 : 0;
+      const [data] = await Promise.all([
+        checkDeal(url),
+        new Promise((resolve) => setTimeout(resolve, minAnimDelay)),
+      ]);
+
+      if (isHomeVisible && heroSubmitBtn) {
+        finishAnalyzingAnimation(heroSubmitBtn, true, () => {
+          saveRecentProduct(data, url);
+          hidePdpSkeleton();
+          try {
+            renderDetailPage(data, { onAnalyzeUrl: analyzeUrl });
+          } catch (renderErr) {
+            console.error("Error inside renderDetailPage:", renderErr);
+          }
+          nav.showDetail();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      } else {
         saveRecentProduct(data, url);
+        hidePdpSkeleton();
         try {
           renderDetailPage(data, { onAnalyzeUrl: analyzeUrl });
         } catch (renderErr) {
@@ -63,12 +89,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         nav.showDetail();
         window.scrollTo({ top: 0, behavior: "smooth" });
-      });
+      }
     } catch (err) {
       console.error("Deal analysis error:", err);
-      finishAnalyzingAnimation(heroSubmitBtn, false, () => {
+      if (isHomeVisible && heroSubmitBtn) {
+        finishAnalyzingAnimation(heroSubmitBtn, false, () => {
+          showToast(`Deal Analysis: ${err.message || "Failed to analyze link"}`, "error");
+        });
+      } else {
+        hidePdpSkeleton();
+        nav.showHome();
         showToast(`Deal Analysis: ${err.message || "Failed to analyze link"}`, "error");
-      });
+      }
     }
   }
 
@@ -160,4 +192,10 @@ document.addEventListener("DOMContentLoaded", () => {
       // Silent fallback — static HTML values remain displayed
     }
   })();
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initApp);
+} else {
+  initApp();
+}

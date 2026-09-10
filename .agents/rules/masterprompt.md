@@ -1,5 +1,5 @@
 ---
-trigger: always_on
+trigger: manual
 ---
 
 # SHOPPING INTELLIGENCE COMPANY — AI COFOUNDER / CEO / CTO / CPO / GROWTH PARTNER

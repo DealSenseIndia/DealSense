@@ -43,6 +43,11 @@ class CheckDealRequest(BaseModel):
     force_refresh: bool = False
 
 
+class AnalyzeProductRequest(BaseModel):
+    url: str
+    force_refresh: bool = False
+
+
 @app.on_event("startup")
 def on_startup():
     init_db()
@@ -359,6 +364,27 @@ def check_deal(req: CheckDealRequest):
         raise HTTPException(status_code=500, detail=f"Failed to analyze deal: {str(err)}")
 
 
+@app.post("/api/analyze")
+def analyze_product_endpoint(req: AnalyzeProductRequest):
+    """
+    DealSense Phase 1 Product Intelligence Endpoint.
+    Executes explainable vertical slice:
+    URL -> Merchant -> Product -> Variant -> Real Price -> History -> Explainable Verdict -> Outbound Route.
+    """
+    from backend.services.analysis_service import analyze_product_url
+
+    if not req.url or not req.url.strip():
+        raise HTTPException(status_code=400, detail="URL is required")
+
+    try:
+        result = analyze_product_url(req.url, force_refresh=req.force_refresh)
+        if result.get("status") == "INVALID_URL":
+            raise HTTPException(status_code=400, detail=result.get("message"))
+        return result
+    except Exception as err:
+        raise HTTPException(status_code=500, detail=f"Failed to analyze product: {str(err)}")
+
+
 @app.get("/api/products")
 def list_products(limit: int = 20):
     """Lists tracked canonical products and their latest verified prices."""
@@ -421,6 +447,8 @@ def create_setup(req: SetupRequest):
 @app.get("/api/history/{listing_id}")
 def get_price_history(listing_id: int):
     """Returns the full price history timeseries for a given merchant listing."""
+    from backend.services.price_service import get_historical_price_summary
+
     with get_session() as session:
         listing = session.get(MerchantListing, listing_id)
         if not listing:
@@ -432,61 +460,38 @@ def get_price_history(listing_id: int):
             .order_by(PriceObservation.observed_at.asc())
         ).all()
 
-        current_price = observations[-1].price if observations else 1500.0
-        mrp = observations[-1].mrp if observations else current_price * 1.35
-        base_mrp = mrp if mrp and mrp > current_price else round(current_price * 1.35)
-        now = datetime.now(timezone.utc)
+        cur_price = float(getattr(listing, "current_price", None) or getattr(listing, "price", None) or 0)
+        if not cur_price and observations:
+            cur_price = float(observations[-1].price or 0)
 
-        if len(observations) >= 5:
-            history_pts = [
-                {
-                    "price": o.price,
-                    "mrp": o.mrp,
-                    "observed_at": o.observed_at.isoformat(),
-                    "source": o.source,
-                }
-                for o in observations
-            ]
-            lowest_price = min(o.price for o in observations)
-            highest_price = max((o.mrp or o.price) for o in observations)
-            avg_price = round(sum(o.price for o in observations) / len(observations))
-            lowest_obs = next(o for o in observations if o.price == lowest_price)
-            lowest_date = lowest_obs.observed_at.strftime("%d %b %Y")
+        current_mrp = float(observations[-1].mrp) if observations and observations[-1].mrp else None
+
+        summary = get_historical_price_summary(
+            session=session,
+            listing_id=listing_id,
+            current_price=cur_price,
+            current_mrp=current_mrp,
+        )
+
+        if summary.has_sufficient_history:
+            history_pts = summary.history_points
+            lowest_price = summary.lowest_price
+            highest_price = summary.highest_price
+            avg_price = summary.average_price
+            lowest_obs = next((o for o in observations if o.price == lowest_price), None)
+            lowest_date = lowest_obs.observed_at.strftime("%d %b %Y") if lowest_obs and lowest_obs.observed_at else None
+            drops_count = sum(1 for i in range(1, len(observations)) if observations[i].price < observations[i-1].price)
+            has_sufficient = True
+            confidence = summary.confidence
         else:
-            # Generate realistic 90-day market curve with 15 price points
-            lowest_price = round(current_price * 0.94)
-            avg_price = round(current_price * 1.12)
-            highest_price = base_mrp
-            dip_days_ago = 24
-            lowest_date = (now - timedelta(days=dip_days_ago)).strftime("%d %b %Y")
-
-            curve_multipliers = [
-                (-90, 1.25),
-                (-82, 1.20),
-                (-75, 1.22),
-                (-68, 1.18),
-                (-60, 1.15),
-                (-52, 1.24),
-                (-45, 1.10),
-                (-38, 1.14),
-                (-30, 1.08),
-                (-24, lowest_price / current_price),
-                (-18, 1.04),
-                (-14, 1.07),
-                (-9, 1.02),
-                (-4, 1.05),
-                (0, 1.00),
-            ]
-
             history_pts = []
-            for days_ago, mult in curve_multipliers:
-                obs_dt = now + timedelta(days=days_ago)
-                history_pts.append({
-                    "price": round(current_price * mult),
-                    "mrp": base_mrp,
-                    "observed_at": obs_dt.isoformat(),
-                    "source": "market_history",
-                })
+            lowest_price = None
+            lowest_date = None
+            avg_price = None
+            highest_price = None
+            drops_count = 0
+            has_sufficient = False
+            confidence = "LOW"
 
         return {
             "listing_id": listing.id,
@@ -497,9 +502,209 @@ def get_price_history(listing_id: int):
             "lowest_date": lowest_date,
             "average_price": avg_price,
             "highest_price": highest_price,
-            "price_drops_count": 14,
+            "price_drops_count": drops_count,
+            "has_sufficient_history": has_sufficient,
+            "confidence": confidence,
             "history": history_pts,
         }
+
+
+@app.get("/api/history/compare/{primary_id}/{rival_id}")
+def get_compare_history(primary_id: int, rival_id: int = 0, rival_price: Optional[float] = None):
+    """
+    Unified dual-store price history payload for the merged Price History & Compare card.
+    Fetches both Amazon and Flipkart histories in a single call, computes combined
+    statistics, and returns store-colored series ready for the dual-line chart.
+    """
+    from backend.services.price_service import get_historical_price_summary
+
+    now = datetime.now(timezone.utc)
+
+    # Auto-resolve sibling listing if rival_id wasn't explicitly supplied
+    if not rival_id:
+        with get_session() as session:
+            primary_rec = session.get(MerchantListing, primary_id)
+            if primary_rec and primary_rec.product_id:
+                sibling = session.exec(
+                    select(MerchantListing).where(
+                        MerchantListing.product_id == primary_rec.product_id,
+                        MerchantListing.id != primary_id,
+                        MerchantListing.active == True,
+                    )
+                ).first()
+                if sibling:
+                    rival_id = sibling.id
+
+    def _series(listing_id: int, fallback_merchant: str):
+        with get_session() as session:
+            listing = session.get(MerchantListing, listing_id)
+            if not listing:
+                return {
+                    "matched": False,
+                    "merchant": fallback_merchant,
+                    "price": None,
+                    "in_stock": None,
+                    "history": [],
+                    "observation_count": 0,
+                    "lowest_price": None,
+                    "highest_price": None,
+                    "average_price": None,
+                    "median_price": None,
+                    "first_observed_at": None,
+                    "last_observed_at": None,
+                    "has_sufficient_history": False,
+                    "confidence": "LOW",
+                }
+            observations = session.exec(
+                select(PriceObservation)
+                .where(PriceObservation.listing_id == listing_id)
+                .order_by(PriceObservation.observed_at.asc())
+            ).all()
+
+            cur_price = float(getattr(listing, "current_price", None) or getattr(listing, "price", None) or 0)
+            if not cur_price and observations:
+                cur_price = float(observations[-1].price or 0)
+
+            mrp_val = float(observations[-1].mrp) if observations and observations[-1].mrp else None
+
+            summary = get_historical_price_summary(
+                session=session,
+                listing_id=listing_id,
+                current_price=cur_price,
+                current_mrp=mrp_val,
+            )
+
+            if summary.has_sufficient_history:
+                history_pts = summary.history_points
+                low_p = summary.lowest_price
+                high_p = summary.highest_price
+                avg_p = summary.average_price
+                med_p = summary.median_price
+                low_obs = next((o for o in observations if o.price == low_p), None)
+                low_date = low_obs.observed_at.strftime("%d %b %Y") if low_obs and low_obs.observed_at else None
+                first_obs = summary.first_observed_at.isoformat() if summary.first_observed_at else None
+                last_obs = summary.last_observed_at.isoformat() if summary.last_observed_at else None
+                has_suff = True
+                conf = summary.confidence
+            else:
+                history_pts = []
+                low_p = None
+                high_p = None
+                avg_p = None
+                med_p = None
+                low_date = None
+                first_obs = None
+                last_obs = None
+                has_suff = False
+                conf = "LOW"
+
+            return {
+                "matched": True,
+                "listing_id": listing.id,
+                "merchant": listing.merchant,
+                "price": cur_price if cur_price > 0 else None,
+                "in_stock": getattr(listing, "availability", "in_stock") == "in_stock",
+                "delivery_fee": float(getattr(listing, "delivery_fee", 0) or 0),
+                "rating": getattr(listing, "rating", None),
+                "ratings_count": getattr(listing, "ratings_count", None),
+                "url": listing.clean_url or listing.url,
+                "history": history_pts,
+                "observation_count": len(history_pts),
+                "lowest_price": low_p,
+                "lowest_date": low_date,
+                "highest_price": high_p,
+                "average_price": avg_p,
+                "median_price": med_p,
+                "first_observed_at": first_obs,
+                "last_observed_at": last_obs,
+                "has_sufficient_history": has_suff,
+                "confidence": conf,
+            }
+
+    primary = _series(primary_id, "Amazon")
+    rival_merchant = "Flipkart" if primary["merchant"].lower().startswith("amazon") else "Amazon"
+
+    if rival_id:
+        rival = _series(rival_id, rival_merchant)
+    elif rival_price and rival_price > 0:
+        rival = {
+            "matched": True,
+            "listing_id": None,
+            "merchant": rival_merchant,
+            "price": rival_price,
+            "in_stock": True,
+            "delivery_fee": 0.0,
+            "rating": None,
+            "ratings_count": None,
+            "url": None,
+            "history": [],
+            "observation_count": 0,
+            "lowest_price": None,
+            "lowest_date": None,
+            "highest_price": None,
+            "average_price": None,
+            "median_price": None,
+            "first_observed_at": None,
+            "last_observed_at": None,
+            "has_sufficient_history": False,
+            "confidence": "LOW",
+        }
+    else:
+        rival = {
+            "matched": False,
+            "merchant": rival_merchant,
+            "price": None,
+            "in_stock": None,
+            "history": [],
+            "observation_count": 0,
+            "lowest_price": None,
+            "highest_price": None,
+            "average_price": None,
+            "median_price": None,
+            "first_observed_at": None,
+            "last_observed_at": None,
+            "has_sufficient_history": False,
+            "confidence": "LOW",
+        }
+
+    # Combined stats across both stores for the shared stat tiles
+    all_prices = [s["price"] for s in (primary, rival) if s.get("matched") and s.get("price")]
+    all_lows = [s["lowest_price"] for s in (primary, rival) if s.get("matched") and s.get("lowest_price")]
+    all_highs = [s["highest_price"] for s in (primary, rival) if s.get("matched") and s.get("highest_price")]
+
+    combined_low = min(all_lows) if all_lows else None
+    combined_high = max(all_highs) if all_highs else None
+    combined_avg = round(sum(all_prices) / len(all_prices), 2) if all_prices else None
+
+    lowest_store = None
+    if rival.get("matched") and rival.get("lowest_price") and primary.get("lowest_price"):
+        lowest_store = rival["merchant"] if rival["lowest_price"] < primary["lowest_price"] else primary["merchant"]
+    elif primary.get("lowest_price"):
+        lowest_store = primary["merchant"]
+    elif rival.get("lowest_price"):
+        lowest_store = rival["merchant"]
+
+    # Drops count: count genuine drops in primary + rival history
+    drops_count = 0
+    for s in (primary, rival):
+        h = s.get("history", [])
+        if len(h) >= 2:
+            drops_count += sum(1 for i in range(1, len(h)) if h[i]["price"] < h[i-1]["price"])
+
+    return {
+        "primary": primary,
+        "rival": rival,
+        "combined": {
+            "lowest_price": combined_low,
+            "lowest_date": primary.get("lowest_date"),
+            "lowest_store": lowest_store,
+            "highest_price": combined_high,
+            "average_price": combined_avg,
+            "price_drops_count": drops_count,
+            "price_difference": round(abs((primary.get("price") or 0) - (rival.get("price") or 0)), 2)
+                if primary.get("price") and rival.get("price") else None,
+        },
+    }
 
 
 class PriceAlertRequest(BaseModel):

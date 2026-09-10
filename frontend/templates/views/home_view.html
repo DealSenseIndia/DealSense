@@ -84,20 +84,32 @@
             </div>
           </div>
 
-          <!-- Store Chips (Amazon & Flipkart Only) -->
-          <div class="hero-chips-bar">
-            <span class="chips-intro-label">Try these:</span>
+          <!-- Store & Flagship Chips -->
+          <div class="hero-chips-bar" style="flex-wrap:wrap; gap:8px;">
+            <span class="chips-intro-label">Try Flagships:</span>
             
-            <!-- Official Amazon -->
-            <button class="store-chip-btn chip-trigger" data-url="https://www.amazon.in/dp/B0D14BB5XY" title="Analyze sample Amazon deal">
+            <!-- Apple Watch Series 9 -->
+            <button class="store-chip-btn chip-trigger" data-url="https://www.amazon.in/dp/B0CHX6PXX6" title="Analyze Apple Watch Series 9">
               <img src="/assets/amazon-logo.svg" alt="Amazon" class="store-official-logo">
-              <span>Amazon</span>
+              <span>Apple Watch S9</span>
             </button>
 
-            <!-- Official Flipkart -->
-            <button class="store-chip-btn chip-trigger" data-url="https://www.flipkart.com/motorola-g37-power-pantone-nautical-blue-128-gb/p/itm48ade38c32669?pid=MOBHMX5YNNYGMVWH" title="Analyze sample Flipkart deal">
+            <!-- iPhone 15 -->
+            <button class="store-chip-btn chip-trigger" data-url="https://www.flipkart.com/apple-iphone-15-black-128-gb/p/itm6ac6485515ae4?pid=MOBGTAGPTB3VS24W" title="Analyze Apple iPhone 15">
               <img src="/assets/flipkart-icon.svg" alt="Flipkart" class="store-official-logo">
-              <span>Flipkart</span>
+              <span>iPhone 15 (128GB)</span>
+            </button>
+
+            <!-- OnePlus Nord 4 -->
+            <button class="store-chip-btn chip-trigger" data-url="https://www.amazon.in/dp/B0D7D7R8QK" title="Analyze OnePlus Nord 4">
+              <img src="/assets/amazon-logo.svg" alt="Amazon" class="store-official-logo">
+              <span>OnePlus Nord 4</span>
+            </button>
+
+            <!-- Sony WH-1000XM4 -->
+            <button class="store-chip-btn chip-trigger" data-url="https://www.amazon.in/dp/B0863TXGM3" title="Analyze Sony WH-1000XM4">
+              <img src="/assets/amazon-logo.svg" alt="Amazon" class="store-official-logo">
+              <span>Sony XM4 ANC</span>
             </button>
           </div>
         </div>
@@ -333,120 +345,7 @@
         <!-- Deals Grid — Live from Amazon & Flipkart API -->
         <!-- Populated by live_deals.js → renderModernDealsGrid() via /api/deals/live -->
         <div class="deals-cards-5-grid" id="dealsWorthCheckingContainer" data-live="true">
-          <!-- 1. Apple AirPods 4 -->
-          <div class="mockup-deal-card" data-url="https://www.amazon.in/dp/B0DGJDBP7X">
-            <div class="deal-card-media">
-              <img src="https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=300&q=80" alt="Apple AirPods 4" class="deal-media-img" loading="lazy">
-            </div>
-            <div class="deal-card-content">
-              <h4 class="deal-card-name">Apple AirPods 4</h4>
-              <div class="deal-card-pricing">
-                <strong class="deal-price-cur">₹11,999</strong>
-                <span class="deal-price-mrp">₹14,900</span>
-                <span class="deal-disc-badge">20% OFF</span>
-              </div>
-              <div class="deal-verdict-row">
-                <span class="verdict-good-pill">✓ Good Deal</span>
-              </div>
-              <span class="deal-comp-note">🛡️ 18% below typical price</span>
-              <div class="deal-store-row">
-                <img src="/assets/amazon-logo.svg" alt="Amazon" class="deal-store-ico">
-                <span class="deal-store-arr">→</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2. boAt Airdopes 141 -->
-          <div class="mockup-deal-card" data-url="https://www.amazon.in/dp/B09XSXVMML">
-            <div class="deal-card-media">
-              <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=300&q=80" alt="boAt Airdopes 141" class="deal-media-img" loading="lazy">
-            </div>
-            <div class="deal-card-content">
-              <h4 class="deal-card-name">boAt Airdopes 141</h4>
-              <div class="deal-card-pricing">
-                <strong class="deal-price-cur">₹699</strong>
-                <span class="deal-price-mrp">₹2,990</span>
-                <span class="deal-disc-badge">77% OFF</span>
-              </div>
-              <div class="deal-verdict-row">
-                <span class="verdict-good-pill">✓ Great Deal</span>
-              </div>
-              <span class="deal-comp-note">✓ Near historical low</span>
-              <div class="deal-store-row">
-                <img src="/assets/amazon-logo.svg" alt="Amazon" class="deal-store-ico">
-                <span class="deal-store-arr">→</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 3. Samsung 55" 4K TV -->
-          <div class="mockup-deal-card" data-url="https://www.amazon.in/dp/B0CY5J8424">
-            <div class="deal-card-media">
-              <img src="https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=300&q=80" alt="Samsung 55 4K TV" class="deal-media-img" loading="lazy">
-            </div>
-            <div class="deal-card-content">
-              <h4 class="deal-card-name">Samsung 55" 4K TV</h4>
-              <div class="deal-card-pricing">
-                <strong class="deal-price-cur">₹38,990</strong>
-                <span class="deal-price-mrp">₹59,990</span>
-                <span class="deal-disc-badge">35% OFF</span>
-              </div>
-              <div class="deal-verdict-row">
-                <span class="verdict-good-pill">✓ Good Deal</span>
-              </div>
-              <span class="deal-comp-note">🛡️ 12% below typical price</span>
-              <div class="deal-store-row">
-                <img src="/assets/amazon-logo.svg" alt="Amazon" class="deal-store-ico">
-                <span class="deal-store-arr">→</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 4. Redmi Note 13 5G (Flipkart) -->
-          <div class="mockup-deal-card" data-url="https://www.flipkart.com/redmi-note-13-5g-arctic-white-128-gb/p/itm7da7e9e8d43b2">
-            <div class="deal-card-media">
-              <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&q=80" alt="Redmi Note 13 5G" class="deal-media-img" loading="lazy">
-            </div>
-            <div class="deal-card-content">
-              <h4 class="deal-card-name">Redmi Note 13 5G</h4>
-              <div class="deal-card-pricing">
-                <strong class="deal-price-cur">₹12,999</strong>
-                <span class="deal-price-mrp">₹19,999</span>
-                <span class="deal-disc-badge">35% OFF</span>
-              </div>
-              <div class="deal-verdict-row">
-                <span class="verdict-good-pill">✓ Great Deal</span>
-              </div>
-              <span class="deal-comp-note">✓ Lowest in 90 days</span>
-              <div class="deal-store-row">
-                <img src="/assets/flipkart-icon.svg" alt="Flipkart" class="deal-store-ico">
-                <span class="deal-store-arr">→</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 5. Philips Mixer Grinder -->
-          <div class="mockup-deal-card" data-url="https://www.flipkart.com/philips-hl7576-00-750-w-juicer-mixer-grinder/p/itmf7cd3c5aeed5b">
-            <div class="deal-card-media">
-              <img src="https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=300&q=80" alt="Philips Mixer Grinder" class="deal-media-img" loading="lazy">
-            </div>
-            <div class="deal-card-content">
-              <h4 class="deal-card-name">Philips Mixer Grinder</h4>
-              <div class="deal-card-pricing">
-                <strong class="deal-price-cur">₹2,499</strong>
-                <span class="deal-price-mrp">₹4,995</span>
-                <span class="deal-disc-badge">50% OFF</span>
-              </div>
-              <div class="deal-verdict-row">
-                <span class="verdict-good-pill">✓ Good Deal</span>
-              </div>
-              <span class="deal-comp-note">🛡️ 15% below typical price</span>
-              <div class="deal-store-row">
-                <img src="/assets/flipkart-icon.svg" alt="Flipkart" class="deal-store-ico">
-                <span class="deal-store-arr">→</span>
-              </div>
-            </div>
-          </div>
+          <!-- Populated live from database verified feed by live_deals.js via /api/deals/live -->
         </div>
       </div>
     </section>

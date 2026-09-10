@@ -46,6 +46,18 @@ class Product(SQLModel, table=True):
     product_type: Optional[str] = None
     description: Optional[str] = None
     image_url: Optional[str] = None
+    images_json: Optional[str] = Field(default=None, description="JSON array of product image URLs")
+    rating: Optional[float] = Field(default=None, description="Product rating (e.g. 4.3)")
+    ratings_count: Optional[str] = Field(default=None, description="Ratings count string (e.g. '12,345')")
+    bought_count: Optional[str] = Field(default=None, description="Social proof text (e.g. '10K+ bought')")
+    badge: Optional[str] = Field(default=None, description="Store badge (e.g. Amazon's Choice)")
+    highlight_tag: Optional[str] = Field(default=None, description="Feature highlight tag")
+    specifications_json: Optional[str] = Field(default=None, description="JSON array of {key, value} spec pairs")
+    return_policy: Optional[str] = Field(default=None, description="Return or replacement policy")
+    reviews_json: Optional[str] = Field(default=None, description="JSON array of real customer reviews")
+    rating_breakdown_json: Optional[str] = Field(default=None, description="JSON dict of star percentages")
+    pros_json: Optional[str] = Field(default=None, description="JSON array of pros")
+    cons_json: Optional[str] = Field(default=None, description="JSON array of cons")
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc),
         nullable=False,
@@ -118,9 +130,14 @@ class MerchantListing(SQLModel, table=True):
     affiliate_url: Optional[str] = None
     title_at_merchant: Optional[str] = None
 
-    seller_id: Optional[str] = None
     seller_name: Optional[str] = None
     seller: Optional[str] = None  # Preserved field
+    delivery_info: Optional[str] = Field(default=None, description="Delivery estimate text")
+    return_policy: Optional[str] = Field(default=None, description="Return policy text")
+    is_prime: bool = Field(default=False, description="Amazon Prime eligible")
+    is_f_assured: bool = Field(default=False, description="Flipkart Assured badge")
+    coupons_json: Optional[str] = Field(default=None, description="Live coupon deals JSON")
+    delivery_fee: float = Field(default=0.0, description="Delivery fee in INR")
 
     availability: str = Field(default="in_stock")
     current_price: Optional[float] = None

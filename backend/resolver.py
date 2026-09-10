@@ -14,36 +14,54 @@ class ResolvedURL:
 
 def unwind_redirects(url: str, timeout: float = 10.0) -> str:
     """
-    Follows redirect chains (e.g. amzn.to, fkrt.it, bit.ly) to find the final URL.
+    Follows redirect chains (e.g. amzn.to, amzn.in, fkrt.it, bit.ly) to find the final URL.
     Falls back to original URL on network errors.
     """
-    parsed = urlparse(url)
+    clean = url.strip()
+    if not clean.startswith("http://") and not clean.startswith("https://"):
+        clean = "https://" + clean
+
+    parsed = urlparse(clean)
     hostname = (parsed.hostname or "").lower()
 
     # If it is an obvious shortened link or mobile redirect
     shorteners = {"amzn.to", "amzn.in", "fkrt.it", "bit.ly", "tinyurl.com", "dl.flipkart.com"}
     is_shortener = any(s in hostname for s in shorteners)
 
-    if not is_shortener and ("/dp/" in url or "pid=" in url):
-        return url
+    if not is_shortener and ("/dp/" in clean or "pid=" in clean):
+        return clean
 
     headers = {
         "User-Agent": (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
             "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/130.0.0.0 Safari/537.36"
-        )
+            "Chrome/131.0.0.0 Safari/537.36"
+        ),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-IN,en;q=0.9",
     }
 
     try:
         with httpx.Client(follow_redirects=True, timeout=timeout, headers=headers) as client:
-            resp = client.head(url)
-            # Some servers block HEAD or return 405 Method Not Allowed
-            if resp.status_code in (405, 403, 400):
-                resp = client.get(url)
+            resp = client.get(clean)
             return str(resp.url)
     except Exception:
-        return url
+        # Fallback to mobile UA if desktop redirect was rejected
+        try:
+            mobile_headers = {
+                "User-Agent": (
+                    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) "
+                    "AppleWebKit/605.1.15 (KHTML, like Gecko) "
+                    "Version/17.5 Mobile/15E148 Safari/604.1"
+                ),
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "en-IN,en;q=0.9",
+            }
+            with httpx.Client(follow_redirects=True, timeout=timeout, headers=mobile_headers) as client:
+                resp = client.get(clean)
+                return str(resp.url)
+        except Exception:
+            return clean
 
 
 def _discover_amazon_asin(url: str, parsed) -> str | None:
@@ -54,7 +72,7 @@ def _discover_amazon_asin(url: str, parsed) -> str | None:
         vals = query_params.get(qk)
         if vals and vals[0]:
             candidate = vals[0].strip().upper()
-            if len(candidate) == 10 and candidate.startswith("B0"):
+            if len(candidate) == 10:
                 return candidate
 
     # 2. Embedded regex anywhere in URL
@@ -73,7 +91,7 @@ def _discover_amazon_asin(url: str, parsed) -> str | None:
         if slug and slug not in ("s", "b", "gp", "dp"):
             keywords = unquote(slug.replace("-", " ").replace("+", " "))
 
-    # 3. Local Product Graph Heuristic: Check existing verified catalog & listings
+    # 4. Local Product Graph Heuristic: Check existing verified catalog & listings
     if keywords:
         try:
             from backend.database import get_session
@@ -105,12 +123,17 @@ def resolve_product_url(url: str) -> ResolvedURL:
     Normalizes and extracts merchant identity & clean URL from user input.
     Supports Amazon India and Flipkart standard URLs, shortlinks, and partial links.
     """
-    final_url = unwind_redirects(url.strip())
+    raw_input = url.strip()
+    if not raw_input.startswith("http://") and not raw_input.startswith("https://"):
+        raw_input = "https://" + raw_input
+
+    final_url = unwind_redirects(raw_input)
     parsed = urlparse(final_url)
     hostname = (parsed.hostname or "").lower()
 
     # --- Amazon India ---
-    if "amazon" in hostname:
+    if "amazon" in hostname or "amzn" in hostname:
+
         # Regex patterns covering desktop, mobile, and alternative Amazon path formats
         patterns = [
             r"/dp/([A-Z0-9]{10})",

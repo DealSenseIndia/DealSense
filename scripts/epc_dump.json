@@ -1,0 +1,470 @@
+{
+  "817": {
+    "name": "Amazon India",
+    "status": null,
+    "access_status": "pending",
+    "campaign_type": "CPS",
+    "country": [
+      {
+        "id": 252,
+        "iso": "IN",
+        "name": "India"
+      }
+    ],
+    "category": [
+      {
+        "id": 1,
+        "name": "Fashion"
+      },
+      {
+        "id": 4,
+        "name": "Electronics"
+      },
+      {
+        "id": 8,
+        "name": "Health & Beauty"
+      },
+      {
+        "id": 9,
+        "name": "Home & Kitchen"
+      }
+    ],
+    "is_featured": true,
+    "epc_7d": "0.43",
+    "epc_90d": "0.61",
+    "all_keys": [
+      "id",
+      "name",
+      "url",
+      "domain",
+      "image",
+      "payout_type",
+      "payout",
+      "payout_currency",
+      "campaign_type",
+      "access_status",
+      "categories",
+      "countries",
+      "reporting_type",
+      "deeplink_allowed",
+      "sub_ids_allowed",
+      "cashback_publishers_allowed",
+      "social_media_publishers_allowed",
+      "missing_transactions_accepted",
+      "cookie_duration",
+      "is_featured",
+      "epc_7d",
+      "epc_90d",
+      "tracking_url",
+      "updated_at",
+      "important_info_html",
+      "payout_categories",
+      "platforms",
+      "media",
+      "tracking_time",
+      "validation_time",
+      "payment_time",
+      "conversion_flow"
+    ],
+    "epc_keys_found": {
+      "epc_7d": "0.43",
+      "epc_90d": "0.61"
+    }
+  },
+  "1": {
+    "name": "Flipkart",
+    "status": null,
+    "access_status": "pending",
+    "campaign_type": "CPS",
+    "country": [
+      {
+        "id": 252,
+        "iso": "IN",
+        "name": "India"
+      }
+    ],
+    "category": [
+      {
+        "id": 1,
+        "name": "Fashion"
+      },
+      {
+        "id": 2,
+        "name": "Baby & Kids"
+      },
+      {
+        "id": 3,
+        "name": "Books"
+      },
+      {
+        "id": 4,
+        "name": "Electronics"
+      },
+      {
+        "id": 6,
+        "name": "Flowers & Gifts"
+      },
+      {
+        "id": 7,
+        "name": "Food & Grocery"
+      },
+      {
+        "id": 8,
+        "name": "Health & Beauty"
+      },
+      {
+        "id": 9,
+        "name": "Home & Kitchen"
+      }
+    ],
+    "is_featured": true,
+    "epc_7d": "0.34",
+    "epc_90d": "0.24",
+    "all_keys": [
+      "id",
+      "name",
+      "url",
+      "domain",
+      "image",
+      "payout_type",
+      "payout",
+      "payout_currency",
+      "campaign_type",
+      "access_status",
+      "categories",
+      "countries",
+      "reporting_type",
+      "deeplink_allowed",
+      "sub_ids_allowed",
+      "cashback_publishers_allowed",
+      "social_media_publishers_allowed",
+      "missing_transactions_accepted",
+      "cookie_duration",
+      "is_featured",
+      "epc_7d",
+      "epc_90d",
+      "tracking_url",
+      "updated_at",
+      "important_info_html",
+      "payout_categories",
+      "platforms",
+      "media",
+      "tracking_time",
+      "validation_time",
+      "payment_time",
+      "conversion_flow"
+    ],
+    "epc_keys_found": {
+      "epc_7d": "0.34",
+      "epc_90d": "0.24"
+    }
+  },
+  "101": {
+    "name": "Myntra",
+    "status": null,
+    "access_status": "pending",
+    "campaign_type": "CPS",
+    "country": [
+      {
+        "id": 252,
+        "iso": "IN",
+        "name": "India"
+      }
+    ],
+    "category": [
+      {
+        "id": 1,
+        "name": "Fashion"
+      },
+      {
+        "id": 8,
+        "name": "Health & Beauty"
+      }
+    ],
+    "is_featured": true,
+    "epc_7d": "1.11",
+    "epc_90d": "0.48",
+    "all_keys": [
+      "id",
+      "name",
+      "url",
+      "domain",
+      "image",
+      "payout_type",
+      "payout",
+      "payout_currency",
+      "campaign_type",
+      "access_status",
+      "categories",
+      "countries",
+      "reporting_type",
+      "deeplink_allowed",
+      "sub_ids_allowed",
+      "cashback_publishers_allowed",
+      "social_media_publishers_allowed",
+      "missing_transactions_accepted",
+      "cookie_duration",
+      "is_featured",
+      "epc_7d",
+      "epc_90d",
+      "tracking_url",
+      "updated_at",
+      "important_info_html",
+      "payout_categories",
+      "platforms",
+      "media",
+      "tracking_time",
+      "validation_time",
+      "payment_time",
+      "conversion_flow"
+    ],
+    "epc_keys_found": {
+      "epc_7d": "1.11",
+      "epc_90d": "0.48"
+    }
+  },
+  "2588": {
+    "name": "Tata Cliq",
+    "status": null,
+    "access_status": "open",
+    "campaign_type": "CPS",
+    "country": [
+      {
+        "id": 252,
+        "iso": "IN",
+        "name": "India"
+      }
+    ],
+    "category": [
+      {
+        "id": 1,
+        "name": "Fashion"
+      },
+      {
+        "id": 4,
+        "name": "Electronics"
+      }
+    ],
+    "is_featured": true,
+    "epc_7d": "0.32",
+    "epc_90d": "0.74",
+    "all_keys": [
+      "id",
+      "name",
+      "url",
+      "domain",
+      "image",
+      "payout_type",
+      "payout",
+      "payout_currency",
+      "campaign_type",
+      "access_status",
+      "categories",
+      "countries",
+      "reporting_type",
+      "deeplink_allowed",
+      "sub_ids_allowed",
+      "cashback_publishers_allowed",
+      "social_media_publishers_allowed",
+      "missing_transactions_accepted",
+      "cookie_duration",
+      "is_featured",
+      "epc_7d",
+      "epc_90d",
+      "tracking_url",
+      "updated_at",
+      "important_info_html",
+      "payout_categories",
+      "platforms",
+      "media",
+      "tracking_time",
+      "validation_time",
+      "payment_time",
+      "conversion_flow"
+    ],
+    "epc_keys_found": {
+      "epc_7d": "0.32",
+      "epc_90d": "0.74"
+    }
+  },
+  "2589": {
+    "name": "Ajio",
+    "status": null,
+    "access_status": "pending",
+    "campaign_type": "CPS",
+    "country": [
+      {
+        "id": 252,
+        "iso": "IN",
+        "name": "India"
+      }
+    ],
+    "category": [
+      {
+        "id": 1,
+        "name": "Fashion"
+      }
+    ],
+    "is_featured": true,
+    "epc_7d": "0.42",
+    "epc_90d": "0.36",
+    "all_keys": [
+      "id",
+      "name",
+      "url",
+      "domain",
+      "image",
+      "payout_type",
+      "payout",
+      "payout_currency",
+      "campaign_type",
+      "access_status",
+      "categories",
+      "countries",
+      "reporting_type",
+      "deeplink_allowed",
+      "sub_ids_allowed",
+      "cashback_publishers_allowed",
+      "social_media_publishers_allowed",
+      "missing_transactions_accepted",
+      "cookie_duration",
+      "is_featured",
+      "epc_7d",
+      "epc_90d",
+      "tracking_url",
+      "updated_at",
+      "important_info_html",
+      "payout_categories",
+      "platforms",
+      "media",
+      "tracking_time",
+      "validation_time",
+      "payment_time",
+      "conversion_flow"
+    ],
+    "epc_keys_found": {
+      "epc_7d": "0.42",
+      "epc_90d": "0.36"
+    }
+  },
+  "891": {
+    "name": "Nykaa Beauty",
+    "status": null,
+    "access_status": "open",
+    "campaign_type": "CPS",
+    "country": [
+      {
+        "id": 252,
+        "iso": "IN",
+        "name": "India"
+      }
+    ],
+    "category": [
+      {
+        "id": 8,
+        "name": "Health & Beauty"
+      }
+    ],
+    "is_featured": null,
+    "epc_7d": "1.42",
+    "epc_90d": "1.23",
+    "all_keys": [
+      "id",
+      "name",
+      "url",
+      "domain",
+      "image",
+      "payout_type",
+      "payout",
+      "payout_currency",
+      "campaign_type",
+      "access_status",
+      "categories",
+      "countries",
+      "reporting_type",
+      "deeplink_allowed",
+      "sub_ids_allowed",
+      "cashback_publishers_allowed",
+      "social_media_publishers_allowed",
+      "missing_transactions_accepted",
+      "cookie_duration",
+      "is_featured",
+      "epc_7d",
+      "epc_90d",
+      "tracking_url",
+      "updated_at",
+      "important_info_html",
+      "payout_categories",
+      "platforms",
+      "media",
+      "tracking_time",
+      "validation_time",
+      "payment_time",
+      "conversion_flow"
+    ],
+    "epc_keys_found": {
+      "epc_7d": "1.42",
+      "epc_90d": "1.23"
+    }
+  },
+  "3907": {
+    "name": "Nykaa Fashion",
+    "status": null,
+    "access_status": "open",
+    "campaign_type": "CPS",
+    "country": [
+      {
+        "id": 252,
+        "iso": "IN",
+        "name": "India"
+      }
+    ],
+    "category": [
+      {
+        "id": 1,
+        "name": "Fashion"
+      }
+    ],
+    "is_featured": null,
+    "epc_7d": "0.02",
+    "epc_90d": "0.14",
+    "all_keys": [
+      "id",
+      "name",
+      "url",
+      "domain",
+      "image",
+      "payout_type",
+      "payout",
+      "payout_currency",
+      "campaign_type",
+      "access_status",
+      "categories",
+      "countries",
+      "reporting_type",
+      "deeplink_allowed",
+      "sub_ids_allowed",
+      "cashback_publishers_allowed",
+      "social_media_publishers_allowed",
+      "missing_transactions_accepted",
+      "cookie_duration",
+      "is_featured",
+      "epc_7d",
+      "epc_90d",
+      "tracking_url",
+      "updated_at",
+      "important_info_html",
+      "payout_categories",
+      "platforms",
+      "media",
+      "tracking_time",
+      "validation_time",
+      "payment_time",
+      "conversion_flow"
+    ],
+    "epc_keys_found": {
+      "epc_7d": "0.02",
+      "epc_90d": "0.14"
+    }
+  }
+}

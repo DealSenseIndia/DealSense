@@ -196,8 +196,7 @@ export function generateClientDealIntelligence(rawUrl) {
     brand = tLow.includes("luxur") ? "Dr Luxur" : (tLow.includes("sleep company") ? "The Sleep Company" : (tLow.includes("wakefit") ? "Wakefit" : "Godrej Interio"));
     curPrice = (tLow.includes("luxur") || tLow.includes("musclerice") || tLow.includes("gaming")) ? 10999 : (tLow.includes("extenda") ? 18999 : 8999);
     mrp = (tLow.includes("luxur") || tLow.includes("musclerice")) ? 32999 : Math.round(curPrice * 1.55);
-    highlightTag = tLow.includes("luxur") ? "Ergonomic Lumbar Support & Footrest" : "High-Density Durability";
-    defaultImg = (tLow.includes("luxur") || tLow.includes("chair") || tLow.includes("ergonomic"))
+    defaultImg = (tLow.includes("chair") || tLow.includes("ergonomic") || tLow.includes("luxur") || tLow.includes("seat"))
       ? "https://m.media-amazon.com/images/I/41ApsFYZ8FL.jpg"
       : "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=500&q=80";
   } else if (tLow.includes("fryer") || tLow.includes("airfryer") || tLow.includes("microwave") || tLow.includes("oven") || tLow.includes("refrigerator") || tLow.includes("kettle") || tLow.includes("chimney") || tLow.includes("cooker") || tLow.includes("blender")) {

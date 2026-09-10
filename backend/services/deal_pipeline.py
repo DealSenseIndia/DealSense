@@ -39,55 +39,8 @@ _refresh_stats: Dict[str, Any] = {
     "duration_seconds": 0.0,
 }
 
-# Curated smart setups bundle deals for the Setups category
-CURATED_SETUP_DEALS: List[Dict[str, Any]] = [
-    {
-        "id": "deal_set_1",
-        "category": "setups",
-        "title": "Aesthetic Minimal Bedroom & Sleep Sanctuary (Under ₹25k)",
-        "brand": "DealWise Curation",
-        "price": 21896,
-        "mrp": 41996,
-        "discount_pct": 48,
-        "deal_score": 98,
-        "deal_badge": "🛋️ Setup Weapon",
-        "merchant": "Multi-Store",
-        "merchant_logo": "/assets/amazon-logo.svg",
-        "rating": 4.8,
-        "ratings_count": "Curated",
-        "image_url": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=320&q=80",
-        "url": "/#setup-bedroom",
-        "price_drop_amount": 20100,
-        "tagline": "Solid Sheesham Bed, Ortho Mattress, Bedside & Warm Lamp. Saves ₹20k.",
-        "deal_type": "setup_bundle",
-        "is_setup": True,
-        "setup_space": "bedroom",
-        "setup_budget": 25000,
-    },
-    {
-        "id": "deal_set_2",
-        "category": "setups",
-        "title": "High-Focus WFH Desk & Ergonomic Setup (Under ₹15k)",
-        "brand": "DealWise Curation",
-        "price": 12497,
-        "mrp": 24997,
-        "discount_pct": 50,
-        "deal_score": 97,
-        "deal_badge": "💻 Setup Weapon",
-        "merchant": "Multi-Store",
-        "merchant_logo": "/assets/amazon-logo.svg",
-        "rating": 4.9,
-        "ratings_count": "Curated",
-        "image_url": "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=320&q=80",
-        "url": "/#setup-wfh",
-        "price_drop_amount": 12500,
-        "tagline": "Ergo Mesh Chair, Cable-Managed Desk, LED Lightbar & Desk Mat.",
-        "deal_type": "setup_bundle",
-        "is_setup": True,
-        "setup_space": "wfh_desk",
-        "setup_budget": 15000,
-    },
-]
+# Curated smart setups bundle deals (deprecated for verified live merchant feed)
+CURATED_SETUP_DEALS: List[Dict[str, Any]] = []
 
 
 def load_seeds() -> List[Dict[str, Any]]:
@@ -238,8 +191,8 @@ def build_deal_card(
         "deal_badge": deal_badge,
         "merchant": merchant_name,
         "merchant_logo": merchant_logo,
-        "rating": 4.4,
-        "ratings_count": "12,450",
+        "rating": product.rating if product else None,
+        "ratings_count": product.ratings_count if product else None,
         "image_url": image_url,
         "url": listing.clean_url,
         "affiliate_url": build_affiliate_url(merchant_name, listing.clean_url),
@@ -360,7 +313,7 @@ def get_ranked_deals(category: Optional[str] = None, deal_type: Optional[str] = 
         if not _last_refresh_time:
             _last_refresh_time = datetime.now()
 
-    all_deals = list(_cached_deals) + CURATED_SETUP_DEALS
+    all_deals = list(_cached_deals)
 
     filtered = all_deals
     if category and category.lower() != "all":
@@ -371,17 +324,37 @@ def get_ranked_deals(category: Optional[str] = None, deal_type: Optional[str] = 
     # Sort primarily by deal_score descending
     filtered_sorted = sorted(filtered, key=lambda x: x.get("deal_score", 0), reverse=True)
 
-    # Calculate freshness
-    now = datetime.now()
-    refreshed_at = _last_refresh_time or now
-    elapsed_minutes = int((now - refreshed_at).total_seconds() // 60)
-    elapsed_str = "just now" if elapsed_minutes < 1 else f"{elapsed_minutes}m ago"
+    # Calculate freshness based on actual newest PriceObservation.observed_at
+    newest_obs_dt = None
+    with get_session() as session:
+        newest_obs = session.exec(
+            select(PriceObservation).order_by(PriceObservation.observed_at.desc())
+        ).first()
+        if newest_obs and newest_obs.observed_at:
+            newest_obs_dt = newest_obs.observed_at
+
+    if newest_obs_dt:
+        if newest_obs_dt.tzinfo is None:
+            newest_obs_dt = newest_obs_dt.replace(tzinfo=timezone.utc)
+        elapsed_seconds = max(0, int((datetime.now(timezone.utc) - newest_obs_dt).total_seconds()))
+        elapsed_minutes = elapsed_seconds // 60
+        if elapsed_minutes < 1:
+            elapsed_str = "just now"
+        elif elapsed_minutes < 60:
+            elapsed_str = f"{elapsed_minutes}m ago"
+        elif elapsed_minutes < 1440:
+            elapsed_str = f"{elapsed_minutes // 60}h ago"
+        else:
+            elapsed_str = f"{elapsed_minutes // 1440}d ago"
+    else:
+        elapsed_str = "No scans yet"
+        elapsed_minutes = 0
 
     refresh_interval = settings.DEAL_REFRESH_INTERVAL_MINUTES
     next_scan = max(1, refresh_interval - (elapsed_minutes % refresh_interval))
 
     # Category counts
-    category_keys = ["all", "mobiles", "laptops", "audio", "smartwatches", "tvs", "appliances", "setups"]
+    category_keys = ["all", "mobiles", "laptops", "audio", "smartwatches", "tvs", "appliances"]
     category_counts = {k: 0 for k in category_keys}
     category_counts["all"] = len(all_deals)
     for d in all_deals:

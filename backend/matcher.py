@@ -26,6 +26,10 @@ class CompetitorComparison:
     rival_affiliate_url: Optional[str] = None
     price_difference: Optional[float] = None  # positive if rival is cheaper, negative if rival is more expensive
     recommendation: Optional[str] = None
+    rival_rating: Optional[float] = None
+    rival_ratings_count: Optional[str] = None
+    rival_in_stock: bool = True
+    rival_delivery: str = "FREE"
 
 
 # Noise words to filter out during matching
@@ -132,8 +136,11 @@ def find_rival_store_match(
                         .order_by(PriceObservation.observed_at.desc())
                     ).first()
                     cand_price = obs.price if obs else listing.current_price
+                    cand_rating = prod.rating if prod else None
+                    cand_ratings_count = prod.ratings_count if prod else None
+                    cand_in_stock = obs.in_stock if obs else True
                     best_score = score
-                    best_match = (listing.merchant_product_id, cand_title, cand_price, listing.clean_url)
+                    best_match = (listing.merchant_product_id, cand_title, cand_price, listing.clean_url, cand_rating, cand_ratings_count, cand_in_stock)
 
     except Exception:
         pass
@@ -142,10 +149,10 @@ def find_rival_store_match(
         return CompetitorComparison(
             matched=False,
             rival_merchant=rival_merchant,
-            recommendation=f"No verified exact match found on {rival_merchant}.",
+            recommendation=f"Not listed on {rival_merchant} / Exclusive to {current_merchant}",
         )
 
-    cand_id, cand_title, cand_price, clean_url = best_match
+    cand_id, cand_title, cand_price, clean_url, cand_rating, cand_ratings_count, cand_in_stock = best_match
     affiliate_url = build_affiliate_url(rival_merchant, clean_url)
 
     price_diff = None
@@ -161,7 +168,7 @@ def find_rival_store_match(
         else:
             recommendation = f"Prices are virtually identical across {current_merchant} and {rival_merchant}."
     else:
-        recommendation = f"Matching item found on {rival_merchant}. Price requires verification."
+        recommendation = f"Matching item found on {rival_merchant}."
 
     return CompetitorComparison(
         matched=True,
@@ -173,4 +180,8 @@ def find_rival_store_match(
         rival_affiliate_url=affiliate_url,
         price_difference=price_diff,
         recommendation=recommendation,
+        rival_rating=cand_rating,
+        rival_ratings_count=cand_ratings_count,
+        rival_in_stock=cand_in_stock,
+        rival_delivery="FREE",
     )

@@ -629,22 +629,18 @@ def seed_taxonomy():
                 session.commit()
                 session.refresh(listing)
 
-                # Seed 10-point price history curve
-                base_p = p_data["price"]
-                multipliers = [1.25, 1.20, 1.18, 1.22, 1.12, 1.15, 1.08, 1.04, 1.06, 1.00]
-                for idx, mult in enumerate(multipliers):
-                    days_ago = (10 - idx) * 8
-                    obs = PriceObservation(
-                        listing_id=listing.id,
-                        price=round(base_p * mult),
-                        mrp=p_data["mrp"],
-                        currency="INR",
-                        in_stock=True,
-                        source="historical_catalog",
-                        observed_at=now - timedelta(days=days_ago),
-                        confidence="high",
-                    )
-                    session.add(obs)
+                # Record single initial observation without synthetic history
+                obs = PriceObservation(
+                    listing_id=listing.id,
+                    price=p_data["price"],
+                    mrp=p_data["mrp"],
+                    currency="INR",
+                    in_stock=True,
+                    source="initial_observation",
+                    observed_at=now,
+                    confidence="high",
+                )
+                session.add(obs)
                 session.commit()
 
         print("Taxonomy, Merchants, Setups, Products & Observations seeded successfully!")

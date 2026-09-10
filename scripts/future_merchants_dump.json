@@ -1,0 +1,255 @@
+[
+  {
+    "id": 56436,
+    "name": "Digihaat",
+    "domain": "digihaat.in",
+    "access_status": "open",
+    "payout": "10.5",
+    "payout_type": "Per Sale(%)",
+    "payout_currency": "%",
+    "campaign_type": "CPS",
+    "categories": [
+      "Electronics",
+      "Fashion"
+    ],
+    "epc_7d": "0.0",
+    "epc_90d": "0.0",
+    "is_featured": false,
+    "affiliated_test": true,
+    "returned_cid": null
+  },
+  {
+    "id": 4164,
+    "name": "Vijay Sales",
+    "domain": "vijaysales.com",
+    "access_status": "open",
+    "payout": "4.31",
+    "payout_type": "Per Sale(%)",
+    "payout_currency": "%",
+    "campaign_type": "CPS",
+    "categories": [
+      "Electronics"
+    ],
+    "epc_7d": "0.0",
+    "epc_90d": "0.26",
+    "is_featured": false,
+    "affiliated_test": true,
+    "returned_cid": null
+  },
+  {
+    "id": 29548,
+    "name": "Safeshellvpn",
+    "domain": "safeshellvpn.com",
+    "access_status": "open",
+    "payout": "35.63",
+    "payout_type": "Per Sale(%)",
+    "payout_currency": "%",
+    "campaign_type": "CPS",
+    "categories": [
+      "Services"
+    ],
+    "epc_7d": "0.0",
+    "epc_90d": "0.0",
+    "is_featured": false,
+    "affiliated_test": true,
+    "returned_cid": null
+  },
+  {
+    "id": 4232,
+    "name": "Boat",
+    "domain": "boat-lifestyle.com",
+    "access_status": "open",
+    "payout": "6.0",
+    "payout_type": "Per Sale(%)",
+    "payout_currency": "%",
+    "campaign_type": "CPS",
+    "categories": [
+      "Electronics"
+    ],
+    "epc_7d": "0.66",
+    "epc_90d": "0.42",
+    "is_featured": false,
+    "affiliated_test": true,
+    "returned_cid": null
+  },
+  {
+    "id": 823,
+    "name": "Lenovo India",
+    "domain": "lenovo.com",
+    "access_status": "open",
+    "payout": "3.0",
+    "payout_type": "Per Sale(%)",
+    "payout_currency": "%",
+    "campaign_type": "CPS",
+    "categories": [
+      "Electronics"
+    ],
+    "epc_7d": "0.0",
+    "epc_90d": "6.54",
+    "is_featured": false,
+    "affiliated_test": true,
+    "returned_cid": null
+  },
+  {
+    "id": 4360,
+    "name": "Acer",
+    "domain": "acer.com",
+    "access_status": "open",
+    "payout": "2.63",
+    "payout_type": "Per Sale(%)",
+    "payout_currency": "%",
+    "campaign_type": "CPS",
+    "categories": [
+      "Electronics"
+    ],
+    "epc_7d": "0.31",
+    "epc_90d": "0.91",
+    "is_featured": false,
+    "affiliated_test": true,
+    "returned_cid": null
+  },
+  {
+    "id": 107,
+    "name": "Pepperfry",
+    "domain": "pepperfry.com",
+    "access_status": "open",
+    "payout": "262.5",
+    "payout_type": "Per Sale",
+    "payout_currency": "INR",
+    "campaign_type": "CPS",
+    "categories": [
+      "Home & Kitchen"
+    ],
+    "epc_7d": "0.09",
+    "epc_90d": "0.14",
+    "is_featured": true,
+    "affiliated_test": true,
+    "returned_cid": null
+  },
+  {
+    "id": 6206,
+    "name": "Moosend",
+    "domain": "moosend.com",
+    "access_status": "open",
+    "payout": "22.5",
+    "payout_type": "Per Sale(%)",
+    "payout_currency": "%",
+    "campaign_type": "CPS",
+    "categories": [
+      "Others"
+    ],
+    "epc_7d": "0.0",
+    "epc_90d": "0.0",
+    "is_featured": false,
+    "affiliated_test": true,
+    "returned_cid": null
+  },
+  {
+    "id": 5586,
+    "name": "Sleepwell",
+    "domain": "mysleepwell.com",
+    "access_status": "open",
+    "payout": "9.0",
+    "payout_type": "Per Sale(%)",
+    "payout_currency": "%",
+    "campaign_type": "CPS",
+    "categories": [
+      "Home & Kitchen"
+    ],
+    "epc_7d": "0.0",
+    "epc_90d": "0.24",
+    "is_featured": false,
+    "affiliated_test": true,
+    "returned_cid": null
+  },
+  {
+    "id": 4635,
+    "name": "Parallels",
+    "domain": "parallels.com",
+    "access_status": "open",
+    "payout": "11.25",
+    "payout_type": "Per Sale(%)",
+    "payout_currency": "%",
+    "campaign_type": "CPS",
+    "categories": [
+      "Others"
+    ],
+    "epc_7d": "0.0",
+    "epc_90d": "0.0",
+    "is_featured": false,
+    "affiliated_test": true,
+    "returned_cid": null
+  },
+  {
+    "id": 4094,
+    "name": "Marks and Spencer",
+    "domain": "marksandspencer.in",
+    "access_status": "open",
+    "payout": "13.64",
+    "payout_type": "Per Sale(%)",
+    "payout_currency": "%",
+    "campaign_type": "CPS",
+    "categories": [
+      "Fashion"
+    ],
+    "epc_7d": "3.61",
+    "epc_90d": "4.41",
+    "is_featured": false,
+    "affiliated_test": true,
+    "returned_cid": null
+  },
+  {
+    "id": 5270,
+    "name": "Padel Market",
+    "domain": "padelmarket.com",
+    "access_status": "open",
+    "payout": "3.75",
+    "payout_type": "Per Sale(%)",
+    "payout_currency": "%",
+    "campaign_type": "CPS",
+    "categories": [
+      "Sports"
+    ],
+    "epc_7d": "0.0",
+    "epc_90d": "0.0",
+    "is_featured": false,
+    "affiliated_test": true,
+    "returned_cid": null
+  },
+  {
+    "id": 1918,
+    "name": "Bewakoof",
+    "domain": "bewakoof.com",
+    "access_status": "open",
+    "payout": "11.55",
+    "payout_type": "Per Sale(%)",
+    "payout_currency": "%",
+    "campaign_type": "CPS",
+    "categories": [
+      "Fashion"
+    ],
+    "epc_7d": "0.23",
+    "epc_90d": "0.32",
+    "is_featured": false,
+    "affiliated_test": true,
+    "returned_cid": null
+  },
+  {
+    "id": 11908,
+    "name": "Apollo.io",
+    "domain": "apollo.io",
+    "access_status": "open",
+    "payout": "12760.2",
+    "payout_type": "Per Sale",
+    "payout_currency": "INR",
+    "campaign_type": "CPS",
+    "categories": [
+      "Others"
+    ],
+    "epc_7d": "0.0",
+    "epc_90d": "0.53",
+    "is_featured": false,
+    "affiliated_test": true,
+    "returned_cid": null
+  }
+]

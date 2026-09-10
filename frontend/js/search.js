@@ -118,15 +118,34 @@ export function initOmniSearch({ heroUrlInput, heroDealForm, searchResultsDropdo
   if (heroDealForm) {
     heroDealForm.addEventListener("submit", (e) => {
       e.preventDefault();
+      e.stopPropagation();
       const inputVal = heroUrlInput ? heroUrlInput.value.trim() : "";
-      if (!inputVal) return;
+      if (!inputVal) return false;
 
-      if (inputVal.startsWith("http://") || inputVal.startsWith("https://")) {
+      const isUrl = (
+        inputVal.startsWith("http://") ||
+        inputVal.startsWith("https://") ||
+        inputVal.startsWith("amazon.in") ||
+        inputVal.startsWith("www.amazon.in") ||
+        inputVal.startsWith("flipkart.com") ||
+        inputVal.startsWith("www.flipkart.com") ||
+        inputVal.startsWith("amzn.in") ||
+        inputVal.startsWith("amzn.to") ||
+        inputVal.includes("/dp/") ||
+        inputVal.includes("/p/") ||
+        inputVal.includes("dl.flipkart.com")
+      );
+
+      if (isUrl) {
+        const targetUrl = (inputVal.startsWith("http://") || inputVal.startsWith("https://"))
+          ? inputVal
+          : `https://${inputVal}`;
         if (searchResultsDropdown) searchResultsDropdown.style.display = "none";
-        onAnalyze(inputVal);
+        onAnalyze(targetUrl);
       } else {
         executeSearch(inputVal, true);
       }
+      return false;
     });
   }
 
