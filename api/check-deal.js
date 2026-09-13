@@ -5,7 +5,7 @@
 
 const VERIFIED_CATALOG = [
   {
-    match: ["iphone", "b0chx1w1xy", "itm6ac6"],
+    match: ["iphone-15", "b0chx1w1xy", "itm6ac6"],
     title: "Apple iPhone 15 (Black, 128 GB)",
     brand: "Apple",
     category: "mobiles",
@@ -18,7 +18,7 @@ const VERIFIED_CATALOG = [
     rating: 4.6,
   },
   {
-    match: ["puma", "blktop", "itma5"],
+    match: ["blktop", "itma5"],
     title: "Puma Blktop Rider Sneakers For Men",
     brand: "Puma",
     category: "fashion",
@@ -27,11 +27,11 @@ const VERIFIED_CATALOG = [
     discount_pct: 50,
     score: 89,
     merchant: "Flipkart",
-    image: "/assets/categories/fashion.png",
+    image: "https://rukminim2.flixcart.com/image/300/300/xif0q/shoe/v/j/p/-original-imah5teffhhafmyh.jpeg",
     rating: 4.4,
   },
   {
-    match: ["meta", "quest", "b0c8vkrpv2"],
+    match: ["b0c8vkrpv2", "quest", "meta-quest"],
     title: "Meta Quest 128GB Breakthrough Reality Headset",
     brand: "Meta",
     category: "gaming",
@@ -44,7 +44,7 @@ const VERIFIED_CATALOG = [
     rating: 4.5,
   },
   {
-    match: ["sony", "xm5", "b09xs7jwhh"],
+    match: ["xm5", "b09xs7jwhh"],
     title: "Sony WH-1000XM5 Wireless Noise Cancelling Headphones",
     brand: "Sony",
     category: "audio",
@@ -57,7 +57,7 @@ const VERIFIED_CATALOG = [
     rating: 4.5,
   },
   {
-    match: ["nord", "oneplus", "b0d77ymwx3"],
+    match: ["nord-4", "nord_4", "b0d77ymwx3"],
     title: "OnePlus Nord 4 5G (Oasis Green, 256 GB)",
     brand: "OnePlus",
     category: "mobiles",
@@ -70,7 +70,7 @@ const VERIFIED_CATALOG = [
     rating: 4.4,
   },
   {
-    match: ["watch", "b0chx6pxx6"],
+    match: ["apple-watch-s9", "watch-series-9", "b0chx6pxx6"],
     title: "Apple Watch Series 9 (GPS, 45mm) - Midnight Aluminium Case",
     brand: "Apple",
     category: "smartwatches",
@@ -83,7 +83,7 @@ const VERIFIED_CATALOG = [
     rating: 4.6,
   },
   {
-    match: ["lg", "tveg7w4z"],
+    match: ["43ur7500", "tveg7w4z"],
     title: "LG 108 cm (43 inches) 4K Ultra HD Smart LED TV",
     brand: "LG",
     category: "tvs",
@@ -96,7 +96,7 @@ const VERIFIED_CATALOG = [
     rating: 4.3,
   },
   {
-    match: ["asus", "tuf", "comg657z"],
+    match: ["tuf-gaming", "fx506hf", "comg657z"],
     title: "ASUS TUF Gaming F15 Intel Core i5 11th Gen - (16 GB/512 GB SSD)",
     brand: "ASUS",
     category: "laptops",
@@ -109,7 +109,7 @@ const VERIFIED_CATALOG = [
     rating: 4.4,
   },
   {
-    match: ["fryer", "philips", "b0d14bb5xy"],
+    match: ["na120", "philips-airfryer", "b0d14bb5xy"],
     title: "PHILIPS Air Fryer NA120/00 with Rapid Air Technology 4.2L",
     brand: "Philips",
     category: "appliances",
@@ -206,6 +206,42 @@ function detectCategoryAndDefaults(title) {
 }
 
 async function fetchLiveProductImage(query) {
+  // Strategy 1: Bing Images (direct HTML, no token, unblocked on serverless cloud IPs)
+  try {
+    const res = await fetch(`https://www.bing.com/images/search?q=${encodeURIComponent(query)}&form=HDRSC2&first=1`, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9",
+        "Accept-Language": "en-IN,en;q=0.9"
+      },
+      signal: AbortSignal.timeout(3500)
+    });
+    if (res.ok) {
+      const html = await res.text();
+      const murls = [...html.matchAll(/murl&quot;:&quot;(https:[^&]+)&quot;/gi)].map(m => m[1]);
+      if (murls.length > 0) {
+        const goodImages = murls.filter(u => {
+          const lower = u.toLowerCase();
+          return !lower.includes("shutterstock") && !lower.includes("getty") && !lower.includes("logo") && !lower.includes("banner") && !lower.includes("icon");
+        });
+        const pool = goodImages.length > 0 ? goodImages : murls;
+        const preferred = pool.find(u => 
+          u.includes("media-amazon.com") || 
+          u.includes("flixcart.com") || 
+          u.includes("rukminim") || 
+          u.includes("nike.com") || 
+          u.includes("puma.com") || 
+          u.includes("adidas.com") ||
+          u.includes("apple.com") ||
+          u.includes("samsung.com")
+        );
+        const chosen = preferred || pool[0];
+        if (chosen) return chosen;
+      }
+    }
+  } catch (_) {}
+
+  // Strategy 2: DuckDuckGo Images fallback
   try {
     const tokenRes = await fetch(
       `https://duckduckgo.com/?q=${encodeURIComponent(query)}&t=h_&iar=images&iax=images&ia=images`,
@@ -213,37 +249,39 @@ async function fetchLiveProductImage(query) {
         headers: {
           "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
         },
-        signal: AbortSignal.timeout(3500),
+        signal: AbortSignal.timeout(3000),
       }
     );
     const tokenHtml = await tokenRes.text();
     const vqdMatch =
       tokenHtml.match(/vqd=["']?([0-9-]+)["']?/i) ||
       tokenHtml.match(/vqd=([0-9-]+)/i);
-    if (!vqdMatch) return null;
-
-    const imgApiUrl = `https://duckduckgo.com/i.js?l=us-en&o=json&q=${encodeURIComponent(
-      query
-    )}&vqd=${vqdMatch[1]}&f=,,,`;
-    const imgRes = await fetch(imgApiUrl, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-      },
-      signal: AbortSignal.timeout(3500),
-    });
-    if (!imgRes.ok) return null;
-    const imgData = await imgRes.json();
-    if (imgData && imgData.results && imgData.results.length > 0) {
-      const preferred = imgData.results.find(
-        (r) =>
-          r.image &&
-          (r.image.includes("media-amazon.com") ||
-            r.image.includes("flixcart.com") ||
-            r.image.includes("croma.com"))
-      );
-      return preferred ? preferred.image : imgData.results[0].image;
+    if (vqdMatch) {
+      const imgApiUrl = `https://duckduckgo.com/i.js?l=us-en&o=json&q=${encodeURIComponent(
+        query
+      )}&vqd=${vqdMatch[1]}&f=,,,`;
+      const imgRes = await fetch(imgApiUrl, {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        },
+        signal: AbortSignal.timeout(3000),
+      });
+      if (imgRes.ok) {
+        const imgData = await imgRes.json();
+        if (imgData && imgData.results && imgData.results.length > 0) {
+          const preferred = imgData.results.find(
+            (r) =>
+              r.image &&
+              (r.image.includes("media-amazon.com") ||
+                r.image.includes("flixcart.com") ||
+                r.image.includes("croma.com"))
+          );
+          return preferred ? preferred.image : imgData.results[0].image;
+        }
+      }
     }
   } catch (_) {}
+
   return null;
 }
 
@@ -303,10 +341,13 @@ export default async function handler(req, res) {
 
     if (backendResp.ok) {
       const data = await backendResp.json();
-      return res.status(backendResp.status).json(data);
+      const bTitle = (data && data.product && data.product.title) ? data.product.title.toLowerCase() : "";
+      if (data && data.status !== "extraction_failed" && bTitle && !bTitle.includes("page not found") && !bTitle.includes("404")) {
+        return res.status(backendResp.status).json(data);
+      }
     }
   } catch (err) {
-    // Backend proxy unavailable, proceed to verified lookup & universal parser
+    // Backend proxy unavailable, proceed to verified lookup and universal parser
   }
 
   const cleanUrl = rawUrl.trim();
@@ -368,7 +409,7 @@ export default async function handler(req, res) {
     const pageResp = await fetch(cleanUrl, {
       headers: {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9",
         "Accept-Language": "en-IN,en;q=0.9",
         "Referer": "https://www.google.com/",
       },
@@ -383,7 +424,20 @@ export default async function handler(req, res) {
                            html.match(/content=["']([^"']+)["']\s+property=["']og:title["']/i);
       const titleTagMatch = html.match(/<title>([^<]+)<\/title>/i);
       const rawTitle = ogTitleMatch ? ogTitleMatch[1] : (titleTagMatch ? titleTagMatch[1] : "");
-      if (rawTitle && !rawTitle.toLowerCase().includes("buy products online") && !rawTitle.toLowerCase().includes("robot or human") && !rawTitle.toLowerCase().includes("robot check")) {
+      const lowerRaw = (rawTitle || "").toLowerCase();
+      const isBadTitle = !rawTitle ||
+        lowerRaw.includes("buy products online") ||
+        lowerRaw.includes("robot or human") ||
+        lowerRaw.includes("robot check") ||
+        lowerRaw.includes("page not found") ||
+        lowerRaw.includes("something went wrong") ||
+        lowerRaw.includes("access denied") ||
+        lowerRaw.includes("online shopping site") ||
+        lowerRaw.includes("404") ||
+        lowerRaw === "amazon.in" ||
+        lowerRaw === "flipkart.com";
+
+      if (!isBadTitle) {
         liveTitle = rawTitle
           .replace(/\s*-\s*Buy\s+.*Flipkart\.com.*$/i, "")
           .replace(/\s*:\s*Amazon\.in.*$/i, "")
