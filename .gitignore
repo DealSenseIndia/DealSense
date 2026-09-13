@@ -1,12 +1,15 @@
 .venv/
 __pycache__/
 *.pyc
-data/*.db
-*.db
 *.db-wal
 *.db-shm
 .env
 .DS_Store
+
+# Canonical Deal Intelligence Database (Include in git repository)
+!data/deal_intelligence.db
+data/deal_intelligence.backup*
+data/*.backup*
 node_modules/
 temp_puppeteer/
 scratch/
