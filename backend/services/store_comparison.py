@@ -1,6 +1,15 @@
 """
-DealWise 5-Store Price Comparison, Coupons & Review Intelligence Service.
-Builds comparison across Amazon, Flipkart, Brand Official, Croma, and Reliance Digital.
+DealSense Store Comparison, Coupons & Review Intelligence Service.
+
+Builds a two-store comparison between Amazon India and Flipkart. Those are
+the only merchants in scope; an earlier version of this module advertised
+five (adding Brand Official, Croma and Reliance Digital) but never built
+them.
+
+Offers are passed through from what was actually extracted from the product
+page. This module does not author offers of its own: a coupon code is
+something a user types at checkout, so inventing one produces a concrete
+failure at the till.
 """
 
 from typing import List, Dict, Any, Optional
@@ -109,51 +118,42 @@ def build_coupons_and_offers(
     merchant: str,
     live_coupons: Optional[List[Dict[str, Any]]] = None,
 ) -> List[Dict[str, Any]]:
-    """Builds merchant and bank offers, integrating real extracted coupons first."""
-    offers = []
-    
-    # 1. Real extracted coupons from the product page
-    if live_coupons:
-        for c in live_coupons:
-            offers.append({
-                "store": c.get("store") or merchant,
-                "logo": f"/assets/{merchant.lower()}-logo.svg" if merchant == "Amazon" else "/assets/flipkart-icon.svg",
-                "title": c.get("title") or "Instant Store Coupon",
-                "terms": c.get("terms") or "Applied at checkout",
-                "code": c.get("code") or "DEALCOUPON",
-            })
+    """
+    Returns offers genuinely extracted from the product page.
 
-    # 2. Add merchant-specific instant card discounts
-    if merchant.lower() == "amazon":
-        offers.append({
-            "store": "Amazon",
-            "logo": "/assets/amazon-logo.svg",
-            "title": "5% Unlimited Cashback on Amazon Pay ICICI Card",
-            "terms": "No minimum order requirement • Prime eligible",
-            "code": "AMZPAY5",
-        })
-        offers.append({
-            "store": "Amazon",
-            "logo": "/assets/amazon-logo.svg",
-            "title": "10% Instant Discount on SBI Credit Cards",
-            "terms": "Min. order: ₹2,000 • Up to ₹1,500 off",
-            "code": "SBI10",
-        })
-    else:
-        offers.append({
-            "store": "Flipkart",
-            "logo": "/assets/flipkart-icon.svg",
-            "title": "5% Unlimited Cashback on Flipkart Axis Bank Card",
-            "terms": "No minimum order requirement",
-            "code": "AXIS5",
-        })
-        offers.append({
-            "store": "Flipkart",
-            "logo": "/assets/flipkart-icon.svg",
-            "title": "10% Instant Discount on HDFC Bank Cards",
-            "terms": "Min. order: ₹2,500 • Up to ₹1,500 off",
-            "code": "HDFC10",
-        })
+    Returns an empty list when none were found. This function previously
+    appended two hardcoded bank offers per merchant with invented codes
+    ("AMZPAY5", "SBI10", "AXIS5", "HDFC10") and invented minimum-order
+    terms. Those were removed: a user copying a code that does not exist
+    discovers it at checkout, which is worse than showing no offer at all.
+    Bank card promotions also change constantly and are card-holder
+    specific, so they cannot be asserted from a product page scrape.
+    """
+    if not live_coupons:
+        return []
+
+    logo = "/assets/amazon-logo.svg" if merchant.lower() == "amazon" else "/assets/flipkart-icon.svg"
+
+    offers: List[Dict[str, Any]] = []
+    for c in live_coupons:
+        title = c.get("title")
+        if not title:
+            # Without a title there is nothing meaningful to show.
+            continue
+
+        # `code` stays None for offers that apply automatically. The frontend
+        # renders an "Auto-applied" state instead of a copy button, rather
+        # than showing a placeholder code that would fail at checkout.
+        offers.append(
+            {
+                "store": c.get("store") or merchant,
+                "logo": logo,
+                "title": title,
+                "terms": c.get("terms") or "Terms shown at checkout",
+                "code": c.get("code") or None,
+                "discount": c.get("discount"),
+            }
+        )
 
     return offers[:4]
 
@@ -231,7 +231,10 @@ def build_seller_trust_intelligence(
         "trust_score": None,
         "trust_badge": "Authorized Merchant Seller" if is_authorized else "Marketplace Seller",
         "authenticity_risk": "LOW" if is_authorized else "MODERATE",
-        "replacement_policy": "7 Days Free Replacement & Return",
+        # Return windows vary by product, category and seller, and are not
+        # available from the data we hold. Previously hardcoded to
+        # "7 Days Free Replacement & Return" for every seller.
+        "replacement_policy": None,
         "seller_changed_recently": False,
     }
 

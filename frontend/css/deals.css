@@ -1,5 +1,5 @@
 /* ==========================================================================
-   DEALWISE — ALL DEALS PAGE STYLES (Scoped)
+   DEALSENSE — ALL DEALS PAGE STYLES (Scoped)
    Matching Reference Mockup: Two-column layout, sticky filters, 6-card grid,
    sparklines, Prices Just Dropped horizontal strip, Top Deals by Store cards,
    and 6-pillar trust bar.
@@ -1090,4 +1090,171 @@
   .deals-trust-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ==========================================================================
+   REAL-DATA STATES
+   The feed renders only what the API observed, so it needs first-class
+   loading, error, empty and "not enough history" states. These are not edge
+   cases — on a fresh install they are the normal view.
+   ========================================================================== */
+
+.deals-result-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.deals-result-count-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.deals-result-count-text strong {
+  color: var(--text-headline);
+  font-weight: 800;
+}
+
+.deals-loading-state,
+.deals-empty-state,
+.deals-error-state {
+  grid-column: 1 / -1;
+  padding: 48px 24px;
+  text-align: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+}
+
+.deals-loading-state {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.deals-error-state {
+  border-color: #FECACA;
+  background: var(--status-danger-bg);
+}
+
+.deals-state-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-headline);
+  margin: 0 0 6px;
+}
+
+.deals-state-body {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0 auto 16px;
+  max-width: 460px;
+  line-height: 1.55;
+}
+
+.deals-state-btn {
+  padding: 8px 18px;
+  background: var(--dw-green-main);
+  color: var(--text-white);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+.deals-state-btn:hover {
+  background: var(--dw-green-bot);
+}
+
+/* Neutral badge for a tracked listing with no standout classification. */
+.deal-badge.badge-neutral {
+  background: #F1F5F9;
+  color: var(--text-secondary);
+}
+
+/* Verdicts from the engine: BUY / WAIT / SKIP / NOT ENOUGH DATA.
+   Class names are the lowercased, hyphenated verdict string. */
+.deal-verdict-tag.verdict-buy {
+  background: var(--dw-green-surface);
+  color: var(--dw-green-deep);
+}
+.deal-verdict-tag.verdict-wait {
+  background: var(--status-warning-bg);
+  color: #B45309;
+}
+.deal-verdict-tag.verdict-skip {
+  background: var(--status-danger-bg);
+  color: #B91C1C;
+}
+.deal-verdict-tag.verdict-not-enough-data {
+  background: #F1F5F9;
+  color: var(--text-secondary);
+}
+
+.deal-confidence {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: capitalize;
+}
+
+/* Shown when a verdict rests on fewer observations than the sufficiency rule
+   wants. Deliberately plain rather than alarming — it is a caveat, not an error. */
+.deal-history-caveat {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 4px;
+}
+
+/* Stands in for the sparkline when there is too little history to plot. */
+.deal-sparkline-empty {
+  display: block;
+  font-size: 10.5px;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 4px 0;
+}
+
+/* Placeholder when a listing has no image. Visibly a placeholder — never a
+   stock photo standing in for the real product. */
+.deal-product-img-empty,
+.dropped-img-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 90px;
+  background: repeating-linear-gradient(
+    45deg,
+    #F1F5F9,
+    #F1F5F9 8px,
+    #E9EEF3 8px,
+    #E9EEF3 16px
+  );
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+}
+
+.deal-observed-at {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  margin-right: auto;
+  padding-left: 8px;
+}
+
+.deal-view-btn-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Dropped cards are anchors now, so the link styling is reset. */
+a.dropped-card {
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }

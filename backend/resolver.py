@@ -1,4 +1,6 @@
 import re
+import ipaddress
+import socket
 from dataclasses import dataclass
 from urllib.parse import parse_qs, urlparse, unquote, quote
 import httpx
@@ -12,14 +14,73 @@ class ResolvedURL:
     raw_url: str
 
 
+# Allowlisted domains that we will fetch from. Everything else is rejected
+# BEFORE any HTTP request is made, which closes the SSRF vector.
+ALLOWED_DOMAINS = {
+    # Merchant sites
+    "amazon.in", "www.amazon.in", "m.amazon.in",
+    "flipkart.com", "www.flipkart.com", "m.flipkart.com", "dl.flipkart.com",
+    # Known shorteners that redirect to the above
+    "amzn.to", "amzn.in", "fkrt.it", "bit.ly", "tinyurl.com",
+}
+
+
+def _is_allowed_host(hostname: str) -> bool:
+    """Check if hostname is in our merchant/shortener allowlist."""
+    h = hostname.lower().strip(".")
+    return any(h == d or h.endswith("." + d) for d in ALLOWED_DOMAINS)
+
+
+def _is_private_ip(hostname: str) -> bool:
+    """Block private, loopback, and link-local IPs to prevent SSRF."""
+    try:
+        # Resolve hostname to IP and check if it's private
+        for info in socket.getaddrinfo(hostname, None):
+            addr = info[4][0]
+            ip = ipaddress.ip_address(addr)
+            if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved:
+                return True
+    except (socket.gaierror, ValueError):
+        pass
+    return False
+
+
+def _validate_url_safety(url: str) -> None:
+    """Validates URL scheme and hostname before any HTTP request."""
+    parsed = urlparse(url)
+    scheme = (parsed.scheme or "").lower()
+    hostname = (parsed.hostname or "").lower()
+
+    if scheme not in ("http", "https"):
+        raise ValueError(f"Unsupported URL scheme: {scheme}. Only http/https allowed.")
+
+    if not hostname:
+        raise ValueError("URL has no hostname.")
+
+    if _is_private_ip(hostname):
+        raise ValueError("URLs pointing to private/internal networks are not allowed.")
+
+    if not _is_allowed_host(hostname):
+        raise ValueError(
+            f"Unsupported domain: {hostname}. "
+            f"Please provide an Amazon India or Flipkart product link."
+        )
+
+
 def unwind_redirects(url: str, timeout: float = 10.0) -> str:
     """
     Follows redirect chains (e.g. amzn.to, amzn.in, fkrt.it, bit.ly) to find the final URL.
     Falls back to original URL on network errors.
+
+    SECURITY: Validates the hostname against the merchant allowlist and blocks
+    private IPs BEFORE making any HTTP request.
     """
     clean = url.strip()
     if not clean.startswith("http://") and not clean.startswith("https://"):
         clean = "https://" + clean
+
+    # === SECURITY: Validate BEFORE fetching ===
+    _validate_url_safety(clean)
 
     parsed = urlparse(clean)
     hostname = (parsed.hostname or "").lower()

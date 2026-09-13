@@ -1,9 +1,74 @@
 // ==========================================================================
-// DEALWISE OMNI-SEARCH & AUTOCOMPLETE MODULE
+// DEALSENSE OMNI-SEARCH & AUTOCOMPLETE MODULE
 // ==========================================================================
 
 import { searchDeals } from "./api.js";
 import { escapeHtml } from "./ui.js";
+
+// --------------------------------------------------------------------------
+// Result rendering helpers.
+//
+// The search API returns null for anything it has not actually observed:
+// price, mrp, discount, rating, review count and image. These helpers render
+// that absence honestly instead of printing NaN or inventing a fallback.
+// --------------------------------------------------------------------------
+
+function formatINR(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return "--";
+  return `₹${Math.round(n).toLocaleString("en-IN")}`;
+}
+
+function renderThumb(item) {
+  if (!item.image_url) {
+    return `<span class="search-result-thumb search-result-thumb-empty" role="img" aria-label="No image available"></span>`;
+  }
+  return `<img src="${escapeHtml(item.image_url)}" class="search-result-thumb" alt="${escapeHtml(item.title)}" loading="lazy">`;
+}
+
+function renderRating(item) {
+  // Omitted entirely when unrecorded. A default star rating would be a
+  // claim about the product that no observation supports.
+  if (!Number.isFinite(Number(item.rating))) return "";
+  const count = item.ratings_count ? ` (${escapeHtml(String(item.ratings_count))})` : "";
+  return `<span>★ ${escapeHtml(String(item.rating))}${count}</span>`;
+}
+
+function renderDiscount(item) {
+  const pct = Number(item.discount_pct);
+  if (!Number.isFinite(pct) || pct <= 0) return "";
+  return `<span class="search-result-off">${pct}% OFF</span>`;
+}
+
+function renderMrp(item) {
+  // Struck-through MRP only when it is real and above the live price.
+  const mrp = Number(item.mrp);
+  const price = Number(item.price);
+  if (!Number.isFinite(mrp) || !Number.isFinite(price) || mrp <= price) return "";
+  return `<span class="search-result-mrp">${formatINR(mrp)}</span>`;
+}
+
+function renderResultRow(item) {
+  return `
+    <div class="search-result-row" data-url="${escapeHtml(item.url)}">
+      <div class="search-result-left">
+        ${renderThumb(item)}
+        <div class="search-result-info">
+          <span class="search-result-title">${escapeHtml(item.title)}</span>
+          <div class="search-result-meta">
+            <span class="search-merchant-tag">${escapeHtml(item.merchant || "")}</span>
+            ${renderRating(item)}
+            ${renderDiscount(item)}
+          </div>
+        </div>
+      </div>
+      <div class="search-result-right">
+        <span class="search-result-price">${formatINR(item.price)}</span>
+        ${renderMrp(item)}
+      </div>
+    </div>
+  `;
+}
 
 export function initOmniSearch({ heroUrlInput, heroDealForm, searchResultsDropdown, searchResultsList, chipTriggers, onAnalyze }) {
   let searchDebounceTimer = null;
@@ -59,7 +124,8 @@ export function initOmniSearch({ heroUrlInput, heroDealForm, searchResultsDropdo
       if (!data.results || data.results.length === 0) {
         searchResultsList.innerHTML = `
           <div style="padding:20px; text-align:center; color:#64748B; font-size:13px;">
-            No verified deals found for "${escapeHtml(query)}". Try searching "air fryer", "boAt", "carpet" or paste an Amazon link.
+            Nothing tracked yet for "${escapeHtml(query)}". Paste an Amazon or Flipkart
+            link and DealSense will start tracking it.
           </div>
         `;
         return;
@@ -73,25 +139,7 @@ export function initOmniSearch({ heroUrlInput, heroDealForm, searchResultsDropdo
         return;
       }
 
-      searchResultsList.innerHTML = data.results.map((item) => `
-        <div class="search-result-row" data-url="${escapeHtml(item.url)}">
-          <div class="search-result-left">
-            <img src="${item.image_url}" class="search-result-thumb" alt="${escapeHtml(item.title)}">
-            <div class="search-result-info">
-              <span class="search-result-title">${escapeHtml(item.title)}</span>
-              <div class="search-result-meta">
-                <span class="search-merchant-tag">${item.merchant}</span>
-                <span>★ ${item.rating || 4.4} (${item.ratings_count || "8,230"})</span>
-                <span style="color:#16A34A; font-weight:700;">${item.discount_pct}% OFF</span>
-              </div>
-            </div>
-          </div>
-          <div class="search-result-right">
-            <span class="search-result-price">₹${Math.round(item.price).toLocaleString("en-IN")}</span>
-            <span class="search-result-mrp">₹${Math.round(item.mrp).toLocaleString("en-IN")}</span>
-          </div>
-        </div>
-      `).join("");
+      searchResultsList.innerHTML = data.results.map(renderResultRow).join("");
 
       // Attach click on each result row
       searchResultsList.querySelectorAll(".search-result-row").forEach((row) => {
@@ -172,27 +220,10 @@ export function initOmniSearch({ heroUrlInput, heroDealForm, searchResultsDropdo
         try {
           const data = await searchDeals(val, 5);
           if (!data.results || data.results.length === 0) {
-            headerList.innerHTML = `<div style="padding:16px; text-align:center; color:#64748B; font-size:12px;">No deals found for "${escapeHtml(val)}".</div>`;
+            headerList.innerHTML = `<div style="padding:16px; text-align:center; color:#64748B; font-size:12px;">Nothing tracked yet for "${escapeHtml(val)}".</div>`;
             return;
           }
-          headerList.innerHTML = data.results.map((item) => `
-            <div class="search-result-row" data-url="${escapeHtml(item.url)}">
-              <div class="search-result-left">
-                <img src="${item.image_url}" class="search-result-thumb" alt="${escapeHtml(item.title)}">
-                <div class="search-result-info">
-                  <span class="search-result-title">${escapeHtml(item.title)}</span>
-                  <div class="search-result-meta">
-                    <span class="search-merchant-tag">${item.merchant}</span>
-                    <span style="color:#16A34A; font-weight:700;">${item.discount_pct}% OFF</span>
-                  </div>
-                </div>
-              </div>
-              <div class="search-result-right">
-                <span class="search-result-price">₹${Math.round(item.price).toLocaleString("en-IN")}</span>
-                <span class="search-result-mrp">₹${Math.round(item.mrp).toLocaleString("en-IN")}</span>
-              </div>
-            </div>
-          `).join("");
+          headerList.innerHTML = data.results.map(renderResultRow).join("");
 
           headerList.querySelectorAll(".search-result-row").forEach((row) => {
             row.addEventListener("click", () => {
@@ -212,10 +243,21 @@ export function initOmniSearch({ heroUrlInput, heroDealForm, searchResultsDropdo
       if (e.key === "Enter") {
         e.preventDefault();
         const val = headerSearchInput.value.trim();
-        if (val.startsWith("http://") || val.startsWith("https://")) {
+        if (!val) return;
+        const isUrl = (
+          val.startsWith("http://") ||
+          val.startsWith("https://") ||
+          val.includes("amazon.in") ||
+          val.includes("flipkart.com") ||
+          val.includes("amzn.") ||
+          val.includes("/dp/") ||
+          val.includes("/p/")
+        );
+        if (isUrl) {
+          const targetUrl = (val.startsWith("http://") || val.startsWith("https://")) ? val : `https://${val}`;
           if (headerDropdown) headerDropdown.style.display = "none";
           headerSearchInput.value = "";
-          onAnalyze(val);
+          onAnalyze(targetUrl);
         } else {
           const firstRow = headerList?.querySelector(".search-result-row");
           if (firstRow) {

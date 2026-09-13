@@ -975,3 +975,27 @@
   text-decoration: line-through;
 }
 
+/* Missing-image placeholder for search rows.
+   Matches the hatch treatment used in the deals feed so an absent image
+   reads the same way everywhere, rather than falling back to a stock photo
+   of an unrelated product. Inherits its box from .search-result-thumb;
+   the display override is needed because this is a <span>, not an <img>. */
+.search-result-thumb-empty {
+  display: block;
+  flex-shrink: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    #F1F5F9,
+    #F1F5F9 6px,
+    #E9EEF3 6px,
+    #E9EEF3 12px
+  );
+}
+
+/* Discount chip. Previously an inline style on the element; moved here so
+   the hero and header dropdowns stay consistent. */
+.search-result-off {
+  color: var(--dw-green-main, #16A34A);
+  font-weight: 700;
+}
+

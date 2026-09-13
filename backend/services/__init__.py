@@ -1,5 +1,5 @@
 """
-DealWise Domain Services Package.
+DealSense Domain Services Package.
 Exposes specialized micro-services for deal intelligence, price auditing, and store comparisons.
 """
 

@@ -12,6 +12,25 @@ from backend.service import ingest_and_evaluate
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SEEDS_FILE = BASE_DIR / "data" / "catalog_seeds.json"
+SETUP_SEEDS_FILE = BASE_DIR / "data" / "setup_seeds.json"
+
+
+def load_seed_urls(path: Path) -> List[str]:
+    """
+    Reads a seed file and returns only entries carrying a real product URL.
+
+    Seed files may contain a leading documentation/schema object with no "url"
+    key, so entries are filtered on presence rather than position.
+    """
+    if not path.exists():
+        return []
+    with open(path, "r", encoding="utf-8") as f:
+        items = json.load(f)
+    return [
+        item["url"]
+        for item in items
+        if isinstance(item, dict) and isinstance(item.get("url"), str) and item["url"].strip()
+    ]
 
 
 def track_urls(urls: List[str], force_refresh: bool = True, delay: float = 2.0) -> None:
@@ -103,6 +122,7 @@ def track_urls(urls: List[str], force_refresh: bool = True, delay: float = 2.0) 
 def main():
     parser = argparse.ArgumentParser(description="Deal Intelligence Automated Price Tracker")
     parser.add_argument("--seed", action="store_true", help="Ingest top catalog items from data/catalog_seeds.json")
+    parser.add_argument("--seed-setups", action="store_true", help="Ingest Smart Setup products from data/setup_seeds.json")
     parser.add_argument("--update-all", action="store_true", help="Refresh all existing listings in SQLite")
     parser.add_argument("--limit", type=int, default=None, help="Limit number of items to process")
     parser.add_argument("--delay", type=float, default=2.0, help="Delay in seconds between requests (default: 2.0s)")
@@ -110,14 +130,19 @@ def main():
 
     urls_to_check = []
 
-    if args.seed:
-        if not SEEDS_FILE.exists():
-            print(f"Seed file not found: {SEEDS_FILE}")
+    if args.seed_setups:
+        urls_to_check = load_seed_urls(SETUP_SEEDS_FILE)
+        if not urls_to_check:
+            print(f"No seed URLs found in {SETUP_SEEDS_FILE}")
             return
-        with open(SEEDS_FILE, "r", encoding="utf-8") as f:
-            seed_items = json.load(f)
-            urls_to_check = [item["url"] for item in seed_items]
-            print(f"Loaded {len(urls_to_check)} seed items from {SEEDS_FILE.name}")
+        print(f"Loaded {len(urls_to_check)} Smart Setup seed items from {SETUP_SEEDS_FILE.name}")
+
+    elif args.seed:
+        urls_to_check = load_seed_urls(SEEDS_FILE)
+        if not urls_to_check:
+            print(f"Seed file not found or empty: {SEEDS_FILE}")
+            return
+        print(f"Loaded {len(urls_to_check)} seed items from {SEEDS_FILE.name}")
 
     elif args.update_all:
         init_db()
@@ -131,10 +156,8 @@ def main():
         init_db()
         with get_session() as session:
             count = len(session.exec(select(MerchantListing)).all())
-            if count < 5 and SEEDS_FILE.exists():
-                with open(SEEDS_FILE, "r", encoding="utf-8") as f:
-                    seed_items = json.load(f)
-                    urls_to_check = [item["url"] for item in seed_items]
+            if count < 5:
+                urls_to_check = load_seed_urls(SEEDS_FILE) + load_seed_urls(SETUP_SEEDS_FILE)
             else:
                 listings = session.exec(select(MerchantListing)).all()
                 urls_to_check = [l.clean_url for l in listings]

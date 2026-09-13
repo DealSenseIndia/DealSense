@@ -1,5 +1,5 @@
 """
-Deal Intelligence Calculation & Verification Service for DealWise.
+Deal Intelligence Calculation & Verification Service for DealSense.
 Rigorously separates FACT, CALCULATION, ESTIMATE, and RECOMMENDATION.
 """
 from dataclasses import dataclass, field
@@ -125,8 +125,8 @@ def calculate_deal_intelligence(
     # 2. Assembling FACTS
     facts = [
         {"label": f"Current {merchant} Price", "value": f"₹{current_price:,.0f}", "source": merchant, "verified": True},
-        {"label": "Observed Historical Low", "value": f"₹{hist_low:,.0f}", "source": "DealWise Price Graph", "verified": True},
-        {"label": "Observed 90-Day Median", "value": f"₹{median_price:,.0f}", "source": "DealWise Price Graph", "verified": True},
+        {"label": "Observed Historical Low", "value": f"₹{hist_low:,.0f}", "source": "DealSense Price Graph", "verified": True},
+        {"label": "Observed 90-Day Median", "value": f"₹{median_price:,.0f}", "source": "DealSense Price Graph", "verified": True},
     ]
     if mrp:
         facts.append({"label": "List Price (MRP)", "value": f"₹{mrp:,.0f}", "source": merchant, "verified": True})

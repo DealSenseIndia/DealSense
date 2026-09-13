@@ -1,5 +1,5 @@
 """
-Seed complete hierarchical category taxonomy, setup categories, merchants, and canonical items for DealWise.
+Seed complete hierarchical category taxonomy, setup categories, merchants, and canonical items for DealSense.
 """
 from datetime import datetime, timezone, timedelta
 from sqlmodel import Session, select
@@ -376,15 +376,48 @@ def seed_taxonomy():
                 session.refresh(sc)
             setup_cats_by_slug[sc.slug] = sc
 
-        # 4. Seed Setups and Setup Items
-        from backend.data.setup_catalog import SETUP_CATALOG
+        # 4. Setups, setup items and featured products are deliberately NOT
+        #    seeded.
+        #
+        # This function used to build `Setup` and `SetupItem` rows out of
+        # `backend/data/setup_catalog.py`, then insert a dozen "featured
+        # products" with hardcoded prices, MRPs, verdicts ("Great Deal"),
+        # drop claims ("22% below typical price", "Near historical low"),
+        # Unsplash stock photos and invented merchant IDs such as
+        # `itm123456` and `SMTWAVECL201` -- each with a
+        # `source="initial_observation", confidence="high"` PriceObservation
+        # attached.
+        #
+        # That made this the most damaging fabrication surface in the
+        # project: everywhere else the invention lived in display code and
+        # could be removed by fixing the renderer, but these wrote invented
+        # numbers into the database as real rows. Correct, honest read paths
+        # then served them as observed fact, and the anti-synthetic test only
+        # screened for `historical_catalog` and `baseline_estimate` sources,
+        # so `initial_observation` passed unnoticed.
+        #
+        # It is also reachable in normal operation, not just from a manual
+        # script run: `/api/categories` calls seed_taxonomy() whenever it
+        # finds no root categories.
+        #
+        # What remains seeded above is structural only -- merchants,
+        # the category taxonomy, and setup categories. Those are facts about
+        # DealSense (which stores we support, how we group things), not
+        # claims about products or prices. Real products enter the database
+        # through the ingestion path, where a price is recorded because it
+        # was observed.
+        #
+        # Nothing reads the removed rows: /api/setups counts
+        # SetupCategory.setups (legitimately zero until real setups exist),
+        # and Smart Setups composes from setup_blueprints.py against real
+        # listings.
 
-        for sc_slug, sc_obj in setup_cats_by_slug.items():
-            catalog_key = "gaming_pc" if sc_slug == "pc_build" else sc_slug
-            if catalog_key not in SETUP_CATALOG:
-                continue
+        print("Merchants, category taxonomy and setup categories seeded successfully.")
 
-            categories_dict = SETUP_CATALOG[catalog_key]
+
+if __name__ == "__main__":
+    seed_taxonomy()
+
             # Create Tier 1 Budget Setup
             setup_slug = f"{sc_slug}-budget"
             setup_obj = session.exec(select(Setup).where(Setup.slug == setup_slug)).first()

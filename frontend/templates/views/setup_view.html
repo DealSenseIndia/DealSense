@@ -10,7 +10,7 @@
           Build smarter spaces. <span class="green-word">Pay less.</span>
         </h1>
         <p class="setup-hero-sub">
-          Tell us what you want to create and your budget. DealSense composes an aesthetically coordinated, deal-verified setup across Amazon, Flipkart, Myntra & IKEA — building around the furniture you already own.
+          Tell us the space and your budget. DealSense composes a complete setup from products it actively price-tracks on Amazon and Flipkart — every item priced from a real recorded observation, and anything it can't verify is shown as a gap rather than filled with a guess.
         </p>
       </div>
 
@@ -23,26 +23,9 @@
             <span class="step-num-pill">Step 1</span>
             <label class="step-label">Select Your Space</label>
             <div class="space-select-cards" id="spaceSelectGroup">
-              <button type="button" class="space-card active" data-space="bedroom">
-                <span class="space-icon">🛏️</span>
-                <span class="space-title">Bedroom Makeover</span>
-                <span class="space-sub">Sleep, rugs, warm lighting</span>
-              </button>
-              <button type="button" class="space-card" data-space="wfh_desk">
-                <span class="space-icon">💻</span>
-                <span class="space-title">WFH & Desk Setup</span>
-                <span class="space-sub">Ergonomics, desk mat, lamp</span>
-              </button>
-              <button type="button" class="space-card" data-space="living_room">
-                <span class="space-icon">🛋️</span>
-                <span class="space-title">Living Room & Hall</span>
-                <span class="space-sub">Sofa, coffee table, ambient lamps</span>
-              </button>
-              <button type="button" class="space-card" data-space="kitchen_bar">
-                <span class="space-icon">☕</span>
-                <span class="space-title">Kitchen & Coffee Bar</span>
-                <span class="space-sub">Espresso, air fryer, organizers</span>
-              </button>
+              <!-- Populated from /api/setups/templates so the options can never
+                   drift out of sync with the blueprints the engine actually has. -->
+              <div class="space-cards-loading">Loading spaces…</div>
             </div>
           </div>
 
@@ -53,7 +36,7 @@
               <label class="step-label">Total Setup Budget</label>
               <span class="budget-current-val" id="budgetDisplayVal">₹25,000</span>
             </div>
-            <input type="range" id="setupBudgetSlider" min="15000" max="75000" step="1000" value="25000" class="dealsense-range-slider dealwise-range-slider">
+            <input type="range" id="setupBudgetSlider" min="15000" max="75000" step="1000" value="25000" class="dealsense-range-slider">
             <div class="budget-quick-pills" id="budgetPillsGroup">
               <button type="button" class="budget-pill" data-val="18000">₹18,000</button>
               <button type="button" class="budget-pill active" data-val="25000">₹25,000</button>
@@ -81,9 +64,7 @@
             <span class="step-num-pill">Step 4</span>
             <label class="step-label">Design Aesthetic</label>
             <div class="style-select-pills" id="styleSelectGroup">
-              <button type="button" class="style-pill active" data-style="modern_minimal">🌿 Modern Minimalist</button>
-              <button type="button" class="style-pill" data-style="warm_boho">🏮 Warm Boho / Cozy</button>
-              <button type="button" class="style-pill" data-style="dark_aesthetic">🖤 Dark Architectural</button>
+              <!-- Populated from /api/setups/templates -->
             </div>
           </div>
 
@@ -99,6 +80,22 @@
         </div>
       </div>
 
+      <!-- Error state: shown when the engine cannot be reached. We never
+           substitute generated content here. -->
+      <div id="setupErrorState" class="setup-error-state" style="display:none;">
+        <span class="setup-error-icon">⚠️</span>
+        <h3 class="setup-error-title" id="setupErrorTitle">Couldn't build your setup</h3>
+        <p class="setup-error-body" id="setupErrorBody"></p>
+        <button type="button" class="btn-setup-retry" id="setupRetryBtn">Try again</button>
+      </div>
+
+      <!-- Empty state: engine reachable, but no tracked product fits. -->
+      <div id="setupEmptyState" class="setup-empty-state" style="display:none;">
+        <span class="setup-empty-icon">📦</span>
+        <h3 class="setup-empty-title">No tracked products fit this setup yet</h3>
+        <p class="setup-empty-body" id="setupEmptyBody"></p>
+      </div>
+
       <!-- Generated Setup Results Container -->
       <div id="setupResultsContainer" class="setup-results-wrap" style="display:none;">
         
@@ -107,39 +104,62 @@
           <!-- Dynamically populated -->
         </div>
 
-        <!-- DealSense Trust Guard: "You Don't Need This" (Anti-Affiliate Spam Weapon) -->
+        <!-- Trust Guard: reports which slots were skipped because the user
+             already owns them. It reports a count, not a rupee figure: we
+             cannot know what the user paid for something they already have. -->
         <div id="trustGuardBanner" class="trust-guard-banner" style="display:none;">
           <div class="trust-guard-icon-box">🛡️</div>
           <div class="trust-guard-content">
             <div class="trust-guard-title-row">
-              <h4 class="trust-guard-title">DealSense Trust Guard: Keep What You Already Own</h4>
-              <span id="trustGuardSavedPill" class="trust-guard-saved-pill">Saved ₹0</span>
+              <h4 class="trust-guard-title">Trust Guard: Keeping What You Already Own</h4>
+              <span id="trustGuardSavedPill" class="trust-guard-saved-pill">0 items skipped</span>
             </div>
             <p id="trustGuardDesc" class="trust-guard-desc">
-              You marked existing items as already owned. Unlike affiliate sites that push redundant products for commission, DealWise excluded them and reallocated your budget toward higher-impact lighting and aesthetic upgrades.
+              You marked items as already owned, so DealSense left them out and spread that share of your budget across the remaining slots.
             </p>
           </div>
+        </div>
+
+        <!-- Data honesty panel: what the engine could and could not verify. -->
+        <div id="setupDataNotice" class="setup-data-notice" style="display:none;">
+          <div class="data-notice-head">
+            <span class="data-notice-icon">ℹ️</span>
+            <h4 class="data-notice-title" id="setupDataNoticeTitle">Some slots could not be filled</h4>
+          </div>
+          <p class="data-notice-body" id="setupDataNoticeBody"></p>
+          <ul class="data-notice-list" id="setupUnfilledList"></ul>
         </div>
 
         <!-- Budget & Savings Summary Bar -->
         <div class="setup-budget-summary-banner" id="tierSummaryBanner">
           <div class="summary-stat-group">
             <span class="summary-label">Total Setup Cost</span>
-            <strong class="summary-val-green" id="tierTotalCost">₹0</strong>
+            <strong class="summary-val-green" id="tierTotalCost">--</strong>
           </div>
           <div class="summary-stat-group">
-            <span class="summary-label">Verified Savings</span>
-            <strong class="summary-val-black" id="tierTotalSavings">₹0</strong>
+            <span class="summary-label" title="Computed only from items with a recorded MRP above the current price.">Below MRP</span>
+            <strong class="summary-val-black" id="tierTotalSavings">--</strong>
           </div>
           <div class="summary-stat-group">
             <span class="summary-label">Budget Remaining</span>
-            <strong class="summary-val-blue" id="tierBudgetRemaining">₹0</strong>
+            <strong class="summary-val-blue" id="tierBudgetRemaining">--</strong>
+          </div>
+          <div class="summary-stat-group">
+            <span class="summary-label" title="Slot coverage, budget fit, price evidence and deal quality.">Setup Score</span>
+            <strong class="summary-val-black" id="tierSetupScore">--</strong>
           </div>
           <div class="summary-advice-block">
-            <span class="advice-sparkle">💡 AI Budget Advice:</span>
-            <span class="advice-text" id="tierAllocationAdvice">Loading optimization advice...</span>
+            <span class="advice-sparkle">💡 Budget breakdown:</span>
+            <span class="advice-text" id="tierAllocationAdvice">--</span>
           </div>
         </div>
+
+        <!-- Score breakdown: every component shown with its weight, so the
+             number is auditable rather than magic. -->
+        <details class="setup-score-details" id="setupScoreDetails" style="display:none;">
+          <summary class="score-details-summary">How this score was calculated</summary>
+          <div class="score-details-body" id="setupScoreBreakdown"></div>
+        </details>
 
         <!-- Phased Items Grids -->
         <div class="setup-phases-layout">
@@ -147,8 +167,8 @@
           <div class="phase-section">
             <div class="phase-header-row">
               <div class="phase-title-group">
-                <span class="phase-badge phase-1-badge">Phase 1: Essential High-Impact Items</span>
-                <h3 class="phase-heading">Transforms 70% of the Room Aesthetic</h3>
+                <span class="phase-badge phase-1-badge">Phase 1: Buy first</span>
+                <h3 class="phase-heading">The essentials this space doesn't work without</h3>
               </div>
               <div class="phase-subtotal-callout" id="phase1Subtotal">Subtotal: ₹0</div>
             </div>
@@ -161,8 +181,8 @@
           <div class="phase-section" style="margin-top:40px;">
             <div class="phase-header-row">
               <div class="phase-title-group">
-                <span class="phase-badge phase-2-badge">Phase 2: Finishing Accents & Decor</span>
-                <h3 class="phase-heading">Complete the Look (Wall Art, Planters & Accents)</h3>
+                <span class="phase-badge phase-2-badge">Phase 2: Add later</span>
+                <h3 class="phase-heading">Finishing pieces you can spread across paydays</h3>
               </div>
               <div class="phase-subtotal-callout" id="phase2Subtotal">Subtotal: ₹0</div>
             </div>
@@ -209,15 +229,15 @@
         <div class="bundle-modal-summary-strip">
           <div class="bundle-stat">
             <span class="bundle-stat-label">Total Setup Price</span>
-            <strong class="bundle-stat-val" id="bundleModalTotal">₹0</strong>
+            <strong class="bundle-stat-val" id="bundleModalTotal">--</strong>
           </div>
           <div class="bundle-stat">
             <span class="bundle-stat-label">Total MRP Value</span>
-            <span class="bundle-stat-old" id="bundleModalMrp">₹0</span>
+            <span class="bundle-stat-old" id="bundleModalMrp">--</span>
           </div>
           <div class="bundle-stat">
-            <span class="bundle-stat-label">Verified Savings</span>
-            <span class="bundle-stat-save" id="bundleModalSavings">Save ₹0 (0%)</span>
+            <span class="bundle-stat-label">Below MRP</span>
+            <span class="bundle-stat-save" id="bundleModalSavings">--</span>
           </div>
         </div>
 

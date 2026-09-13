@@ -1,5 +1,5 @@
 """
-DealWise Cross-Store Competitor Matcher.
+DealSense Cross-Store Competitor Matcher.
 Unofficial Amazon & Flipkart HTML search scraping has been removed.
 Matches competitor products against the local canonical database and verified catalog.
 """

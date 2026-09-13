@@ -1,5 +1,5 @@
 // ==========================================================================
-// DEALWISE LIVE DEALS CONTROLLER
+// DEALSENSE LIVE DEALS CONTROLLER
 // Fetches verified real-time deals from Amazon & Flipkart feeds,
 // handles Hourly Scanner Refresh, and connects Category/Type filters.
 // ==========================================================================
@@ -234,29 +234,16 @@ export function initLiveDeals({ onDealClick, onSetupClick } = {}) {
     });
   });
 
-  // 6. Dual Pathway Cards ("What are you shopping for?")
-  const pathwayProductCard = document.getElementById("pathwayProductCard");
-  if (pathwayProductCard) {
-    pathwayProductCard.addEventListener("click", () => {
-      const input = document.getElementById("heroUrlInput");
-      if (input) {
-        input.scrollIntoView({ behavior: "smooth", block: "center" });
-        input.focus();
-      }
-    });
-  }
-
-  const pathwaySetupCard = document.getElementById("pathwaySetupCard");
-  if (pathwaySetupCard && onSetupClick) {
-    pathwaySetupCard.addEventListener("click", () => onSetupClick("bedroom"));
-  }
 
   // 7. Mockup 6 Setup Category Cards ("Build it. We'll find it.")
+  // data-budget is a starting point only; setup_builder clamps it to the
+  // blueprint's real range before using it.
   document.querySelectorAll(".setup-room-card").forEach((card) => {
     card.addEventListener("click", (e) => {
       e.preventDefault();
       const space = card.getAttribute("data-space") || "bedroom";
-      if (onSetupClick) onSetupClick(space);
+      const budget = card.getAttribute("data-budget");
+      if (onSetupClick) onSetupClick(space, budget ? Number(budget) : null);
     });
   });
 

@@ -1,5 +1,5 @@
 // ==========================================================================
-// DEALWISE MASTER ORCHESTRATOR (ES MODULE ENTRY)
+// DEALSENSE MASTER ORCHESTRATOR (ES MODULE ENTRY)
 // Lightweight entry point coordinating specialized modular subsystems.
 // ==========================================================================
 
@@ -9,33 +9,45 @@ import { startAnalyzingAnimation, finishAnalyzingAnimation } from "./js/animatio
 import { initRecentProduct, saveRecentProduct } from "./js/recent.js";
 import { initOmniSearch } from "./js/search.js";
 import { renderDetailPage, initPdpListeners, showPdpSkeleton, hidePdpSkeleton } from "./js/pdp.js";
-import { initSetupBuilder } from "./js/setup_builder.js";
+import { ensureSetupBuilder, selectSpace } from "./js/setup_builder.js";
 import { initLiveDeals } from "./js/live_deals.js";
 import { initTrackedDealsDrawer } from "./js/tracked_deals.js";
 
 function initApp() {
+  let trackedDrawer = null;
+
   // 1. Initialize View Router & Navigation
-  let setupInitialized = false;
   const nav = initNavigation({
     onShowSetup: () => {
-      if (!setupInitialized) {
-        initSetupBuilder();
-        setupInitialized = true;
+      ensureSetupBuilder();
+    },
+    onShowTrack: () => {
+      if (trackedDrawer && trackedDrawer.openDrawer) {
+        trackedDrawer.openDrawer();
       }
     },
   });
 
-  // Check for Setup Deep Link in URL (e.g. ?space=living_room&budget=25000)
+  // 2. Handle initial route from URL
+  const hash = window.location.hash || "#/";
   const urlParams = new URLSearchParams(window.location.search);
+
+  // Legacy deep links from query params (e.g. ?space=living_room&budget=25000)
   if (urlParams.has("space") || urlParams.get("view") === "setup") {
+    window.location.hash = "#/setup";
     nav.showSetup();
-    if (!setupInitialized) {
-      initSetupBuilder();
-      setupInitialized = true;
+    const deepSpace = urlParams.get("space");
+    if (deepSpace) {
+      selectSpace(deepSpace, urlParams.get("budget"));
+    } else {
+      ensureSetupBuilder();
     }
+  } else {
+    // Route based on hash
+    nav.handleHashRoute();
   }
 
-  // 2. DOM References for Hero & Omni-Search
+  // 3. DOM References for Hero & Omni-Search
   const heroUrlInput = document.getElementById("heroUrlInput");
   const heroSubmitBtn = document.getElementById("heroSubmitBtn");
   const heroDealForm = document.getElementById("heroDealForm");
@@ -43,7 +55,7 @@ function initApp() {
   const searchResultsList = document.getElementById("searchResultsList");
   const chipTriggers = document.querySelectorAll(".chip-trigger");
 
-  // 3. Centralized URL Deal Analysis Controller
+  // 4. Centralized URL Deal Analysis Controller
   async function analyzeUrl(url) {
     if (!url) return;
     if (searchResultsDropdown) searchResultsDropdown.style.display = "none";
@@ -60,7 +72,6 @@ function initApp() {
     }
 
     try {
-      // Allow the button animation at least 1.2s to smoothly cycle status steps when on homepage
       const minAnimDelay = isHomeVisible ? 1250 : 0;
       const [data] = await Promise.all([
         checkDeal(url),
@@ -77,7 +88,6 @@ function initApp() {
             console.error("Error inside renderDetailPage:", renderErr);
           }
           nav.showDetail();
-          window.scrollTo({ top: 0, behavior: "smooth" });
         });
       } else {
         saveRecentProduct(data, url);
@@ -88,7 +98,6 @@ function initApp() {
           console.error("Error inside renderDetailPage:", renderErr);
         }
         nav.showDetail();
-        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } catch (err) {
       console.error("Deal analysis error:", err);
@@ -104,7 +113,36 @@ function initApp() {
     }
   }
 
-  // 4. Initialize Omni-Search & Autocomplete Subsystem
+  // Automatic Deep Link Product Analysis (?url=... or /product/11)
+  const pathname = window.location.pathname;
+  if (urlParams.has("url")) {
+    const rawUrl = urlParams.get("url");
+    if (rawUrl) {
+      if (heroUrlInput) heroUrlInput.value = rawUrl;
+      setTimeout(() => analyzeUrl(rawUrl), 60);
+    }
+  } else if (pathname.startsWith("/product/")) {
+    const productTarget = pathname.replace(/^\/product\/?/, "").trim();
+    if (productTarget) {
+      if (/^\d+$/.test(productTarget)) {
+        fetch(`/api/products/${productTarget}`)
+          .then((res) => (res.ok ? res.json() : null))
+          .then((pData) => {
+            const firstUrl = pData?.listings?.[0]?.url;
+            if (firstUrl) {
+              if (heroUrlInput) heroUrlInput.value = firstUrl;
+              analyzeUrl(firstUrl);
+            }
+          })
+          .catch(() => {});
+      } else {
+        if (heroUrlInput) heroUrlInput.value = productTarget;
+        setTimeout(() => analyzeUrl(productTarget), 60);
+      }
+    }
+  }
+
+  // 5. Initialize Omni-Search & Autocomplete Subsystem
   const searchModule = initOmniSearch({
     heroUrlInput,
     heroDealForm,
@@ -114,7 +152,7 @@ function initApp() {
     onAnalyze: analyzeUrl,
   });
 
-  // 5. Featured Hero Card Click (Apple Watch Series 9)
+  // 6. Featured Hero Card Click (Apple Watch Series 9)
   const heroFeaturedViewBtn = document.getElementById("heroFeaturedViewBtn");
   const heroFeaturedDealCard = document.getElementById("heroFeaturedDealCard");
 
@@ -136,62 +174,126 @@ function initApp() {
     });
   }
 
-  // 6. Initialize Product Detail Page (Tabs & Bank Calculators)
+  // 7. Initialize Product Detail Page (Tabs & Bank Calculators)
   initPdpListeners();
 
-  // 7. Initialize Dynamic Recent Product from LocalStorage
+  // 8. Initialize Dynamic Recent Product from LocalStorage
   initRecentProduct();
 
-  // 8. Initialize Live Deals Stack & Category Filters
+  // 9. Initialize Live Deals Stack & Category Filters
   initLiveDeals({
     onDealClick: (dealUrl) => {
       if (heroUrlInput) heroUrlInput.value = dealUrl;
       analyzeUrl(dealUrl);
     },
-    onSetupClick: (space) => {
+    onSetupClick: (space, budget = null) => {
       nav.showSetup();
-      if (!setupInitialized) {
-        initSetupBuilder();
-        setupInitialized = true;
-      }
-      const card = document.querySelector(`.space-card[data-space="${space}"]`);
-      if (card) card.click();
+      selectSpace(space, budget);
       window.scrollTo({ top: 0, behavior: "smooth" });
     },
   });
 
-  // 9. Initialize Tracked Deals & Watchlist Drawer
-  initTrackedDealsDrawer({ onAnalyzeUrl: analyzeUrl });
+  // 10. Initialize Tracked Deals & Watchlist Drawer
+  trackedDrawer = initTrackedDealsDrawer({ onAnalyzeUrl: analyzeUrl });
 
-  // 10. Homepage Data Hydration — /api/homepage contract
-  // Fetches live stats and hydrates footer stat numbers dynamically.
-  // Falls back silently if backend is unavailable (static HTML values remain).
+  // 11. Homepage Data Hydration — real stats from /api/homepage
   (async () => {
     try {
       const res = await fetch("/api/homepage");
       if (!res.ok) return;
       const data = await res.json();
 
-      // Hydrate footer stats if API returns fresh values
       if (data.stats) {
         const s = data.stats;
-        const setStatEl = (selector, value) => {
-          const el = document.querySelector(selector);
-          if (el && value) el.textContent = value;
-        };
-        // Update footer stat numbers (matching footer.html structure)
+        // Update stats bar with real numbers
+        const statsBar = document.getElementById("statsBar");
+        if (statsBar) {
+          const items = statsBar.querySelectorAll(".stat-value");
+          if (items.length >= 3) {
+            items[0].textContent = s.products_tracked || "0";
+            items[1].textContent = s.price_checks || "0";
+            items[2].textContent = s.merchants_monitored || "2";
+          }
+        }
+
+        // Update footer stats if they exist
         const statHighlights = document.querySelectorAll(".stat-num-highlight");
-        if (statHighlights.length >= 4) {
-          if (s.shoppers_count) statHighlights[0].textContent = s.shoppers_count;
-          if (s.total_savings)  statHighlights[1].textContent = s.total_savings;
-          if (s.fake_discounts_flagged) statHighlights[2].textContent = s.fake_discounts_flagged;
-          if (s.daily_checks)  statHighlights[3].textContent = s.daily_checks;
+        if (statHighlights.length >= 3) {
+          if (s.products_tracked) statHighlights[0].textContent = s.products_tracked;
+          if (s.price_checks) statHighlights[1].textContent = s.price_checks;
+          if (s.listings_count) statHighlights[2].textContent = s.listings_count;
         }
       }
     } catch (_) {
       // Silent fallback — static HTML values remain displayed
     }
   })();
+
+  // 12. Dual Shopping Pathway Cards ("What are you shopping for?")
+  const pathwayProductCard = document.getElementById("pathwayProductCard");
+  const pathwayProductBtn = document.getElementById("pathwayProductBtn");
+  const pathwaySetupCard = document.getElementById("pathwaySetupCard");
+  const pathwaySetupBtn = document.getElementById("pathwaySetupBtn");
+
+  function triggerProductPathway() {
+    nav.showHome();
+    if (heroUrlInput) {
+      heroUrlInput.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTimeout(() => {
+        heroUrlInput.focus();
+        if (heroDealForm) {
+          heroDealForm.classList.add("pulse-focus");
+          setTimeout(() => heroDealForm.classList.remove("pulse-focus"), 1200);
+        }
+      }, 300);
+    }
+  }
+
+  function triggerSetupPathway() {
+    nav.showSetup();
+    ensureSetupBuilder();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  [pathwayProductCard, pathwayProductBtn].forEach((el) => {
+    if (!el) return;
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      triggerProductPathway();
+    });
+    el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        triggerProductPathway();
+      }
+    });
+  });
+
+  [pathwaySetupCard, pathwaySetupBtn].forEach((el) => {
+    if (!el) return;
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      triggerSetupPathway();
+    });
+    el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        triggerSetupPathway();
+      }
+    });
+  });
+
+  // 13. Setup Card Clicks from Homepage
+  document.querySelectorAll(".setup-room-card, [data-space], [data-setup-space]").forEach((card) => {
+    card.addEventListener("click", (e) => {
+      e.preventDefault();
+      const space = card.getAttribute("data-space") || card.getAttribute("data-setup-space");
+      const budget = card.getAttribute("data-budget") || card.getAttribute("data-setup-budget");
+      nav.showSetup();
+      selectSpace(space, budget);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
 }
 
 if (document.readyState === "loading") {

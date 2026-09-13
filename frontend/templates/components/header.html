@@ -15,13 +15,10 @@
           <a href="#" id="setupNavBtn" class="nav-link nav-link-highlight">
             <span class="nav-sparkle">✨</span> Smart Setups
           </a>
-          <a href="#priceHistory" class="nav-link">Price History</a>
+          <a href="#priceHistory" id="headerPriceHistoryBtn" class="nav-link">Price History</a>
           <a href="/deals" id="dealsNavBtn" class="nav-link">Deals</a>
-          <a href="/categories" class="nav-link">Categories</a>
-          <a href="#compare" class="nav-link">Compare</a>
-          <a href="#coupons" class="nav-link">Coupons</a>
+          <a href="/categories" id="categoriesNavBtn" class="nav-link">Categories</a>
           <a href="#track" class="nav-link" id="headerTrackNavBtn">Track</a>
-          <a href="#blog" class="nav-link">Blog</a>
         </nav>
       </div>
 
@@ -46,8 +43,47 @@
           </svg>
         </button>
 
-        <button class="btn-header-login">Login</button>
-        <button class="btn-header-signup">Sign Up</button>
+        <button class="btn-icon-ghost mobile-menu-btn" id="mobileMenuBtn" aria-label="Open Navigation Menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
       </div>
     </div>
   </header>
+
+  <!-- Mobile Navigation Drawer & Overlay -->
+  <div id="mobileDrawerOverlay" class="mobile-drawer-overlay" style="display: none;"></div>
+  <aside id="mobileDrawer" class="mobile-drawer" style="display: none;" aria-label="Mobile Navigation">
+    <div class="mobile-drawer-header">
+      <div class="brand-logo-wrap">
+        <img src="/assets/dealsense-icon.png" alt="DealSense" class="brand-d-logo" width="28" height="28">
+        <span class="brand-title-text" style="font-size:18px;">DealSense</span>
+      </div>
+      <button type="button" id="mobileDrawerClose" class="mobile-drawer-close" aria-label="Close Menu">&times;</button>
+    </div>
+    <nav class="mobile-drawer-nav">
+      <a href="#" id="mobileHomeBtn" class="mobile-nav-link active">
+        <span class="mobile-nav-icon">🏠</span> Home
+      </a>
+      <a href="#" id="mobileSetupBtn" class="mobile-nav-link mobile-nav-highlight">
+        <span class="mobile-nav-icon">✨</span> Smart Setups
+      </a>
+      <a href="/deals" class="mobile-nav-link">
+        <span class="mobile-nav-icon">🔥</span> Handpicked Deals
+      </a>
+      <a href="/categories" class="mobile-nav-link">
+        <span class="mobile-nav-icon">📂</span> Browse Categories
+      </a>
+      <a href="#track" id="mobileTrackBtn" class="mobile-nav-link">
+        <span class="mobile-nav-icon">🔔</span> Tracked Deals & Alerts
+      </a>
+    </nav>
+    <div class="mobile-drawer-footer">
+      <div class="mobile-drawer-trust">
+        <span>🛡️ Tracking Amazon.in & Flipkart</span>
+      </div>
+    </div>
+  </aside>

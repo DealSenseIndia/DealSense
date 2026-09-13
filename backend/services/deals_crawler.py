@@ -1,5 +1,5 @@
 """
-DealWise Live Deals Crawler & Feed Interface.
+DealSense Live Deals Crawler & Feed Interface.
 Delegates live feed generation, background scanning, and deal ranking to the real deal pipeline.
 """
 

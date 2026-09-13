@@ -693,15 +693,28 @@ document.addEventListener("DOMContentLoaded", async () => {
   const idx = buildSearchIndex(taxonomy);
   initSearch(idx);
 
+  const headerSearchInput = document.getElementById("headerSearch");
+  if (headerSearchInput) {
+    headerSearchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const val = headerSearchInput.value.trim();
+        if (val) window.location.href = `/?url=${encodeURIComponent(val)}`;
+      }
+    });
+  }
+
   // 4. Render popular chips
   renderPopularChips(popularChips, document.getElementById("catSearchInput"));
 
   // 5. Initialize sidebar click events
   initSidebarNav();
 
-  // 6. Handle URL hash or ?cat= query param on load
+  // 6. Handle URL path, hash or ?cat= query param on load
   const urlParams = new URLSearchParams(window.location.search);
-  const catParam = urlParams.get("cat") || (window.location.hash ? window.location.hash.replace("#", "") : null);
+  const pathParts = window.location.pathname.replace(/\/categories\/?/, "").split("/").filter(Boolean);
+  const pathCat = pathParts.length > 0 ? pathParts[0] : null;
+  const catParam = urlParams.get("cat") || (window.location.hash ? window.location.hash.replace("#", "") : null) || pathCat;
 
   if (catParam) {
     setTimeout(() => {

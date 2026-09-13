@@ -1355,6 +1355,35 @@
   color: #FFFFFF;
 }
 
+/* Copy confirmation. Previously applied as inline styles from JS. */
+.btn-copy-code.is-copied {
+  background: #16A34A;
+  color: #FFFFFF;
+}
+
+/* Offer that needs no code because the store applies it automatically.
+   Shown instead of a copy button, so we never present a code to type that
+   we did not actually read from the listing. */
+.coupon-auto-applied {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-secondary, #64748B);
+  background: #F1F5F9;
+  border: 1px solid var(--border-card, #E5E7EB);
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+/* Shown when no offers were detected on the listing. */
+.coupons-empty-state {
+  margin: 0;
+  padding: 16px 4px;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-muted, #94A3B8);
+}
+
 /* Reviews Breakdown */
 .reviews-deep-layout {
   display: flex;
@@ -3938,6 +3967,48 @@ input[type="email"].alert-text-input:focus {
   .chart-card-stats-2x2 {
     grid-template-columns: 1fr;
     gap: 6px;
+  }
+}
+
+/* ==========================================================================
+   NO-IMAGE GALLERY STATE
+   Applied to the gallery's main container when the product has no real
+   photograph. The slot shows a neutral hatch and says so, rather than
+   displaying a stock image of a different product -- a generic photo in a
+   product slot is itself a claim about the product. Matches the hatch used
+   by .search-result-thumb-empty and the deals feed.
+   ========================================================================== */
+.pdp-gallery-no-image {
+  position: relative;
+  background: repeating-linear-gradient(
+    45deg,
+    #F1F5F9,
+    #F1F5F9 8px,
+    #E9EEF3 8px,
+    #E9EEF3 16px
+  );
+  border-radius: var(--radius-card, 16px);
+  min-height: 320px;
+  cursor: default;
+}
+
+.pdp-gallery-no-image::after {
+  content: "No product image available";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted, #94A3B8);
+  text-align: center;
+  padding: 0 24px;
+}
+
+@media (max-width: 768px) {
+  .pdp-gallery-no-image {
+    min-height: 220px;
   }
 }
 

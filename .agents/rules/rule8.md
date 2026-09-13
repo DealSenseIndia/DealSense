@@ -1,5 +1,5 @@
 ---
-trigger: always_on
+trigger: manual
 ---
 
 1. Inspect current Git status
@@ -13,4 +13,3 @@ trigger: always_on
 9. Report exact files changed
 10. Report tests before/after
 11. Report what remains
-

@@ -1,5 +1,5 @@
 // ==========================================================================
-// DEALWISE TRACKED DEALS & WATCHLIST CONTROLLER
+// DEALSENSE TRACKED DEALS & WATCHLIST CONTROLLER
 // Manages real-time price drop alerts, drawer slide-out, and deletion.
 // ==========================================================================
 

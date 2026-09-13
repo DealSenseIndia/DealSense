@@ -1,5 +1,15 @@
 // ==========================================================================
-// DEALWISE UI & VIEW ROUTER MODULE
+// DEALSENSE VIEW ROUTER & NAVIGATION MODULE
+//
+// Hash-based SPA router. Every view has a URL:
+//   #/           → Homepage
+//   #/product    → Product Detail (after analysis)
+//   #/setup      → Smart Setup Builder
+//   #/deals      → Deals feed (redirects to /deals page)
+//   #/categories → Categories (redirects to /categories page)
+//   #/track      → Tracked products & alerts
+//
+// Back button, deep links, and sharing all work.
 // ==========================================================================
 
 export function escapeHtml(str) {
@@ -48,64 +58,183 @@ export function showToast(message, type = "info") {
   }, 4500);
 }
 
-export function initNavigation({ onShowSetup }) {
+
+// ─────────────── Mobile Menu ───────────────
+
+function initMobileMenu() {
+  const hamburger = document.getElementById("mobileMenuBtn");
+  const drawer = document.getElementById("mobileDrawer");
+  const overlay = document.getElementById("mobileDrawerOverlay");
+  const closeBtn = document.getElementById("mobileDrawerClose");
+
+  if (!hamburger || !drawer) return;
+
+  function openDrawer() {
+    drawer.style.display = "flex";
+    if (overlay) overlay.style.display = "block";
+    requestAnimationFrame(() => {
+      drawer.classList.add("open");
+      if (overlay) overlay.classList.add("open");
+    });
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeDrawer() {
+    drawer.classList.remove("open");
+    if (overlay) overlay.classList.remove("open");
+    document.body.style.overflow = "";
+    setTimeout(() => {
+      if (!drawer.classList.contains("open")) {
+        drawer.style.display = "none";
+        if (overlay) overlay.style.display = "none";
+      }
+    }, 280);
+  }
+
+  hamburger.addEventListener("click", openDrawer);
+  if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
+  if (overlay) overlay.addEventListener("click", closeDrawer);
+
+  // Close on nav link click inside drawer
+  drawer.querySelectorAll("a, button").forEach((el) => {
+    el.addEventListener("click", () => {
+      setTimeout(closeDrawer, 150);
+    });
+  });
+}
+
+
+// ─────────────── View Router ───────────────
+
+export function initNavigation({ onShowSetup, onShowTrack } = {}) {
   const homeView = document.getElementById("homeView");
   const detailView = document.getElementById("detailView");
   const setupView = document.getElementById("setupView");
+  const trackView = document.getElementById("trackView");
 
   const navLogoBtn = document.getElementById("navLogoBtn");
   const homeNavBtn = document.getElementById("homeNavBtn");
   const setupNavBtn = document.getElementById("setupNavBtn");
+  const headerPriceHistoryBtn = document.getElementById("headerPriceHistoryBtn");
   const modeAnalyzeBtn = document.getElementById("modeAnalyzeBtn");
   const modeSetupBtn = document.getElementById("modeSetupBtn");
   const backToHomeBreadcrumb = document.getElementById("backToHomeBreadcrumb");
   const heroUrlInput = document.getElementById("heroUrlInput");
+  const headerTrackNavBtn = document.getElementById("headerTrackNavBtn");
 
-  function showHome() {
+  // Mobile nav links
+  const mobileHomeBtn = document.getElementById("mobileHomeBtn");
+  const mobileSetupBtn = document.getElementById("mobileSetupBtn");
+  const mobileTrackBtn = document.getElementById("mobileTrackBtn");
+
+  function clearActive() {
+    [homeNavBtn, setupNavBtn, headerTrackNavBtn].forEach(btn => {
+      if (btn) btn.classList.remove("active");
+    });
+  }
+
+  function showHome(pushState = true) {
     if (homeView) homeView.style.display = "block";
     if (detailView) detailView.style.display = "none";
     if (setupView) setupView.style.display = "none";
+    if (trackView) trackView.style.display = "none";
+    clearActive();
     if (homeNavBtn) homeNavBtn.classList.add("active");
-    if (setupNavBtn) setupNavBtn.classList.remove("active");
     if (modeAnalyzeBtn) modeAnalyzeBtn.classList.add("active");
     if (modeSetupBtn) modeSetupBtn.classList.remove("active");
+    if (pushState) window.location.hash = "#/";
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function showDetail() {
+  function showDetail(pushState = true) {
     if (homeView) homeView.style.display = "none";
     if (detailView) detailView.style.display = "block";
     if (setupView) setupView.style.display = "none";
-    if (homeNavBtn) homeNavBtn.classList.remove("active");
-    if (setupNavBtn) setupNavBtn.classList.remove("active");
+    if (trackView) trackView.style.display = "none";
+    clearActive();
+    if (pushState) window.location.hash = "#/product";
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function showSetup() {
+  function showSetup(pushState = true) {
     if (homeView) homeView.style.display = "none";
     if (detailView) detailView.style.display = "none";
     if (setupView) setupView.style.display = "block";
-    if (homeNavBtn) homeNavBtn.classList.remove("active");
+    if (trackView) trackView.style.display = "none";
+    clearActive();
     if (setupNavBtn) setupNavBtn.classList.add("active");
     if (modeAnalyzeBtn) modeAnalyzeBtn.classList.remove("active");
     if (modeSetupBtn) modeSetupBtn.classList.add("active");
+    if (pushState) window.location.hash = "#/setup";
     window.scrollTo({ top: 0, behavior: "smooth" });
-
     if (onShowSetup) onShowSetup();
   }
 
-  // dealsNavBtn naturally navigates to /deals (dedicated Deals page)
+  function showTrack(pushState = true) {
+    if (onShowTrack) {
+      onShowTrack();
+    } else if (trackView) {
+      if (homeView) homeView.style.display = "none";
+      if (detailView) detailView.style.display = "none";
+      if (setupView) setupView.style.display = "none";
+      trackView.style.display = "block";
+      clearActive();
+      if (headerTrackNavBtn) headerTrackNavBtn.classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    if (pushState) window.location.hash = "#/track";
+  }
 
+  // ── Event listeners ──
   if (navLogoBtn) navLogoBtn.addEventListener("click", (e) => { e.preventDefault(); showHome(); });
   if (homeNavBtn) homeNavBtn.addEventListener("click", (e) => { e.preventDefault(); showHome(); });
   if (setupNavBtn) setupNavBtn.addEventListener("click", (e) => { e.preventDefault(); showSetup(); });
   if (modeSetupBtn) modeSetupBtn.addEventListener("click", (e) => { e.preventDefault(); showSetup(); });
+  if (headerPriceHistoryBtn) {
+    headerPriceHistoryBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      showHome();
+      if (heroUrlInput) {
+        heroUrlInput.focus();
+        heroUrlInput.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    });
+  }
   if (modeAnalyzeBtn) modeAnalyzeBtn.addEventListener("click", (e) => {
     e.preventDefault();
     showHome();
-    if (heroUrlInput) heroUrlInput.focus();
+    if (heroUrlInput) {
+      heroUrlInput.focus();
+      heroUrlInput.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
   });
   if (backToHomeBreadcrumb) backToHomeBreadcrumb.addEventListener("click", (e) => { e.preventDefault(); showHome(); });
+  if (headerTrackNavBtn) headerTrackNavBtn.addEventListener("click", (e) => { e.preventDefault(); showTrack(); });
 
-  return { showHome, showDetail, showSetup };
+  // Mobile nav
+  if (mobileHomeBtn) mobileHomeBtn.addEventListener("click", (e) => { e.preventDefault(); showHome(); });
+  if (mobileSetupBtn) mobileSetupBtn.addEventListener("click", (e) => { e.preventDefault(); showSetup(); });
+  if (mobileTrackBtn) mobileTrackBtn.addEventListener("click", (e) => { e.preventDefault(); showTrack(); });
+
+  // ── Hash-based routing ──
+  function handleHashRoute() {
+    const hash = window.location.hash || "#/";
+    if (hash.startsWith("#/product")) {
+      showDetail(false);
+    } else if (hash.startsWith("#/setup")) {
+      showSetup(false);
+    } else if (hash.startsWith("#/track")) {
+      showTrack(false);
+    } else {
+      showHome(false);
+    }
+  }
+
+  window.addEventListener("hashchange", handleHashRoute);
+
+  // Initialize mobile menu
+  initMobileMenu();
+
+  return { showHome, showDetail, showSetup, showTrack, handleHashRoute };
 }
+

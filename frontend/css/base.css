@@ -1,7 +1,8 @@
 /* ==========================================================================
-   DEALWISE OFFICIAL DESIGN SYSTEM — MASTER STYLESHEET
-   Source of Truth: Approved DealWise Reference Images
-   Palette: Clean White (#FFFFFF) + Surface (#F7FAF8) + DealWise Green (#16A34A)
+   DEALSENSE OFFICIAL DESIGN SYSTEM — MASTER STYLESHEET
+   Source of Truth: DESIGN.md + Approved DealSense Reference Images
+   Palette: Clean White (#FFFFFF) + Surface (#F7FAF8) + DealSense Green (#16A34A)
+   Typography: Inter + JetBrains Mono
    ========================================================================== */
 
 :root {
@@ -20,8 +21,10 @@
   --bg-pure: #FFFFFF;
   --bg-subtle: #F7FAF8;
   --bg-card: #FFFFFF;
+  --bg-terminal: #0F172A;
+  --bg-terminal-subtle: #1E293B;
 
-  /* Typography */
+  /* Typography Colors */
   --text-headline: #0F172A;
   --text-body: #1E293B;
   --text-secondary: #64748B;
@@ -31,28 +34,59 @@
   /* Borders */
   --border-card: #E5E7EB;
   --border-subtle: #EEF2F4;
+  --border-strong: #CBD5E1;
+
+  /* Decision Verdict Colors (BUY / WAIT / AVOID) */
+  --verdict-buy: #16A34A;
+  --verdict-buy-bg: #ECFDF3;
+  --verdict-buy-border: #BBF7D0;
+  --verdict-wait: #D97706;
+  --verdict-wait-bg: #FFFBEB;
+  --verdict-wait-border: #FDE68A;
+  --verdict-avoid: #DC2626;
+  --verdict-avoid-bg: #FEF2F2;
+  --verdict-avoid-border: #FECACA;
 
   /* Status Colors */
   --status-warning: #F59E0B;
   --status-warning-bg: #FFFBEB;
   --status-danger: #EF4444;
   --status-danger-bg: #FEF2F2;
+  --status-info: #3B82F6;
+  --status-info-bg: #EFF6FF;
 
   /* Radii */
   --radius-sm: 8px;
   --radius-btn: 11px;
   --radius-card: 16px;
   --radius-pill: 999px;
+  --radius-lg: 20px;
+
+  /* Shadows */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-dropdown: 0 12px 40px rgba(0, 0, 0, 0.12);
+  --shadow-toast: 0 10px 30px rgba(0, 0, 0, 0.22);
 
   /* Fonts */
   --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-smooth: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -62,11 +96,260 @@ body {
   font-size: 14px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-card); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* Container */
 .container {
   max-width: 1440px;
   margin: 0 auto;
   padding: 0 32px;
 }
 
+/* Responsive container padding */
+@media (max-width: 768px) {
+  .container { padding: 0 16px; }
+}
+
+/* ── Utility classes ── */
+.text-mono { font-family: var(--font-mono); }
+.text-green { color: var(--dw-green-main); }
+.text-muted { color: var(--text-muted); }
+.text-secondary { color: var(--text-secondary); }
+
+/* Skeleton loading animation */
+@keyframes skeleton-pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.3; }
+  100% { opacity: 0.6; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-text {
+  height: 14px;
+  width: 80%;
+  margin-bottom: 8px;
+}
+
+.skeleton-text.short { width: 40%; }
+
+.skeleton-card {
+  height: 200px;
+  border-radius: var(--radius-card);
+}
+
+/* Verdict badges */
+.verdict-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.verdict-badge.buy {
+  background: var(--verdict-buy-bg);
+  color: var(--verdict-buy);
+  border: 1px solid var(--verdict-buy-border);
+}
+
+.verdict-badge.wait {
+  background: var(--verdict-wait-bg);
+  color: var(--verdict-wait);
+  border: 1px solid var(--verdict-wait-border);
+}
+
+.verdict-badge.skip, .verdict-badge.avoid {
+  background: var(--verdict-avoid-bg);
+  color: var(--verdict-avoid);
+  border: 1px solid var(--verdict-avoid-border);
+}
+
+.verdict-badge.unknown {
+  background: #F8FAFC;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-card);
+}
+
+/* Provenance badges */
+.prov-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.prov-badge.live {
+  background: var(--dw-green-surface);
+  color: #15803D;
+}
+
+.prov-badge.live::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #16A34A;
+  animation: prov-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes prov-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.5); }
+  50% { box-shadow: 0 0 0 4px rgba(22, 163, 74, 0); }
+}
+
+.prov-badge.verified {
+  background: #EFF6FF;
+  color: #1D4ED8;
+}
+
+.prov-badge.observed {
+  background: #F1F5F9;
+  color: #475569;
+}
+
+.prov-badge.stale {
+  background: #FEF3C7;
+  color: #B45309;
+}
+
+.prov-badge.insufficient {
+  background: #F8FAFC;
+  color: var(--text-secondary);
+}
+
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.empty-state-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  opacity: 0.4;
+}
+
+.empty-state-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-headline);
+  margin-bottom: 8px;
+}
+
+.empty-state-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+/* View transitions */
+.view-section {
+  display: none;
+  animation: viewFadeIn 0.3s ease;
+}
+
+.view-section.active {
+  display: block;
+}
+
+@keyframes viewFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive hiding */
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+}
+
+@media (min-width: 769px) {
+  .hide-desktop { display: none !important; }
+}
+
+/* ── Price formatting ── */
+.price-current {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-headline);
+}
+
+.price-mrp {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.price-discount {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--dw-green-main);
+}
+
+/* ── Card base ── */
+.ds-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+}
+
+.ds-card:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+@media (max-width: 768px) {
+  .ds-card { padding: 16px; }
+}
+
+/* ── Merchant logos ── */
+.merchant-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-card);
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--bg-pure);
+}
+
+.merchant-pill img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}

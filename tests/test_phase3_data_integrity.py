@@ -385,14 +385,41 @@ def test_no_synthetic_historical_catalog_rows_in_production_db():
 def test_vercel_check_deal_is_clean_proxy():
     """
     Test L:
-    api/check-deal.js must not contain parallel synthetic pricing, ratings, or competitor simulations.
-    """
-    vercel_file = os.path.join(os.path.dirname(__file__), "..", "api", "check-deal.js")
-    with open(vercel_file, "r", encoding="utf-8") as f:
-        content = f.read()
+    check-deal.js must not contain parallel synthetic pricing, ratings, or competitor simulations.
 
-    # Verify absence of synthetic generator routines
-    assert "Math.round(price * 1.35)" not in content
-    assert "RetailEZ / Appario" not in content
-    assert "12,480" not in content
-    assert "targetEndpoint" in content  # Confirms proxy architecture
+    BOTH copies are checked. There is no vercel.json pinning the project root,
+    so either `api/` or `frontend/api/` may be the deployed functions
+    directory. This test previously checked only the root copy, and the
+    frontend copy had in fact drifted into a full synthetic generator --
+    inventing a price, an MRP of price * 1.35, a score of 85, a BUY verdict,
+    a named seller and bank offers whenever a scrape failed -- while the
+    suite stayed green. If a third copy ever appears, add it here.
+    """
+    repo_root = os.path.join(os.path.dirname(__file__), "..")
+    vercel_files = [
+        os.path.join(repo_root, "api", "check-deal.js"),
+        os.path.join(repo_root, "frontend", "api", "check-deal.js"),
+    ]
+
+    for vercel_file in vercel_files:
+        if not os.path.exists(vercel_file):
+            continue
+
+        with open(vercel_file, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        # Strip comments so the historical note describing what was removed
+        # does not itself trip the assertions below.
+        code = re.sub(r"/\*[\s\S]*?\*/", "", content)
+        code = re.sub(r"^\s*//.*$", "", code, flags=re.MULTILINE)
+
+        label = os.path.relpath(vercel_file, repo_root)
+
+        # Verify absence of synthetic generator routines
+        assert "Math.round(price * 1.35)" not in code, f"{label} synthesizes an MRP"
+        assert "RetailEZ / Appario" not in code, f"{label} invents a seller"
+        assert "12,480" not in code, f"{label} invents a ratings count"
+        assert "images.unsplash.com" not in code, f"{label} uses stock product photos"
+        assert "verdict" not in code.lower(), f"{label} authors a verdict outside the engine"
+        assert "bank_discounts" not in code, f"{label} authors bank offers"
+        assert "targetEndpoint" in code, f"{label} is not a proxy"

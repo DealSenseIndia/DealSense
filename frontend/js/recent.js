@@ -1,6 +1,11 @@
 // ==========================================================================
-// DEALWISE RECENT PRODUCTS & LOCALSTORAGE MANAGER
+// DEALSENSE RECENT PRODUCTS & LOCALSTORAGE MANAGER
 // ==========================================================================
+
+const RECENT_KEY = "dealsense_recent_product";
+// Pre-rename key, read once and migrated forward. Safe to delete after the
+// rename has been live long enough for returning visitors to have loaded it.
+const LEGACY_RECENT_KEY = "dealwise_recent_product";
 
 export function saveRecentProduct(data, originalUrl) {
   if (!data || !data.product) return;
@@ -30,7 +35,7 @@ export function saveRecentProduct(data, originalUrl) {
   };
 
   try {
-    localStorage.setItem("dealwise_recent_product", JSON.stringify(recentItem));
+    localStorage.setItem(RECENT_KEY, JSON.stringify(recentItem));
   } catch (e) {
     console.warn("Could not save recent product to localStorage", e);
   }
@@ -80,7 +85,19 @@ export function renderRecentHeroProduct(item) {
 
 export function initRecentProduct() {
   try {
-    const saved = localStorage.getItem("dealwise_recent_product");
+    let saved = localStorage.getItem(RECENT_KEY);
+
+    // Read-through migration from the pre-rename key, so a returning visitor
+    // keeps the product they last looked at.
+    if (!saved) {
+      const legacy = localStorage.getItem(LEGACY_RECENT_KEY);
+      if (legacy) {
+        localStorage.setItem(RECENT_KEY, legacy);
+        localStorage.removeItem(LEGACY_RECENT_KEY);
+        saved = legacy;
+      }
+    }
+
     if (saved) {
       const item = JSON.parse(saved);
       renderRecentHeroProduct(item);

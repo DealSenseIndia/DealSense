@@ -97,12 +97,12 @@
 
         <nav class="main-nav" style="margin-left: 16px;">
           <a href="/" class="nav-link">Home</a>
-          <a href="/deals" class="nav-link active" style="color: #16A34A; font-weight: 700; border-bottom: 2px solid #16A34A;">Deals</a>
-          <a href="/#priceHistory" class="nav-link">Price History</a>
-          <a href="/#compare" class="nav-link">Compare</a>
-          <a href="/#setup" class="nav-link">Build a Setup</a>
-          <a href="/#coupons" class="nav-link">Coupons</a>
-          <a href="/#blog" class="nav-link">Blog</a>
+          <a href="/#setup" class="nav-link nav-link-highlight">
+            <span class="nav-sparkle">✨</span> Smart Setups
+          </a>
+          <a href="/deals" class="nav-link active" style="color: #16A34A; font-weight: 700;">Deals</a>
+          <a href="/categories" class="nav-link">Categories</a>
+          <a href="/#track" class="nav-link">Track</a>
         </nav>
       </div>
 
@@ -355,48 +355,34 @@
           <h3 class="filter-group-title">Stores</h3>
           <input type="text" id="storeSearchInput" class="store-search-box" placeholder="Search store...">
           <div class="filter-option-list" id="storeFiltersList">
+            <!-- Amazon and Flipkart only: these are the merchants DealSense
+                 actually tracks prices for. Stores we do not observe are not
+                 listed, because a filter that can never return a result is a
+                 claim we cannot back. -->
             <label class="filter-checkbox-label store-filter-item" data-store-name="Amazon">
               <span class="filter-check-left">
                 <input type="checkbox" name="deal_store" value="Amazon" class="filter-checkbox-input">
                 <span>Amazon</span>
               </span>
-              <span class="filter-count">2,341</span>
             </label>
             <label class="filter-checkbox-label store-filter-item" data-store-name="Flipkart">
               <span class="filter-check-left">
                 <input type="checkbox" name="deal_store" value="Flipkart" class="filter-checkbox-input">
                 <span>Flipkart</span>
               </span>
-              <span class="filter-count">2,214</span>
-            </label>
-            <label class="filter-checkbox-label store-filter-item" data-store-name="Myntra">
-              <span class="filter-check-left">
-                <input type="checkbox" name="deal_store" value="Myntra" class="filter-checkbox-input">
-                <span>Myntra</span>
-              </span>
-              <span class="filter-count">643</span>
-            </label>
-            <label class="filter-checkbox-label store-filter-item" data-store-name="Croma">
-              <span class="filter-check-left">
-                <input type="checkbox" name="deal_store" value="Croma" class="filter-checkbox-input">
-                <span>Croma</span>
-              </span>
-              <span class="filter-count">421</span>
-            </label>
-            <label class="filter-checkbox-label store-filter-item" data-store-name="Meesho">
-              <span class="filter-check-left">
-                <input type="checkbox" name="deal_store" value="Meesho" class="filter-checkbox-input">
-                <span>Meesho</span>
-              </span>
-              <span class="filter-count">315</span>
             </label>
           </div>
-          <button type="button" class="filter-show-more">+ Show more</button>
         </div>
       </aside>
 
       <!-- RIGHT COLUMN (DEALS FEED) -->
       <section class="deals-feed-column">
+
+        <div class="deals-result-bar">
+          <span class="deals-result-count-text">
+            <strong id="dealsResultCount">0</strong> deals matching your filters
+          </span>
+        </div>
 
         <!-- 6-Card Wide Main Grid -->
         <div id="dealsGrid" class="deals-grid" aria-live="polite">

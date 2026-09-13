@@ -1,209 +1,394 @@
 // ==========================================================================
-// DEALWISE SMART SETUP BUILDER MODULE (The Strategic Weapon)
-// Composes budget-capped, aesthetic room setups across Amazon, Flipkart & IKEA.
+// DEALSENSE SMART SETUP BUILDER
+//
+// Composes budget-capped setups from products DealSense actually price-tracks
+// on Amazon and Flipkart.
+//
+// Rendering rules this module obeys, without exception:
+//   * A missing number renders as "--". It is never coerced to 0.
+//   * A slot with no qualifying product renders as a visible gap with a reason.
+//   * Verdicts and provenance come from the API. Nothing is asserted here.
+//   * If the API fails, an error is shown. No setup is generated client-side.
 // ==========================================================================
 
-import { generateSetup as apiGenerateSetup } from "./api.js";
+import { generateSetup as apiGenerateSetup, fetchSetupTemplates } from "./api.js";
 import { escapeHtml, showToast } from "./ui.js";
 
+let templates = null;          // blueprint metadata from the API
 let currentSpace = "bedroom";
 let currentBudget = 25000;
-let currentOwnedItems = ["bed"];
-let currentStyle = "modern_minimal";
-let currentSetupTiers = [];
+let currentOwned = [];
+let currentStyle = "no_preference";
+let currentTiers = [];
 let activeTierIdx = 0;
+let lastResult = null;
+let isGenerating = false;
+let generationToken = 0;       // guards against out-of-order async responses
 
-const SPACE_OWNED_OPTIONS = {
-  bedroom: [
-    { id: "bed", label: "Bed Frame" },
-    { id: "mattress", label: "Mattress" },
-    { id: "curtains", label: "Curtains" },
-    { id: "lighting", label: "Floor Lamp" },
-    { id: "rug", label: "Floor Rug" },
-    { id: "bedside_table", label: "Nightstand" },
-    { id: "decor_plants", label: "Planters" },
-  ],
-  wfh_desk: [
-    { id: "desk", label: "Computer Desk" },
-    { id: "chair", label: "Ergonomic Chair" },
-    { id: "lighting", label: "Monitor Light Bar" },
-    { id: "desk_accessories", label: "Desk Mat / Riser" },
-  ],
-  living_room: [
-    { id: "sofa", label: "Sofa / Couch" },
-    { id: "coffee_table", label: "Coffee Table" },
-    { id: "tv_unit", label: "TV Console" },
-    { id: "rug", label: "Floor Rug" },
-    { id: "lighting", label: "Floor Lamp" },
-    { id: "wall_art", label: "Wall Art / Prints" },
-  ],
-  kitchen_bar: [
-    { id: "coffee_machine", label: "Coffee Maker" },
-    { id: "air_fryer", label: "Air Fryer" },
-    { id: "bakers_rack", label: "Counter Rack" },
-    { id: "storage_canisters", label: "Storage Jars" },
-    { id: "under_cabinet_lighting", label: "Under-Cabinet Lights" },
-  ],
+// ─────────────────────────── formatting ───────────────────────────
+
+const INR = (n) =>
+  `₹${Number(n).toLocaleString("en-IN", { maximumFractionDigits: 0 })}`;
+
+/** Formats a value as currency, or "--" when it genuinely has no value. */
+function money(n) {
+  if (n === null || n === undefined || Number.isNaN(Number(n))) return "--";
+  return INR(n);
+}
+
+function signedMoney(n) {
+  if (n === null || n === undefined || Number.isNaN(Number(n))) return "--";
+  const v = Number(n);
+  return v >= 0 ? INR(v) : `-${INR(Math.abs(v))}`;
+}
+
+// Provenance badges. Copy matches the trust vocabulary used across the app.
+const PROVENANCE_META = {
+  LIVE: { label: "LIVE", cls: "prov-live", tip: "Price checked within the last 15 minutes." },
+  VERIFIED: { label: "VERIFIED", cls: "prov-verified", tip: "Recent price with enough history to judge it." },
+  OBSERVED: { label: "OBSERVED", cls: "prov-observed", tip: "Price recorded from the merchant, limited history so far." },
+  STALE: { label: "STALE", cls: "prov-stale", tip: "Last checked over 24 hours ago. Confirm on the store page." },
+  UNVERIFIED: { label: "NO PRICE RECORD", cls: "prov-unverified", tip: "No recorded observation for this listing." },
 };
 
-// ==========================================================================
-// DEEP LINKING & SHARE HELPERS
-// ==========================================================================
+const VERDICT_CLASS = {
+  BUY: "verdict-buy",
+  WAIT: "verdict-wait",
+  SKIP: "verdict-skip",
+  "NOT ENOUGH DATA": "verdict-unknown",
+};
+
+const UNFILLED_COPY = {
+  NO_MATCHING_PRODUCT: "Nothing tracked for this slot yet",
+  NO_PRICED_LISTING: "Tracked, but no recorded price yet",
+  OUT_OF_BUDGET_RANGE: "Nothing tracked in this price range",
+  OWNED: "You already own this",
+};
+
+// ─────────────────────────── deep links ───────────────────────────
 
 export function getSetupDeepLink(tierIdx = activeTierIdx) {
   const base = `${window.location.origin}${window.location.pathname}`;
   const params = new URLSearchParams();
   params.set("view", "setup");
   params.set("space", currentSpace);
-  params.set("budget", currentBudget.toString());
-  if (currentOwnedItems && currentOwnedItems.length > 0) {
-    params.set("owned", currentOwnedItems.join(","));
-  }
-  if (currentStyle && currentStyle !== "modern_minimal") {
-    params.set("style", currentStyle);
-  }
-  params.set("tier", (tierIdx + 1).toString());
+  params.set("budget", String(currentBudget));
+  if (currentOwned.length) params.set("owned", currentOwned.join(","));
+  if (currentStyle && currentStyle !== "no_preference") params.set("style", currentStyle);
+  params.set("tier", String(tierIdx + 1));
   return `${base}?${params.toString()}`;
 }
 
 export function shareOnWhatsApp(tier) {
-  const targetTier = tier || (currentSetupTiers && currentSetupTiers[activeTierIdx]);
-  if (!targetTier) return;
+  const t = tier || currentTiers[activeTierIdx];
+  if (!t) return;
 
-  const link = getSetupDeepLink();
-  const roomName = currentSpace.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase());
-  
-  const topItems = (targetTier.all_items || []).slice(0, 4)
-    .map((it) => `• ${it.name} (₹${it.price.toLocaleString("en-IN")})`)
+  const spaceTitle = lastResult?.title || currentSpace.replace(/_/g, " ");
+  const items = t.items || [];
+  const lines = items
+    .slice(0, 5)
+    .map((it) => `• ${it.title} — ${INR(it.price)} (${it.merchant})`)
     .join("\n");
 
-  const text = 
-`🛋️ *${targetTier.title} (${roomName} Setup)* curated on DealSense!
-💰 Total Cost: ₹${targetTier.total_price.toLocaleString("en-IN")}
-🎉 Verified Savings: ₹${targetTier.savings.toLocaleString("en-IN")} vs retail
+  const scoreLine =
+    t.setup_score !== null && t.setup_score !== undefined
+      ? `\n📊 Setup Score: ${t.setup_score}/100`
+      : "";
 
-✨ *Key Curated Deals:*
-${topItems}
+  const gapLine =
+    t.unfilled && t.unfilled.length
+      ? `\n⚠️ ${t.unfilled.length} slot(s) still need products.`
+      : "";
 
-🛡️ *DealSense Trust Guard:* Kept existing items to eliminate duplicate retail spend.
+  const text =
+`🛋️ *${t.label} — ${spaceTitle}* on DealSense
+💰 Total: ${INR(t.total_price)} of a ${INR(currentBudget)} budget${scoreLine}${gapLine}
 
-🔗 *View full setup & multi-store deals here:*
-${link}`;
+✨ *What's in it:*
+${lines}${items.length > 5 ? `\n…and ${items.length - 5} more` : ""}
 
-  const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
-  window.open(waUrl, "_blank");
+Every price above comes from a real recorded observation, not an estimate.
+
+🔗 ${getSetupDeepLink()}`;
+
+  window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank");
 }
 
-export async function copySetupLink(tier) {
+export async function copySetupLink() {
   const link = getSetupDeepLink();
   try {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
+    if (navigator.clipboard?.writeText) {
       await navigator.clipboard.writeText(link);
     } else {
       const ta = document.createElement("textarea");
       ta.value = link;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "absolute";
+      ta.style.left = "-9999px";
       document.body.appendChild(ta);
       ta.select();
       document.execCommand("copy");
       document.body.removeChild(ta);
     }
-    showToast("Setup link copied to clipboard! Share it with your roommate or spouse.", "success");
+    showToast("Setup link copied.", "success");
   } catch (err) {
-    showToast(`Setup Link: ${link}`, "info");
+    showToast(`Setup link: ${link}`, "info");
   }
+}
+
+// ─────────────────────────── init ───────────────────────────
+
+let initPromise = null;
+
+/**
+ * Initialises once and returns the same promise on every later call, so
+ * callers can safely await readiness without racing the template fetch.
+ */
+export function ensureSetupBuilder() {
+  if (!initPromise) initPromise = initSetupBuilder();
+  return initPromise;
+}
+
+/**
+ * Switches to a space from outside the module (e.g. a homepage card).
+ * Awaits initialisation first, because the space cards are rendered from the
+ * API and do not exist synchronously.
+ *
+ * `budget` is an optional starting budget (homepage cards carry one in
+ * data-budget). It is only honoured when it falls inside the blueprint's real
+ * range; anything outside is ignored in favour of the blueprint default, so a
+ * stale number in a template can never push the engine outside its range.
+ */
+export async function selectSpace(space, budget = null) {
+  await ensureSetupBuilder();
+  if (!templates?.templates.some((t) => t.key === space)) return;
+  currentSpace = space;
+  currentOwned = [];
+
+  const requested = Number(budget);
+  if (Number.isFinite(requested) && requested > 0) {
+    const bp = templates.templates.find((t) => t.key === space);
+    if (bp && requested >= bp.budget_min && requested <= bp.budget_max) {
+      currentBudget = requested;
+    }
+  }
+
+  applyBlueprintBudgetRange();
+  renderSpaceCards();
+  renderOwnedCheckboxes();
+  triggerGenerateSetup();
+}
+
+export async function initSetupBuilder() {
+  try {
+    templates = await fetchSetupTemplates();
+  } catch (err) {
+    showSetupError(
+      "Couldn't load setup templates",
+      "The setup engine isn't responding. Make sure the DealSense server is running, then try again."
+    );
+    return;
+  }
+
+  renderSpaceCards();
+  renderStylePills();
+  applyBlueprintBudgetRange();
+  renderOwnedCheckboxes();
+  attachSetupEventListeners();
+
+  const hydrated = hydrateSetupFromUrl();
+  if (hydrated) {
+    renderSpaceCards();
+    renderStylePills();
+    renderOwnedCheckboxes();
+  }
+  triggerGenerateSetup();
+}
+
+function currentBlueprint() {
+  if (!templates) return null;
+  return templates.templates.find((t) => t.key === currentSpace) || templates.templates[0];
 }
 
 export function hydrateSetupFromUrl() {
   const params = new URLSearchParams(window.location.search);
-  const requestedSpace = params.get("space");
-  const requestedBudget = params.get("budget");
-  const requestedOwned = params.get("owned");
-  const requestedStyle = params.get("style");
-  const requestedTier = params.get("tier");
-  const requestedView = params.get("view");
+  const space = params.get("space");
+  const budget = params.get("budget");
+  const owned = params.get("owned");
+  const style = params.get("style");
+  const tier = params.get("tier");
 
-  if (!requestedSpace && !requestedBudget && requestedView !== "setup") {
-    return false;
+  if (!space && !budget && params.get("view") !== "setup") return false;
+
+  if (space && templates?.templates.some((t) => t.key === space)) {
+    currentSpace = space;
+    applyBlueprintBudgetRange();
   }
-
-  if (requestedSpace && SPACE_OWNED_OPTIONS[requestedSpace]) {
-    currentSpace = requestedSpace;
-    const spaceSelectGroup = document.getElementById("spaceSelectGroup");
-    if (spaceSelectGroup) {
-      spaceSelectGroup.querySelectorAll(".space-card").forEach((card) => {
-        card.classList.toggle("active", card.getAttribute("data-space") === currentSpace);
-      });
-    }
+  if (budget) {
+    const b = Number(budget);
+    if (!Number.isNaN(b) && b > 0) setBudget(b);
   }
-
-  if (requestedBudget) {
-    const b = Number(requestedBudget);
-    if (!isNaN(b) && b > 0) {
-      currentBudget = b;
-      const setupBudgetSlider = document.getElementById("setupBudgetSlider");
-      const budgetDisplayVal = document.getElementById("budgetDisplayVal");
-      const budgetPillsGroup = document.getElementById("budgetPillsGroup");
-      if (setupBudgetSlider) setupBudgetSlider.value = b;
-      if (budgetDisplayVal) budgetDisplayVal.textContent = `₹${b.toLocaleString("en-IN")}`;
-      if (budgetPillsGroup) {
-        budgetPillsGroup.querySelectorAll(".budget-pill").forEach((p) => {
-          p.classList.toggle("active", Number(p.getAttribute("data-val")) === b);
-        });
-      }
-    }
+  if (owned) {
+    currentOwned = owned.split(",").map((s) => s.trim()).filter(Boolean);
   }
-
-  if (requestedOwned) {
-    currentOwnedItems = requestedOwned.split(",").map((s) => s.trim()).filter(Boolean);
+  if (style && templates?.styles.some((s) => s.key === style)) {
+    currentStyle = style;
   }
-
-  if (requestedStyle) {
-    currentStyle = requestedStyle;
+  if (tier) {
+    const t = Number(tier) - 1;
+    if (t >= 0 && t <= 2) activeTierIdx = t;
   }
-
-  if (requestedTier) {
-    const t = Number(requestedTier) - 1;
-    if (t >= 0 && t <= 2) {
-      activeTierIdx = t;
-    }
-  }
-
-  renderOwnedCheckboxes();
-  attachSetupEventListeners();
-  triggerGenerateSetup();
   return true;
 }
 
-export function initSetupBuilder() {
-  const hydrated = hydrateSetupFromUrl();
-  if (!hydrated) {
-    renderOwnedCheckboxes();
-    attachSetupEventListeners();
-    triggerGenerateSetup();
-  }
+// ─────────────────────────── configurator ───────────────────────────
+
+const SPACE_ICON_MAP = {
+  bed: "🛏️",
+  desk: "🖥️",
+  sofa: "🛋️",
+  gamepad: "🎮",
+  book: "📚",
+  coffee: "☕",
+};
+
+function renderSpaceCards() {
+  const group = document.getElementById("spaceSelectGroup");
+  if (!group || !templates) return;
+
+  group.innerHTML = templates.templates
+    .map(
+      (t) => `
+      <button type="button"
+              class="space-card ${t.key === currentSpace ? "active" : ""}"
+              data-space="${escapeHtml(t.key)}"
+              aria-pressed="${t.key === currentSpace}">
+        <span class="space-icon" aria-hidden="true">${SPACE_ICON_MAP[t.icon] || "🏠"}</span>
+        <span class="space-title">${escapeHtml(t.title)}</span>
+        <span class="space-sub">${escapeHtml(t.tagline)}</span>
+      </button>`
+    )
+    .join("");
+
+  group.querySelectorAll(".space-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      currentSpace = card.getAttribute("data-space");
+      currentOwned = [];
+      applyBlueprintBudgetRange();
+      renderSpaceCards();
+      renderOwnedCheckboxes();
+      triggerGenerateSetup();
+    });
+  });
 }
 
-function renderOwnedCheckboxes() {
-  const ownedItemsGroup = document.getElementById("ownedItemsGroup");
-  if (!ownedItemsGroup) return;
-  const options = SPACE_OWNED_OPTIONS[currentSpace] || SPACE_OWNED_OPTIONS.bedroom;
-  ownedItemsGroup.innerHTML = options.map((opt) => {
-    const isChecked = currentOwnedItems.includes(opt.id);
-    return `
-      <label class="owned-pill ${isChecked ? 'active' : ''}">
-        <input type="checkbox" value="${opt.id}" ${isChecked ? 'checked' : ''}>
-        <span>${opt.label}</span>
-      </label>
-    `;
-  }).join("");
+function renderStylePills() {
+  const group = document.getElementById("styleSelectGroup");
+  if (!group || !templates) return;
 
-  ownedItemsGroup.querySelectorAll("input[type='checkbox']").forEach((cb) => {
+  group.innerHTML = templates.styles
+    .map(
+      (s) => `
+      <button type="button"
+              class="style-pill ${s.key === currentStyle ? "active" : ""}"
+              data-style="${escapeHtml(s.key)}"
+              title="${escapeHtml(s.description || "")}"
+              aria-pressed="${s.key === currentStyle}">
+        ${escapeHtml(s.label)}
+      </button>`
+    )
+    .join("");
+
+  group.querySelectorAll(".style-pill").forEach((pill) => {
+    pill.addEventListener("click", () => {
+      currentStyle = pill.getAttribute("data-style");
+      renderStylePills();
+      triggerGenerateSetup();
+    });
+  });
+}
+
+/** Points the slider at the blueprint's real budget range. */
+function applyBlueprintBudgetRange() {
+  const bp = currentBlueprint();
+  if (!bp) return;
+
+  const slider = document.getElementById("setupBudgetSlider");
+  if (slider) {
+    slider.min = String(bp.budget_min);
+    slider.max = String(bp.budget_max);
+    slider.step = "1000";
+  }
+
+  if (currentBudget < bp.budget_min || currentBudget > bp.budget_max) {
+    setBudget(bp.budget_default);
+  } else {
+    setBudget(currentBudget);
+  }
+  renderBudgetPills();
+}
+
+function renderBudgetPills() {
+  const group = document.getElementById("budgetPillsGroup");
+  const bp = currentBlueprint();
+  if (!group || !bp) return;
+
+  // Four stops spanning the blueprint's real range.
+  const span = bp.budget_max - bp.budget_min;
+  const stops = [0, 0.25, 0.55, 1].map((f) =>
+    Math.round((bp.budget_min + span * f) / 1000) * 1000
+  );
+
+  group.innerHTML = [...new Set(stops)]
+    .map(
+      (v) => `
+      <button type="button" class="budget-pill ${v === currentBudget ? "active" : ""}" data-val="${v}">
+        ${INR(v)}
+      </button>`
+    )
+    .join("");
+
+  group.querySelectorAll(".budget-pill").forEach((pill) => {
+    pill.addEventListener("click", () => {
+      setBudget(Number(pill.getAttribute("data-val")));
+      renderBudgetPills();
+      triggerGenerateSetup();
+    });
+  });
+}
+
+function setBudget(value) {
+  currentBudget = value;
+  const slider = document.getElementById("setupBudgetSlider");
+  const display = document.getElementById("budgetDisplayVal");
+  if (slider) slider.value = String(value);
+  if (display) display.textContent = INR(value);
+}
+
+/** Owned options come from the blueprint's real slots, so they always match. */
+function renderOwnedCheckboxes() {
+  const group = document.getElementById("ownedItemsGroup");
+  const bp = currentBlueprint();
+  if (!group || !bp) return;
+
+  group.innerHTML = bp.slots
+    .map((slot) => {
+      const checked = currentOwned.includes(slot.owned_key);
+      return `
+        <label class="owned-pill ${checked ? "active" : ""}">
+          <input type="checkbox" value="${escapeHtml(slot.owned_key)}" ${checked ? "checked" : ""}>
+          <span>${escapeHtml(slot.label)}</span>
+        </label>`;
+    })
+    .join("");
+
+  group.querySelectorAll("input[type='checkbox']").forEach((cb) => {
     cb.addEventListener("change", () => {
       const val = cb.value;
       if (cb.checked) {
-        if (!currentOwnedItems.includes(val)) currentOwnedItems.push(val);
+        if (!currentOwned.includes(val)) currentOwned.push(val);
       } else {
-        currentOwnedItems = currentOwnedItems.filter((x) => x !== val);
+        currentOwned = currentOwned.filter((x) => x !== val);
       }
       cb.parentElement.classList.toggle("active", cb.checked);
       triggerGenerateSetup();
@@ -212,381 +397,524 @@ function renderOwnedCheckboxes() {
 }
 
 function attachSetupEventListeners() {
-  const spaceSelectGroup = document.getElementById("spaceSelectGroup");
-  const setupBudgetSlider = document.getElementById("setupBudgetSlider");
-  const budgetDisplayVal = document.getElementById("budgetDisplayVal");
-  const budgetPillsGroup = document.getElementById("budgetPillsGroup");
-  const styleSelectGroup = document.getElementById("styleSelectGroup");
-  const generateSetupBtn = document.getElementById("generateSetupBtn");
-  const shareSetupBtn = document.getElementById("shareSetupBtn");
-  const buyAllSetupBtn = document.getElementById("buyAllSetupBtn");
-  const closeBundleModalBtn = document.getElementById("closeBundleModalBtn");
-  const bundleModalBackdrop = document.getElementById("bundleModalBackdrop");
-
-  // Space selection
-  if (spaceSelectGroup) {
-    spaceSelectGroup.querySelectorAll(".space-card").forEach((card) => {
-      card.addEventListener("click", () => {
-        spaceSelectGroup.querySelectorAll(".space-card").forEach((c) => c.classList.remove("active"));
-        card.classList.add("active");
-        currentSpace = card.getAttribute("data-space");
-        currentOwnedItems = currentSpace === "bedroom" ? ["bed"] : currentSpace === "living_room" ? ["sofa"] : [];
-        renderOwnedCheckboxes();
-        triggerGenerateSetup();
-      });
+  const slider = document.getElementById("setupBudgetSlider");
+  if (slider) {
+    slider.addEventListener("input", () => {
+      setBudget(Number(slider.value));
+      renderBudgetPills();
     });
+    slider.addEventListener("change", () => triggerGenerateSetup());
   }
 
-  // Budget slider
-  if (setupBudgetSlider) {
-    setupBudgetSlider.addEventListener("input", () => {
-      currentBudget = Number(setupBudgetSlider.value);
-      if (budgetDisplayVal) budgetDisplayVal.textContent = `₹${currentBudget.toLocaleString("en-IN")}`;
-      if (budgetPillsGroup) {
-        budgetPillsGroup.querySelectorAll(".budget-pill").forEach((pill) => {
-          pill.classList.toggle("active", Number(pill.getAttribute("data-val")) === currentBudget);
-        });
+  document.getElementById("generateSetupBtn")?.addEventListener("click", () => triggerGenerateSetup());
+  document.getElementById("setupRetryBtn")?.addEventListener("click", () => triggerGenerateSetup());
+  document.getElementById("copySetupLinkBtn")?.addEventListener("click", () => copySetupLink());
+  document.getElementById("shareSetupBtn")?.addEventListener("click", () => shareOnWhatsApp());
+
+  document.getElementById("buyAllSetupBtn")?.addEventListener("click", () => {
+    const tier = currentTiers[activeTierIdx];
+    if (tier) openBundleModal(tier);
+  });
+
+  const backdrop = document.getElementById("bundleModalBackdrop");
+  const closeBtn = document.getElementById("closeBundleModalBtn");
+  closeBtn?.addEventListener("click", () => closeBundleModal());
+  backdrop?.addEventListener("click", (e) => {
+    if (e.target === backdrop) closeBundleModal();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeBundleModal();
+  });
+}
+
+function closeBundleModal() {
+  const backdrop = document.getElementById("bundleModalBackdrop");
+  if (backdrop) backdrop.style.display = "none";
+}
+
+// ─────────────────────────── generation ───────────────────────────
+
+function setPanelVisibility({ results, error, empty }) {
+  const map = {
+    setupResultsContainer: results,
+    setupErrorState: error,
+    setupEmptyState: empty,
+  };
+  Object.entries(map).forEach(([id, visible]) => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = visible ? "block" : "none";
+  });
+}
+
+function showSetupError(title, body) {
+  setPanelVisibility({ results: false, error: true, empty: false });
+  const t = document.getElementById("setupErrorTitle");
+  const b = document.getElementById("setupErrorBody");
+  if (t) t.textContent = title;
+  if (b) b.textContent = body;
+}
+
+async function triggerGenerateSetup() {
+  const btn = document.getElementById("generateSetupBtn");
+  if (isGenerating) return;
+
+  const token = ++generationToken;
+  isGenerating = true;
+
+  if (btn) {
+    btn.disabled = true;
+    btn.setAttribute("aria-busy", "true");
+    btn.innerHTML = `
+      <svg class="btn-spinner-ring" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="3" aria-hidden="true" style="display:inline-block;vertical-align:middle;margin-right:6px;">
+        <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.25)"></circle>
+        <path d="M12 2a10 10 0 0 1 10 10" stroke="#FFFFFF" stroke-linecap="round"></path>
+      </svg>
+      <span>Composing setup…</span>`;
+  }
+
+  try {
+    const data = await apiGenerateSetup({
+      space: currentSpace,
+      budget: currentBudget,
+      owned: currentOwned,
+      style: currentStyle,
+    });
+
+    // A newer request superseded this one; drop the stale response.
+    if (token !== generationToken) return;
+
+    lastResult = data;
+    currentTiers = data.tiers || [];
+
+    const anyItems = currentTiers.some((t) => (t.items || []).length > 0);
+    if (!anyItems) {
+      setPanelVisibility({ results: false, error: false, empty: true });
+      const body = document.getElementById("setupEmptyBody");
+      if (body) {
+        body.textContent =
+          data.catalog_size === 0
+            ? "DealSense isn't tracking any products yet. Run: python -m scripts.tracker --seed-setups"
+            : `DealSense is tracking ${data.catalog_size} product(s), but none match this space at ${INR(currentBudget)}. Try a higher budget, or add products for this space to data/setup_seeds.json.`;
       }
-    });
+      return;
+    }
 
-    setupBudgetSlider.addEventListener("change", () => {
-      triggerGenerateSetup();
-    });
-  }
-
-  // Budget quick pills
-  if (budgetPillsGroup) {
-    budgetPillsGroup.querySelectorAll(".budget-pill").forEach((pill) => {
-      pill.addEventListener("click", () => {
-        budgetPillsGroup.querySelectorAll(".budget-pill").forEach((p) => p.classList.remove("active"));
-        pill.classList.add("active");
-        currentBudget = Number(pill.getAttribute("data-val"));
-        if (setupBudgetSlider) setupBudgetSlider.value = currentBudget;
-        if (budgetDisplayVal) budgetDisplayVal.textContent = `₹${currentBudget.toLocaleString("en-IN")}`;
-        triggerGenerateSetup();
-      });
-    });
-  }
-
-  // Style pills
-  if (styleSelectGroup) {
-    styleSelectGroup.querySelectorAll(".style-pill").forEach((pill) => {
-      pill.addEventListener("click", () => {
-        styleSelectGroup.querySelectorAll(".style-pill").forEach((p) => p.classList.remove("active"));
-        pill.classList.add("active");
-        currentStyle = pill.getAttribute("data-style");
-        triggerGenerateSetup();
-      });
-    });
-  }
-
-  // Generate button
-  if (generateSetupBtn) {
-    generateSetupBtn.addEventListener("click", () => {
-      triggerGenerateSetup();
-    });
-  }
-
-  // Copy setup deep link
-  const copySetupLinkBtn = document.getElementById("copySetupLinkBtn");
-  if (copySetupLinkBtn) {
-    copySetupLinkBtn.addEventListener("click", () => {
-      copySetupLink();
-    });
-  }
-
-  // Share Setup on WhatsApp
-  if (shareSetupBtn) {
-    shareSetupBtn.addEventListener("click", () => {
-      shareOnWhatsApp();
-    });
-  }
-
-  // Buy All Setup Button -> Opens Interactive Bundle Modal
-  if (buyAllSetupBtn) {
-    buyAllSetupBtn.addEventListener("click", () => {
-      if (!currentSetupTiers || currentSetupTiers.length === 0) return;
-      const tier = currentSetupTiers[activeTierIdx];
-      openBundleModal(tier);
-    });
-  }
-
-  // Modal Close Handlers
-  if (closeBundleModalBtn && bundleModalBackdrop) {
-    closeBundleModalBtn.addEventListener("click", () => {
-      bundleModalBackdrop.style.display = "none";
-    });
-
-    bundleModalBackdrop.addEventListener("click", (e) => {
-      if (e.target === bundleModalBackdrop) {
-        bundleModalBackdrop.style.display = "none";
-      }
-    });
+    setPanelVisibility({ results: true, error: false, empty: false });
+    renderTrustGuard(data.owned);
+    if (activeTierIdx >= currentTiers.length) activeTierIdx = 0;
+    renderSetupTiers(activeTierIdx);
+  } catch (err) {
+    if (token !== generationToken) return;
+    showSetupError("Couldn't build your setup", err.message || "The setup engine didn't respond.");
+  } finally {
+    if (token === generationToken) isGenerating = false;
+    if (btn) {
+      btn.disabled = false;
+      btn.removeAttribute("aria-busy");
+      btn.innerHTML = `
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2L13.8 7.5a2 2 0 0 0 1.3 1.3L21 11l-5.9 2.2a2 2 0 0 0-1.3 1.3L12 20l-1.8-5.5a2 2 0 0 0-1.3-1.3L3 11l5.9-2.2a2 2 0 0 0 1.3-1.3L12 2Z"/>
+        </svg>
+        <span>Build my setup</span>`;
+    }
   }
 }
 
+function renderTrustGuard(owned) {
+  const banner = document.getElementById("trustGuardBanner");
+  const pill = document.getElementById("trustGuardSavedPill");
+  const desc = document.getElementById("trustGuardDesc");
+  if (!banner) return;
+
+  if (!owned || !owned.count) {
+    banner.style.display = "none";
+    return;
+  }
+
+  banner.style.display = "flex";
+  if (pill) pill.textContent = `${owned.count} item${owned.count === 1 ? "" : "s"} skipped`;
+  if (desc) {
+    const names = (owned.slots || []).map((s) => s.label).join(", ");
+    desc.innerHTML =
+      `You already own <strong>${escapeHtml(names)}</strong>, so DealSense left ` +
+      `${owned.count === 1 ? "it" : "them"} out and spread that share of your budget ` +
+      `across the remaining slots. No duplicate recommendations, no padded total.`;
+  }
+}
+
+// ─────────────────────────── tier rendering ───────────────────────────
+
+function renderSetupTiers(tierIndex) {
+  if (!currentTiers.length) return;
+  activeTierIdx = tierIndex;
+  const tier = currentTiers[tierIndex];
+
+  const tabsBar = document.getElementById("tierTabsBar");
+  if (tabsBar) {
+    tabsBar.setAttribute("role", "tablist");
+    tabsBar.innerHTML = currentTiers
+      .map(
+        (t, idx) => `
+        <button type="button"
+                role="tab"
+                aria-selected="${idx === tierIndex}"
+                class="tier-tab-btn ${idx === tierIndex ? "active" : ""}"
+                style="--tier-accent: ${escapeHtml(t.accent)};"
+                data-idx="${idx}">
+          <div class="tier-tab-header">
+            <span class="tier-tab-title">${escapeHtml(t.label)}</span>
+            <span class="tier-tab-badge">${t.item_count} item${t.item_count === 1 ? "" : "s"}</span>
+          </div>
+          <div class="tier-tab-price">${money(t.total_price)}</div>
+        </button>`
+      )
+      .join("");
+
+    tabsBar.querySelectorAll(".tier-tab-btn").forEach((btn) => {
+      btn.addEventListener("click", () => renderSetupTiers(Number(btn.getAttribute("data-idx"))));
+    });
+  }
+
+  setText("tierTotalCost", money(tier.total_price));
+  setText("tierTotalSavings", tier.total_savings_vs_mrp ? money(tier.total_savings_vs_mrp) : "--");
+
+  const remaining = document.getElementById("tierBudgetRemaining");
+  if (remaining) {
+    remaining.textContent = signedMoney(tier.budget_remaining);
+    remaining.style.color = tier.budget_remaining >= 0 ? "#60A5FA" : "#F87171";
+  }
+
+  const scoreEl = document.getElementById("tierSetupScore");
+  if (scoreEl) {
+    scoreEl.textContent =
+      tier.setup_score === null || tier.setup_score === undefined
+        ? "--"
+        : `${tier.setup_score}/100`;
+  }
+
+  setText("tierAllocationAdvice", buildAdviceText(tier));
+  renderScoreBreakdown(tier);
+  renderDataNotice(tier);
+
+  const p1 = (tier.items || []).filter((i) => i.phase === 1);
+  const p2 = (tier.items || []).filter((i) => i.phase === 2);
+
+  setText("phase1Subtotal", `Subtotal: ${money(tier.phase1_total)}`);
+  setText("phase2Subtotal", `Subtotal: ${money(tier.phase2_total)}`);
+
+  renderGrid("phase1Grid", p1, (tier.unfilled || []).filter((u) => u.phase === 1));
+  renderGrid("phase2Grid", p2, (tier.unfilled || []).filter((u) => u.phase === 2));
+
+  setText("bottomBarTierTitle", tier.label);
+  const stores = tier.store_count === 1 ? "1 store" : `${tier.store_count} stores`;
+  setText(
+    "bottomBarItemCount",
+    `${tier.item_count} item${tier.item_count === 1 ? "" : "s"} across ${stores}`
+  );
+  setText("buyAllCost", Number(tier.total_price).toLocaleString("en-IN", { maximumFractionDigits: 0 }));
+}
+
+function buildAdviceText(tier) {
+  const parts = [];
+  if (tier.budget_remaining >= 0) {
+    parts.push(`${money(tier.budget_remaining)} left of your ${INR(currentBudget)} budget.`);
+  } else {
+    parts.push(`${money(Math.abs(tier.budget_remaining))} over your ${INR(currentBudget)} budget at this tier.`);
+  }
+
+  const dc = tier.data_completeness || {};
+  if (dc.items_awaiting_history) {
+    parts.push(
+      `${dc.items_awaiting_history} item${dc.items_awaiting_history === 1 ? "" : "s"} ` +
+      `need${dc.items_awaiting_history === 1 ? "s" : ""} more price history before DealSense will call it a good deal.`
+    );
+  }
+  return parts.join(" ");
+}
+
+function renderScoreBreakdown(tier) {
+  const wrap = document.getElementById("setupScoreDetails");
+  const body = document.getElementById("setupScoreBreakdown");
+  if (!wrap || !body) return;
+
+  const bd = tier.score_breakdown || {};
+  const keys = Object.keys(bd).filter((k) => bd[k] && typeof bd[k] === "object" && "weight" in bd[k]);
+
+  if (!keys.length) {
+    wrap.style.display = "none";
+    return;
+  }
+
+  wrap.style.display = "block";
+  body.innerHTML = keys
+    .map((k) => {
+      const c = bd[k];
+      const earned = (c.value * c.weight).toFixed(1);
+      const pct = Math.round(c.value * 100);
+      const label = k.replace(/_/g, " ").replace(/\b\w/g, (ch) => ch.toUpperCase());
+      return `
+        <div class="score-component">
+          <div class="score-component-head">
+            <span class="score-component-name">${escapeHtml(label)}</span>
+            <span class="score-component-val">${earned} / ${c.weight}</span>
+          </div>
+          <div class="score-bar" role="img" aria-label="${pct} percent">
+            <div class="score-bar-fill" style="width:${pct}%"></div>
+          </div>
+          <p class="score-component-detail">${escapeHtml(c.detail || "")}</p>
+        </div>`;
+    })
+    .join("");
+}
+
+function renderDataNotice(tier) {
+  const panel = document.getElementById("setupDataNotice");
+  const title = document.getElementById("setupDataNoticeTitle");
+  const body = document.getElementById("setupDataNoticeBody");
+  const list = document.getElementById("setupUnfilledList");
+  if (!panel) return;
+
+  const unfilled = tier.unfilled || [];
+  if (!unfilled.length) {
+    panel.style.display = "none";
+    return;
+  }
+
+  panel.style.display = "block";
+  if (title) {
+    title.textContent = `${unfilled.length} slot${unfilled.length === 1 ? "" : "s"} couldn't be filled`;
+  }
+  if (body) {
+    body.textContent =
+      "DealSense only recommends products it actively price-tracks. Rather than filling these with a guess, it's showing you exactly what's missing.";
+  }
+  if (list) {
+    list.innerHTML = unfilled
+      .map(
+        (u) => `
+        <li class="unfilled-row">
+          <span class="unfilled-label">${escapeHtml(u.slot_label)}</span>
+          <span class="unfilled-reason">${escapeHtml(UNFILLED_COPY[u.reason] || u.reason)}</span>
+          <span class="unfilled-detail">${escapeHtml(u.detail)}</span>
+        </li>`
+      )
+      .join("");
+  }
+}
+
+function renderGrid(gridId, items, unfilled) {
+  const grid = document.getElementById(gridId);
+  if (!grid) return;
+
+  const cards = items.map(renderSetupItemCard).join("");
+  const gaps = (unfilled || []).map(renderUnfilledCard).join("");
+
+  grid.innerHTML =
+    cards + gaps ||
+    `<p class="setup-grid-empty">Nothing tracked for this phase yet.</p>`;
+}
+
+function renderSetupItemCard(item) {
+  const prov = PROVENANCE_META[item.provenance] || PROVENANCE_META.OBSERVED;
+  const verdictCls = VERDICT_CLASS[item.verdict] || "verdict-unknown";
+
+  // MRP and discount render only when the merchant actually published an MRP.
+  const mrpBlock =
+    item.mrp && item.mrp > item.price
+      ? `<span class="setup-card-mrp">${INR(item.mrp)}</span>
+         <span class="setup-card-off">${item.discount_pct}% off</span>`
+      : "";
+
+  const historyNote = item.has_sufficient_history
+    ? `<span class="setup-card-history">${item.observation_count} price checks recorded</span>`
+    : `<span class="setup-card-history muted">Not enough history yet — verdict is provisional</span>`;
+
+  const lowNote =
+    item.historical_low && item.historical_low < item.price
+      ? `<span class="setup-card-low">Lowest seen: ${INR(item.historical_low)}</span>`
+      : "";
+
+  const img = item.image_url
+    ? `<img src="${escapeHtml(item.image_url)}" alt="" class="setup-card-thumb" loading="lazy" decoding="async">`
+    : `<div class="setup-card-thumb setup-card-thumb-empty" aria-hidden="true">📦</div>`;
+
+  return `
+    <article class="setup-item-card">
+      <div class="setup-card-top">
+        <span class="setup-cat-tag">${escapeHtml(item.slot_label)}</span>
+        <span class="prov-badge ${prov.cls}" title="${escapeHtml(prov.tip)}">${prov.label}</span>
+      </div>
+
+      ${img}
+
+      <h4 class="setup-item-title" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</h4>
+      <p class="setup-item-reason">${escapeHtml(item.rationale)}</p>
+
+      <div class="setup-card-verdict-row">
+        <span class="verdict-chip ${verdictCls}">${escapeHtml(item.verdict)}</span>
+        <span class="setup-card-store">${escapeHtml(item.merchant)}</span>
+      </div>
+      <p class="setup-card-verdict-why">${escapeHtml(item.verdict_summary)}</p>
+
+      <div class="setup-card-evidence">
+        ${historyNote}
+        ${lowNote}
+      </div>
+
+      <div class="setup-card-price-row">
+        <div class="setup-card-prices">
+          <span class="setup-card-price">${INR(item.price)}</span>
+          ${mrpBlock}
+        </div>
+        <a href="${escapeHtml(item.affiliate_url)}"
+           target="_blank"
+           rel="noopener sponsored"
+           class="btn-buy-item">Buy on ${escapeHtml(item.merchant)} ↗</a>
+      </div>
+    </article>`;
+}
+
+function renderUnfilledCard(slot) {
+  return `
+    <article class="setup-item-card setup-item-card-empty">
+      <div class="setup-card-top">
+        <span class="setup-cat-tag">${escapeHtml(slot.slot_label)}</span>
+        <span class="prov-badge prov-unverified">NOT FILLED</span>
+      </div>
+      <div class="setup-card-thumb setup-card-thumb-empty" aria-hidden="true">➕</div>
+      <h4 class="setup-item-title">${escapeHtml(UNFILLED_COPY[slot.reason] || slot.reason)}</h4>
+      <p class="setup-item-reason">${escapeHtml(slot.detail)}</p>
+      <div class="setup-card-price-row">
+        <div class="setup-card-prices">
+          <span class="setup-card-price muted">--</span>
+        </div>
+        <span class="setup-budget-hint">Budgeted ${money(slot.target_spend)}</span>
+      </div>
+    </article>`;
+}
+
+// ─────────────────────────── bundle modal ───────────────────────────
+
 function openBundleModal(tier) {
   const backdrop = document.getElementById("bundleModalBackdrop");
-  const title = document.getElementById("bundleModalTitle");
-  const total = document.getElementById("bundleModalTotal");
-  const mrp = document.getElementById("bundleModalMrp");
-  const savings = document.getElementById("bundleModalSavings");
-  const body = document.getElementById("bundleModalBody");
-  const openAllBtn = document.getElementById("openAllStoresBtn");
-  const whatsappBtn = document.getElementById("modalShareWhatsappBtn");
-
   if (!backdrop || !tier) return;
 
-  title.textContent = `${tier.title} (${tier.all_items.length} Items)`;
-  total.textContent = `₹${tier.total_price.toLocaleString("en-IN")}`;
-  mrp.textContent = `₹${tier.total_mrp.toLocaleString("en-IN")}`;
-  const savePct = Math.round((tier.savings / tier.total_mrp) * 100) || 0;
-  savings.textContent = `Save ₹${tier.savings.toLocaleString("en-IN")} (${savePct}% OFF)`;
+  const items = tier.items || [];
+  setText("bundleModalTitle", `${tier.label} (${items.length} item${items.length === 1 ? "" : "s"})`);
+  setText("bundleModalTotal", money(tier.total_price));
+  setText("bundleModalMrp", tier.total_mrp ? money(tier.total_mrp) : "--");
 
-  // Group items by merchant
-  const storesMap = {};
-  tier.all_items.forEach((item) => {
-    const s = item.store || "Amazon";
-    if (!storesMap[s]) storesMap[s] = [];
-    storesMap[s].push(item);
+  const savingsEl = document.getElementById("bundleModalSavings");
+  if (savingsEl) {
+    if (tier.total_savings_vs_mrp && tier.total_mrp) {
+      const pct = Math.round((tier.total_savings_vs_mrp / tier.total_mrp) * 100);
+      savingsEl.textContent = `${money(tier.total_savings_vs_mrp)} (${pct}%)`;
+    } else {
+      savingsEl.textContent = "No MRP published";
+    }
+  }
+
+  // Group by merchant so the user checks out store by store.
+  const byStore = {};
+  items.forEach((it) => {
+    (byStore[it.merchant] ||= []).push(it);
   });
 
-  body.innerHTML = Object.entries(storesMap).map(([storeName, items]) => {
-    const storeSubtotal = items.reduce((acc, x) => acc + x.price, 0);
-    const storeLogo = items[0].logo || "/assets/dealsense-icon.png";
-
-    return `
-      <div class="bundle-store-group">
-        <div class="bundle-store-header">
-          <div class="bundle-store-brand">
-            <img src="${storeLogo}" alt="${escapeHtml(storeName)}" class="bundle-store-logo">
-            <span class="bundle-store-name">${escapeHtml(storeName)}</span>
-            <span class="bundle-store-badge">${items.length} ${items.length === 1 ? 'item' : 'items'}</span>
-          </div>
-          <div class="bundle-store-actions">
-            <span class="bundle-store-total">₹${storeSubtotal.toLocaleString("en-IN")}</span>
-            <button type="button" class="btn-store-batch-open" data-store="${escapeHtml(storeName)}">
-              Open ${escapeHtml(storeName)} Items ↗
-            </button>
-          </div>
-        </div>
-
-        <div class="bundle-items-list">
-          ${items.map((item) => `
-            <div class="bundle-item-row">
-              <img src="${item.image}" alt="${escapeHtml(item.name)}" class="bundle-item-img" loading="lazy">
-              <div class="bundle-item-info">
-                <span class="bundle-item-cat">${escapeHtml(item.category)}</span>
-                <h4 class="bundle-item-title">${escapeHtml(item.name)}</h4>
-                <div class="bundle-item-verdict">
-                  <span class="verdict-tag">${escapeHtml(item.deal_verdict || 'Verified Deal')}</span>
-                  <span class="bundle-item-phase">Phase ${item.phase}</span>
-                </div>
+  const body = document.getElementById("bundleModalBody");
+  if (body) {
+    body.innerHTML = Object.entries(byStore)
+      .map(([store, storeItems]) => {
+        const subtotal = storeItems.reduce((a, x) => a + x.price, 0);
+        return `
+          <div class="bundle-store-group">
+            <div class="bundle-store-header">
+              <div class="bundle-store-brand">
+                <span class="bundle-store-name">${escapeHtml(store)}</span>
+                <span class="bundle-store-badge">${storeItems.length} item${storeItems.length === 1 ? "" : "s"}</span>
               </div>
-              <div class="bundle-item-pricing">
-                <strong class="bundle-item-price">₹${item.price.toLocaleString("en-IN")}</strong>
-                ${item.mrp ? `<span class="bundle-item-mrp">₹${item.mrp.toLocaleString("en-IN")}</span>` : ''}
-                <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener sponsored" class="btn-buy-single-item">
-                  Buy on ${escapeHtml(storeName)} ↗
-                </a>
+              <div class="bundle-store-actions">
+                <span class="bundle-store-total">${INR(subtotal)}</span>
+                <button type="button" class="btn-store-batch-open" data-store="${escapeHtml(store)}">
+                  Open ${escapeHtml(store)} items ↗
+                </button>
               </div>
             </div>
-          `).join('')}
-        </div>
-      </div>
-    `;
-  }).join('');
+            <div class="bundle-items-list">
+              ${storeItems
+                .map(
+                  (item) => `
+                <div class="bundle-item-row">
+                  ${
+                    item.image_url
+                      ? `<img src="${escapeHtml(item.image_url)}" alt="" class="bundle-item-img" loading="lazy">`
+                      : `<div class="bundle-item-img bundle-item-img-empty" aria-hidden="true">📦</div>`
+                  }
+                  <div class="bundle-item-info">
+                    <span class="bundle-item-cat">${escapeHtml(item.slot_label)}</span>
+                    <h4 class="bundle-item-title">${escapeHtml(item.title)}</h4>
+                    <div class="bundle-item-verdict">
+                      <span class="verdict-tag ${VERDICT_CLASS[item.verdict] || "verdict-unknown"}">${escapeHtml(item.verdict)}</span>
+                      <span class="bundle-item-phase">Phase ${item.phase}</span>
+                    </div>
+                  </div>
+                  <div class="bundle-item-pricing">
+                    <strong class="bundle-item-price">${INR(item.price)}</strong>
+                    ${item.mrp && item.mrp > item.price ? `<span class="bundle-item-mrp">${INR(item.mrp)}</span>` : ""}
+                    <a href="${escapeHtml(item.affiliate_url)}" target="_blank" rel="noopener sponsored" class="btn-buy-single-item">
+                      Buy ↗
+                    </a>
+                  </div>
+                </div>`
+                )
+                .join("")}
+            </div>
+          </div>`;
+      })
+      .join("");
 
-  // Batch store click handlers
-  body.querySelectorAll(".btn-store-batch-open").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const sName = btn.getAttribute("data-store");
-      const storeItems = storesMap[sName] || [];
-      storeItems.forEach((it) => {
-        if (it.url) window.open(it.url, "_blank");
+    body.querySelectorAll(".btn-store-batch-open").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const store = btn.getAttribute("data-store");
+        openLinks((byStore[store] || []).map((i) => i.affiliate_url));
       });
     });
-  });
-
-  // Open all stores button
-  if (openAllBtn) {
-    openAllBtn.onclick = () => {
-      tier.all_items.forEach((it) => {
-        if (it.url) window.open(it.url, "_blank");
-      });
-    };
   }
 
-  // Share on WhatsApp
-  if (whatsappBtn) {
-    whatsappBtn.onclick = () => {
-      shareOnWhatsApp(tier);
-    };
-  }
+  const openAll = document.getElementById("openAllStoresBtn");
+  if (openAll) openAll.onclick = () => openLinks(items.map((i) => i.affiliate_url));
 
-  // Copy Setup Link
-  const modalCopyLinkBtn = document.getElementById("modalCopyLinkBtn");
-  if (modalCopyLinkBtn) {
-    modalCopyLinkBtn.onclick = () => {
-      copySetupLink(tier);
-    };
-  }
+  const wa = document.getElementById("modalShareWhatsappBtn");
+  if (wa) wa.onclick = () => shareOnWhatsApp(tier);
+
+  const copy = document.getElementById("modalCopyLinkBtn");
+  if (copy) copy.onclick = () => copySetupLink();
 
   backdrop.style.display = "flex";
 }
 
-async function triggerGenerateSetup() {
-  const setupResultsContainer = document.getElementById("setupResultsContainer");
-  const generateSetupBtn = document.getElementById("generateSetupBtn");
-  if (!setupResultsContainer) return;
+/**
+ * Opens store links, staggered slightly so popup blockers are less likely to
+ * swallow the batch, and warns if the browser blocked them anyway.
+ */
+function openLinks(urls) {
+  const valid = urls.filter(Boolean);
+  if (!valid.length) return;
 
-  try {
-    if (generateSetupBtn) {
-      generateSetupBtn.disabled = true;
-      generateSetupBtn.innerHTML = `
-        <svg class="btn-spinner-ring" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" style="display:inline-block; vertical-align:middle; margin-right:6px;">
-          <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.25)"></circle>
-          <path d="M12 2a10 10 0 0 1 10 10" stroke="#FFFFFF" stroke-linecap="round"></path>
-        </svg>
-        <span>Composing Smart Setup...</span>
-      `;
-    }
-
-    const data = await apiGenerateSetup({
-      space: currentSpace,
-      budget: currentBudget,
-      owned_items: currentOwnedItems,
-      style: currentStyle,
-    });
-
-    currentSetupTiers = data.tiers || [];
-    setupResultsContainer.style.display = "block";
-    renderTrustGuard(data.owned_summary);
-    renderSetupTiers(0);
-  } catch (err) {
-    console.error("Failed to generate setup:", err);
-  } finally {
-    if (generateSetupBtn) {
-      generateSetupBtn.disabled = false;
-      generateSetupBtn.innerHTML = `
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2L13.8 7.5a2 2 0 0 0 1.3 1.3L21 11l-5.9 2.2a2 2 0 0 0-1.3 1.3L12 20l-1.8-5.5a2 2 0 0 0-1.3-1.3L3 11l5.9-2.2a2 2 0 0 0 1.3-1.3L12 2Z"/>
-        </svg>
-        <span>Generate Deal-Verified Setup</span>
-      `;
-    }
-  }
+  let blocked = 0;
+  valid.forEach((url, i) => {
+    setTimeout(() => {
+      const w = window.open(url, "_blank", "noopener");
+      if (!w) blocked += 1;
+      if (i === valid.length - 1 && blocked > 0) {
+        showToast("Your browser blocked some tabs. Allow popups for this site to open them all.", "info");
+      }
+    }, i * 120);
+  });
 }
 
-function renderTrustGuard(ownedSummary) {
-  const banner = document.getElementById("trustGuardBanner");
-  const savedPill = document.getElementById("trustGuardSavedPill");
-  const desc = document.getElementById("trustGuardDesc");
-  if (!banner) return;
+// ─────────────────────────── util ───────────────────────────
 
-  if (ownedSummary && ownedSummary.count > 0) {
-    banner.style.display = "flex";
-    if (savedPill) {
-      savedPill.textContent = `Saved ₹${Number(ownedSummary.saved_amount).toLocaleString("en-IN")}`;
-    }
-    if (desc) {
-      const itemsList = ownedSummary.item_names.join(", ");
-      desc.innerHTML = `You already own <strong>${escapeHtml(itemsList)}</strong>. Unlike affiliate sites that push redundant products for commission, DealSense removed them from your cart and redirected <strong>₹${Number(ownedSummary.saved_amount).toLocaleString("en-IN")}</strong> toward higher-impact lighting and acoustic upgrades.`;
-    }
-  } else {
-    banner.style.display = "none";
-  }
-}
-
-function renderSetupTiers(tierIndex) {
-  if (!currentSetupTiers || currentSetupTiers.length === 0) return;
-  activeTierIdx = tierIndex;
-  const activeTier = currentSetupTiers[tierIndex];
-
-  const tierTabsBar = document.getElementById("tierTabsBar");
-  const tierTotalCost = document.getElementById("tierTotalCost");
-  const tierTotalSavings = document.getElementById("tierTotalSavings");
-  const tierBudgetRemaining = document.getElementById("tierBudgetRemaining");
-  const tierAllocationAdvice = document.getElementById("tierAllocationAdvice");
-  const phase1Subtotal = document.getElementById("phase1Subtotal");
-  const phase1Grid = document.getElementById("phase1Grid");
-  const phase2Subtotal = document.getElementById("phase2Subtotal");
-  const phase2Grid = document.getElementById("phase2Grid");
-  const bottomBarTierTitle = document.getElementById("bottomBarTierTitle");
-  const bottomBarItemCount = document.getElementById("bottomBarItemCount");
-  const buyAllCost = document.getElementById("buyAllCost");
-
-  // 1. Render Tier Tabs
-  if (tierTabsBar) {
-    tierTabsBar.innerHTML = currentSetupTiers.map((t, idx) => `
-      <button type="button" class="tier-tab-btn ${idx === tierIndex ? 'active' : ''}" style="--tier-accent: ${t.color};" data-idx="${idx}">
-        <div class="tier-tab-header">
-          <span class="tier-tab-title">${t.title}</span>
-          <span class="tier-tab-badge">${t.badge}</span>
-        </div>
-        <div class="tier-tab-price">₹${t.total_price.toLocaleString("en-IN")}</div>
-      </button>
-    `).join("");
-
-    tierTabsBar.querySelectorAll(".tier-tab-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        renderSetupTiers(Number(btn.getAttribute("data-idx")));
-      });
-    });
-  }
-
-  // 2. Summary Banner
-  if (tierTotalCost) tierTotalCost.textContent = `₹${activeTier.total_price.toLocaleString("en-IN")}`;
-  if (tierTotalSavings) tierTotalSavings.textContent = `₹${activeTier.savings.toLocaleString("en-IN")}`;
-  if (tierBudgetRemaining) {
-    tierBudgetRemaining.textContent = activeTier.budget_diff >= 0
-      ? `₹${activeTier.budget_diff.toLocaleString("en-IN")}`
-      : `-₹${Math.abs(activeTier.budget_diff).toLocaleString("en-IN")}`;
-    tierBudgetRemaining.style.color = activeTier.budget_diff >= 0 ? "#60A5FA" : "#F87171";
-  }
-  if (tierAllocationAdvice) tierAllocationAdvice.textContent = activeTier.allocation_advice;
-
-  // 3. Render Phase 1 Cards
-  if (phase1Subtotal) phase1Subtotal.textContent = `Subtotal: ₹${activeTier.phase1_total.toLocaleString("en-IN")}`;
-  if (phase1Grid) {
-    phase1Grid.innerHTML = activeTier.phase1_items.map((item) => renderSetupItemCard(item)).join("");
-  }
-
-  // 4. Render Phase 2 Cards
-  if (phase2Subtotal) phase2Subtotal.textContent = `Subtotal: ₹${activeTier.phase2_total.toLocaleString("en-IN")}`;
-  if (phase2Grid) {
-    phase2Grid.innerHTML = activeTier.phase2_items.map((item) => renderSetupItemCard(item)).join("");
-  }
-
-  // 5. Bottom Checkout Bar
-  if (bottomBarTierTitle) bottomBarTierTitle.textContent = activeTier.title;
-  if (bottomBarItemCount) bottomBarItemCount.textContent = `${activeTier.all_items.length} items verified across Amazon, Flipkart & IKEA`;
-  if (buyAllCost) buyAllCost.textContent = activeTier.total_price.toLocaleString("en-IN");
-}
-
-function renderSetupItemCard(item) {
-  return `
-    <div class="setup-item-card">
-      <div class="setup-card-top">
-        <span class="setup-cat-tag">${escapeHtml(item.category)}</span>
-        <span class="setup-store-chip">
-          <span style="font-weight:700;">${item.store}</span>
-          <span style="color:#16A34A; font-size:10.5px; margin-left:4px;">✓ ${escapeHtml(item.deal_verdict)}</span>
-        </span>
-      </div>
-      <img src="${item.image}" alt="${escapeHtml(item.name)}" class="setup-card-thumb" loading="lazy">
-      <h4 class="setup-item-title">${escapeHtml(item.name)}</h4>
-      <p class="setup-item-reason">${escapeHtml(item.reason)}</p>
-      <div class="setup-card-price-row">
-        <div class="setup-card-prices">
-          <span class="setup-card-price">₹${item.price.toLocaleString("en-IN")}</span>
-          <span class="setup-card-mrp">₹${item.mrp.toLocaleString("en-IN")}</span>
-          <span style="color:#16A34A; font-size:11.5px; font-weight:700; margin-left:4px;">${item.discount_pct}% OFF</span>
-        </div>
-        <a href="${item.url}" target="_blank" rel="noopener sponsored" class="btn-buy-item">
-          Buy →
-        </a>
-      </div>
-    </div>
-  `;
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
 }

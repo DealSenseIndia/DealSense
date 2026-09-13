@@ -1,5 +1,5 @@
 // ==========================================================================
-// DEALWISE PRODUCT DETAIL PAGE (PDP) & INTELLIGENCE RENDERER
+// DEALSENSE PRODUCT DETAIL PAGE (PDP) & INTELLIGENCE RENDERER
 // ==========================================================================
 
 import { escapeHtml, showToast } from "./ui.js";
@@ -29,101 +29,125 @@ export function truncate(str, n) {
   return str.length > n ? str.substr(0, n - 1) + "..." : str;
 }
 
+// Receipt state. Everything starts empty: these fields are populated from the
+// analysed listing. They previously held a leftover demo product (an air fryer
+// at Rs 5,399 with a "AIRFRY300" coupon), which meant a brief flash of another
+// product's pricing before real data landed -- and became the displayed price
+// outright if the fields were never overwritten.
 let currentReceiptState = {
-  basePrice: 5399,
-  mrp: 8995,
-  couponDiscount: 300,
-  couponCode: "AIRFRY300",
-  bankDiscount: 540,
-  bankCardLabel: "SBI Card (10%)",
-  bankCode: "sbi",
+  basePrice: 0,
+  mrp: null,
+  couponDiscount: 0,
+  couponCode: null,
+  bankDiscount: 0,
+  bankCardLabel: null,
+  bankCode: "none",
   deliveryFee: 0,
-  deliveryLabel: "FREE Prime Delivery",
+  deliveryLabel: "",
 };
 
 export function updateBankSelectorPills(merchant = "Amazon", isPrime = false) {
   const container = document.getElementById("bankSelectorPills");
   if (!container) return;
-  const isAmazon = (merchant || "").toLowerCase().includes("amazon");
 
-  let pills = [];
-  if (isAmazon) {
-    pills = [
-      { id: "icici", tag: "ICICI", label: isPrime ? "Amazon Pay ICICI (5% Cashback)" : "Amazon Pay ICICI (3% Cashback)", active: true },
-      { id: "sbi", tag: "SBI", label: "SBI Card (10% Instant)", active: false },
-      { id: "hdfc", tag: "HDFC", label: "HDFC Card (10% Instant)", active: false },
-      { id: "none", tag: "CARD", label: "Standard (No Card Offer)", active: false },
-    ];
-  } else {
-    pills = [
-      { id: "axis", tag: "AXIS", label: "Flipkart Axis Bank (5% Unlimited)", active: true },
-      { id: "hdfc", tag: "HDFC", label: "HDFC Bank (10% Instant)", active: false },
-      { id: "sbi", tag: "SBI", label: "SBI Card (10% Instant)", active: false },
-      { id: "none", tag: "CARD", label: "Standard (No Card Offer)", active: false },
-    ];
+  // Pills are built from the offers the backend actually calculated. This
+  // function previously hardcoded a card list per merchant, including offer
+  // percentages that duplicated -- and in places contradicted -- the caps in
+  // services/bank_calculator.py. Deriving them here keeps one source of truth
+  // and means a card is never offered that the backend cannot price.
+  const offers = (currentBankDiscounts || []).filter((b) => Number(b.discount_amount) > 0);
+
+  const section = container.closest(".bank-selector-section") || container;
+  if (offers.length === 0) {
+    container.innerHTML = "";
+    section.style.display = "none";
+    return;
   }
+  section.style.display = "";
 
   container.innerHTML = "";
-  pills.forEach((p) => {
+  offers.forEach((offer, index) => {
+    const bankId = offer.bank_id || `bank${index}`;
+    const tag = offer.logo_badge || bankId.toUpperCase();
+    // offer_text already carries the cap ("10% Instant Discount (up to
+    // Rs 1,500)"), so it is shown verbatim rather than re-derived.
+    const label = offer.offer_text ? `${offer.bank_name} — ${offer.offer_text}` : offer.bank_name || tag;
+
     const btn = document.createElement("button");
     btn.type = "button";
-    btn.className = `bank-pill ${p.active ? "active" : ""}`;
-    btn.setAttribute("data-bank", p.id);
-    btn.innerHTML = `<span class="bank-logo-tag ${p.id}-tag">${escapeHtml(p.tag)}</span><span>${escapeHtml(p.label)}</span>`;
+    btn.className = `bank-pill ${index === 0 ? "active" : ""}`;
+    btn.setAttribute("data-bank", bankId);
+    if (offer.eligibility_note) btn.title = offer.eligibility_note;
+    btn.innerHTML = `<span class="bank-logo-tag ${escapeHtml(bankId)}-tag">${escapeHtml(tag)}</span><span>${escapeHtml(label)}</span>`;
     btn.addEventListener("click", () => {
       container.querySelectorAll(".bank-pill").forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
-      renderTruePriceReceipt(p.id, merchant);
+      renderTruePriceReceipt(bankId, merchant);
     });
     container.appendChild(btn);
   });
+
+  // "No card offer" opt-out, so the user can see the price without any
+  // conditional discount applied.
+  const noneBtn = document.createElement("button");
+  noneBtn.type = "button";
+  noneBtn.className = "bank-pill";
+  noneBtn.setAttribute("data-bank", "none");
+  noneBtn.innerHTML = `<span class="bank-logo-tag none-tag">CARD</span><span>No card offer</span>`;
+  noneBtn.addEventListener("click", () => {
+    container.querySelectorAll(".bank-pill").forEach((b) => b.classList.remove("active"));
+    noneBtn.classList.add("active");
+    renderTruePriceReceipt("none", merchant);
+  });
+  container.appendChild(noneBtn);
 }
 
 export function renderTruePriceReceipt(selectedBank = "auto", merchant = null) {
-  const targetMerchant = merchant || currentMerchant || "Amazon";
-  const isAmazon = targetMerchant.toLowerCase().includes("amazon");
-
   if (selectedBank === "auto") {
-    selectedBank = isAmazon ? "icici" : "axis";
+    // Default to the first offer the backend priced, which is the order
+    // bank_calculator.py returns. Falls back to "none" when there are no
+    // offers, rather than assuming a card the user may not hold.
+    const firstOffer = (currentBankDiscounts || []).find((b) => Number(b.discount_amount) > 0);
+    selectedBank = firstOffer && firstOffer.bank_id ? firstOffer.bank_id : "none";
   }
 
   currentReceiptState.bankCode = selectedBank;
   const base = currentReceiptState.basePrice;
 
-  // Check if live computed bank discount exists for this bank from the engine
+  // Bank discounts come from the backend calculator only (see
+  // services/bank_calculator.py, which marks every offer as an ESTIMATE and
+  // carries its own eligibility note). This function used to fall back to a
+  // hardcoded percentage ladder when the backend sent nothing -- with caps
+  // that did not even match the backend's -- so a product with no offer data
+  // still showed a confident rupee discount. Now an absent offer shows no
+  // discount and the row is hidden.
   const liveMatch = (currentBankDiscounts || []).find(
     (b) => (b.bank_id && b.bank_id.toLowerCase() === selectedBank.toLowerCase()) ||
            (b.bank_name && b.bank_name.toLowerCase().includes(selectedBank.toLowerCase()))
   );
 
-  if (liveMatch && liveMatch.discount_amount !== undefined && liveMatch.discount_amount > 0) {
-    currentReceiptState.bankDiscount = Math.round(liveMatch.discount_amount);
-    currentReceiptState.bankCardLabel = liveMatch.bank_name ? `${liveMatch.bank_name}` : `${selectedBank.toUpperCase()} Card`;
-  } else if (selectedBank === "axis") {
-    currentReceiptState.bankDiscount = Math.round(base * 0.05);
-    currentReceiptState.bankCardLabel = "Flipkart Axis Bank (5%)";
-  } else if (selectedBank === "icici") {
-    currentReceiptState.bankDiscount = Math.round(base * 0.05);
-    currentReceiptState.bankCardLabel = "Amazon Pay ICICI (5%)";
-  } else if (selectedBank === "sbi") {
-    currentReceiptState.bankDiscount = Math.min(1500, Math.round(base * 0.10));
-    currentReceiptState.bankCardLabel = "SBI Card (10%)";
-  } else if (selectedBank === "hdfc") {
-    currentReceiptState.bankDiscount = Math.min(1250, Math.round(base * 0.10));
-    currentReceiptState.bankCardLabel = "HDFC Card (10%)";
+  if (liveMatch && Number(liveMatch.discount_amount) > 0) {
+    currentReceiptState.bankDiscount = Math.round(Number(liveMatch.discount_amount));
+    currentReceiptState.bankCardLabel = liveMatch.bank_name || `${selectedBank.toUpperCase()} Card`;
   } else {
     currentReceiptState.bankDiscount = 0;
-    currentReceiptState.bankCardLabel = "No Card Offer";
+    currentReceiptState.bankCardLabel = null;
   }
 
-  // Calculate Landed Price including delivery
+  // Landed price. Only real, present components are subtracted.
   const deliv = currentReceiptState.deliveryFee || 0;
   const landedPrice = Math.max(0, base - currentReceiptState.couponDiscount - currentReceiptState.bankDiscount + deliv);
-  const totalSavings = Math.max(0, currentReceiptState.mrp - landedPrice);
-  const savingPct = currentReceiptState.mrp > 0 ? Math.round((totalSavings / currentReceiptState.mrp) * 100) : 0;
+
+  // A saving is only claimed against a real MRP that is actually above the
+  // landed price. There is no synthesized MRP, so this section disappears
+  // when the merchant did not publish one.
+  const hasRealMrp = Number.isFinite(Number(currentReceiptState.mrp)) && Number(currentReceiptState.mrp) > landedPrice;
+  const totalSavings = hasRealMrp ? Math.round(Number(currentReceiptState.mrp) - landedPrice) : 0;
+  const savingPct = hasRealMrp ? Math.round((totalSavings / Number(currentReceiptState.mrp)) * 100) : 0;
 
   // Update DOM elements
   const baseEl = document.getElementById("receiptBasePrice");
+  const couponRow = document.getElementById("receiptCouponRow");
   const couponCodeEl = document.getElementById("receiptCouponCode");
   const couponDiscEl = document.getElementById("receiptCouponDiscount");
   const bankLabelEl = document.getElementById("receiptBankCardLabel");
@@ -133,12 +157,24 @@ export function renderTruePriceReceipt(selectedBank = "auto", merchant = null) {
   const savingsCalloutEl = document.getElementById("receiptTotalSavingsBadge");
 
   if (baseEl) baseEl.textContent = `₹${Math.round(base).toLocaleString("en-IN")}`;
-  if (couponCodeEl) couponCodeEl.textContent = currentReceiptState.couponCode;
-  if (couponDiscEl) couponDiscEl.textContent = `-₹${Math.round(currentReceiptState.couponDiscount).toLocaleString("en-IN")}`;
-  if (bankLabelEl) bankLabelEl.textContent = currentReceiptState.bankCardLabel;
 
+  // Coupon row only when a real coupon discount was extracted.
+  if (couponRow) {
+    couponRow.style.display = currentReceiptState.couponDiscount > 0 ? "flex" : "none";
+  }
+  if (couponCodeEl) {
+    couponCodeEl.textContent = currentReceiptState.couponCode || "";
+    couponCodeEl.style.display = currentReceiptState.couponCode ? "" : "none";
+  }
+  if (couponDiscEl) {
+    couponDiscEl.textContent = `-₹${Math.round(currentReceiptState.couponDiscount).toLocaleString("en-IN")}`;
+  }
+
+  if (bankLabelEl) bankLabelEl.textContent = currentReceiptState.bankCardLabel || "";
   if (bankDiscEl) {
-    bankDiscEl.textContent = currentReceiptState.bankDiscount > 0 ? `-₹${Math.round(currentReceiptState.bankDiscount).toLocaleString("en-IN")}` : "₹0";
+    bankDiscEl.textContent = currentReceiptState.bankDiscount > 0
+      ? `-₹${Math.round(currentReceiptState.bankDiscount).toLocaleString("en-IN")}`
+      : "₹0";
   }
   if (bankRow) {
     bankRow.style.display = currentReceiptState.bankDiscount > 0 ? "flex" : "none";
@@ -146,7 +182,13 @@ export function renderTruePriceReceipt(selectedBank = "auto", merchant = null) {
 
   if (finalPriceEl) finalPriceEl.textContent = `₹${Math.round(landedPrice).toLocaleString("en-IN")}`;
   if (savingsCalloutEl) {
-    savingsCalloutEl.textContent = `You save ₹${Math.round(totalSavings).toLocaleString("en-IN")} vs MRP (${savingPct}% OFF)`;
+    if (hasRealMrp) {
+      savingsCalloutEl.textContent = `You save ₹${totalSavings.toLocaleString("en-IN")} vs MRP (${savingPct}% OFF)`;
+      savingsCalloutEl.style.display = "";
+    } else {
+      savingsCalloutEl.textContent = "";
+      savingsCalloutEl.style.display = "none";
+    }
   }
 }
 
@@ -198,36 +240,17 @@ function anyAudioKeywords(title = "", category = "") {
   );
 }
 
+// A product slot is a claim about the product, so we do not fill it with a
+// stock photo. This function previously returned category-matched Unsplash
+// photos -- and for anything matching "chair"/"gaming"/"seat", a real Amazon
+// CDN image of one specific chair, which would be shown for a completely
+// different product. Callers now render the hatched "No image" placeholder
+// used by the deals feed and the search dropdown instead.
+//
+// Kept as an export returning null so any remaining caller degrades to the
+// placeholder rather than throwing.
 export function getCategoryFallbackImage(category = "", title = "") {
-  const t = (title + " " + category).toLowerCase();
-  if (t.includes("chair") || t.includes("gaming") || t.includes("ergonomic") || t.includes("recliner") || t.includes("seat")) {
-    return "https://m.media-amazon.com/images/I/41ApsFYZ8FL.jpg";
-  }
-  if (t.includes("sleep company") || t.includes("smartgrid") || t.includes("bed") || t.includes("mattress") || t.includes("sofa") || t.includes("furniture") || t.includes("table") || t.includes("desk")) {
-    return "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=500&q=80";
-  }
-  if (t.includes("fryer") || t.includes("airfryer") || t.includes("microwave") || t.includes("oven") || t.includes("blender") || t.includes("grinder") || t.includes("kettle") || t.includes("appliance") || t.includes("cooker") || t.includes("chimney")) {
-    return "https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=500&q=80";
-  }
-  if (t.includes("watch") || t.includes("smartwatch")) {
-    return "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500&q=80";
-  }
-  if (t.includes("tv") || t.includes("television") || t.includes("smart tv") || t.includes("screen") || t.includes("display")) {
-    return "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=500&q=80";
-  }
-  if (t.includes("phone") || t.includes("smartphone") || t.includes("iphone") || t.includes("galaxy") || t.includes("oneplus") || t.includes("mobile")) {
-    return "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&q=80";
-  }
-  if (t.includes("laptop") || t.includes("macbook") || t.includes("computer") || t.includes("notebook")) {
-    return "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&q=80";
-  }
-  if (t.includes("shoe") || t.includes("sneaker") || t.includes("running") || t.includes("puma") || t.includes("nike") || t.includes("adidas") || t.includes("footwear")) {
-    return "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80";
-  }
-  if (t.includes("headphone") || t.includes("earphone") || t.includes("earbuds") || t.includes("airdopes") || t.includes("audio") || t.includes("soundbar") || t.includes("speaker") || t.includes("sony wh")) {
-    return "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80";
-  }
-  return "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80";
+  return null;
 }
 
 function renderImageGallery(images, fallbackUrl, title, category = "") {
@@ -235,38 +258,47 @@ function renderImageGallery(images, fallbackUrl, title, category = "") {
   const mainImg = document.getElementById("pdpMainImg");
   const mainContainer = document.getElementById("galleryMainContainer");
 
-  const categoryDefault = getCategoryFallbackImage(category, title);
-  const isAudio = anyAudioKeywords(title, category);
+  // getCategoryFallbackImage() and anyAudioKeywords() are no longer consulted
+  // here: there is no stock-photo fallback to select or to sanitize.
 
   let imgList = [];
 
   if (Array.isArray(images) && images.length > 0) {
-    imgList = images.filter((u) => {
-      if (typeof u !== "string" || u.trim().length === 0) return false;
-      // Sanitize headphone photo on non-audio products
-      if (!isAudio && u.includes("505740420928")) return false;
-      return true;
-    });
+    imgList = images.filter((u) => typeof u === "string" && u.trim().length > 0);
   }
   if (imgList.length === 0 && fallbackUrl) {
-    if (isAudio || !fallbackUrl.includes("505740420928")) {
-      imgList = [fallbackUrl];
-    }
+    imgList = [fallbackUrl];
   }
-  if (imgList.length === 0) {
-    imgList = [categoryDefault];
-  }
+
+  // No real photo: show the hatched placeholder rather than a stock image of
+  // some other product. The filters that used to sit here existed to stop a
+  // specific Unsplash headphone photo leaking onto non-audio products, which
+  // is no longer possible now that there are no stock fallbacks at all.
+  const hasRealImage = imgList.length > 0;
 
   currentGalleryImages = imgList;
   currentGalleryIndex = 0;
 
   if (mainImg) {
-    mainImg.onerror = () => {
+    if (hasRealImage) {
+      mainImg.onerror = () => {
+        // A broken URL is not a reason to invent a different product's photo.
+        mainImg.onerror = null;
+        mainImg.removeAttribute("src");
+        mainImg.style.display = "none";
+        if (mainContainer) mainContainer.classList.add("pdp-gallery-no-image");
+      };
+      mainImg.style.display = "";
+      mainImg.src = imgList[0];
+      mainImg.alt = title || "Product Photo";
+      if (mainContainer) mainContainer.classList.remove("pdp-gallery-no-image");
+    } else {
       mainImg.onerror = null;
-      mainImg.src = categoryDefault;
-    };
-    mainImg.src = imgList[0];
-    mainImg.alt = title || "Product Photo";
+      mainImg.removeAttribute("src");
+      mainImg.style.display = "none";
+      mainImg.alt = "";
+      if (mainContainer) mainContainer.classList.add("pdp-gallery-no-image");
+    }
   }
 
   if (thumbsContainer) {
@@ -280,7 +312,7 @@ function renderImageGallery(images, fallbackUrl, title, category = "") {
       const thumbImg = document.createElement("img");
       thumbImg.onerror = () => {
         thumbImg.onerror = null;
-        thumbImg.src = categoryDefault;
+        btn.remove();
       };
       thumbImg.src = url;
       thumbImg.alt = `Thumb ${idx + 1}`;
@@ -536,7 +568,12 @@ export function renderDetailPage(data, { onAnalyzeUrl } = {}) {
     listingId: l.id || null,
     productTitle: p.title || p.canonical_title || "Product",
     currentPrice: pr.current_price || 0,
-    lowestPrice: pr.lowest_observed_price || Math.round((pr.current_price || 0) * 0.9),
+    // null when we have never observed a low. This previously fell back to
+    // current_price * 0.9, which put an invented "lowest price" in front of
+    // the user and drove the alert modal's target presets.
+    lowestPrice: Number.isFinite(Number(pr.lowest_observed_price))
+      ? Number(pr.lowest_observed_price)
+      : (Number.isFinite(Number(d.historical_low)) ? Number(d.historical_low) : null),
     rating: p.rating,
     ratingsCount: p.ratings_count,
     affiliateUrl: l.affiliate_url || l.clean_url || "#",
@@ -656,19 +693,36 @@ export function renderDetailPage(data, { onAnalyzeUrl } = {}) {
   // True Landed Checkout Price Slip (Store-Aware Indian Cards & Coupons)
   currentBankDiscounts = data.bank_discounts || [];
   currentMerchant = l.merchant || "Amazon";
-  currentReceiptState.basePrice = pr.current_price || 5399;
-  currentReceiptState.mrp = pr.mrp && pr.mrp > pr.current_price ? pr.mrp : Math.round(currentReceiptState.basePrice * 1.45);
-  currentReceiptState.couponDiscount = (data.coupons_offers && data.coupons_offers[0] && data.coupons_offers[0].discount) ? data.coupons_offers[0].discount : (currentReceiptState.basePrice > 3000 ? 300 : Math.round(currentReceiptState.basePrice * 0.05));
-  currentReceiptState.couponCode = (data.coupons_offers && data.coupons_offers[0] && data.coupons_offers[0].code) || "DEAL300";
+  currentReceiptState.basePrice = Number.isFinite(Number(pr.current_price)) ? Number(pr.current_price) : 0;
+
+  // MRP is passed through only when the merchant published one above the
+  // current price. It was previously synthesized as basePrice * 1.45, which
+  // manufactured a discount for any product that had no MRP.
+  currentReceiptState.mrp = (pr.mrp && pr.mrp > pr.current_price) ? pr.mrp : null;
+
+  // Coupon comes from a real extracted offer carrying a discount amount.
+  // Previously defaulted to Rs 300 (or 5% of the price) with the invented
+  // code "DEAL300" -- money subtracted from the headline price on every
+  // product, whether or not any coupon existed.
+  const firstOffer = (data.coupons_offers && data.coupons_offers[0]) || null;
+  const offerDiscount = firstOffer ? Number(firstOffer.discount) : NaN;
+  currentReceiptState.couponDiscount = Number.isFinite(offerDiscount) && offerDiscount > 0 ? offerDiscount : 0;
+  currentReceiptState.couponCode = (firstOffer && firstOffer.code) || null;
+
   currentReceiptState.deliveryFee = l.delivery_fee || 0;
   updateBankSelectorPills(currentMerchant, l.is_prime);
   renderTruePriceReceipt("auto", currentMerchant);
 
-  // Price at a Glance
-  const lowVal = d.historical_low ? Math.round(d.historical_low) : (pr.current_price || 1000);
-  const avgVal = d.historical_avg_90d ? Math.round(d.historical_avg_90d) : Math.round(lowVal * 1.12);
-  const highVal = pr.mrp ? Math.round(pr.mrp) : Math.round(lowVal * 1.35);
-  const savingVal = highVal - Math.round(pr.current_price || lowVal);
+  // Price at a Glance.
+  //
+  // These four figures are presented as observed price history, so each is
+  // shown only when the engine actually supplied it. Previously the 90-day
+  // average was synthesized as low * 1.12, the high as low * 1.35, the low
+  // fell back to the current price (or a flat Rs 1,000), and the drop
+  // percentage fell back to 15% -- a complete price history invented from
+  // one number.
+  const glanceMoney = (value) =>
+    Number.isFinite(Number(value)) ? `₹${Math.round(Number(value)).toLocaleString("en-IN")}` : "--";
 
   const gLow = document.getElementById("glanceLow");
   const gAvg = document.getElementById("glanceAvg");
@@ -676,22 +730,55 @@ export function renderDetailPage(data, { onAnalyzeUrl } = {}) {
   const gDrop = document.getElementById("glanceDrop");
   const gSave = document.getElementById("glanceSaving");
 
-  if (gLow) gLow.textContent = `₹${lowVal.toLocaleString("en-IN")}`;
-  if (gAvg) gAvg.textContent = `₹${avgVal.toLocaleString("en-IN")}`;
-  if (gHigh) gHigh.textContent = `₹${highVal.toLocaleString("en-IN")}`;
-  if (gDrop) gDrop.textContent = `${Math.round(pr.discount_pct || 15)}%`;
-  if (gSave) gSave.textContent = `You save ₹${savingVal.toLocaleString("en-IN")} (${Math.round(pr.discount_pct || 15)}%)`;
+  if (gLow) gLow.textContent = glanceMoney(d.historical_low);
+  if (gAvg) gAvg.textContent = glanceMoney(d.historical_avg_90d);
+  // "High" is the published MRP. Without one there is no high to show.
+  if (gHigh) gHigh.textContent = glanceMoney(pr.mrp);
 
-  // Best Time to Buy
+  const realDiscount = Number(pr.discount_pct);
+  if (gDrop) {
+    gDrop.textContent = Number.isFinite(realDiscount) && realDiscount > 0
+      ? `${Math.round(realDiscount)}%`
+      : "--";
+  }
+
+  if (gSave) {
+    // A saving claim needs a real MRP above a real current price.
+    const mrpVal = Number(pr.mrp);
+    const priceVal = Number(pr.current_price);
+    if (Number.isFinite(mrpVal) && Number.isFinite(priceVal) && mrpVal > priceVal) {
+      const savingVal = Math.round(mrpVal - priceVal);
+      const savingPct = Math.round((savingVal / mrpVal) * 100);
+      gSave.textContent = `You save ₹${savingVal.toLocaleString("en-IN")} (${savingPct}%)`;
+      gSave.style.display = "";
+    } else {
+      gSave.textContent = "";
+      gSave.style.display = "none";
+    }
+  }
+
+  // Best Time to Buy.
+  //
+  // The non-BUY branch previously read "In 22-30 days" with "Our AI
+  // prediction indicates prices may drop further during upcoming sales."
+  // There is no forecasting model in this codebase, and a specific window
+  // is a claim we cannot support, so each verdict now describes what the
+  // observed data actually shows.
   const ttbHead = document.getElementById("ttbHeadline");
   const ttbDesc = document.getElementById("ttbDescription");
   if (ttbHead && ttbDesc) {
     if (d.verdict === "BUY") {
-      ttbHead.textContent = "Buy Today";
-      ttbDesc.textContent = "Price is verified near the 90-day low. High probability of price increase soon.";
+      ttbHead.textContent = "Buy now";
+      ttbDesc.textContent = "The current price is at or near the lowest we have recorded for this listing.";
+    } else if (d.verdict === "WAIT") {
+      ttbHead.textContent = "Worth waiting";
+      ttbDesc.textContent = "We have recorded this listing below its current price before, so a better price is plausible. We do not predict when.";
+    } else if (d.verdict === "SKIP") {
+      ttbHead.textContent = "Not a good price";
+      ttbDesc.textContent = "The current price sits well above what we have recorded for this listing.";
     } else {
-      ttbHead.textContent = "In 22–30 days";
-      ttbDesc.textContent = "Our AI prediction indicates prices may drop further during upcoming sales.";
+      ttbHead.textContent = "Not enough data yet";
+      ttbDesc.textContent = "We need at least three price readings on separate days before judging this listing.";
     }
   }
 
@@ -716,10 +803,23 @@ export function renderDetailPage(data, { onAnalyzeUrl } = {}) {
   // Bottom High-Impact View Deal CTA Card Banner
   renderBottomCtaBanner(p, l, pr);
 
-  // Target Price Input Placeholder
+  // Target Price Input Placeholder.
+  //
+  // This read an undeclared `lowVal`, throwing a ReferenceError on every
+  // render. The throw was swallowed by the try/catch around renderDetailPage
+  // in app.js, so it showed up only as a console error and a missing
+  // placeholder. It now suggests a target just under the real observed low,
+  // and shows no suggestion at all when we have never observed one -- a
+  // suggested target derived from the current price is just the current
+  // price wearing a discount.
   const targetPriceInput = document.getElementById("targetPriceInput");
   if (targetPriceInput) {
-    targetPriceInput.placeholder = `e.g. ₹${Math.round(lowVal * 0.95).toLocaleString("en-IN")}`;
+    const observedLow = Number(d.historical_low);
+    if (Number.isFinite(observedLow) && observedLow > 0) {
+      targetPriceInput.placeholder = `e.g. ₹${Math.round(observedLow * 0.95).toLocaleString("en-IN")}`;
+    } else {
+      targetPriceInput.placeholder = "Enter your target price";
+    }
   }
 }
 
@@ -1528,26 +1628,53 @@ function renderGauge(d, pr) {
   const evidenceList = document.getElementById("pdpEvidenceList");
 
   if (scoreVal) {
-    const score = d.score || 85;
-    scoreVal.textContent = `${score}%`;
-    if (score >= 75) {
+    // The deal score is the engine's output. It previously defaulted to 85 --
+    // a confident "good deal" headline shown whenever the engine had sent
+    // nothing at all.
+    const score = Number(d.score);
+    const hasScore = Number.isFinite(score);
+
+    scoreVal.textContent = hasScore ? `${Math.round(score)}%` : "--";
+
+    if (!hasScore) {
+      scoreVal.style.borderColor = "#CBD5E1";
+      scoreVal.style.color = "#94A3B8";
+      scoreVal.style.background = "#F8FAFC";
+      if (verdictText) verdictText.textContent = "Not enough data";
+      if (verdictDesc) {
+        verdictDesc.textContent = "We need at least three price readings on separate days before scoring this listing.";
+      }
+    } else if (score >= 75) {
       scoreVal.style.borderColor = "#16A34A";
       scoreVal.style.color = "#16A34A";
       scoreVal.style.background = "#F0FDF4";
       if (verdictText) verdictText.textContent = "Good Deal";
-      if (verdictDesc) verdictDesc.textContent = `Current price is ${Math.round(pr.discount_pct || 12)}% lower than 90-day average.`;
+      if (verdictDesc) {
+        // Compare against the real 90-day average when we hold one. The old
+        // copy asserted a percentage below the 90-day average using the
+        // discount-off-MRP figure, defaulting to 12% -- two different
+        // measures presented as one.
+        const avg = Number(d.historical_avg_90d);
+        const price = Number(pr.current_price);
+        if (Number.isFinite(avg) && Number.isFinite(price) && avg > price) {
+          const belowAvg = Math.round(((avg - price) / avg) * 100);
+          verdictDesc.textContent = `Current price is ${belowAvg}% below the 90-day average we recorded.`;
+        } else {
+          verdictDesc.textContent = "Current price is low relative to the history we have recorded.";
+        }
+      }
     } else if (score >= 50) {
       scoreVal.style.borderColor = "#F59E0B";
       scoreVal.style.color = "#D97706";
       scoreVal.style.background = "#FFFBEB";
       if (verdictText) verdictText.textContent = "Fair Price";
-      if (verdictDesc) verdictDesc.textContent = "Price is within normal historical range.";
+      if (verdictDesc) verdictDesc.textContent = "Price is within the normal range we have recorded.";
     } else {
       scoreVal.style.borderColor = "#DC2626";
       scoreVal.style.color = "#DC2626";
       scoreVal.style.background = "#FEF2F2";
       if (verdictText) verdictText.textContent = "Wait / Elevated Price";
-      if (verdictDesc) verdictDesc.textContent = "Listing price is elevated above historical average.";
+      if (verdictDesc) verdictDesc.textContent = "Listing price is above the average we have recorded.";
     }
   }
 
@@ -1578,14 +1705,18 @@ function renderSellerTrust(st, l) {
   const box = document.getElementById("sellerTrustBox");
   if (!box) return;
 
-  const seller = st || {
-    seller_name: "Appario Retail / Official",
-    rating: 4.8,
-    ratings_count: "142,500+ ratings",
-    fulfillment: `Fulfilled by ${l?.merchant || 'Store'}`,
-    trust_badge: "🛡️ Platinum Seller",
-    replacement_policy: "7 Days Free Replacement • 100% Genuine Guaranteed",
-  };
+  // The whole panel is hidden when we do not know who the seller is.
+  //
+  // This previously fell back to a fully invented seller: "Appario Retail /
+  // Official" rated 4.8 from "142,500+ ratings" with a "Platinum Seller"
+  // badge and a guarantee. Appario is a real Amazon India seller, so that
+  // default attributed a listing to a specific named company that may never
+  // have sold it -- and the rating and review count were invented outright.
+  if (!st || st.available === false || !st.seller_name) {
+    box.style.display = "none";
+    return;
+  }
+  box.style.display = "";
 
   const nameEl = document.getElementById("sellerNameTxt");
   const badgeEl = document.getElementById("sellerTrustBadge");
@@ -1594,12 +1725,27 @@ function renderSellerTrust(st, l) {
   const fulEl = document.getElementById("sellerFulfillmentTxt");
   const authEl = document.getElementById("sellerAuthPolicy");
 
-  if (nameEl) nameEl.textContent = seller.seller_name;
-  if (badgeEl) badgeEl.textContent = seller.trust_badge;
-  if (ratingEl) ratingEl.textContent = seller.rating;
-  if (countEl) countEl.textContent = `(${seller.ratings_count})`;
-  if (fulEl) fulEl.textContent = seller.fulfillment;
-  if (authEl) authEl.textContent = seller.replacement_policy;
+  if (nameEl) nameEl.textContent = st.seller_name;
+
+  // Each remaining field is rendered only when present. Seller ratings and
+  // return windows are not currently captured, so they normally stay hidden
+  // rather than showing "null".
+  const setOrHide = (el, value, format = (v) => String(v)) => {
+    if (!el) return;
+    if (value === null || value === undefined || value === "") {
+      el.textContent = "";
+      el.style.display = "none";
+    } else {
+      el.textContent = format(value);
+      el.style.display = "";
+    }
+  };
+
+  setOrHide(badgeEl, st.trust_badge);
+  setOrHide(ratingEl, st.rating);
+  setOrHide(countEl, st.ratings_count, (v) => `(${v})`);
+  setOrHide(fulEl, st.fulfillment);
+  setOrHide(authEl, st.replacement_policy);
 }
 
 function renderCouponsOffers(coupons) {
@@ -1607,52 +1753,56 @@ function renderCouponsOffers(coupons) {
   if (!container) return;
   container.innerHTML = "";
 
-  const list = (coupons && coupons.length > 0) ? coupons : [
-    {
-      store: "Amazon",
-      logo: "/assets/amazon-logo.svg",
-      title: "10% Instant Discount on SBI Credit Cards",
-      terms: "Min. order: ₹2,000",
-      code: "SBI10",
-    },
-    {
-      store: "Flipkart",
-      logo: "/assets/flipkart-icon.svg",
-      title: "₹200 Off on Prepaid Orders",
-      terms: "Min. order: ₹1,999",
-      code: "PREPAID200",
-    },
-  ];
+  // Offers are shown only when they were actually extracted from the product
+  // page. This previously fell back to two hardcoded offers ("SBI10",
+  // "PREPAID200") whenever the backend returned none, which meant every
+  // product without offers still displayed two codes that do not exist.
+  if (!coupons || coupons.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "coupons-empty-state";
+    empty.textContent = "No store offers detected on this listing right now.";
+    container.appendChild(empty);
+    return;
+  }
 
-  list.forEach((c) => {
+  coupons.forEach((c) => {
     const card = document.createElement("div");
     card.className = "coupon-item-card";
+
+    const logo = c.logo || "/assets/dealsense-icon.png";
+    const store = c.store || "";
+    const terms = c.terms || "Terms shown at checkout";
+
+    // An offer with no code applies automatically at checkout; there is
+    // nothing to copy, so we say so instead of rendering a fake code.
+    const actionHtml = c.code
+      ? `<button class="btn-copy-code" data-code="${escapeHtml(c.code)}">${escapeHtml(c.code)}</button>`
+      : `<span class="coupon-auto-applied">Auto-applied</span>`;
+
     card.innerHTML = `
       <div class="coupon-left-block">
-        <img src="${c.logo || '/assets/dealsense-icon.png'}" alt="${escapeHtml(c.store)}" class="coupon-store-icon">
+        <img src="${escapeHtml(logo)}" alt="${escapeHtml(store)}" class="coupon-store-icon">
         <div>
           <div class="coupon-title-txt">${escapeHtml(c.title)}</div>
-          <div class="coupon-terms-txt">${escapeHtml(c.terms)}</div>
+          <div class="coupon-terms-txt">${escapeHtml(terms)}</div>
         </div>
       </div>
-      <button class="btn-copy-code" data-code="${escapeHtml(c.code)}">
-        ${escapeHtml(c.code)}
-      </button>
+      ${actionHtml}
     `;
 
     const btn = card.querySelector(".btn-copy-code");
-    btn.addEventListener("click", () => {
-      navigator.clipboard.writeText(c.code).catch(() => {});
-      const orig = btn.textContent;
-      btn.textContent = "✓ Copied!";
-      btn.style.background = "#16A34A";
-      btn.style.color = "#FFFFFF";
-      setTimeout(() => {
-        btn.textContent = orig;
-        btn.style.background = "#DCFCE7";
-        btn.style.color = "#15803D";
-      }, 1800);
-    });
+    if (btn) {
+      btn.addEventListener("click", () => {
+        navigator.clipboard.writeText(c.code).catch(() => {});
+        const orig = btn.textContent;
+        btn.textContent = "✓ Copied!";
+        btn.classList.add("is-copied");
+        setTimeout(() => {
+          btn.textContent = orig;
+          btn.classList.remove("is-copied");
+        }, 1800);
+      });
+    }
 
     container.appendChild(card);
   });
@@ -1669,19 +1819,40 @@ function renderReviewsBreakdown(reviews) {
   const prosList = document.getElementById("pdpProsList");
   const consList = document.getElementById("pdpConsList");
 
-  if (scoreBig) scoreBig.textContent = reviews.overall_rating || 4.4;
-  if (countSub) countSub.textContent = `(${reviews.total_reviews || "8,230"} reviews)`;
+  // Rating and review count. A default rating is a claim about the product,
+  // so an unrecorded one shows "--" rather than the 4.4 / "8,230 reviews"
+  // this previously invented.
+  const hasRating = Number.isFinite(Number(reviews.overall_rating));
+  if (scoreBig) scoreBig.textContent = hasRating ? Number(reviews.overall_rating) : "--";
+  if (countSub) {
+    countSub.textContent = reviews.total_reviews
+      ? `(${reviews.total_reviews} reviews)`
+      : "(No reviews recorded)";
+  }
 
   if (reviews.featured_review) {
     if (quoteEl) quoteEl.textContent = `"${reviews.featured_review.quote}"`;
     if (authorEl) authorEl.textContent = `- ${reviews.featured_review.author}`;
   }
 
-  // Star Distribution Bars
-  if (reviews.stars_distribution) {
-    const dist = reviews.stars_distribution;
+  // Star Distribution Bars.
+  //
+  // Every bar previously had a per-star default (63/22/8/4/3), so a product
+  // with no breakdown rendered a complete, confident-looking distribution
+  // that described nothing. The whole stack now hides unless the real
+  // breakdown is present.
+  const barsStack = document.querySelector(".rating-bars-stack");
+  const dist = reviews.stars_distribution;
+  const hasDist = dist && ["5", "4", "3", "2", "1"].some((k) => Number.isFinite(Number(dist[k])));
+
+  if (barsStack) barsStack.style.display = hasDist ? "" : "none";
+
+  if (hasDist) {
     const barRows = document.querySelectorAll(".rating-bars-stack .star-bar-row");
-    const pcts = [dist["5"] || 63, dist["4"] || 22, dist["3"] || 8, dist["2"] || 4, dist["1"] || 3];
+    const pcts = ["5", "4", "3", "2", "1"].map((k) => {
+      const v = Number(dist[k]);
+      return Number.isFinite(v) ? v : 0;
+    });
 
     barRows.forEach((row, idx) => {
       const fill = row.querySelector(".star-fill");
@@ -1692,14 +1863,26 @@ function renderReviewsBreakdown(reviews) {
     });
   }
 
-  // AI Sentiment Consensus & Pros/Cons
+  // Sentiment consensus. Derived only from a real breakdown -- this used to
+  // fall back to the same invented 63/22 split and present the sum as a
+  // measured "85% Positive".
   if (consensusPct) {
-    const fiveStarPct = (reviews.stars_distribution && reviews.stars_distribution["5"]) || 63;
-    const fourStarPct = (reviews.stars_distribution && reviews.stars_distribution["4"]) || 22;
-    consensusPct.textContent = `${fiveStarPct + fourStarPct}% Positive`;
+    if (hasDist) {
+      const fiveStarPct = Number(dist["5"]) || 0;
+      const fourStarPct = Number(dist["4"]) || 0;
+      consensusPct.textContent = `${fiveStarPct + fourStarPct}% Positive`;
+      consensusPct.style.display = "";
+    } else {
+      consensusPct.style.display = "none";
+    }
   }
-  if (consensusDesc && reviews.consensus) {
-    consensusDesc.textContent = reviews.consensus;
+  if (consensusDesc) {
+    if (reviews.consensus) {
+      consensusDesc.textContent = reviews.consensus;
+      consensusDesc.style.display = "";
+    } else {
+      consensusDesc.style.display = "none";
+    }
   }
 
   if (prosList && reviews && reviews.pros) {
@@ -1950,14 +2133,16 @@ export function initPdpListeners() {
     });
   }
 
-  // Price Drop Alert Modal Controller
-  const openAlertBtn = document.getElementById("openPriceAlertBtn");
-  const ttbSetAlertBtn = document.getElementById("ttbSetAlertBtn");
-  const closeAlertBtn = document.getElementById("closeAlertModalBtn");
-  const alertBackdrop = document.getElementById("priceAlertModalBackdrop");
-
   // ==========================================================================
   // PHASE 3.3.1 PRICE ALERT INTELLIGENCE SUITE CONTROLLER
+  //
+  // Note: these four constants were previously declared twice in a row in
+  // this same scope (once under a "Price Drop Alert Modal Controller"
+  // heading, then again here). Two `const` declarations of the same name in
+  // one scope is a SyntaxError, which is raised when the module is parsed
+  // rather than when the code runs -- so pdp.js never loaded at all, and
+  // because app.js imports it, the entire frontend failed to boot. The
+  // duplicate block has been removed.
   // ==========================================================================
   const openAlertBtn = document.getElementById("openPriceAlertBtn");
   const ttbSetAlertBtn = document.getElementById("ttbSetAlertBtn");
@@ -1992,29 +2177,58 @@ export function initPdpListeners() {
 
   function openPriceAlertModal() {
     if (!alertBackdrop) return;
-    const currentPrice = currentProductContext.currentPrice || 5000;
-    const lowPrice = currentProductContext.lowestPrice || Math.round(currentPrice * 0.9);
+
+    // No invented anchors here. currentPrice previously fell back to 5000,
+    // so a product whose price we had not observed showed "Rs 5,000" as its
+    // current price; lowPrice fell back to currentPrice * 0.9, presenting a
+    // low that was never observed. Both now resolve to null and the affected
+    // rows are hidden instead.
+    const rawPrice = Number(currentProductContext.currentPrice);
+    const currentPrice = Number.isFinite(rawPrice) && rawPrice > 0 ? rawPrice : null;
+
+    const rawLow = Number(currentProductContext.lowestPrice);
+    const lowPrice = Number.isFinite(rawLow) && rawLow > 0 ? rawLow : null;
+
+    const money = (v) => `₹${Math.round(v).toLocaleString("en-IN")}`;
+
+    // Sets textContent to a formatted price, or hides the element's row when
+    // the value is absent.
+    const setPriceOrHide = (el, value) => {
+      if (!el) return;
+      if (value === null) {
+        el.textContent = "--";
+        el.setAttribute("data-unavailable", "true");
+      } else {
+        el.textContent = money(value);
+        el.removeAttribute("data-unavailable");
+      }
+    };
 
     const titleEl = document.getElementById("alertModalProductTitle");
     if (titleEl) titleEl.textContent = currentProductContext.productTitle || "Selected Product";
 
-    const curPriceEl = document.getElementById("alertCurrentPriceDisplay");
-    if (curPriceEl) curPriceEl.textContent = `₹${Math.round(currentPrice).toLocaleString("en-IN")}`;
+    setPriceOrHide(document.getElementById("alertCurrentPriceDisplay"), currentPrice);
+    setPriceOrHide(document.getElementById("alertBaselinePriceDisplay"), currentPrice);
 
-    const basePriceEl = document.getElementById("alertBaselinePriceDisplay");
-    if (basePriceEl) basePriceEl.textContent = `₹${Math.round(currentPrice).toLocaleString("en-IN")}`;
-
-    // Target Price Presets
-    const defaultTarget = Math.round(currentPrice * 0.9);
+    // Target Price Presets. Percentage presets are relative to the live
+    // price, so they only mean something once we have one.
     const targetInput = document.getElementById("alertTargetPriceInput");
-    if (targetInput) targetInput.value = defaultTarget;
+    if (targetInput) {
+      targetInput.value = currentPrice === null ? "" : Math.round(currentPrice * 0.9);
+      targetInput.placeholder = currentPrice === null ? "Enter your target price" : "";
+    }
 
     const p10 = document.getElementById("preset10Val");
-    if (p10) p10.textContent = `₹${Math.round(currentPrice * 0.9).toLocaleString("en-IN")}`;
+    if (p10) p10.textContent = currentPrice === null ? "--" : money(currentPrice * 0.9);
     const p15 = document.getElementById("preset15Val");
-    if (p15) p15.textContent = `₹${Math.round(currentPrice * 0.85).toLocaleString("en-IN")}`;
+    if (p15) p15.textContent = currentPrice === null ? "--" : money(currentPrice * 0.85);
+
+    // The "lowest observed" preset hides entirely rather than showing a
+    // derived number, because its whole value is that it is a real low.
     const pLow = document.getElementById("presetLowVal");
-    if (pLow) pLow.textContent = `₹${Math.round(lowPrice).toLocaleString("en-IN")}`;
+    if (pLow) pLow.textContent = lowPrice === null ? "--" : money(lowPrice);
+    const pLowBtn = document.getElementById("presetBtnLow");
+    if (pLowBtn) pLowBtn.style.display = lowPrice === null ? "none" : "";
 
     // Percentage Presets
     const pctInput = document.getElementById("alertPercentageInput");

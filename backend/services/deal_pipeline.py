@@ -172,12 +172,30 @@ def build_deal_card(
         else "/assets/amazon-logo.svg"
     )
 
-    image_url = (
-        (product.image_url if product else None)
-        or "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=320&q=80"
-    )
+    # No stock-photo fallback. A generic Unsplash image presented in a product
+    # slot is a claim we cannot support; the frontend renders a neutral
+    # placeholder when this is null.
+    image_url = product.image_url if product else None
 
     brand = (product.brand if product else None) or (title.split()[0] if title else "Brand")
+
+    # Real observed prices, oldest → newest, for the sparkline. The frontend
+    # draws nothing unless there are at least SPARKLINE_MIN_POINTS of these;
+    # it never synthesises a curve.
+    price_history = [
+        {
+            "price": round(o.price),
+            "observed_at": o.observed_at.isoformat() if o.observed_at else None,
+        }
+        for o in valid_obs
+    ]
+
+    # Distinct calendar dates backing the history, matching the sufficiency
+    # rule used everywhere else in the product (>= 3 prices on >= 2 dates).
+    distinct_dates = {
+        o.observed_at.date() for o in valid_obs if o.observed_at
+    }
+    has_sufficient_history = len(valid_obs) >= 3 and len(distinct_dates) >= 2
 
     return {
         "id": f"deal_{merchant_name.lower()}_{listing.merchant_product_id}",
@@ -200,6 +218,15 @@ def build_deal_card(
         "tagline": tagline,
         "deal_type": deal_type,
         "observed_at": current_obs.observed_at.isoformat() if current_obs.observed_at else None,
+        # Evidence the card can show instead of inventing its own.
+        "verdict": verdict.verdict,
+        "confidence": verdict.confidence,
+        "historical_low": round(verdict.historical_low) if verdict.historical_low else None,
+        "historical_avg_90d": round(verdict.historical_avg_90d) if verdict.historical_avg_90d else None,
+        "evidence": verdict.evidence,
+        "price_history": price_history,
+        "observation_count": len(valid_obs),
+        "has_sufficient_history": has_sufficient_history,
     }
 
 

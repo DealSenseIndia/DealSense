@@ -62,7 +62,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -124,16 +124,23 @@ def get_homepage_data():
     - price_drops
     - popular_products
     - supported_merchants (Strictly Amazon & Flipkart)
-    - stats
+    - stats (REAL computed numbers, not invented)
     FALLBACK GUARANTEE: If the database is empty, automatically provides
     verified development seed data so the UI is never blank.
     """
+    # Compute REAL stats from the database
+    with get_session() as stats_session:
+        products_tracked = stats_session.exec(select(Product)).all()
+        observations_total = stats_session.exec(select(PriceObservation)).all()
+        listings_total = stats_session.exec(select(MerchantListing)).all()
+        alerts_total = stats_session.exec(select(PriceAlert)).all()
+
     stats_data = {
-        "shoppers_count": "450,000+",
-        "total_savings": "₹9.2 Crore+",
-        "fake_discounts_flagged": "210,000+",
-        "daily_checks": "1.5 Million+",
-        "average_rating": "4.9",
+        "products_tracked": f"{len(products_tracked):,}",
+        "price_checks": f"{len(observations_total):,}",
+        "merchants_monitored": "2",
+        "active_alerts": f"{len(alerts_total):,}",
+        "listings_count": f"{len(listings_total):,}",
     }
 
     supported_merchants = [
@@ -221,23 +228,8 @@ def get_homepage_data():
     }
 
 
-DEAL_COUNTS_MAP = {
-    "electronics": 24156,
-    "home-living": 18974,
-    "fashion": 32541,
-    "beauty-personal-care": 12675,
-    "sports-fitness": 8562,
-    "automotive": 6843,
-    "baby-kids": 7952,
-    "books-stationery": 5378,
-    "grocery-essentials": 9214,
-    "health-nutrition": 6207,
-    "toys-games": 8119,
-    "pet-supplies": 5089,
-    "office-supplies": 4392,
-    "musical-instruments": 3246,
-    "travel-luggage": 6721,
-}
+# Real deal counts are computed from the database. No more invented numbers.
+DEAL_COUNTS_MAP = {}  # Populated dynamically from DB
 
 
 @app.get("/api/categories")
@@ -701,15 +693,169 @@ def omni_search(q: str = "", limit: int = 8):
 @app.post("/api/setup-builder")
 def create_setup(req: SetupRequest):
     """
-    Composes a complete, aesthetically coordinated room or desk setup
-    tailored to budget, style, and filtering out already-owned items.
+    Legacy Smart Setup endpoint, retained for the existing frontend.
+    Delegates to the real composition engine. Prefer POST /api/setups/build.
     """
-    return build_smart_setup(
-        space=req.space,
-        budget=req.budget,
-        owned_items=req.owned_items,
-        style=req.style,
+    with get_session() as session:
+        return build_smart_setup(
+            space=req.space,
+            budget=req.budget,
+            owned_items=req.owned_items,
+            style=req.style,
+            session=session,
+        )
+
+
+@app.get("/api/setups/templates")
+def list_setup_templates():
+    """
+    Returns every setup blueprint with its slots, budget range, and the styles
+    available. This is pure structure, so it needs no database access and is
+    safe to cache on the client.
+    """
+    from backend.data.setup_blueprints import (
+        SETUP_BLUEPRINTS,
+        STYLE_PROFILES,
+        TIER_PROFILES,
     )
+
+    templates = []
+    for key, bp in SETUP_BLUEPRINTS.items():
+        templates.append(
+            {
+                "key": key,
+                "title": bp["title"],
+                "tagline": bp["tagline"],
+                "icon": bp["icon"],
+                "domain_group": bp["domain_group"],
+                "budget_min": bp["budget_min"],
+                "budget_max": bp["budget_max"],
+                "budget_default": bp["budget_default"],
+                "slot_count": len(bp["slots"]),
+                "essential_count": sum(1 for s in bp["slots"] if s["phase"] == 1),
+                "slots": [
+                    {
+                        "key": s["key"],
+                        "label": s["label"],
+                        "phase": s["phase"],
+                        "impact_weight": s["impact_weight"],
+                        "owned_key": s["owned_key"],
+                        "rationale": s["rationale"],
+                    }
+                    for s in bp["slots"]
+                ],
+            }
+        )
+
+    return {
+        "templates": templates,
+        "styles": [
+            {"key": k, "label": v["label"], "description": v.get("description", "")}
+            for k, v in STYLE_PROFILES.items()
+        ],
+        "tiers": [
+            {
+                "key": k,
+                "label": v["label"],
+                "description": v["description"],
+                "budget_factor": v["budget_factor"],
+                "accent": v["accent"],
+            }
+            for k, v in TIER_PROFILES.items()
+        ],
+    }
+
+
+class SetupBuildRequest(BaseModel):
+    space: str = "bedroom"
+    budget: float = 25000.0
+    owned: List[str] = []
+    style: str = "no_preference"
+    tiers: Optional[List[str]] = None
+
+
+@app.post("/api/setups/build")
+def build_setup_endpoint(req: SetupBuildRequest):
+    """
+    Composes a setup from real tracked listings.
+
+    Every item returned is backed by a real merchant listing and a real recorded
+    price. Slots with no qualifying product are returned in `unfilled` with a
+    reason rather than being filled with an estimate.
+    """
+    from backend.data.setup_blueprints import SETUP_BLUEPRINTS
+    from backend.services.setup_service import build_setup
+
+    if req.space not in SETUP_BLUEPRINTS:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Unknown setup space '{req.space}'. "
+            f"Available: {', '.join(sorted(SETUP_BLUEPRINTS.keys()))}",
+        )
+
+    if req.budget <= 0:
+        raise HTTPException(status_code=400, detail="Budget must be greater than zero.")
+
+    with get_session() as session:
+        return build_setup(
+            session=session,
+            space=req.space,
+            budget=req.budget,
+            owned=req.owned,
+            style=req.style,
+            tiers=req.tiers,
+        )
+
+
+@app.get("/api/setups/coverage")
+def setup_coverage():
+    """
+    Reports how many blueprint slots can currently be filled from tracked
+    products. This is the honest health check for Smart Setups: it shows exactly
+    where the catalog is thin instead of hiding gaps behind generated content.
+    """
+    from backend.data.setup_blueprints import SETUP_BLUEPRINTS
+    from backend.services.setup_service import _haystack, _load_candidates, _matches_slot
+
+    with get_session() as session:
+        candidates = _load_candidates(session)
+        texts = [(_haystack(p, l), l) for l, p in candidates]
+
+        report = []
+        for key, bp in SETUP_BLUEPRINTS.items():
+            slots = []
+            for slot in bp["slots"]:
+                matches = [t for t, _ in texts if _matches_slot(t, slot)]
+                slots.append(
+                    {
+                        "key": slot["key"],
+                        "label": slot["label"],
+                        "phase": slot["phase"],
+                        "matching_products": len(matches),
+                        "status": "READY" if matches else "NEEDS_PRODUCTS",
+                    }
+                )
+            filled = sum(1 for s in slots if s["matching_products"] > 0)
+            report.append(
+                {
+                    "space": key,
+                    "title": bp["title"],
+                    "slots_total": len(slots),
+                    "slots_with_products": filled,
+                    "coverage_pct": round(filled / len(slots) * 100, 1) if slots else 0.0,
+                    "slots": slots,
+                }
+            )
+
+        return {
+            "tracked_products": len(candidates),
+            "note": (
+                "Add more products with: python -m scripts.tracker --seed-setups"
+                if len(candidates) < 20
+                else None
+            ),
+            "spaces": report,
+        }
 
 
 @app.get("/api/history/{listing_id}")
@@ -1456,6 +1602,15 @@ async def categories_sub_page(rest_of_path: str):
     For now, serves categories.html. Replace with dynamic templates later.
     """
     return FileResponse(str(FRONTEND_DIR / "categories.html"), media_type="text/html")
+
+
+@app.get("/product/{product_id_or_slug:path}", response_class=FileResponse, include_in_schema=False)
+async def product_deep_link_page(product_id_or_slug: str):
+    """
+    Serves the frontend SPA for shareable product deep-links.
+    """
+    return FileResponse(str(FRONTEND_DIR / "index.html"), media_type="text/html")
+
 
 
 # ── Static files (catch-all — must be last) ──────────────────────────────────

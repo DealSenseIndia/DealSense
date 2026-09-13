@@ -1,144 +1,33 @@
 """
-DealWise Omni-Search Engine.
-Searches across the local product graph and integrates live merchant catalog deals,
-allowing users to search "Air Fryer" or "boAt headphones" directly without needing to paste URLs.
+DealSense Omni-Search Engine.
+
+Searches the local product graph (Product -> MerchantListing -> PriceObservation)
+by keyword, so a user can search "air fryer" or "boAt headphones" without
+pasting a URL.
+
+Data rules enforced here:
+  1. Every result is backed by a real row in the product graph. There is no
+     seed/preset catalog -- a hardcoded price attached to a real ASIN is a
+     claim we cannot support, and it goes stale silently.
+  2. Prices come from the newest PriceObservation. If nothing has been
+     observed, `price` is None and the frontend renders "--".
+  3. `rating`, `ratings_count` and `badge` are passed through only when we
+     actually recorded them. No default star rating, no invented review
+     count, and never a synthesized "Amazon's Choice" -- that is a real
+     merchant programme and claiming it falsely is a lie about the product.
+  4. Scope is Amazon and Flipkart only.
 """
 
-from typing import List, Dict, Any
-from sqlmodel import select
+from typing import Any, Dict, List, Optional
+
+from sqlmodel import Session, select
+
 from backend.database import get_session
-from backend.models import Product, MerchantListing, PriceObservation
+from backend.models import MerchantListing, PriceObservation, Product
 
-
-# Seed live catalog presets for instant, high-converting keyword searches in India
-CATALOG_PRESETS: List[Dict[str, Any]] = [
-    {
-        "title": "PHILIPS Air Fryer NA120/00, 4.2 Litre, 1500W, Rapid Air Tech",
-        "brand": "PHILIPS",
-        "category": "Kitchen",
-        "merchant": "Amazon",
-        "price": 4706,
-        "mrp": 5995,
-        "discount_pct": 21.5,
-        "rating": 4.4,
-        "ratings_count": "8,230",
-        "image_url": "https://m.media-amazon.com/images/I/31bes8eD4kL._SY300_SX300_QL70_ML2_.jpg",
-        "url": "https://www.amazon.in/dp/B0D14BB5XY",
-        "badge": "Amazon's Choice",
-    },
-    {
-        "title": "boAt Rockerz 450 Bluetooth On Ear Headphones with Mic",
-        "brand": "boAt",
-        "category": "Audio",
-        "merchant": "Amazon",
-        "price": 1499,
-        "mrp": 3990,
-        "discount_pct": 62,
-        "rating": 4.3,
-        "ratings_count": "118,450",
-        "image_url": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=240&q=80",
-        "url": "https://www.amazon.in/dp/B07PR1CL3S",
-        "badge": "Top Seller",
-    },
-    {
-        "title": "Status Multi Print Contract Flat Woven Grey Carpet 4x6 Feet",
-        "brand": "Status",
-        "category": "Home Decor",
-        "merchant": "Amazon",
-        "price": 999,
-        "mrp": 3599,
-        "discount_pct": 72,
-        "rating": 4.4,
-        "ratings_count": "5,829",
-        "image_url": "https://images.unsplash.com/photo-1600121848594-d8644e57abab?w=240&q=80",
-        "url": "https://www.amazon.in/dp/B0DHDF8RKB",
-        "badge": "Verified Deal",
-    },
-    {
-        "title": "Apple Watch Series 9 GPS 45mm Midnight Aluminum Sport Band",
-        "brand": "Apple",
-        "category": "Wearables",
-        "merchant": "Amazon",
-        "price": 41900,
-        "mrp": 44900,
-        "discount_pct": 7,
-        "rating": 4.6,
-        "ratings_count": "3,410",
-        "image_url": "/assets/apple-watch-s9.png",
-        "url": "https://www.amazon.in/dp/B0CHX6PXX6",
-        "badge": "Premium Choice",
-    },
-    {
-        "title": "Prestige Nutrifry Digital Electric Air Fryer 4.5 Litre",
-        "brand": "Prestige",
-        "category": "Kitchen",
-        "merchant": "Flipkart",
-        "price": 3999,
-        "mrp": 6995,
-        "discount_pct": 43,
-        "rating": 4.3,
-        "ratings_count": "3,410",
-        "image_url": "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=240&q=80",
-        "url": "https://www.flipkart.com",
-        "badge": "Flipkart Assured",
-    },
-    {
-        "title": "Sony WH-CH520 Wireless Bluetooth On-Ear Headphones with DSEE",
-        "brand": "Sony",
-        "category": "Audio",
-        "merchant": "Amazon",
-        "price": 3490,
-        "mrp": 5990,
-        "discount_pct": 42,
-        "rating": 4.5,
-        "ratings_count": "12,340",
-        "image_url": "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=240&q=80",
-        "url": "https://www.amazon.in/dp/B0BS1QCFHX",
-        "badge": "Pro Sound",
-    },
-    {
-        "title": "Wakefit Taurus Engineered Wood Queen Bed with Headboard",
-        "brand": "Wakefit",
-        "category": "Furniture",
-        "merchant": "Amazon",
-        "price": 8999,
-        "mrp": 14999,
-        "discount_pct": 40,
-        "rating": 4.4,
-        "ratings_count": "18,920",
-        "image_url": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=240&q=80",
-        "url": "https://www.amazon.in/dp/B07P7V9H2L",
-        "badge": "Best Seller",
-    },
-    {
-        "title": "Wipro Smart 16M Color WiFi Ambient Floor Lamp with Alexa",
-        "brand": "Wipro",
-        "category": "Lighting",
-        "merchant": "Amazon",
-        "price": 1199,
-        "mrp": 2499,
-        "discount_pct": 52,
-        "rating": 4.3,
-        "ratings_count": "6,740",
-        "image_url": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=240&q=80",
-        "url": "https://www.amazon.in",
-        "badge": "Smart Deal",
-    },
-    {
-        "title": "Green Soul Minimal Ergonomic Computer Desk 47-Inch",
-        "brand": "Green Soul",
-        "category": "Furniture",
-        "merchant": "Amazon",
-        "price": 3499,
-        "mrp": 6999,
-        "discount_pct": 50,
-        "rating": 4.4,
-        "ratings_count": "4,150",
-        "image_url": "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=240&q=80",
-        "url": "https://www.amazon.in",
-        "badge": "Editor's Pick",
-    },
-]
+# Merchants in scope. A listing on any other merchant is not returned rather
+# than being relabelled as one of these.
+SUPPORTED_MERCHANTS = ("amazon", "flipkart")
 
 
 def search_catalog(
@@ -148,91 +37,101 @@ def search_catalog(
     session: Optional[Session] = None,
 ) -> List[Dict[str, Any]]:
     """
-    Searches canonical Product Universe and seed merchant catalog by keyword or partial title.
+    Searches the canonical Product Universe by keyword or partial title.
     Emits USER_SEARCH discovery telemetry for matched products.
+
+    Returns an empty list when nothing matches. An empty result is a truthful
+    answer; it is not padded with catalog filler.
     """
     q_norm = query.lower().strip()
     if not q_norm:
         return []
 
-    results = []
-    seen_titles = set()
+    results: List[Dict[str, Any]] = []
 
-    def _do_search(s: Session):
+    def _do_search(s: Session) -> None:
         query_pattern = f"%{q_norm}%"
         products = s.exec(
-            select(Product).where(
+            select(Product)
+            .where(
                 Product.canonical_title.ilike(query_pattern)
                 | Product.brand.ilike(query_pattern)
                 | Product.category.ilike(query_pattern)
-            ).limit(limit)
+            )
+            .limit(limit)
         ).all()
 
         for p in products:
+            # Only consider listings on merchants we actually support.
             listing = s.exec(
-                select(MerchantListing).where(MerchantListing.product_id == p.id)
+                select(MerchantListing).where(
+                    MerchantListing.product_id == p.id,
+                    MerchantListing.active == True,  # noqa: E712 - SQLModel needs ==
+                )
             ).first()
 
-            last_obs = None
-            if listing:
-                last_obs = s.exec(
-                    select(PriceObservation)
-                    .where(PriceObservation.listing_id == listing.id)
-                    .order_by(PriceObservation.observed_at.desc())
-                ).first()
+            if listing is None or (listing.merchant or "").lower() not in SUPPORTED_MERCHANTS:
+                continue
 
-            p_price = last_obs.price if last_obs else (listing.current_price if listing else None)
-            p_mrp = last_obs.mrp if last_obs and last_obs.mrp else None
-            disc = round(((p_mrp - p_price) / p_mrp) * 100) if (p_mrp and p_price and p_mrp > p_price) else 0
+            last_obs = s.exec(
+                select(PriceObservation)
+                .where(PriceObservation.listing_id == listing.id)
+                .order_by(PriceObservation.observed_at.desc())
+            ).first()
 
-            # Record search discovery event
+            # Newest observed price, falling back to the price cached on the
+            # listing. Both may legitimately be absent.
+            price = last_obs.price if last_obs else listing.current_price
+            mrp = last_obs.mrp if (last_obs and last_obs.mrp) else None
+
+            # A discount is only real if we hold both numbers and MRP is
+            # genuinely higher. Otherwise it stays None, not 0, so the
+            # frontend can omit the badge instead of printing "0% OFF".
+            discount_pct = None
+            if price is not None and mrp is not None and mrp > price:
+                discount_pct = round(((mrp - price) / mrp) * 100)
+
             try:
                 from backend.services.universe_service import record_discovery_event
+
                 record_discovery_event(
                     product_id=p.id,
                     source="USER_SEARCH",
-                    listing_id=listing.id if listing else None,
+                    listing_id=listing.id,
                     query_text=query,
                     session_id=session_id,
                     session=s,
                 )
             except Exception:
+                # Telemetry must never break a user-facing search.
                 pass
 
-            results.append({
-                "id": p.id,
-                "title": p.canonical_title,
-                "brand": p.brand,
-                "category": p.category or "General",
-                "merchant": listing.merchant if listing else "Amazon",
-                "price": p_price,
-                "mrp": p_mrp,
-                "discount_pct": disc,
-                "rating": p.rating,
-                "ratings_count": p.ratings_count,
-                "image_url": p.image_url or "/assets/placeholder-product.png",
-                "url": listing.clean_url if listing else f"/product/{p.id}",
-                "badge": p.badge or (f"{listing.merchant}'s Choice" if listing else "Verified"),
-                "source": "database",
-            })
-            seen_titles.add(p.canonical_title.lower())
+            results.append(
+                {
+                    "id": p.id,
+                    "title": p.canonical_title,
+                    "brand": p.brand,
+                    "category": p.category or "General",
+                    "merchant": listing.merchant,
+                    "price": round(price) if price is not None else None,
+                    "mrp": round(mrp) if mrp is not None else None,
+                    "discount_pct": discount_pct,
+                    # Passed through only when recorded. No default rating.
+                    "rating": p.rating,
+                    "ratings_count": p.ratings_count,
+                    # None means "no image"; the frontend draws a neutral
+                    # placeholder rather than a stock photo of something else.
+                    "image_url": p.image_url,
+                    "url": listing.clean_url or f"/product/{p.id}",
+                    "badge": p.badge,
+                    "source": "database",
+                }
+            )
 
     if session:
         _do_search(session)
     else:
         with get_session() as s_ctx:
             _do_search(s_ctx)
-
-    # 2. Search catalog presets for supplementary seed candidates
-    for item in CATALOG_PRESETS:
-        if len(results) >= limit:
-            break
-        t_low = item["title"].lower()
-        b_low = item["brand"].lower()
-        c_low = item["category"].lower()
-        if q_norm in t_low or q_norm in b_low or q_norm in c_low or any(w in t_low for w in q_norm.split()):
-            if t_low not in seen_titles:
-                results.append({**item, "source": "market_catalog"})
-                seen_titles.add(t_low)
 
     return results[:limit]

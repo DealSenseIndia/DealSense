@@ -1,5 +1,5 @@
 """
-Automated Test Suite for DealWise Backend Foundation & Homepage Freeze.
+Automated Test Suite for DealSense Backend Foundation & Homepage Freeze.
 """
 import sys
 import unittest
@@ -23,7 +23,7 @@ from backend.services.deal_intelligence import calculate_deal_intelligence
 from backend.services.merchant_adapters import AmazonAdapter, FlipkartAdapter, get_adapter_for_url
 
 
-class TestDealWiseFoundation(unittest.TestCase):
+class TestDealSenseFoundation(unittest.TestCase):
 
     def test_01_homepage_api_contract(self):
         """Verify GET /api/homepage returns expected contracts and 200 OK."""

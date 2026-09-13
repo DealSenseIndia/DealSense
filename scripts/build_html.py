@@ -1,5 +1,5 @@
 """
-DealWise HTML Template Compiler.
+DealSense HTML Template Compiler.
 Stitches modular component templates from frontend/templates/ into frontend/index.html.
 """
 

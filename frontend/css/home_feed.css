@@ -1,5 +1,5 @@
 /* ==========================================================================
-   DEALWISE HOMEPAGE FEED & LIVE SCANNER STYLES
+   DEALSENSE HOMEPAGE FEED & LIVE SCANNER STYLES
    ========================================================================== */
 
 /* 1. Category Navigation Bar (Clean & Scrollbar-Free) */
@@ -1238,14 +1238,56 @@
   margin-bottom: 6px;
 }
 
+.pathway-card:focus-visible {
+  outline: 2.5px solid #16A34A;
+  outline-offset: 2px;
+}
+
+.pathway-setup:focus-visible {
+  outline-color: #2563EB;
+}
+
 .pathway-cta-link {
   font-size: 13px;
   font-weight: 750;
   color: #16A34A;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  font-family: inherit;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.pathway-product:hover .pathway-cta-link,
+.pathway-product:focus-within .pathway-cta-link {
+  transform: translateX(3px);
+  color: #15803D;
 }
 
 .pathway-setup .pathway-cta-link {
   color: #2563EB;
+}
+
+.pathway-setup:hover .pathway-cta-link,
+.pathway-setup:focus-within .pathway-cta-link {
+  transform: translateX(3px);
+  color: #1D4ED8;
+}
+
+@keyframes pulseGreenGlow {
+  0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.45); }
+  50% { box-shadow: 0 0 0 10px rgba(22, 163, 74, 0.2); }
+  100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+}
+
+.deal-url-card.pulse-focus {
+  animation: pulseGreenGlow 1.2s ease-out;
+  border-color: #16A34A !important;
 }
 
 /* 3. Section: Build it. We'll find it. */
@@ -1646,7 +1688,7 @@
   display: block;
 }
 
-/* 6. Section: Why smart shoppers choose DealWise */
+/* 6. Section: Why smart shoppers choose DealSense */
 .mockup-why-choose-section {
   padding: 50px 0;
   background: #FFFFFF;
