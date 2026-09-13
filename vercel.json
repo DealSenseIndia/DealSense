@@ -1,8 +1,6 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/index.py" },
-    { "source": "/api", "destination": "/api/index.py" },
     { "source": "/deals", "destination": "/frontend/deals.html" },
     { "source": "/deals.html", "destination": "/frontend/deals.html" },
     { "source": "/categories", "destination": "/frontend/categories.html" },
