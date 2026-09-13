@@ -1,3 +1,5 @@
+import os
+import shutil
 from pathlib import Path
 from sqlmodel import SQLModel, Session, create_engine
 import backend.models  # noqa: F401
@@ -5,9 +7,20 @@ import backend.models  # noqa: F401
 # Ensure data directory exists
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
-DATA_DIR.mkdir(exist_ok=True)
 
 DB_PATH = DATA_DIR / "deal_intelligence.db"
+
+# Serverless environment (Vercel / AWS Lambda): copy SQLite database to writable /tmp
+if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+    TMP_DATA_DIR = Path("/tmp/data")
+    TMP_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    TMP_DB_PATH = TMP_DATA_DIR / "deal_intelligence.db"
+    if not TMP_DB_PATH.exists() and DB_PATH.exists():
+        shutil.copy2(DB_PATH, TMP_DB_PATH)
+    DB_PATH = TMP_DB_PATH
+else:
+    DATA_DIR.mkdir(exist_ok=True)
+
 DATABASE_URL = f"sqlite:///{DB_PATH.as_posix()}"
 
 engine = create_engine(

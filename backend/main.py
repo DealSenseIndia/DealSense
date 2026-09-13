@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional
 from fastapi import FastAPI, HTTPException, Request, Header
@@ -40,15 +41,18 @@ from backend.services.ingestion_service import ingest_product_from_url
 async def lifespan(app: FastAPI):
     init_db()
     try:
-        from scripts.build_html import build_html
-        build_html()
+        if not os.environ.get("VERCEL"):
+            from scripts.build_html import build_html
+            build_html()
     except Exception as e:
         print(f"Warning: HTML auto-build skipped: {e}")
-    # Start autonomous price observation background worker
-    worker.start()
+    # Start autonomous price observation background worker in standard environments
+    if not (os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME")):
+        worker.start()
     yield
     # Graceful shutdown on application exit
-    worker.stop()
+    if not (os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME")):
+        worker.stop()
 
 
 app = FastAPI(
