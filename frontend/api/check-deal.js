@@ -31,6 +31,19 @@ const VERIFIED_CATALOG = [
     rating: 4.4,
   },
   {
+    match: ["meta", "quest", "b0c8vkrpv2"],
+    title: "Meta Quest 128GB Breakthrough Reality Headset",
+    brand: "Meta",
+    category: "gaming",
+    price: 31999,
+    mrp: 39999,
+    discount_pct: 20,
+    score: 90,
+    merchant: "Amazon",
+    image: "https://m.media-amazon.com/images/I/61ST5kfuMBL._AC_SL1500_.jpg",
+    rating: 4.5,
+  },
+  {
     match: ["sony", "xm5", "b09xs7jwhh"],
     title: "Sony WH-1000XM5 Wireless Noise Cancelling Headphones",
     brand: "Sony",
@@ -143,7 +156,7 @@ function cleanTitle(raw) {
 
 function detectBrand(title) {
   const brands = [
-    "Puma", "Nike", "Adidas", "Reebok", "Apple", "Samsung", "Sony", "OnePlus",
+    "Meta", "Oculus", "Puma", "Nike", "Adidas", "Reebok", "Apple", "Samsung", "Sony", "OnePlus",
     "Xiaomi", "Realme", "boAt", "Noise", "LG", "ASUS", "Dell", "HP", "Lenovo",
     "Philips", "Dyson", "Casio", "Fossil", "Fastrack", "Boult", "Zebronics",
     "Fire-Boltt", "Titan", "Bata", "Woodland", "Levi's", "Red Tape", "U.S. Polo"
@@ -162,31 +175,76 @@ function detectBrand(title) {
 
 function detectCategoryAndDefaults(title) {
   const lower = title.toLowerCase();
-  if (/\b(sneaker|shoe|footwear|boot|sandal|slipper|shirt|t-shirt|jeans|dress|pant|trouser|kurta|jacket|hoodie|wear|cloth)\b/i.test(lower)) {
+  if (/\b(vr|virtual reality|quest|meta quest|ps5|playstation|xbox|nintendo|console|gaming)\b/i.test(lower)) {
+    return { category: "gaming", image: "/assets/categories/custom-setup.png", price: 31999, mrp: 39999 };
+  }
+  if (/\b(sneakers?|shoes?|footwear|boots?|sandals?|slippers?|shirts?|t-shirts?|jeans|dresses?|pants?|trousers?|kurtas?|jackets?|hoodies?|wear|clothes|clothing|apparel)\b/i.test(lower)) {
     return { category: "fashion", image: "/assets/categories/fashion.png", price: 3499, mrp: 5999 };
   }
-  if (/\b(phone|mobile|smartphone|iphone|5g|android)\b/i.test(lower)) {
+  if (/\b(phones?|mobiles?|smartphones?|iphones?|5g|android)\b/i.test(lower)) {
     return { category: "mobiles", image: "/assets/deals/products/iphone-15.png", price: 29999, mrp: 34999 };
   }
-  if (/\b(laptop|macbook|notebook|chromebook|thinkpad)\b/i.test(lower)) {
+  if (/\b(laptops?|macbooks?|notebooks?|chromebooks?|thinkpads?)\b/i.test(lower)) {
     return { category: "laptops", image: "/assets/deals/products/dell-laptop.png", price: 54990, mrp: 69990 };
   }
-  if (/\b(tv|television|oled|qled|smart tv)\b/i.test(lower)) {
+  if (/\b(tvs?|televisions?|oled|qled|smart tvs?)\b/i.test(lower)) {
     return { category: "tvs", image: "/assets/deals/dropped/lg-tv.png", price: 27990, mrp: 39990 };
   }
-  if (/\b(headphone|earphone|earbuds|airpods|audio|soundbar|speaker)\b/i.test(lower)) {
+  if (/\b(headphones?|earphones?|earbuds?|airpods?|audio|soundbars?|speakers?)\b/i.test(lower)) {
     return { category: "audio", image: "/assets/deals/dropped/sony-xm5.png", price: 4999, mrp: 7999 };
   }
-  if (/\b(watch|smartwatch|band)\b/i.test(lower)) {
+  if (/\b(watch|watches|smartwatch|smartwatches|bands?)\b/i.test(lower)) {
     return { category: "smartwatches", image: "/assets/apple-watch-s9.png", price: 3999, mrp: 6999 };
   }
-  if (/\b(fryer|refrigerator|fridge|washing machine|microwave|air conditioner|ac|vacuum|purifier)\b/i.test(lower)) {
+  if (/\b(fryers?|refrigerators?|fridges?|washing machines?|microwaves?|air conditioners?|ac|vacuums?|purifiers?)\b/i.test(lower)) {
     return { category: "appliances", image: "/assets/deals/products/philips-airfryer.png", price: 4499, mrp: 6999 };
   }
-  if (/\b(dumbbell|treadmill|gym|protein|creatine|yoga)\b/i.test(lower)) {
+  if (/\b(dumbbells?|treadmills?|gym|proteins?|creatine|yoga)\b/i.test(lower)) {
     return { category: "sports-fitness", image: "/assets/categories/sports-fitness.png", price: 2499, mrp: 3999 };
   }
   return { category: "electronics", image: "/assets/categories/electronics.png", price: 2999, mrp: 4999 };
+}
+
+async function fetchLiveProductImage(query) {
+  try {
+    const tokenRes = await fetch(
+      `https://duckduckgo.com/?q=${encodeURIComponent(query)}&t=h_&iar=images&iax=images&ia=images`,
+      {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        },
+        signal: AbortSignal.timeout(3500),
+      }
+    );
+    const tokenHtml = await tokenRes.text();
+    const vqdMatch =
+      tokenHtml.match(/vqd=["']?([0-9-]+)["']?/i) ||
+      tokenHtml.match(/vqd=([0-9-]+)/i);
+    if (!vqdMatch) return null;
+
+    const imgApiUrl = `https://duckduckgo.com/i.js?l=us-en&o=json&q=${encodeURIComponent(
+      query
+    )}&vqd=${vqdMatch[1]}&f=,,,`;
+    const imgRes = await fetch(imgApiUrl, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      },
+      signal: AbortSignal.timeout(3500),
+    });
+    if (!imgRes.ok) return null;
+    const imgData = await imgRes.json();
+    if (imgData && imgData.results && imgData.results.length > 0) {
+      const preferred = imgData.results.find(
+        (r) =>
+          r.image &&
+          (r.image.includes("media-amazon.com") ||
+            r.image.includes("flixcart.com") ||
+            r.image.includes("croma.com"))
+      );
+      return preferred ? preferred.image : imgData.results[0].image;
+    }
+  } catch (_) {}
+  return null;
 }
 
 function hashString(str) {
@@ -311,17 +369,21 @@ export default async function handler(req, res) {
       headers: {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-IN,en;q=0.9",
+        "Referer": "https://www.google.com/",
       },
       redirect: "follow",
-      signal: AbortSignal.timeout(2500),
+      signal: AbortSignal.timeout(3500),
     });
     if (pageResp.ok) {
       const html = await pageResp.text();
+
+      // Title extraction
       const ogTitleMatch = html.match(/property=["']og:title["']\s+content=["']([^"']+)["']/i) ||
                            html.match(/content=["']([^"']+)["']\s+property=["']og:title["']/i);
       const titleTagMatch = html.match(/<title>([^<]+)<\/title>/i);
       const rawTitle = ogTitleMatch ? ogTitleMatch[1] : (titleTagMatch ? titleTagMatch[1] : "");
-      if (rawTitle && !rawTitle.toLowerCase().includes("buy products online") && !rawTitle.toLowerCase().includes("robot or human")) {
+      if (rawTitle && !rawTitle.toLowerCase().includes("buy products online") && !rawTitle.toLowerCase().includes("robot or human") && !rawTitle.toLowerCase().includes("robot check")) {
         liveTitle = rawTitle
           .replace(/\s*-\s*Buy\s+.*Flipkart\.com.*$/i, "")
           .replace(/\s*:\s*Amazon\.in.*$/i, "")
@@ -329,12 +391,63 @@ export default async function handler(req, res) {
           .trim();
       }
 
-      const ogImgMatch = html.match(/property=["']og:image["']\s+content=["']([^"']+)["']/i) ||
-                         html.match(/content=["']([^"']+)["']\s+property=["']og:image["']/i);
-      if (ogImgMatch && ogImgMatch[1] && !ogImgMatch[1].includes("flipkart.com/static/")) {
-        liveImage = ogImgMatch[1];
+      // 1. Amazon landing image & dynamic image
+      const landingImgMatch = html.match(/id=["']landingImage["'][^>]*src=["']([^"']+)["']/i) ||
+                             html.match(/src=["']([^"']+)["'][^>]*id=["']landingImage["']/i);
+      if (landingImgMatch && landingImgMatch[1]) {
+        liveImage = landingImgMatch[1];
       }
 
+      // 2. Amazon data-a-dynamic-image
+      if (!liveImage) {
+        const dynImgMatch = html.match(/data-a-dynamic-image=["'](\{[^"']+\})["']/i);
+        if (dynImgMatch && dynImgMatch[1]) {
+          try {
+            const parsed = JSON.parse(dynImgMatch[1].replace(/&quot;/g, '"'));
+            const keys = Object.keys(parsed);
+            if (keys.length > 0) liveImage = keys[0];
+          } catch (_) {}
+        }
+      }
+
+      // 3. Amazon colorImages
+      if (!liveImage) {
+        const colorImgMatch = html.match(/'colorImages'\s*:\s*\{.*?'initial'\s*:\s*(\[.*?\])/s);
+        if (colorImgMatch && colorImgMatch[1]) {
+          try {
+            const parsed = JSON.parse(colorImgMatch[1]);
+            const first = parsed[0];
+            const hiRes = first.hiRes || first.large || (first.main && first.main.url);
+            if (hiRes) liveImage = hiRes;
+          } catch (_) {}
+        }
+      }
+
+      // 4. Amazon m.media-amazon.com direct regex
+      if (!liveImage && lowerUrl.includes("amazon")) {
+        const amzMediaMatch = html.match(/https:\/\/m\.media-amazon\.com\/images\/I\/[a-zA-Z0-9+_.-]+\.(?:jpg|png)/i);
+        if (amzMediaMatch) {
+          liveImage = amzMediaMatch[0];
+        }
+      }
+
+      // 5. Flipkart og:image or DByuf4 / _396cs4
+      if (!liveImage) {
+        const ogImgMatch = html.match(/property=["']og:image["']\s+content=["']([^"']+)["']/i) ||
+                           html.match(/content=["']([^"']+)["']\s+property=["']og:image["']/i);
+        if (ogImgMatch && ogImgMatch[1] && !ogImgMatch[1].includes("flipkart.com/static/")) {
+          liveImage = ogImgMatch[1];
+        }
+      }
+
+      if (!liveImage && lowerUrl.includes("flipkart")) {
+        const fkImgMatch = html.match(/https:\/\/rukminim\d*\.flixcart\.com\/image\/[a-zA-Z0-9/_.-]+\.(?:jpeg|jpg|png)/i);
+        if (fkImgMatch) {
+          liveImage = fkImgMatch[0];
+        }
+      }
+
+      // Price extraction
       const fkPriceMatch = html.match(/class=["']Nx9bqj[^"']*["']>₹?([0-9,]+)/i) ||
                            html.match(/class=["']_30jeq3[^"']*["']>₹?([0-9,]+)/i);
       const amzPriceMatch = html.match(/class=["']a-price-whole["']>([0-9,]+)/i);
@@ -357,6 +470,15 @@ export default async function handler(req, res) {
   const brand = detectBrand(finalTitle);
   const catDefaults = detectCategoryAndDefaults(finalTitle);
   const finalCategory = catDefaults.category;
+
+  // Fallback to automated live product image search if page scraping was blocked by bot check
+  if (!liveImage && finalTitle) {
+    liveImage = await fetchLiveProductImage(`${finalTitle} ${merchant}`);
+    if (!liveImage) {
+      liveImage = await fetchLiveProductImage(finalTitle);
+    }
+  }
+
   const finalImage = liveImage || catDefaults.image;
   const finalPrice = livePrice || catDefaults.price;
   const finalMrp = (liveMrp && liveMrp > finalPrice) ? liveMrp : (catDefaults.mrp > finalPrice ? catDefaults.mrp : Math.round(finalPrice * 1.25));
@@ -379,6 +501,7 @@ export default async function handler(req, res) {
       brand: brand,
       category: finalCategory,
       image_url: finalImage,
+      images: [finalImage],
       rating: 4.4,
       ratings_count: 730,
     },
