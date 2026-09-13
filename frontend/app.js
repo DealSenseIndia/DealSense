@@ -53,7 +53,7 @@ function initApp() {
   const heroDealForm = document.getElementById("heroDealForm");
   const searchResultsDropdown = document.getElementById("searchResultsDropdown");
   const searchResultsList = document.getElementById("searchResultsList");
-  const chipTriggers = document.querySelectorAll(".chip-trigger");
+  const chipTriggers = document.querySelectorAll(".chip-trigger, .popular-tag-pill");
 
   // 4. Centralized URL Deal Analysis Controller
   async function analyzeUrl(url) {

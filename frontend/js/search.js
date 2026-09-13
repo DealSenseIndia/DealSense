@@ -73,16 +73,26 @@ function renderResultRow(item) {
 export function initOmniSearch({ heroUrlInput, heroDealForm, searchResultsDropdown, searchResultsList, chipTriggers, onAnalyze }) {
   let searchDebounceTimer = null;
 
-  // Chip fast-click triggers
-  if (chipTriggers) {
-    chipTriggers.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const url = btn.getAttribute("data-url");
+  // Popular tag & Chip fast-click triggers
+  const allTriggers = (chipTriggers && chipTriggers.length > 0)
+    ? chipTriggers
+    : document.querySelectorAll(".chip-trigger, .popular-tag-pill");
+
+  allTriggers.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const url = btn.getAttribute("data-url");
+      const query = btn.getAttribute("data-query") || btn.textContent.trim();
+      if (url) {
         if (heroUrlInput) heroUrlInput.value = url;
         onAnalyze(url);
-      });
+      } else if (query) {
+        if (heroUrlInput) heroUrlInput.value = query;
+        executeSearch(query, false);
+      }
     });
-  }
+  });
 
   // Input debouncer for autocomplete vs URL detection
   if (heroUrlInput) {
@@ -157,7 +167,14 @@ export function initOmniSearch({ heroUrlInput, heroDealForm, searchResultsDropdo
 
   // Close dropdown when clicking outside
   document.addEventListener("click", (e) => {
-    if (searchResultsDropdown && heroDealForm && !heroDealForm.contains(e.target) && !searchResultsDropdown.contains(e.target)) {
+    if (
+      searchResultsDropdown &&
+      heroDealForm &&
+      !heroDealForm.contains(e.target) &&
+      !searchResultsDropdown.contains(e.target) &&
+      !e.target.closest(".popular-tag-pill") &&
+      !e.target.closest(".chip-trigger")
+    ) {
       searchResultsDropdown.style.display = "none";
     }
   });

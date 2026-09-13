@@ -11,8 +11,8 @@
 
 .hero-layout-grid {
   display: grid;
-  grid-template-columns: 48% 52%;
-  gap: 32px;
+  grid-template-columns: 54% 46%;
+  gap: 28px;
   align-items: center;
 }
 
@@ -20,6 +20,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 0;
 }
 
 .trust-badge-pill {
@@ -87,13 +88,76 @@
   flex-shrink: 0;
 }
 
+/* Lead Group: Link Icon + Amazon & Flipkart store badges */
+.url-lead-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding-left: 8px;
+  padding-right: 2px;
+  flex-shrink: 0;
+}
+
+.url-lead-link-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748B;
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+}
+
+.deal-url-card:focus-within .url-lead-link-icon {
+  color: var(--dw-green-main);
+}
+
+.url-lead-stores {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 9999px;
+  padding: 2.5px 6px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.url-store-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid #EEF2F6;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  flex-shrink: 0;
+}
+
+.url-store-badge .store-mini-logo {
+  width: 13.5px;
+  height: 13.5px;
+  object-fit: contain;
+  display: block;
+}
+
+.url-lead-divider {
+  width: 1px;
+  height: 22px;
+  background: #E2E8F0;
+  margin-left: 3px;
+  margin-right: 2px;
+  flex-shrink: 0;
+}
+
 .url-input-field {
   flex: 1;
   height: 44px;
   border: none;
   outline: none;
-  padding: 0 14px;
-  font-size: 14px;
+  padding: 0 10px;
+  font-size: 13.5px;
   color: var(--text-headline);
   background: transparent;
   font-family: inherit;
@@ -102,10 +166,59 @@
 }
 
 .url-input-field::placeholder {
-  color: var(--text-muted);
+  color: #64748B;
+  font-size: 13px;
+  letter-spacing: -0.1px;
 }
 
-/* Quick Store Chips with Official Logos */
+/* Popular Tags Bar (Matching user screenshot) */
+.hero-popular-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.popular-intro-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0F172A;
+  margin-right: 2px;
+}
+
+.popular-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  padding: 4px 11px;
+  border-radius: 9999px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #334155;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: all 0.15s ease;
+  font-family: inherit;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.popular-tag-pill:hover {
+  background: #E2E8F0;
+  color: #0F172A;
+  border-color: #CBD5E1;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.popular-tag-pill:active {
+  transform: translateY(0);
+}
+
+/* Quick Store Chips with Official Logos (Fallback/Compatibility) */
 .hero-chips-bar {
   display: flex;
   align-items: center;

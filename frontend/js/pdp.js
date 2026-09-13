@@ -198,6 +198,7 @@ export function renderTruePriceReceipt(selectedBank = "auto", merchant = null) {
 
 let currentGalleryImages = [];
 let currentGalleryIndex = 0;
+let refreshActiveAlertDisplay = () => {};
 
 export function showPdpSkeleton() {
   const homeView = document.getElementById("homeView");
@@ -878,17 +879,17 @@ function renderDiscountAuditCard(da) {
   const badge = document.getElementById("pdpInflationBadge");
   const verdict = document.getElementById("pdpInflationVerdictText");
 
-  if (advDisc) advDisc.textContent = `${Math.round(da.advertised_discount_pct)}% OFF`;
-  if (realDisc) realDisc.textContent = `${Math.round(da.real_discount_pct)}% OFF`;
-  if (baseline) baseline.textContent = `₹${da.real_baseline_price.toLocaleString("en-IN")}`;
-  if (note) note.textContent = da.audit_explanation;
+  if (advDisc) advDisc.textContent = da.advertised_discount_pct != null ? `${Math.round(da.advertised_discount_pct)}% OFF` : "0% OFF";
+  if (realDisc) realDisc.textContent = da.real_discount_pct != null ? `${Math.round(da.real_discount_pct)}% OFF` : "0% OFF";
+  if (baseline) baseline.textContent = da.real_baseline_price != null ? `₹${Math.round(da.real_baseline_price).toLocaleString("en-IN")}` : "--";
+  if (note) note.textContent = da.audit_explanation || "";
 
   if (da.is_inflated) {
     if (badge) { badge.style.background = "#FEE2E2"; badge.style.color = "#DC2626"; }
     if (verdict) verdict.textContent = "⚠️ Inflated MRP Detected";
     card.style.borderColor = "#FCA5A5";
     card.style.background = "#FFF5F5";
-  } else if (da.real_discount_pct >= 10) {
+  } else if (da.real_discount_pct != null && da.real_discount_pct >= 10) {
     if (badge) { badge.style.background = "#DCFCE7"; badge.style.color = "#16A34A"; }
     if (verdict) verdict.textContent = "✓ Verified Genuine Discount";
     card.style.borderColor = "#BBF7D0";
@@ -908,10 +909,14 @@ export function renderBankDiscount(bankId) {
   const effPriceEl = document.getElementById("bankEffectivePrice");
   const savingEl = document.getElementById("bankSavingCallout");
 
-  if (effPriceEl) effPriceEl.textContent = `₹${match.effective_price.toLocaleString("en-IN")}`;
+  if (effPriceEl) {
+    effPriceEl.textContent = match.effective_price != null
+      ? `₹${Math.round(match.effective_price).toLocaleString("en-IN")}`
+      : "--";
+  }
   if (savingEl) {
-    savingEl.textContent = match.discount_amount > 0
-      ? `(You save ₹${match.discount_amount.toLocaleString("en-IN")} instantly with ${match.bank_name})`
+    savingEl.textContent = (match.discount_amount != null && match.discount_amount > 0)
+      ? `(You save ₹${Math.round(match.discount_amount).toLocaleString("en-IN")} instantly with ${match.bank_name})`
       : `(No extra bank discount for this amount)`;
   }
 }
@@ -2502,7 +2507,7 @@ export function initPdpListeners() {
   }
 
   // Active Alert Display & Action Manager
-  async function refreshActiveAlertDisplay(productId, listingId) {
+  refreshActiveAlertDisplay = async function(productId, listingId) {
     const card = document.getElementById("pdpActiveAlertCard");
     const openAlertBtn = document.getElementById("openPriceAlertBtn");
     const ttbSetAlertBtn = document.getElementById("ttbSetAlertBtn");
