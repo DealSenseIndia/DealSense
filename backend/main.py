@@ -72,6 +72,22 @@ app.add_middleware(
 )
 
 
+@app.middleware("http")
+async def normalize_api_path(request: Request, call_next):
+    # If request is routed via Vercel serverless without /api prefix, normalize it
+    path = request.scope.get("path", "")
+    if path and not path.startswith("/api") and path not in ["/deals", "/categories", "/docs", "/openapi.json", "/redoc", "/"]:
+        request.scope["path"] = f"/api{path}"
+    return await call_next(request)
+
+
+@app.get("/")
+@app.get("/api")
+def api_root():
+    return {"status": "ok", "service": "DealSense Intelligence API"}
+
+
+
 class CheckDealRequest(BaseModel):
     url: str
     force_refresh: bool = False
