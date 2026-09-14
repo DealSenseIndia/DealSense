@@ -89,7 +89,7 @@ def build_affiliate_url(merchant: str, clean_url: str) -> str:
     query = parse_qs(parsed.query)
 
     # 2. Amazon Direct Affiliate Tag
-    if merchant.lower() == "amazon" and settings.AMAZON_AFFILIATE_TAG:
+    if "amazon" in merchant.lower() and settings.AMAZON_AFFILIATE_TAG:
         query["tag"] = [settings.AMAZON_AFFILIATE_TAG]
         # Remove any stray ref tags
         query.pop("ref", None)
@@ -98,7 +98,7 @@ def build_affiliate_url(merchant: str, clean_url: str) -> str:
         return urlunparse(parsed._replace(query=new_query))
 
     # 3. Flipkart Direct Affiliate ID
-    if merchant.lower() == "flipkart" and settings.FLIPKART_AFFILIATE_ID:
+    if "flipkart" in merchant.lower() and settings.FLIPKART_AFFILIATE_ID:
         query["affid"] = [settings.FLIPKART_AFFILIATE_ID]
         new_query = urlencode(query, doseq=True)
         return urlunparse(parsed._replace(query=new_query))

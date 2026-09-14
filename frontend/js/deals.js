@@ -232,6 +232,7 @@
       observed_at: d.observed_at || null,
       drop_pct: dropPct,
       previous_price: previousPrice,
+      source: d.source || 'pipeline_crawler',
     };
   }
 
@@ -243,6 +244,9 @@
       grid.innerHTML = `<div class="deals-loading-state">Loading tracked deals…</div>`;
     }
 
+    // Initialize Trending Coupons strip in parallel
+    initCoupons();
+
     try {
       const resp = await fetch('/api/deals/live');
       if (!resp.ok) {
@@ -252,8 +256,8 @@
 
       state.allDeals = (data.deals || [])
         .map(normaliseDeal)
-        // Out-of-scope merchants are dropped, not relabelled as Amazon.
-        .filter((d) => SUPPORTED_MERCHANTS.some((m) => d.store.toLowerCase().includes(m)))
+        // Verified Cuelinks promotions and Amazon/Flipkart listings are included.
+        .filter((d) => d.source === 'cuelinks_verified' || SUPPORTED_MERCHANTS.some((m) => d.store.toLowerCase().includes(m)))
         // A listing with no usable price cannot be shown as a deal.
         .filter((d) => d.price !== null);
 
@@ -272,6 +276,103 @@
     setupEventListeners();
     renderDeals();
     renderPricesJustDropped();
+  }
+
+  async function initCoupons() {
+    const container = document.getElementById('dealsCouponsContainer');
+    const section = document.getElementById('dealsCouponsSection');
+    if (!container) return;
+
+    try {
+      const resp = await fetch('/api/coupons/trending?limit=12');
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const data = await resp.json();
+      const coupons = data.coupons || [];
+      if (!coupons.length) {
+        if (section) section.style.display = 'none';
+        return;
+      }
+
+      container.innerHTML = coupons.map((c, idx) => {
+        const safeCode = escapeHtml(c.coupon_code || '');
+        const safeStore = escapeHtml(c.store_name || 'Verified Store');
+        const safeTitle = escapeHtml(c.title || 'Special Promotional Offer');
+        const safeBadge = escapeHtml(c.discount_badge || 'SPECIAL OFFER');
+        const safeExpiry = escapeHtml(c.expiry_display || 'Limited Time');
+        const safeLogo = escapeHtml(c.store_logo || '/assets/dealsense-icon.png');
+        const safeUrl = escapeHtml(c.tracking_url || '#');
+
+        return `
+          <div class="coupon-card" data-coupon-id="${c.id || idx}">
+            <div>
+              <div class="coupon-card-top">
+                <div class="coupon-store-info">
+                  <img src="${safeLogo}" alt="${safeStore}" class="coupon-store-logo" loading="lazy" onerror="this.src='/assets/dealsense-icon.png'">
+                  <span class="coupon-store-name">${safeStore}</span>
+                </div>
+                <span class="coupon-verified-badge">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Verified
+                </span>
+              </div>
+              <div class="coupon-discount-headline">
+                <span>🏷️</span>
+                <span>${safeBadge}</span>
+              </div>
+              <p class="coupon-desc" title="${safeTitle}">${safeTitle}</p>
+            </div>
+            <div>
+              <div class="coupon-code-box">
+                <span class="coupon-code-text">${safeCode}</span>
+                <button type="button" class="btn-copy-coupon" data-code="${safeCode}" data-store="${safeStore}" data-url="${safeUrl}">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  <span>Copy</span>
+                </button>
+              </div>
+              <div class="coupon-card-footer">
+                <span class="coupon-expiry">⏳ ${safeExpiry}</span>
+                <a href="${safeUrl}" target="_blank" rel="noopener sponsored" class="coupon-shop-link">Shop Store →</a>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.querySelectorAll('.btn-copy-coupon').forEach((btn) => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const code = btn.getAttribute('data-code');
+          const store = btn.getAttribute('data-store');
+          const url = btn.getAttribute('data-url');
+          try {
+            await navigator.clipboard.writeText(code);
+            btn.classList.add('copied');
+            btn.innerHTML = `<span>Copied! ✓</span>`;
+            setTimeout(() => {
+              if (url && url !== '#') window.open(url, '_blank');
+            }, 350);
+            setTimeout(() => {
+              btn.classList.remove('copied');
+              btn.innerHTML = `<span>Copy</span>`;
+            }, 2500);
+          } catch (err) {
+            console.warn(err);
+          }
+        });
+      });
+
+      const prevBtn = document.getElementById('dealsCouponPrevBtn');
+      const nextBtn = document.getElementById('dealsCouponNextBtn');
+      if (prevBtn) prevBtn.onclick = () => container.scrollBy({ left: -320, behavior: 'smooth' });
+      if (nextBtn) nextBtn.onclick = () => container.scrollBy({ left: 320, behavior: 'smooth' });
+    } catch (e) {
+      if (section) section.style.display = 'none';
+    }
   }
 
   // --- FILTER + SORT ---

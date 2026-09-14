@@ -248,7 +248,7 @@ def resolve_product_url(url: str) -> ResolvedURL:
         match = re.search(r"/itm([a-zA-Z0-9]+)", parsed.path)
         if match:
             pid = f"itm{match.group(1)}"
-            clean_url = f"https://www.flipkart.com{parsed.path}?pid={pid}"
+            clean_url = f"https://www.flipkart.com{parsed.path}"
             return ResolvedURL(
                 merchant="Flipkart",
                 product_id=pid,

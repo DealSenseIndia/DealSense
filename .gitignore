@@ -16,9 +16,10 @@ scratch/
 *.log
 logs/*.log
 
-# Temporary test screenshots
+# Temporary test screenshots and scripts
 /*.png
 scratch_*.png
+scratch_*.py
 
 # Allow all frontend UI assets except temp_inspect
 !frontend/assets/**

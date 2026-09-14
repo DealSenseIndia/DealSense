@@ -233,7 +233,9 @@ export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {})
     return;
   }
 
-  deals.forEach((deal) => {
+  const displayDeals = deals.slice(0, 15);
+
+  displayDeals.forEach((deal) => {
     const card = document.createElement("div");
     card.className = "deal-modern-card";
 
@@ -272,11 +274,24 @@ export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {})
             </svg>
             <span>${deal.deal_score}% Score</span>
           </div>
-          <button type="button" class="btn-card-analyze-cta">
+          <button type="button" class="btn-card-analyze-cta" title="Analyze Deal">
             <span>${deal.is_setup ? "View Setup" : "Analyze Deal"} →</span>
           </button>
         </div>
     `;
+
+    // Direct Analyze Deal Button Click
+    const analyzeBtn = card.querySelector(".btn-card-analyze-cta");
+    if (analyzeBtn) {
+      analyzeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (deal.is_setup && onSetupClick) {
+          onSetupClick(deal.setup_space || "bedroom");
+        } else if (deal.url && onDealClick) {
+          onDealClick(deal.url);
+        }
+      });
+    }
 
     card.addEventListener("click", () => {
       if (deal.is_setup && onSetupClick) {
@@ -458,6 +473,155 @@ export function initLiveDeals({ onDealClick, onSetupClick } = {}) {
 
   // Initial fetch on page load
   fetchLiveDeals({ category: "all", dealType: "all", onDealClick, onSetupClick });
+  fetchTrendingCoupons();
+}
+
+export async function fetchTrendingCoupons() {
+  const container = document.getElementById("trendingCouponsContainer");
+  if (!container) return;
+
+  container.innerHTML = Array(4).fill(0).map(() => `
+    <div class="coupon-skeleton-card">
+      <div class="coupon-skeleton-line" style="height: 20px; width: 60%;"></div>
+      <div class="coupon-skeleton-line" style="height: 28px; width: 45%;"></div>
+      <div class="coupon-skeleton-line" style="height: 36px; width: 100%;"></div>
+      <div class="coupon-skeleton-line" style="height: 38px; width: 100%;"></div>
+    </div>
+  `).join("");
+
+  try {
+    const res = await fetch("/api/coupons/trending?limit=15");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const coupons = data.coupons || [];
+    renderTrendingCoupons(coupons);
+  } catch (err) {
+    console.warn("Could not load trending coupons:", err);
+    const section = document.getElementById("trendingCouponsSection");
+    if (section) section.style.display = "none";
+  }
+}
+
+export function renderTrendingCoupons(coupons) {
+  const container = document.getElementById("trendingCouponsContainer");
+  const section = document.getElementById("trendingCouponsSection");
+  if (!container) return;
+
+  if (!coupons || coupons.length === 0) {
+    if (section) section.style.display = "none";
+    return;
+  }
+  if (section) section.style.display = "block";
+
+  container.innerHTML = coupons.map((c, idx) => {
+    const safeCode = escapeHtml(c.coupon_code || "");
+    const safeStore = escapeHtml(c.store_name || "Verified Store");
+    const safeTitle = escapeHtml(c.title || "Special Promotional Offer");
+    const safeBadge = escapeHtml(c.discount_badge || "SPECIAL OFFER");
+    const safeExpiry = escapeHtml(c.expiry_display || "Limited Time");
+    const safeLogo = escapeHtml(c.store_logo || "/assets/dealsense-icon.png");
+    const safeUrl = escapeHtml(c.tracking_url || "#");
+
+    return `
+      <div class="coupon-card" data-coupon-id="${c.id || idx}">
+        <div>
+          <div class="coupon-card-top">
+            <div class="coupon-store-info">
+              <img src="${safeLogo}" alt="${safeStore}" class="coupon-store-logo" loading="lazy" onerror="this.src='/assets/dealsense-icon.png'">
+              <span class="coupon-store-name">${safeStore}</span>
+            </div>
+            <span class="coupon-verified-badge">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Verified
+            </span>
+          </div>
+
+          <div class="coupon-discount-headline">
+            <span>🏷️</span>
+            <span>${safeBadge}</span>
+          </div>
+
+          <p class="coupon-desc" title="${safeTitle}">${safeTitle}</p>
+        </div>
+
+        <div>
+          <div class="coupon-code-box">
+            <span class="coupon-code-text" id="couponCode_${c.id || idx}">${safeCode}</span>
+            <button type="button" class="btn-copy-coupon" data-code="${safeCode}" data-store="${safeStore}" data-url="${safeUrl}">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span>Copy</span>
+            </button>
+          </div>
+
+          <div class="coupon-card-footer">
+            <span class="coupon-expiry">
+              <span>⏳</span>
+              <span>${safeExpiry}</span>
+            </span>
+            <a href="${safeUrl}" target="_blank" rel="noopener sponsored" class="coupon-shop-link">
+              Shop Store →
+            </a>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  // Attach copy listeners
+  container.querySelectorAll(".btn-copy-coupon").forEach((btn) => {
+    btn.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      const code = btn.getAttribute("data-code");
+      const store = btn.getAttribute("data-store");
+      const url = btn.getAttribute("data-url");
+
+      try {
+        await navigator.clipboard.writeText(code);
+        btn.classList.add("copied");
+        btn.innerHTML = `
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Copied!</span>
+        `;
+        showToast(`Copied code ${code}! Opening ${store}...`, "success");
+
+        setTimeout(() => {
+          if (url && url !== "#") {
+            window.open(url, "_blank");
+          }
+        }, 350);
+
+        setTimeout(() => {
+          btn.classList.remove("copied");
+          btn.innerHTML = `
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span>Copy</span>
+          `;
+        }, 2800);
+      } catch (err) {
+        showToast(`Coupon Code: ${code}`, "info");
+      }
+    });
+  });
+
+  // Carousel navigation buttons
+  const prevBtn = document.getElementById("couponPrevBtn");
+  const nextBtn = document.getElementById("couponNextBtn");
+  if (prevBtn) {
+    prevBtn.onclick = () => container.scrollBy({ left: -320, behavior: "smooth" });
+  }
+  if (nextBtn) {
+    nextBtn.onclick = () => container.scrollBy({ left: 320, behavior: "smooth" });
+  }
 }
 
 function filterDealsWorthChecking(filterKey, { onDealClick, onSetupClick } = {}) {
@@ -472,6 +636,8 @@ function filterDealsWorthChecking(filterKey, { onDealClick, onSetupClick } = {})
     filtered = currentDeals.filter((d) => ["mobiles", "laptops", "audio", "smartwatches", "tvs"].includes((d.category || "").toLowerCase()));
   } else if (filterKey === "home") {
     filtered = currentDeals.filter((d) => ["appliances", "home"].includes((d.category || "").toLowerCase()));
+  } else if (filterKey === "fashion") {
+    filtered = currentDeals.filter((d) => ["fashion", "shoes", "clothing", "apparel"].includes((d.category || "").toLowerCase()));
   } else if (filterKey === "best_deals") {
     filtered = currentDeals.filter((d) => (d.deal_score || 0) >= 80);
   } else if (filterKey === "price_drops") {

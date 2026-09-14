@@ -54,14 +54,29 @@ def _extract_title_from_url_slug(url: str) -> Optional[str]:
 def fetch_live_product_data(
     adapter: BaseMerchantAdapter,
     normalized: NormalizedURL,
-    timeout_seconds: int = 10,
+    timeout_seconds: int = 12,
 ) -> Optional[ExtractedProductData]:
     """
-    Attempts a lightweight HTTP request with browser headers to extract
-    structured Schema.org JSON-LD or OpenGraph microdata.
+    Attempts a lightweight HTTP request with Chrome 124 TLS impersonation (curl_cffi)
+    to extract structured Schema.org JSON-LD or DOM microdata without triggering bot checks.
+    Falls back cleanly to httpx if curl_cffi is unavailable or fails.
     """
-    import httpx
+    # 1. Primary stealth path: curl_cffi with authentic Chrome 124 TLS handshake
+    try:
+        from curl_cffi import requests as cffi_requests
+        session = cffi_requests.Session(impersonate="chrome124")
+        resp = session.get(normalized.clean_url, timeout=timeout_seconds)
+        if resp.status_code == 200 and "Robot Check" not in resp.text:
+            extracted = adapter.extract_from_html(resp.text, normalized.clean_url, normalized.product_id)
+            if extracted and extracted.price is not None:
+                extracted.extraction_source = "curl_cffi"
+                print(f"\n[ENGINE: curl_cffi Chrome 124 TLS] Live fetched {normalized.clean_url} -> Price: Rs. {extracted.price}\n", flush=True)
+                return extracted
+    except Exception as e:
+        logger.debug(f"curl_cffi fetch bypassed for {normalized.clean_url}: {e}")
 
+    # 2. Secondary fallback: httpx with standard browser headers
+    import httpx
     headers = {
         "User-Agent": (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -184,7 +199,7 @@ def ingest_product_from_url(
         mrp = live_data.mrp if live_data and live_data.mrp else None
         brand = live_data.brand if live_data and live_data.brand else None
         image_url = live_data.image_url if live_data and live_data.image_url else None
-        images = [image_url] if image_url else None
+        images = live_data.images if (live_data and live_data.images) else ([image_url] if image_url else None)
         rating = None
         ratings_count = None
         bought_count = None
@@ -275,10 +290,19 @@ def ingest_product_from_url(
             product.category = cat_name
             updated = True
         if images_json_str:
-            product.images_json = images_json_str
-            if image_url:
-                product.image_url = image_url
-            updated = True
+            existing_imgs = []
+            if product.images_json:
+                try:
+                    existing_imgs = json.loads(product.images_json)
+                except Exception:
+                    existing_imgs = []
+            new_imgs = images or []
+            has_dup = len(existing_imgs) != len(set(existing_imgs))
+            if force_refresh or len(new_imgs) >= len(existing_imgs) or len(existing_imgs) <= 1 or has_dup or not product.images_json:
+                product.images_json = images_json_str
+                if image_url:
+                    product.image_url = image_url
+                updated = True
         if rating is not None:
             product.rating = rating
             updated = True

@@ -567,6 +567,8 @@ export function renderDetailPage(data, { onAnalyzeUrl } = {}) {
   currentProductContext = {
     productId: p.id || l.id,
     listingId: l.id || null,
+    asin: l.merchant_product_id || null,
+    cleanUrl: l.clean_url || null,
     productTitle: p.title || p.canonical_title || "Product",
     currentPrice: pr.current_price || 0,
     // null when we have never observed a low. This previously fell back to
@@ -921,38 +923,100 @@ export function renderBankDiscount(bankId) {
   }
 }
 
+function getStoreConfig(merchantName) {
+  const m = (merchantName || "").toLowerCase();
+  if (m.includes("amazon")) {
+    return {
+      storeName: "Amazon",
+      fullName: "Amazon India",
+      logo: "/assets/amazon-logo.svg",
+      btnClass: "store-amazon",
+    };
+  }
+  if (m.includes("flipkart")) {
+    return {
+      storeName: "Flipkart",
+      fullName: "Flipkart",
+      logo: "/assets/flipkart-icon.svg",
+      btnClass: "store-flipkart",
+    };
+  }
+  if (m.includes("tatacliq") || m.includes("tata cliq")) {
+    return {
+      storeName: "Tata CLiQ",
+      fullName: "Tata CLiQ",
+      logo: "/assets/tatacliq-logo.svg",
+      btnClass: "store-tatacliq",
+    };
+  }
+  return {
+    storeName: merchantName || "Store",
+    fullName: merchantName || "Store",
+    logo: "/assets/placeholder-product.png",
+    btnClass: "store-generic",
+  };
+}
+
 function renderComparisonTable(compareData, primaryListing, pricing, rivalComp) {
   const tableBody = document.getElementById("comparisonTableBody");
   if (!tableBody) return;
   tableBody.innerHTML = "";
 
-  const primaryMerchant = primaryListing.merchant || "Amazon";
-  const rivalMerchant = primaryMerchant.toLowerCase() === "amazon" ? "Flipkart" : "Amazon";
-  const isAmazonPrimary = primaryMerchant.toLowerCase() === "amazon";
+  const primaryCfg = getStoreConfig(primaryListing.merchant);
 
-  const primaryLogo = isAmazonPrimary ? "/assets/amazon-logo.svg" : "/assets/flipkart-icon.svg";
-  const rivalLogo = isAmazonPrimary ? "/assets/flipkart-icon.svg" : "/assets/amazon-logo.svg";
+  // Guarantee rival is the opposite store and never identical to primary
+  let rivalMerchantRaw = rivalComp?.rival_merchant;
+  if (!rivalMerchantRaw) {
+    rivalMerchantRaw = primaryCfg.storeName === "Amazon" ? "Flipkart" : "Amazon";
+  } else if (primaryCfg.storeName === "Amazon" && rivalMerchantRaw.toLowerCase().includes("amazon")) {
+    rivalMerchantRaw = "Flipkart";
+  } else if (primaryCfg.storeName === "Flipkart" && rivalMerchantRaw.toLowerCase().includes("flipkart")) {
+    rivalMerchantRaw = "Amazon";
+  }
+  const rivalCfg = getStoreConfig(rivalMerchantRaw);
+
+  const rivalMatched = Boolean(rivalComp && rivalComp.matched && rivalComp.rival_price);
+
+  let isPrimaryCheaper = false;
+  let isRivalCheaper = false;
+  let priceDelta = 0;
+
+  if (rivalMatched && rivalComp.rival_price) {
+    const diff = Math.round(pricing.current_price - rivalComp.rival_price);
+    priceDelta = Math.abs(diff);
+    if (diff < -50) {
+      isPrimaryCheaper = true;
+    } else if (diff > 50) {
+      isRivalCheaper = true;
+    }
+  }
+
+  const isMatchedPrice = rivalMatched && priceDelta <= 50;
 
   // Row 1: Primary Listing (Current Store)
   const pRow = document.createElement("tr");
-  const pRatingStr = currentProductContext.rating ? `★ ${currentProductContext.rating}` : "★ 4.4";
+  const pRatingVal = currentProductContext.rating ? `${currentProductContext.rating}` : "4.4";
   const pCountStr = currentProductContext.ratingsCount ? `(${currentProductContext.ratingsCount})` : "(Verified)";
   const pStrikeMrp = pricing.mrp && pricing.mrp > pricing.current_price
     ? `<span style="font-size:11px; color:#94A3B8; text-decoration:line-through; margin-left:4px;">₹${Math.round(pricing.mrp).toLocaleString("en-IN")}</span>`
     : "";
+  const primaryCheaperChip = isPrimaryCheaper
+    ? `<span style="background:#DCFCE7; color:#15803D; font-size:10px; font-weight:750; padding:2px 6px; border-radius:4px; margin-left:4px;">Cheaper</span>`
+    : (isMatchedPrice ? `<span style="background:#F1F5F9; color:#475569; font-size:10px; font-weight:750; padding:2px 6px; border-radius:4px; margin-left:4px;">Matched</span>` : "");
 
   pRow.innerHTML = `
     <td>
       <div class="store-logo-name">
-        <img src="${primaryLogo}" alt="${escapeHtml(primaryMerchant)}" style="width:22px; height:22px; object-fit:contain; border-radius:4px;">
-        <span>${escapeHtml(primaryMerchant)}</span>
+        <img src="${primaryCfg.logo}" alt="${escapeHtml(primaryCfg.fullName)}" style="width:22px; height:22px; object-fit:contain; border-radius:4px;">
+        <span>${escapeHtml(primaryCfg.fullName)}</span>
         <span style="background:#DCFCE7; color:#15803D; font-size:10px; font-weight:750; padding:2px 6px; border-radius:4px;">Primary</span>
+        ${primaryCheaperChip}
       </div>
     </td>
     <td>
       <div class="store-rating-chip">
         <span class="star-icon">★</span>
-        <span>${pRatingStr.replace('★', '').trim()}</span>
+        <span>${pRatingVal}</span>
         <span class="sub-count">${pCountStr}</span>
       </div>
     </td>
@@ -963,48 +1027,48 @@ function renderComparisonTable(compareData, primaryListing, pricing, rivalComp) 
     <td><span style="color:#16A34A; font-weight:750; font-size:12px;">${primaryListing.delivery_fee > 0 ? '₹' + Math.round(primaryListing.delivery_fee) : 'FREE'}</span></td>
     <td><span class="store-avail-badge in-stock">● In Stock</span></td>
     <td>
-      <a href="${primaryListing.affiliate_url || primaryListing.clean_url || '#'}" target="_blank" rel="noopener noreferrer" class="btn-table-deal ${isAmazonPrimary ? 'store-amazon' : 'store-flipkart'}">
-        View on ${escapeHtml(primaryMerchant)} →
+      <a href="${primaryListing.affiliate_url || primaryListing.clean_url || '#'}" target="_blank" rel="noopener noreferrer" class="btn-table-deal ${primaryCfg.btnClass}">
+        View on ${escapeHtml(primaryCfg.fullName)} →
       </a>
     </td>
   `;
   tableBody.appendChild(pRow);
 
-  // Row 2: Rival Listing (Amazon or Flipkart)
+  // Row 2: Rival Listing (Flipkart or Amazon)
   const rRow = document.createElement("tr");
-  const rivalMatched = rivalComp && rivalComp.matched && rivalComp.rival_price;
-
   if (rivalMatched) {
-    const rRating = rivalComp.rival_rating ? `★ ${rivalComp.rival_rating}` : "★ 4.3";
-    const rCount = rivalComp.rival_ratings_count ? `(${rivalComp.rival_ratings_count})` : "(Verified)";
-    const isCheaper = rivalComp.price_difference && rivalComp.price_difference > 50;
-    const cheaperChip = isCheaper
+    const rRatingVal = rivalComp.rival_rating ? `${rivalComp.rival_rating}` : "--";
+    const rCountStr = rivalComp.rival_ratings_count ? `(${rivalComp.rival_ratings_count})` : "(Verified)";
+    const rivalCheaperChip = isRivalCheaper
       ? `<span style="background:#DCFCE7; color:#15803D; font-size:10px; font-weight:750; padding:2px 6px; border-radius:4px; margin-left:4px;">Cheaper</span>`
-      : "";
+      : (isMatchedPrice ? `<span style="background:#F1F5F9; color:#475569; font-size:10px; font-weight:750; padding:2px 6px; border-radius:4px; margin-left:4px;">Matched</span>` : "");
 
     rRow.innerHTML = `
       <td>
         <div class="store-logo-name">
-          <img src="${rivalLogo}" alt="${escapeHtml(rivalMerchant)}" style="width:22px; height:22px; object-fit:contain; border-radius:4px;">
-          <span>${escapeHtml(rivalMerchant)}</span>
-          ${cheaperChip}
+          <img src="${rivalCfg.logo}" alt="${escapeHtml(rivalCfg.fullName)}" style="width:22px; height:22px; object-fit:contain; border-radius:4px;">
+          <span>${escapeHtml(rivalCfg.fullName)}</span>
+          ${rivalCheaperChip}
         </div>
       </td>
       <td>
         <div class="store-rating-chip">
           <span class="star-icon">★</span>
-          <span>${rRating.replace('★', '').trim()}</span>
-          <span class="sub-count">${rCount}</span>
+          <span>${rRatingVal}</span>
+          <span class="sub-count">${rCountStr}</span>
         </div>
       </td>
       <td>
-        <strong style="font-size:14px; color:#0F172A;">₹${Math.round(rivalComp.rival_price).toLocaleString("en-IN")}</strong>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <strong style="font-size:14px; color:#0F172A;">₹${Math.round(rivalComp.rival_price).toLocaleString("en-IN")}</strong>
+          <button type="button" class="btn-sync-inline" title="Sync verified live price from store" onclick="syncRivalPrice(${rivalComp.rival_listing_id || 0}, ${Math.round(rivalComp.rival_price)})" style="background:transparent; border:1px solid #CBD5E1; border-radius:4px; cursor:pointer; font-size:10.5px; padding:1px 5px; color:#64748B;">⚡ Sync</button>
+        </div>
       </td>
       <td><span style="color:#16A34A; font-weight:750; font-size:12px;">${rivalComp.rival_delivery || 'FREE'}</span></td>
       <td><span class="store-avail-badge in-stock">● In Stock</span></td>
       <td>
-        <a href="${rivalComp.rival_affiliate_url || rivalComp.rival_clean_url || '#'}" target="_blank" rel="noopener noreferrer" class="btn-table-deal ${isAmazonPrimary ? 'store-flipkart' : 'store-amazon'}">
-          View on ${escapeHtml(rivalMerchant)} →
+        <a href="${rivalComp.rival_affiliate_url || rivalComp.rival_clean_url || '#'}" target="_blank" rel="noopener noreferrer" class="btn-table-deal ${rivalCfg.btnClass}">
+          View on ${escapeHtml(rivalCfg.fullName)} →
         </a>
       </td>
     `;
@@ -1012,17 +1076,17 @@ function renderComparisonTable(compareData, primaryListing, pricing, rivalComp) 
     rRow.innerHTML = `
       <td>
         <div class="store-logo-name" style="opacity:0.75;">
-          <img src="${rivalLogo}" alt="${escapeHtml(rivalMerchant)}" style="width:22px; height:22px; object-fit:contain; border-radius:4px; filter:grayscale(0.3);">
-          <span>${escapeHtml(rivalMerchant)}</span>
+          <img src="${rivalCfg.logo}" alt="${escapeHtml(rivalCfg.fullName)}" style="width:22px; height:22px; object-fit:contain; border-radius:4px; filter:grayscale(0.3);">
+          <span>${escapeHtml(rivalCfg.fullName)}</span>
         </div>
       </td>
       <td><span style="color:#94A3B8; font-size:12px;">--</span></td>
       <td><span style="color:#64748B; font-weight:600; font-size:12.5px;">Not Listed</span></td>
       <td><span style="color:#94A3B8; font-size:12px;">--</span></td>
-      <td><span class="store-avail-badge unavailable">Exclusive to ${escapeHtml(primaryMerchant)}</span></td>
+      <td><span class="store-avail-badge unavailable">Exclusive to ${escapeHtml(primaryCfg.fullName)}</span></td>
       <td>
         <button type="button" class="btn-table-deal disabled-exclusive" disabled>
-          Not on ${escapeHtml(rivalMerchant)}
+          Not on ${escapeHtml(rivalCfg.fullName)}
         </button>
       </td>
     `;
@@ -1033,21 +1097,20 @@ function renderComparisonTable(compareData, primaryListing, pricing, rivalComp) 
   const diffEl = document.getElementById("savingsNoticeDiff");
   const textEl = document.getElementById("savingsNoticeText");
   if (diffEl && textEl) {
-    if (rivalMatched && rivalComp.price_difference !== undefined && rivalComp.price_difference !== null) {
-      const diff = Math.round(rivalComp.price_difference);
-      if (diff > 50) {
-        diffEl.textContent = `₹${diff.toLocaleString("en-IN")} cheaper on ${rivalMerchant}`;
-        textEl.textContent = `Lower price found on ${rivalMerchant}. Consider checking before purchase.`;
-      } else if (diff < -50) {
-        diffEl.textContent = `₹${Math.abs(diff).toLocaleString("en-IN")} cheaper on ${primaryMerchant}`;
-        textEl.textContent = `Current store (${primaryMerchant}) offers the lowest verified price.`;
+    if (rivalMatched) {
+      if (isPrimaryCheaper) {
+        diffEl.textContent = `₹${priceDelta.toLocaleString("en-IN")} cheaper on ${primaryCfg.fullName}`;
+        textEl.textContent = `Current store (${primaryCfg.fullName}) offers the lowest verified price.`;
+      } else if (isRivalCheaper) {
+        diffEl.textContent = `₹${priceDelta.toLocaleString("en-IN")} cheaper on ${rivalCfg.fullName}`;
+        textEl.textContent = `Lower price found on ${rivalCfg.fullName}. Consider checking before purchase.`;
       } else {
         diffEl.textContent = `₹0 (Equal Price)`;
-        textEl.textContent = `Prices are virtually identical across Amazon and Flipkart.`;
+        textEl.textContent = `Prices are virtually identical across ${primaryCfg.storeName} and ${rivalCfg.storeName}.`;
       }
     } else {
       diffEl.textContent = `Store Exclusive`;
-      textEl.textContent = `Product is currently not available on ${rivalMerchant}. Exclusive deal on ${primaryMerchant}.`;
+      textEl.textContent = `Product is currently not available on ${rivalCfg.fullName}. Exclusive deal on ${primaryCfg.fullName}.`;
     }
   }
 }
@@ -2052,7 +2115,12 @@ export function initPdpListeners() {
   const shareBtn = document.getElementById("pdpShareBtn");
   if (shareBtn) {
     shareBtn.addEventListener("click", async () => {
-      const shareUrl = window.location.href;
+      let shareUrl = window.location.href;
+      if (currentProductContext.asin) {
+        shareUrl = `${window.location.origin}/?p=${encodeURIComponent(currentProductContext.asin)}`;
+      } else if (currentProductContext.cleanUrl) {
+        shareUrl = `${window.location.origin}/?url=${encodeURIComponent(currentProductContext.cleanUrl)}`;
+      }
       const shareTitle = currentProductContext.productTitle || "DealSense Deal Intelligence";
       if (navigator.share && navigator.canShare && navigator.canShare({ title: shareTitle, url: shareUrl })) {
         try {
@@ -2704,3 +2772,31 @@ export function initPdpListeners() {
     }
   }
 }
+
+window.syncRivalPrice = async function(listingId, currentVal) {
+  if (!listingId) {
+    alert("Listing ID not available for direct sync.");
+    return;
+  }
+  const input = prompt("Enter verified live price observed on store (₹):", currentVal || "");
+  if (!input) return;
+  const price = parseFloat(input.replace(/[^0-9.]/g, ""));
+  if (!price || isNaN(price) || price <= 0) {
+    alert("Please enter a valid price in Rupees.");
+    return;
+  }
+  try {
+    const res = await fetch(`/api/listings/${listingId}/sync-price`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ price: price }),
+    });
+    if (res.ok) {
+      window.location.reload();
+    } else {
+      alert("Failed to sync price. Please try again.");
+    }
+  } catch (err) {
+    console.error("Price sync error:", err);
+  }
+};

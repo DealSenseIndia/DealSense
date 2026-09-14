@@ -51,7 +51,7 @@
             <span class="nav-sparkle">✨</span> Smart Setups
           </a>
           <a href="#priceHistory" id="headerPriceHistoryBtn" class="nav-link">Price History</a>
-          <a href="/deals" id="dealsNavBtn" class="nav-link">Deals</a>
+          <a href="#liveDeals" id="dealsNavBtn" class="nav-link">Deals</a>
           <a href="/categories" id="categoriesNavBtn" class="nav-link">Categories</a>
           <a href="#track" class="nav-link" id="headerTrackNavBtn">Track</a>
         </nav>
@@ -106,7 +106,7 @@
       <a href="#" id="mobileSetupBtn" class="mobile-nav-link mobile-nav-highlight">
         <span class="mobile-nav-icon">✨</span> Smart Setups
       </a>
-      <a href="/deals" class="mobile-nav-link">
+      <a href="#liveDeals" id="mobileDealsBtn" class="mobile-nav-link">
         <span class="mobile-nav-icon">🔥</span> Handpicked Deals
       </a>
       <a href="/categories" class="mobile-nav-link">
@@ -184,7 +184,7 @@
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                   </svg>
-                  <span class="btn-text-label">Search</span>
+                  <span class="btn-text-label">Analyze Deal</span>
                 </span>
 
                 <!-- Loading / Progress Content -->
@@ -193,7 +193,7 @@
                     <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.25)"></circle>
                     <path class="spinner-arc" d="M12 2a10 10 0 0 1 10 10" stroke="#FFFFFF" stroke-linecap="round"></path>
                   </svg>
-                  <span class="btn-loading-label">Searching...</span>
+                  <span class="btn-loading-label">Analyzing Deal...</span>
                 </span>
 
                 <!-- Success State -->
@@ -201,7 +201,7 @@
                   <svg class="btn-check-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5">
                     <polyline class="check-polyline" points="20 6 9 17 4 12"></polyline>
                   </svg>
-                  <span>Deal Found!</span>
+                  <span>Deal Verified!</span>
                 </span>
 
                 <!-- Progress Border Trace -->
@@ -435,6 +435,34 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3.5 Section: Trending Coupons & Promo Codes (Cuelinks Feed) -->
+    <section class="trending-coupons-section" id="trendingCouponsSection">
+      <div class="container">
+        <div class="coupons-header-row">
+          <div class="coupons-title-group">
+            <div class="coupons-live-badge">
+              <span class="live-pulse-dot"></span>
+              <span>Live Promo Codes</span>
+            </div>
+            <h2 class="coupons-section-title">Trending Coupons & Promo Codes</h2>
+            <p class="coupons-section-sub">Verified discount codes and exclusive sales across top Indian stores.</p>
+          </div>
+          <div class="coupons-nav-actions">
+            <button type="button" class="coupon-carousel-nav prev" id="couponPrevBtn" aria-label="Previous coupons">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <button type="button" class="coupon-carousel-nav next" id="couponNextBtn" aria-label="Next coupons">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="coupons-carousel-track" id="trendingCouponsContainer">
+          <!-- Dynamically populated by live_deals.js via /api/coupons/trending -->
         </div>
       </div>
     </section>

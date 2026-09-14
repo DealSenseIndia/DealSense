@@ -185,9 +185,18 @@ def ingest_and_evaluate(url: str, force_refresh: bool = False, compare_stores: b
                 if prod_check and (not prod_check.image_url or not prod_check.images_json or "505740420928" in (prod_check.image_url or "")):
                     is_cache_valid = False
                     force_refresh = True
-                elif prod_check and merchant_name.lower() in ("amazon", "flipkart") and prod_check.images_json is None and prod_check.specifications_json is None:
-                    is_cache_valid = False
-                    force_refresh = True
+                elif prod_check and merchant_name.lower() in ("amazon", "flipkart"):
+                    imgs = []
+                    if prod_check.images_json:
+                        try:
+                            imgs = _json.loads(prod_check.images_json)
+                        except Exception:
+                            imgs = []
+                    if len(imgs) <= 1 or not prod_check.specifications_json:
+                        is_cache_valid = False
+                        force_refresh = True
+                    else:
+                        is_cache_valid = True
                 else:
                     is_cache_valid = True
 
@@ -579,22 +588,82 @@ def _get_or_find_rival(
     if not compare_stores or not product:
         return {"matched": False}
 
+    is_amazon_primary = "amazon" in current_listing.merchant.lower()
+    target_rival_name = "Flipkart" if is_amazon_primary else "Amazon"
+
     # 1. Check existing mapped rival listing
     rival_listing = session.exec(
         select(MerchantListing).where(
             MerchantListing.product_id == product.id,
-            MerchantListing.merchant != current_listing.merchant,
+            MerchantListing.merchant.ilike(f"%{target_rival_name}%"),
         )
     ).first()
 
     if rival_listing:
+        rival_price = None
+        rival_in_stock = True
+        rival_rating = None
+        rival_ratings_count = None
         rival_obs = session.exec(
             select(PriceObservation)
             .where(PriceObservation.listing_id == rival_listing.id)
             .order_by(PriceObservation.observed_at.desc())
         ).first()
 
-        rival_price = rival_obs.price if rival_obs else None
+        # Check if there is a recent user-verified sync price
+        user_sync_obs = session.exec(
+            select(PriceObservation)
+            .where(
+                PriceObservation.listing_id == rival_listing.id,
+                PriceObservation.source == "user_verified_sync",
+            )
+            .order_by(PriceObservation.observed_at.desc())
+        ).first()
+
+        is_user_synced_recent = False
+        if user_sync_obs and user_sync_obs.observed_at:
+            obs_dt = user_sync_obs.observed_at
+            if obs_dt.tzinfo is None:
+                obs_dt = obs_dt.replace(tzinfo=timezone.utc)
+            if (datetime.now(timezone.utc) - obs_dt).total_seconds() < 86400 * 7:
+                is_user_synced_recent = True
+
+        from backend.matcher import _verify_rival_listing
+        if rival_listing.clean_url:
+            verified = _verify_rival_listing(rival_listing.clean_url)
+            if verified:
+                rival_in_stock = verified.get("in_stock", True)
+                rival_rating = verified.get("rating")
+                rival_ratings_count = verified.get("ratings_count")
+
+                if is_user_synced_recent:
+                    rival_price = user_sync_obs.price
+                elif verified.get("price"):
+                    rival_price = verified["price"]
+                    try:
+                        rival_listing.current_price = rival_price
+                        rival_listing.last_checked_at = datetime.now(timezone.utc)
+                        session.add(rival_listing)
+                        session.add(
+                            PriceObservation(
+                                listing_id=rival_listing.id,
+                                price=rival_price,
+                                currency="INR",
+                                source="rival_live_refresh",
+                                observed_at=datetime.now(timezone.utc),
+                            )
+                        )
+                        session.commit()
+                    except Exception:
+                        session.rollback()
+
+        if rival_price is None:
+            if is_user_synced_recent:
+                rival_price = user_sync_obs.price
+            else:
+                rival_price = rival_obs.price if rival_obs else rival_listing.current_price
+            rival_in_stock = rival_obs.in_stock if rival_obs else True
+
         diff = round(current_price - rival_price, 2) if rival_price else None
         aff_url = build_affiliate_url(rival_listing.merchant, rival_listing.clean_url)
 
@@ -620,9 +689,9 @@ def _get_or_find_rival(
             "rival_affiliate_url": aff_url,
             "price_difference": diff,
             "recommendation": rec,
-            "rival_rating": rival_prod.rating if rival_prod else None,
-            "rival_ratings_count": rival_prod.ratings_count if rival_prod else None,
-            "rival_in_stock": rival_obs.in_stock if rival_obs else True,
+            "rival_rating": rival_rating if rival_rating else (rival_prod.rating if rival_prod else None),
+            "rival_ratings_count": rival_ratings_count if rival_ratings_count else (rival_prod.ratings_count if rival_prod else None),
+            "rival_in_stock": rival_in_stock,
             "rival_delivery": "FREE",
         }
 
@@ -653,6 +722,7 @@ def _get_or_find_rival(
                         merchant_product_id=rival_comp.rival_product_id,
                         url=rival_comp.rival_clean_url or "",
                         clean_url=rival_comp.rival_clean_url or "",
+                        current_price=rival_comp.rival_price,
                         last_checked_at=datetime.now(timezone.utc),
                     )
                     session.add(new_rival_listing)
@@ -664,6 +734,9 @@ def _get_or_find_rival(
 
             if new_rival_listing and rival_comp.rival_price:
                 try:
+                    new_rival_listing.current_price = rival_comp.rival_price
+                    new_rival_listing.last_checked_at = datetime.now(timezone.utc)
+                    session.add(new_rival_listing)
                     session.add(
                         PriceObservation(
                             listing_id=new_rival_listing.id,
@@ -695,7 +768,7 @@ def _get_or_find_rival(
     except Exception:
         pass
 
-    rival_merchant = "Flipkart" if current_listing.merchant.lower() == "amazon" else "Amazon"
+    rival_merchant = "Flipkart" if "amazon" in current_listing.merchant.lower() else "Amazon"
     return {
         "matched": False,
         "rival_merchant": rival_merchant,

@@ -37,6 +37,7 @@ class ExtractedProductData:
     model_number: Optional[str] = None
     category: Optional[str] = None
     image_url: Optional[str] = None
+    images: Optional[List[str]] = None
     variant_raw: Optional[str] = None
     seller: Optional[str] = None
     extraction_source: str = "html_json_ld"
@@ -344,6 +345,46 @@ class AmazonAdapter(BaseMerchantAdapter):
         if not title:
             return None
 
+        # Multi-image gallery extraction
+        images = []
+        if image_url:
+            images.append(image_url)
+
+        # 1. Look for colorImages in HTML
+        color_images_match = re.search(r'\'colorImages\':\s*\{\s*\'initial\':\s*(\[.*?\])\s*\},', html_content)
+        if color_images_match:
+            try:
+                c_data = json.loads(color_images_match.group(1))
+                for item in c_data:
+                    hi_res = item.get("hiRes") or item.get("large") or (item.get("main", {}).get("large") if isinstance(item.get("main"), dict) else None)
+                    if hi_res and hi_res not in images:
+                        images.append(hi_res)
+            except Exception:
+                pass
+
+        # 2. Look for data-a-dynamic-image
+        if len(images) <= 1:
+            dyn_match = re.search(r'data-a-dynamic-image=\"({.*?})\"', html_content)
+            if dyn_match:
+                try:
+                    dyn_data = json.loads(dyn_match.group(1).replace('&quot;', '"'))
+                    for img_k in dyn_data.keys():
+                        if img_k not in images:
+                            images.append(img_k)
+                except Exception:
+                    pass
+
+        # 3. Alternative Amazon media IDs regex fallback
+        if len(images) <= 1:
+            media_matches = re.findall(r'https://m\.media-amazon\.com/images/I/([A-Za-z0-9+_-]+)\.', html_content)
+            seen_ids = set()
+            for mid in media_matches:
+                if len(mid) >= 8 and mid not in seen_ids:
+                    seen_ids.add(mid)
+                    u = f"https://m.media-amazon.com/images/I/{mid}._SL1500_.jpg"
+                    if u not in images:
+                        images.append(u)
+
         return ExtractedProductData(
             merchant=self.merchant_name,
             merchant_product_id=product_id,
@@ -354,10 +395,12 @@ class AmazonAdapter(BaseMerchantAdapter):
             currency="INR",
             in_stock=in_stock,
             brand=brand,
-            image_url=image_url,
+            image_url=image_url or (images[0] if images else None),
+            images=images[:8] if images else None,
             extraction_source="amazon_html_parser",
             confidence="high" if price is not None else "low",
         )
+
 
 
 class FlipkartAdapter(BaseMerchantAdapter):
@@ -412,6 +455,84 @@ class FlipkartAdapter(BaseMerchantAdapter):
     ) -> str:
         # Clean URL fallback to preserve user trust
         return clean_url
+
+    def extract_from_html(self, html_content: str, clean_url: str, product_id: str) -> Optional[ExtractedProductData]:
+        from bs4 import BeautifulSoup
+        base_data = super().extract_from_html(html_content, clean_url, product_id)
+        if not base_data:
+            return None
+
+        soup = BeautifulSoup(html_content, "html.parser")
+        gallery_imgs = []
+        seen_keys = set()
+
+        # Priority 1: High-res picture tags in product gallery container
+        for pic in soup.find_all("picture"):
+            is_gallery = False
+            parent = pic.parent
+            if parent and parent.parent:
+                gp_classes = parent.parent.get("class", [])
+                if any("_1o6mltlk4" in c for c in gp_classes):
+                    is_gallery = True
+
+            sources = pic.find_all("source")
+            for s in sources:
+                srcset = s.get("srcset", "") or s.get("srcSet", "")
+                if any(res in srcset for res in ("/800/1070/", "/1600/2140/", "/832/832/", "/1500/1500/")):
+                    is_gallery = True
+                    break
+
+            if is_gallery:
+                best_url = None
+                for s in sources:
+                    srcset = s.get("srcset", "") or s.get("srcSet", "")
+                    for part in srcset.split(","):
+                        part = part.strip()
+                        if not part:
+                            continue
+                        u = part.split(" ")[0]
+                        if u.startswith("http"):
+                            best_url = u
+                            break
+                    if best_url:
+                        break
+                if not best_url:
+                    img = pic.find("img")
+                    if img and img.get("src"):
+                        best_url = img.get("src")
+
+                if best_url:
+                    m = re.search(r'flixcart\.com/image/[0-9]+/[0-9]+/(.+)', best_url)
+                    key = m.group(1).split('?')[0] if m else best_url.split('?')[0]
+                    if key not in seen_keys:
+                        seen_keys.add(key)
+                        hi_res = re.sub(r'/image/[0-9]+/[0-9]+/', '/image/832/832/', best_url).split('?')[0]
+                        gallery_imgs.append(hi_res)
+
+        # Priority 2: Fallback if main gallery didn't yield multiple pictures
+        if len(gallery_imgs) < 2:
+            raw_images = []
+            if base_data.image_url:
+                raw_images.append(base_data.image_url)
+
+            all_fk_urls = re.findall(r'(https://rukmini\d*\.flixcart\.com/image/[^\"\'\s<>]+)', html_content)
+            raw_images.extend(all_fk_urls)
+
+            for u in raw_images:
+                m = re.search(r'flixcart\.com/image/[0-9]+/[0-9]+/(.+)', u)
+                key = m.group(1).split('?')[0] if m else u.split('?')[0]
+                u_lower = key.lower()
+                if any(bad in u_lower for bad in ("icon", "badge", "logo", "fk-p-linchpin", "static-assets", "placeholder", "svg", "button")):
+                    continue
+                if key not in seen_keys:
+                    seen_keys.add(key)
+                    hi_res = re.sub(r'/image/[0-9]+/[0-9]+/', '/image/832/832/', u).split('?')[0]
+                    gallery_imgs.append(hi_res)
+
+        base_data.images = gallery_imgs[:8] if gallery_imgs else None
+        if gallery_imgs and not base_data.image_url:
+            base_data.image_url = gallery_imgs[0]
+        return base_data
 
 
 class TataCliqAdapter(BaseMerchantAdapter):

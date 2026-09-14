@@ -273,12 +273,90 @@ def analyze_product_url(url: str, force_refresh: bool = False) -> Dict[str, Any]
             )
         ).all()
 
+        # If no rival listing is linked yet, attempt live rival discovery
+        if len(sibling_listings) <= 1:
+            try:
+                from backend.matcher import find_rival_store_match
+                rival_comp = find_rival_store_match(
+                    current_merchant=adapter.merchant_name,
+                    source_title=product.canonical_title,
+                    current_price=deal_result.current_price or 0.0,
+                    brand=product.brand,
+                    live_search=True,
+                )
+                if rival_comp.matched and rival_comp.rival_merchant and rival_comp.rival_product_id:
+                    existing_rival = session.exec(
+                        select(MerchantListing).where(
+                            MerchantListing.merchant_product_id == rival_comp.rival_product_id,
+                        )
+                    ).first()
+                    if not existing_rival:
+                        existing_rival = MerchantListing(
+                            product_id=product.id,
+                            merchant=rival_comp.rival_merchant,
+                            merchant_product_id=rival_comp.rival_product_id,
+                            url=rival_comp.rival_clean_url or "",
+                            clean_url=rival_comp.rival_clean_url or "",
+                            current_price=rival_comp.rival_price,
+                            title_at_merchant=rival_comp.rival_title or product.canonical_title,
+                            availability="in_stock" if rival_comp.rival_in_stock else "out_of_stock",
+                            last_checked_at=now_utc,
+                            created_at=now_utc,
+                        )
+                        session.add(existing_rival)
+                        session.commit()
+                        session.refresh(existing_rival)
+
+                        if rival_comp.rival_price:
+                            record_price_observation(
+                                session=session,
+                                listing_id=existing_rival.id,
+                                price=rival_comp.rival_price,
+                                in_stock=rival_comp.rival_in_stock,
+                                source="live_rival_matcher",
+                                observed_at=now_utc,
+                            )
+                    elif existing_rival.product_id != product.id:
+                        existing_rival.product_id = product.id
+                        session.add(existing_rival)
+                        session.commit()
+
+                    # Reload siblings
+                    sibling_listings = session.exec(
+                        select(MerchantListing).where(
+                            MerchantListing.product_id == product.id,
+                            MerchantListing.active == True,
+                        )
+                    ).all()
+            except Exception as e:
+                logger.debug(f"Live rival matching in analysis_service bypassed: {e}")
+
         for sib in sibling_listings:
             sib_adapter = adapter_registry.get_adapter_for_merchant(sib.merchant)
             sib_merchant_name = sib_adapter.merchant_name if sib_adapter else sib.merchant
 
             # Determine real observed price
             sib_price = sib.current_price
+            if sib.id != listing.id and sib.clean_url:
+                try:
+                    from backend.matcher import _verify_rival_listing
+                    verified = _verify_rival_listing(sib.clean_url)
+                    if verified and verified.get("price"):
+                        sib_price = verified["price"]
+                        sib.current_price = sib_price
+                        sib.last_checked_at = now_utc
+                        session.add(sib)
+                        record_price_observation(
+                            session=session,
+                            listing_id=sib.id,
+                            price=sib_price,
+                            in_stock=verified.get("in_stock", True),
+                            source="rival_live_refresh",
+                            observed_at=now_utc,
+                        )
+                except Exception:
+                    pass
+
             sib_obs = session.exec(
                 select(PriceObservation)
                 .where(PriceObservation.listing_id == sib.id)

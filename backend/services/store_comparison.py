@@ -31,12 +31,14 @@ def build_compare_stores_table(
     Includes real verified ratings, live price delta, and unavailable state badge.
     """
     base_mrp = mrp if mrp and mrp > current_price else None
-    rival_merchant = "Flipkart" if merchant.lower() == "amazon" else "Amazon"
+    is_amazon_primary = "amazon" in merchant.lower()
+    rival_merchant = "Flipkart" if is_amazon_primary else "Amazon"
+    current_store_name = "Amazon" if is_amazon_primary else "Flipkart"
     current_discount = round(((base_mrp - current_price) / base_mrp) * 100, 1) if base_mrp else None
 
     current_store = {
-        "name": merchant,
-        "logo": f"/assets/{merchant.lower()}-logo.svg" if merchant == "Amazon" else "/assets/flipkart-icon.svg",
+        "name": current_store_name,
+        "logo": "/assets/amazon-logo.svg" if is_amazon_primary else "/assets/flipkart-icon.svg",
         "price": current_price,
         "mrp": base_mrp,
         "discount_pct": current_discount,
@@ -57,11 +59,11 @@ def build_compare_stores_table(
         rival_rc = rival_info.get("rival_ratings_count")
 
         is_rival_cheaper = rival_price < current_price
-        current_store["is_lowest"] = not is_rival_cheaper
+        current_store["is_lowest"] = current_price <= rival_price
 
         rival_store = {
             "name": rival_merchant,
-            "logo": f"/assets/{rival_merchant.lower()}-logo.svg" if rival_merchant == "Amazon" else "/assets/flipkart-icon.svg",
+            "logo": "/assets/amazon-logo.svg" if "amazon" in rival_merchant.lower() else "/assets/flipkart-icon.svg",
             "price": rival_price,
             "mrp": base_mrp,
             "discount_pct": round(((base_mrp - rival_price) / base_mrp) * 100, 1) if base_mrp and base_mrp > rival_price else None,
@@ -69,7 +71,7 @@ def build_compare_stores_table(
             "total_price": rival_price,
             "rating": rival_rating,
             "ratings_count": rival_rc,
-            "is_lowest": is_rival_cheaper,
+            "is_lowest": rival_price <= current_price,
             "matched": True,
             "status": "Available",
             "url": rival_link,
@@ -88,7 +90,7 @@ def build_compare_stores_table(
         # Rival does NOT have the product
         rival_store = {
             "name": rival_merchant,
-            "logo": f"/assets/{rival_merchant.lower()}-logo.svg" if rival_merchant == "Amazon" else "/assets/flipkart-icon.svg",
+            "logo": "/assets/amazon-logo.svg" if "amazon" in rival_merchant.lower() else "/assets/flipkart-icon.svg",
             "price": None,
             "mrp": None,
             "discount_pct": None,
@@ -132,7 +134,7 @@ def build_coupons_and_offers(
     if not live_coupons:
         return []
 
-    logo = "/assets/amazon-logo.svg" if merchant.lower() == "amazon" else "/assets/flipkart-icon.svg"
+    logo = "/assets/amazon-logo.svg" if "amazon" in merchant.lower() else "/assets/flipkart-icon.svg"
 
     offers: List[Dict[str, Any]] = []
     for c in live_coupons:

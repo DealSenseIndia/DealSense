@@ -445,3 +445,37 @@ class DiscoveryCandidate(SQLModel, table=True):
         nullable=False,
     )
 
+
+class CuelinksOffer(SQLModel, table=True):
+    """Verified promo, coupon, or flash deal ingested from Cuelinks V3 API."""
+
+    __tablename__ = "cuelinks_offers"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    cuelinks_id: int = Field(index=True, unique=True)
+    title: str
+    description: Optional[str] = None
+    terms: Optional[str] = None
+    coupon_code: Optional[str] = Field(default=None, index=True)
+    campaign_id: int = Field(index=True)
+    campaign_name: str = Field(index=True)
+    category: str = Field(default="all", index=True)
+    tracking_url: str
+    image_url: Optional[str] = None
+    percent_off: Optional[float] = None
+    original_price: Optional[float] = None
+    discount_price: Optional[float] = None
+    start_date: Optional[datetime] = None
+    end_date: Optional[datetime] = None
+    status: str = Field(default="active", index=True)
+    is_trending: bool = Field(default=False)
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
+    updated_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
+
+

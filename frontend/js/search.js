@@ -104,7 +104,26 @@ export function initOmniSearch({ heroUrlInput, heroDealForm, searchResultsDropdo
       const val = heroUrlInput.value.trim();
       clearTimeout(searchDebounceTimer);
 
-      if (val.startsWith("http://") || val.startsWith("https://") || val.includes("amazon.in") || val.includes("flipkart.com") || val.length < 2) {
+      const btnLabel = heroDealForm?.querySelector(".btn-text-label");
+      const isUrlOrAsin = (
+        val.startsWith("http://") ||
+        val.startsWith("https://") ||
+        val.includes("amazon.in") ||
+        val.includes("flipkart.com") ||
+        val.includes("amzn.") ||
+        /^[A-Z0-9]{10}$/i.test(val) ||
+        /^itm/i.test(val)
+      );
+
+      if (btnLabel) {
+        if (!val || isUrlOrAsin) {
+          btnLabel.textContent = "Analyze Deal";
+        } else {
+          btnLabel.textContent = "Search Deals";
+        }
+      }
+
+      if (isUrlOrAsin || val.length < 2) {
         if (searchResultsDropdown) searchResultsDropdown.style.display = "none";
         return;
       }
@@ -122,7 +141,7 @@ export function initOmniSearch({ heroUrlInput, heroDealForm, searchResultsDropdo
       searchResultsList.innerHTML = `
         <div style="padding:20px; text-align:center; color:#64748B; font-size:13px;">
           <svg class="btn-spinner-ring" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="3" style="display:inline-block; vertical-align:middle; margin-right:8px;">
-            <circle cx="12" cy="12" r="10" stroke="rgba(22,163,74,0.2)"></circle>
+            <circle cx="12" cy="10" r="10" stroke="rgba(22,163,74,0.2)"></circle>
             <path d="M12 2a10 10 0 0 1 10 10" stroke="#16A34A" stroke-linecap="round"></path>
           </svg>
           Searching live verified deals for "<strong>${escapeHtml(query)}</strong>"...
@@ -201,16 +220,38 @@ export function initOmniSearch({ heroUrlInput, heroDealForm, searchResultsDropdo
         inputVal.includes("dl.flipkart.com")
       );
 
+      const isAsin = /^[A-Z0-9]{10}$/i.test(inputVal);
+      const isFlipkartPid = /^itm[a-z0-9]+/i.test(inputVal);
+
       if (isUrl) {
         const targetUrl = (inputVal.startsWith("http://") || inputVal.startsWith("https://"))
           ? inputVal
           : `https://${inputVal}`;
         if (searchResultsDropdown) searchResultsDropdown.style.display = "none";
         onAnalyze(targetUrl);
+      } else if (isAsin) {
+        if (searchResultsDropdown) searchResultsDropdown.style.display = "none";
+        onAnalyze(`https://www.amazon.in/dp/${inputVal.toUpperCase()}`);
+      } else if (isFlipkartPid) {
+        if (searchResultsDropdown) searchResultsDropdown.style.display = "none";
+        onAnalyze(`https://www.flipkart.com/product/p/${inputVal}`);
       } else {
         executeSearch(inputVal, true);
       }
       return false;
+    });
+  }
+
+  // Direct Button Click Backup Trigger
+  const heroSubmitBtn = document.getElementById("heroSubmitBtn");
+  if (heroSubmitBtn && heroDealForm) {
+    heroSubmitBtn.addEventListener("click", () => {
+      const inputVal = heroUrlInput ? heroUrlInput.value.trim() : "";
+      if (inputVal) {
+        if (typeof heroDealForm.requestSubmit === "function") {
+          heroDealForm.requestSubmit();
+        }
+      }
     });
   }
 
@@ -270,11 +311,22 @@ export function initOmniSearch({ heroUrlInput, heroDealForm, searchResultsDropdo
           val.includes("/dp/") ||
           val.includes("/p/")
         );
+        const isAsin = /^[A-Z0-9]{10}$/i.test(val);
+        const isFlipkartPid = /^itm[a-z0-9]+/i.test(val);
+
         if (isUrl) {
           const targetUrl = (val.startsWith("http://") || val.startsWith("https://")) ? val : `https://${val}`;
           if (headerDropdown) headerDropdown.style.display = "none";
           headerSearchInput.value = "";
           onAnalyze(targetUrl);
+        } else if (isAsin) {
+          if (headerDropdown) headerDropdown.style.display = "none";
+          headerSearchInput.value = "";
+          onAnalyze(`https://www.amazon.in/dp/${val.toUpperCase()}`);
+        } else if (isFlipkartPid) {
+          if (headerDropdown) headerDropdown.style.display = "none";
+          headerSearchInput.value = "";
+          onAnalyze(`https://www.flipkart.com/product/p/${val}`);
         } else {
           const firstRow = headerList?.querySelector(".search-result-row");
           if (firstRow) {

@@ -61,41 +61,61 @@ def extract_amazon_data(resolved: ResolvedURL, timeout: float = 15.0) -> Extract
     Extracts live metadata and pricing for an Amazon product.
     Includes automated challenge bypass and robust selector fallbacks.
     """
-    headers = {
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/131.0.0.0 Safari/537.36"
-        ),
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-        "Accept-Language": "en-IN,en-GB;q=0.9,en;q=0.8",
-        "Referer": "https://www.google.com/",
-    }
+    soup = None
+    raw_html = ""
+    # 1. Primary stealth fetch: curl_cffi with authentic Chrome 124 TLS handshake
+    try:
+        from curl_cffi import requests as cffi_requests
+        session = cffi_requests.Session(impersonate="chrome124")
+        c_resp = session.get(resolved.clean_url, timeout=timeout)
+        if c_resp.status_code == 200 and "Robot Check" not in c_resp.text:
+            s_cand = BeautifulSoup(c_resp.text, "html.parser")
+            if s_cand.find("span", {"id": "productTitle"}) or s_cand.title:
+                soup = s_cand
+                raw_html = c_resp.text
+                print(f"\n[ENGINE: curl_cffi Chrome 124 TLS] Scraped {resolved.clean_url}\n", flush=True)
+    except Exception:
+        pass
 
-    client = httpx.Client(follow_redirects=True, timeout=timeout)
-    resp = client.get(resolved.clean_url, headers=headers)
-    soup = BeautifulSoup(resp.text, "html.parser")
-
-    # If Amazon issues Robot Check or 503, retry with mobile Safari browser profile
-    is_robot = "Robot Check" in resp.text or (soup.title and "Robot Check" in soup.title.string)
-    if is_robot or resp.status_code != 200 or not soup.find("span", {"id": "productTitle"}):
-        mobile_headers = {
+    # 2. Secondary fallback: httpx with mobile retry
+    if not soup:
+        headers = {
             "User-Agent": (
-                "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) "
-                "AppleWebKit/605.1.15 (KHTML, like Gecko) "
-                "Version/17.5 Mobile/15E148 Safari/604.1"
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/131.0.0.0 Safari/537.36"
             ),
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language": "en-IN,en;q=0.9",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+            "Accept-Language": "en-IN,en-GB;q=0.9,en;q=0.8",
             "Referer": "https://www.google.com/",
         }
-        try:
-            m_resp = client.get(resolved.clean_url, headers=mobile_headers)
-            if m_resp.status_code == 200 and "Robot Check" not in m_resp.text:
-                resp = m_resp
-                soup = BeautifulSoup(resp.text, "html.parser")
-        except Exception:
-            pass
+
+        client = httpx.Client(follow_redirects=True, timeout=timeout)
+        resp = client.get(resolved.clean_url, headers=headers)
+        soup = BeautifulSoup(resp.text, "html.parser")
+        raw_html = resp.text
+
+        # If Amazon issues Robot Check or 503, retry with mobile Safari browser profile
+        is_robot = "Robot Check" in resp.text or (soup.title and "Robot Check" in soup.title.string)
+        if is_robot or resp.status_code != 200 or not soup.find("span", {"id": "productTitle"}):
+            mobile_headers = {
+                "User-Agent": (
+                    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) "
+                    "AppleWebKit/605.1.15 (KHTML, like Gecko) "
+                    "Version/17.5 Mobile/15E148 Safari/604.1"
+                ),
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "en-IN,en;q=0.9",
+                "Referer": "https://www.google.com/",
+            }
+            try:
+                m_resp = client.get(resolved.clean_url, headers=mobile_headers)
+                if m_resp.status_code == 200 and "Robot Check" not in m_resp.text:
+                    resp = m_resp
+                    raw_html = m_resp.text
+                    soup = BeautifulSoup(resp.text, "html.parser")
+            except Exception:
+                pass
 
     # If Amazon issues a validateCaptcha challenge form, attempt solve
     captcha_form = soup.find("form", {"action": lambda a: a and "validateCaptcha" in a})
@@ -184,8 +204,8 @@ def extract_amazon_data(resolved: ResolvedURL, timeout: float = 15.0) -> Extract
                 break
 
     # 5. Fallback to script / embedded JSON
-    if not price:
-        for m in re.finditer(r'["\'](?:priceAmount|buyingPrice)["\']\s*:\s*([0-9.]+)', resp.text):
+    if not price and raw_html:
+        for m in re.finditer(r'["\'](?:priceAmount|buyingPrice)["\']\s*:\s*([0-9.]+)', raw_html):
             val = _clean_number(m.group(1))
             if val and val > 0:
                 price = val
@@ -238,50 +258,73 @@ def extract_amazon_data(resolved: ResolvedURL, timeout: float = 15.0) -> Extract
         brand_raw = byline.get_text(strip=True)
         brand = re.sub(r"^(Visit the|Brand:)\s*", "", brand_raw, flags=re.IGNORECASE).replace(" Store", "").strip()
 
-    # 7. Images — extract multiple from colorImages JSON blob and DOM fallback
+    # 7. Images — extract multiple from colorImages JSON blob, data-a-dynamic-image, and DOM fallback
     image_url = None
     images = []
     img_el = soup.find("img", {"id": "landingImage"}) or soup.find("img", class_="a-dynamic-image")
-    if img_el and img_el.get("src"):
-        image_url = img_el.get("src")
+    if img_el:
+        if img_el.get("src"):
+            image_url = img_el.get("src")
+        # data-a-dynamic-image attribute contains JSON mapping of hi-res image URLs
+        dyn_data = img_el.get("data-a-dynamic-image")
+        if dyn_data:
+            try:
+                dyn_dict = json.loads(dyn_data)
+                for u in dyn_dict.keys():
+                    if u and u not in images:
+                        images.append(u)
+            except Exception:
+                pass
 
     # Extract all gallery images from Amazon's colorImages JS variable
-    color_images_match = re.search(r"'colorImages'\s*:\s*\{.*?'initial'\s*:\s*(\[.*?\])", resp.text, re.DOTALL)
-    if color_images_match:
-        try:
-            img_data = json.loads(color_images_match.group(1))
-            for img_item in img_data:
-                hi_res = img_item.get("hiRes") or img_item.get("large") or img_item.get("main", {}).get("url")
-                if hi_res and hi_res not in images:
-                    images.append(hi_res)
-        except Exception:
-            pass
+    if raw_html:
+        color_images_match = re.search(r"['\"]colorImages['\"]\s*:\s*\{.*?'initial'\s*:\s*(\[.*?\])", raw_html, re.DOTALL)
+        if not color_images_match:
+            color_images_match = re.search(r"'imageGalleryData'\s*:\s*(\[.*?\])", raw_html, re.DOTALL)
+        if color_images_match:
+            try:
+                img_data = json.loads(color_images_match.group(1))
+                for img_item in img_data:
+                    hi_res = img_item.get("hiRes") or img_item.get("large") or img_item.get("main", {}).get("url")
+                    if hi_res and hi_res not in images:
+                        images.append(hi_res)
+            except Exception:
+                pass
 
     # Fallback: extract from altImages thumbs
-    if len(images) < 2:
-        for thumb in soup.select("#altImages li img, #imageBlock img"):
-            src = thumb.get("src", "")
-            # Convert thumbnail to full-size by replacing size token
-            full = re.sub(r"\._[A-Z0-9_]+_\.", "._SL1500_.", src)
-            if full and full not in images:
-                images.append(full)
+    for thumb in soup.select("#altImages li img, #imageBlock img, .imageThumbnail img"):
+        src = thumb.get("src", "")
+        if not src or "grey-pixel" in src or "sprite" in src:
+            continue
+        # Convert thumbnail to full-size by replacing size token
+        full = re.sub(r"\._[A-Z0-9_]+_\.", "._SL1500_.", src)
+        if full and full not in images:
+            images.append(full)
 
-    # Clean out placeholder/sprite/pixel images
+    # Clean out placeholder/sprite/pixel images & deduplicate by Amazon image ID
     cleaned_images = []
+    seen_ids = set()
     for u in images:
         if not u:
             continue
         u_lower = u.lower()
         if any(bad in u_lower for bad in ("grey-pixel", "play-button", "transparent-pixel", "sprite")) or u_lower.endswith(".gif"):
             continue
-        if u not in cleaned_images:
-            cleaned_images.append(u)
-    images = cleaned_images[:6]
+        # Extract Amazon Media ID
+        m = re.search(r'/images/I/([A-Za-z0-9+_-]+)\.', u)
+        if m:
+            img_id = m.group(1)
+            if img_id not in seen_ids:
+                seen_ids.add(img_id)
+                normalized_u = f"https://m.media-amazon.com/images/I/{img_id}._SL1500_.jpg"
+                cleaned_images.append(normalized_u)
+        else:
+            if u not in cleaned_images:
+                cleaned_images.append(u)
+    images = cleaned_images[:8]
 
-    if not image_url and images:
+    if images:
         image_url = images[0]
-    elif image_url and image_url not in images and not any(bad in image_url.lower() for bad in ("grey-pixel", ".gif")):
-        images.insert(0, image_url)
 
     # 8. Category & Breadcrumbs
     breadcrumbs = [a.get_text(strip=True) for a in soup.select("#wayfinding-breadcrumbs_feature_div ul li a")]
@@ -573,22 +616,38 @@ def extract_flipkart_data(resolved: ResolvedURL, timeout: float = 15.0) -> Extra
     Extracts live metadata and pricing for a Flipkart product.
     Uses mobile browser profile to bypass Flipkart bot checks cleanly.
     """
-    headers = {
-        "User-Agent": (
-            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) "
-            "AppleWebKit/605.1.15 (KHTML, like Gecko) "
-            "Version/17.5 Mobile/15E148 Safari/604.1"
-        ),
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "en-IN,en;q=0.9",
-        "Referer": "https://www.google.com/",
-    }
+    soup = None
+    raw_html = ""
+    # 1. Primary stealth fetch: curl_cffi with Chrome 124 TLS handshake
+    try:
+        from curl_cffi import requests as cffi_requests
+        session = cffi_requests.Session(impersonate="chrome124")
+        c_resp = session.get(resolved.clean_url, timeout=timeout)
+        if c_resp.status_code == 200:
+            soup = BeautifulSoup(c_resp.text, "html.parser")
+            raw_html = c_resp.text
+    except Exception:
+        pass
 
-    resp = httpx.get(resolved.clean_url, headers=headers, follow_redirects=True, timeout=timeout)
-    if resp.status_code != 200:
-        raise RuntimeError(f"Flipkart responded with HTTP status {resp.status_code}")
+    # 2. Secondary fallback: httpx with mobile headers
+    if not soup:
+        headers = {
+            "User-Agent": (
+                "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) "
+                "AppleWebKit/605.1.15 (KHTML, like Gecko) "
+                "Version/17.5 Mobile/15E148 Safari/604.1"
+            ),
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-IN,en;q=0.9",
+            "Referer": "https://www.google.com/",
+        }
 
-    soup = BeautifulSoup(resp.text, "html.parser")
+        resp = httpx.get(resolved.clean_url, headers=headers, follow_redirects=True, timeout=timeout)
+        if resp.status_code != 200:
+            raise RuntimeError(f"Flipkart responded with HTTP status {resp.status_code}")
+
+        soup = BeautifulSoup(resp.text, "html.parser")
+        raw_html = resp.text
 
     title = None
     price = None
@@ -620,16 +679,24 @@ def extract_flipkart_data(resolved: ResolvedURL, timeout: float = 15.0) -> Extra
         except Exception:
             continue
 
-    # 2. DOM fallbacks
+    # 2. DOM buy-box selectors (takes precedence over JSON-LD if present, or provides fallback)
     if not title:
         h1 = soup.find("h1")
         if h1:
             title = h1.get_text(strip=True)
 
+    dom_price_el = soup.find(class_=re.compile(r"Nx9bqj|_30jeq3|CxhGGd"))
+    if dom_price_el:
+        p_val = _clean_number(dom_price_el.get_text(strip=True))
+        if p_val and p_val > 0:
+            price = p_val
+
     if not price:
-        price_div = soup.find("div", class_=re.compile(r"Nx9bqj|_30jeq3"))
-        if price_div:
-            price = _clean_number(price_div.get_text(strip=True))
+        for p_str in soup.find_all(string=re.compile(r"₹\s*[\d,]+")):
+            val = _clean_number(str(p_str))
+            if val and val > 0:
+                price = val
+                break
 
     if not title:
         title = f"Flipkart Product {resolved.product_id}"
@@ -644,38 +711,102 @@ def extract_flipkart_data(resolved: ResolvedURL, timeout: float = 15.0) -> Extra
         mrp = _clean_number(mrp_div.get_text(strip=True))
 
     # If MRP not found in DOM, check regex in embedded page state
-    if not mrp:
-        mrp_matches = re.findall(r'"(?:strikeOffPrice|mrp|maximumRetailPrice)":\s*([0-9]+)', resp.text)
+    if not mrp and raw_html:
+        mrp_matches = re.findall(r'"(?:strikeOffPrice|mrp|maximumRetailPrice)":\s*([0-9]+)', raw_html)
         if mrp_matches:
             candidates = [float(m) for m in mrp_matches if float(m) >= price]
             if candidates:
                 mrp = max(candidates)
 
-    # Multiple images from JSON-LD and DOM
-    images = []
-    if image_url:
-        images.append(image_url)
-    # Extract additional images from JSON-LD image arrays
-    for script in soup.find_all("script", type="application/ld+json"):
-        try:
-            data = json.loads(script.string)
-            items = data if isinstance(data, list) else [data]
-            for item in items:
-                if isinstance(item, dict) and "image" in item:
-                    img_list = item["image"] if isinstance(item["image"], list) else [item["image"]]
-                    for img in img_list:
-                        if isinstance(img, str) and img not in images:
-                            images.append(img)
-        except Exception:
-            continue
-    # DOM image fallback
-    for img_tag in soup.select("img[src*='rukminim']"):
-        src = img_tag.get("src", "")
-        # Convert to high-res
-        full = re.sub(r"/\d+/\d+/", "/832/832/", src)
-        if full and full not in images:
-            images.append(full)
-    images = images[:6]
+    # Extract all gallery images from main product carousel picture tags and raw HTML
+    gallery_imgs = []
+    seen_keys = set()
+
+    # Priority 1: High-res picture tags in product gallery container
+    for pic in soup.find_all("picture"):
+        is_gallery = False
+        parent = pic.parent
+        if parent and parent.parent:
+            gp_classes = parent.parent.get("class", [])
+            if any("_1o6mltlk4" in c for c in gp_classes):
+                is_gallery = True
+
+        sources = pic.find_all("source")
+        for s in sources:
+            srcset = s.get("srcset", "") or s.get("srcSet", "")
+            if any(res in srcset for res in ("/800/1070/", "/1600/2140/", "/832/832/", "/1500/1500/")):
+                is_gallery = True
+                break
+
+        if is_gallery:
+            best_url = None
+            for s in sources:
+                srcset = s.get("srcset", "") or s.get("srcSet", "")
+                for part in srcset.split(","):
+                    part = part.strip()
+                    if not part:
+                        continue
+                    u = part.split(" ")[0]
+                    if u.startswith("http"):
+                        best_url = u
+                        break
+                if best_url:
+                    break
+            if not best_url:
+                img = pic.find("img")
+                if img and img.get("src"):
+                    best_url = img.get("src")
+
+            if best_url:
+                m = re.search(r'flixcart\.com/image/[0-9]+/[0-9]+/(.+)', best_url)
+                key = m.group(1).split('?')[0] if m else best_url.split('?')[0]
+                if key not in seen_keys:
+                    seen_keys.add(key)
+                    hi_res = re.sub(r'/image/[0-9]+/[0-9]+/', '/image/832/832/', best_url).split('?')[0]
+                    gallery_imgs.append(hi_res)
+
+    # Priority 2: If main gallery didn't yield multiple pictures, fallback to JSON-LD, DOM imgs, and raw_html
+    if len(gallery_imgs) < 2:
+        raw_images = []
+        if image_url:
+            raw_images.append(image_url)
+
+        if raw_html:
+            all_fk_urls = re.findall(r'(https://rukmini\d*\.flixcart\.com/image/[^\"\'\s<>]+)', raw_html)
+            raw_images.extend(all_fk_urls)
+
+        for script in soup.find_all("script", type="application/ld+json"):
+            try:
+                data = json.loads(script.string)
+                items = data if isinstance(data, list) else [data]
+                for item in items:
+                    if isinstance(item, dict) and "image" in item:
+                        img_list = item["image"] if isinstance(item["image"], list) else [item["image"]]
+                        for img in img_list:
+                            if isinstance(img, str):
+                                raw_images.append(img)
+            except Exception:
+                continue
+
+        for img_tag in soup.select("img[src*='rukmini']"):
+            src = img_tag.get("src", "")
+            if src:
+                raw_images.append(src)
+
+        for u in raw_images:
+            m = re.search(r'flixcart\.com/image/[0-9]+/[0-9]+/(.+)', u)
+            key = m.group(1).split('?')[0] if m else u.split('?')[0]
+            u_lower = key.lower()
+            if any(bad in u_lower for bad in ("icon", "badge", "logo", "fk-p-linchpin", "static-assets", "placeholder", "svg", "button")):
+                continue
+            if key not in seen_keys:
+                seen_keys.add(key)
+                hi_res = re.sub(r'/image/[0-9]+/[0-9]+/', '/image/832/832/', u).split('?')[0]
+                gallery_imgs.append(hi_res)
+
+    images = gallery_imgs[:8]
+    if images:
+        image_url = images[0]
 
     # Rating & Reviews extraction for Flipkart
     rating = None
@@ -735,8 +866,8 @@ def extract_flipkart_data(resolved: ResolvedURL, timeout: float = 15.0) -> Extra
                 specifications.append({"key": clean_k, "value": clean_v})
                 seen_keys.add(clean_k)
 
-    if not specifications:
-        spec_matches = re.findall(r'"key"\s*:\s*"([^"]+)"\s*,\s*"value"\s*:\s*"([^"]+)"', resp.text)
+    if not specifications and raw_html:
+        spec_matches = re.findall(r'"key"\s*:\s*"([^"]+)"\s*,\s*"value"\s*:\s*"([^"]+)"', raw_html)
         seen_keys = set()
         for key, val in spec_matches:
             clean_key = key.strip()
@@ -754,8 +885,8 @@ def extract_flipkart_data(resolved: ResolvedURL, timeout: float = 15.0) -> Extra
         seller_a = seller_div.find("a") or seller_div.find("span")
         if seller_a:
             seller_name = seller_a.get_text(strip=True)
-    if not seller_name:
-        s_match = re.search(r'"sellerName"\s*:\s*"([^"]+)"', resp.text)
+    if not seller_name and raw_html:
+        s_match = re.search(r'"sellerName"\s*:\s*"([^"]+)"', raw_html)
         if s_match:
             seller_name = s_match.group(1)
 
@@ -765,8 +896,8 @@ def extract_flipkart_data(resolved: ResolvedURL, timeout: float = 15.0) -> Extra
     if delivery_div:
         delivery_info = delivery_div.get_text(strip=True)
         delivery_info = re.sub(r"\s+", " ", delivery_info).strip()[:80]
-    if not delivery_info:
-        d_match = re.search(r'"deliveryText"\s*:\s*"([^"]+)"', resp.text)
+    if not delivery_info and raw_html:
+        d_match = re.search(r'"deliveryText"\s*:\s*"([^"]+)"', raw_html)
         if d_match:
             delivery_info = d_match.group(1)
 
@@ -797,10 +928,11 @@ def extract_flipkart_data(resolved: ResolvedURL, timeout: float = 15.0) -> Extra
 
     # 17. Return Policy
     return_policy = None
-    ret_match = re.search(r"(\d+\s*Days?\s*(?:Replacement|Return|Exchange)|Non-Returnable)", resp.text, re.IGNORECASE)
-    if ret_match:
-        return_policy = ret_match.group(1).title()
-    else:
+    if raw_html:
+        ret_match = re.search(r"(\d+\s*Days?\s*(?:Replacement|Return|Exchange)|Non-Returnable)", raw_html, re.IGNORECASE)
+        if ret_match:
+            return_policy = ret_match.group(1).title()
+    if not return_policy:
         return_policy = "7 Days Replacement"
 
     # 18. Flipkart Assured & Delivery Fee

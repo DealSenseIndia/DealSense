@@ -19,6 +19,11 @@ from backend.config import settings, build_affiliate_url
 from backend.database import get_session, init_db
 from backend.engine import evaluate_deal, DealVerdict
 from backend.models import Product, MerchantListing, PriceObservation
+from backend.services.cuelinks_feed import (
+    sync_cuelinks_offers_to_db,
+    get_cuelinks_ranked_deals,
+    get_trending_coupons,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -289,6 +294,14 @@ def refresh_deal_pool(max_items: Optional[int] = None) -> Dict[str, Any]:
 
     try:
         init_db()
+        # Sync verified multi-merchant offers & active coupons from Cuelinks V3
+        cuelinks_synced = 0
+        try:
+            cl_res = sync_cuelinks_offers_to_db(max_pages=2, per_page=50)
+            cuelinks_synced = cl_res.get("total_upserted", 0)
+        except Exception as cl_err:
+            logger.warning(f"Cuelinks feed sync during deal refresh failed: {cl_err}")
+
         # Load verified deals directly from SQLite database observations
         _cached_deals = load_deals_from_db()
         _last_refresh_time = datetime.now()
@@ -297,16 +310,17 @@ def refresh_deal_pool(max_items: Optional[int] = None) -> Dict[str, Any]:
         _refresh_stats.update({
             "last_scraped_count": 0,
             "last_success_count": len(_cached_deals),
+            "last_cuelinks_synced": cuelinks_synced,
             "last_failed_count": 0,
             "last_completed_at": datetime.now(timezone.utc).isoformat(),
             "duration_seconds": round(duration, 2),
         })
 
-        logger.info(f"Deal pipeline refreshed from database in {duration:.2f}s ({len(_cached_deals)} deals active).")
+        logger.info(f"Deal pipeline refreshed from database in {duration:.2f}s ({len(_cached_deals)} deals active, {cuelinks_synced} cuelinks synced).")
 
         return {
             "status": "success",
-            "message": f"Loaded {len(_cached_deals)} deals from verified database records.",
+            "message": f"Loaded {len(_cached_deals)} deals from verified database records ({cuelinks_synced} merchant offers synced).",
             "stats": _refresh_stats,
             "total_live_deals": len(_cached_deals),
         }
@@ -330,7 +344,7 @@ def start_background_refresh(max_items: Optional[int] = None):
 def get_ranked_deals(category: Optional[str] = None, deal_type: Optional[str] = None) -> Dict[str, Any]:
     """
     Returns filtered, ranked deals with real-time freshness metadata.
-    Reads from SQLite and combines with curated setups.
+    Reads from SQLite observations and blends with verified Cuelinks merchant promotions.
     """
     global _cached_deals, _last_refresh_time
 
@@ -341,6 +355,13 @@ def get_ranked_deals(category: Optional[str] = None, deal_type: Optional[str] = 
             _last_refresh_time = datetime.now()
 
     all_deals = list(_cached_deals)
+
+    # Blend in verified Cuelinks multi-merchant deals (Croma, Myntra, Ajio, Nykaa, etc.)
+    try:
+        cuelinks_deals = get_cuelinks_ranked_deals(category=category, limit=20)
+        all_deals.extend(cuelinks_deals)
+    except Exception as cl_err:
+        logger.warning(f"Failed to blend Cuelinks deals into ranked feed: {cl_err}")
 
     filtered = all_deals
     if category and category.lower() != "all":
@@ -381,7 +402,7 @@ def get_ranked_deals(category: Optional[str] = None, deal_type: Optional[str] = 
     next_scan = max(1, refresh_interval - (elapsed_minutes % refresh_interval))
 
     # Category counts
-    category_keys = ["all", "mobiles", "laptops", "audio", "smartwatches", "tvs", "appliances"]
+    category_keys = ["all", "mobiles", "laptops", "audio", "smartwatches", "tvs", "appliances", "fashion", "beauty", "home"]
     category_counts = {k: 0 for k in category_keys}
     category_counts["all"] = len(all_deals)
     for d in all_deals:

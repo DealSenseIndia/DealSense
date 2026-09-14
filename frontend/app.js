@@ -56,7 +56,7 @@ function initApp() {
   const chipTriggers = document.querySelectorAll(".chip-trigger, .popular-tag-pill");
 
   // 4. Centralized URL Deal Analysis Controller
-  async function analyzeUrl(url) {
+  async function analyzeUrl(url, { updateUrl = true } = {}) {
     if (!url) return;
     if (searchResultsDropdown) searchResultsDropdown.style.display = "none";
     const headerDropdown = document.getElementById("headerSearchDropdown");
@@ -78,18 +78,7 @@ function initApp() {
         new Promise((resolve) => setTimeout(resolve, minAnimDelay)),
       ]);
 
-      if (isHomeVisible && heroSubmitBtn) {
-        finishAnalyzingAnimation(heroSubmitBtn, true, () => {
-          saveRecentProduct(data, url);
-          hidePdpSkeleton();
-          try {
-            renderDetailPage(data, { onAnalyzeUrl: analyzeUrl });
-          } catch (renderErr) {
-            console.error("Error inside renderDetailPage:", renderErr);
-          }
-          nav.showDetail();
-        });
-      } else {
+      const onAnalysisComplete = () => {
         saveRecentProduct(data, url);
         hidePdpSkeleton();
         try {
@@ -97,7 +86,22 @@ function initApp() {
         } catch (renderErr) {
           console.error("Error inside renderDetailPage:", renderErr);
         }
-        nav.showDetail();
+        nav.showDetail(false);
+
+        // Update URL query parameters and document title for instant shareability
+        const asin = data.listing?.merchant_product_id;
+        const title = data.product?.title || data.product?.canonical_title || "Product";
+        if (updateUrl) {
+          const shareQuery = asin ? `?p=${encodeURIComponent(asin)}` : `?url=${encodeURIComponent(url)}`;
+          window.history.pushState({ p: asin, url, isPdp: true }, "", shareQuery);
+        }
+        document.title = `${title} — Real Price & Deal Intelligence | DealSense`;
+      };
+
+      if (isHomeVisible && heroSubmitBtn) {
+        finishAnalyzingAnimation(heroSubmitBtn, true, onAnalysisComplete);
+      } else {
+        onAnalysisComplete();
       }
     } catch (err) {
       console.error("Deal analysis error:", err);
@@ -113,15 +117,38 @@ function initApp() {
     }
   }
 
-  // Automatic Deep Link Product Analysis (?url=... or /product/11)
+  // Automatic Deep Link Product Analysis (?p=... or ?url=... or ?id=... or /product/11)
+  let initialDeepUrl = null;
+  const currentParams = new URLSearchParams(window.location.search);
   const pathname = window.location.pathname;
-  if (urlParams.has("url")) {
-    const rawUrl = urlParams.get("url");
-    if (rawUrl) {
-      if (heroUrlInput) heroUrlInput.value = rawUrl;
-      setTimeout(() => analyzeUrl(rawUrl), 60);
+
+  if (currentParams.has("p") || currentParams.has("asin")) {
+    const pId = (currentParams.get("p") || currentParams.get("asin")).trim();
+    if (/^[A-Z0-9]{10}$/i.test(pId)) {
+      initialDeepUrl = `https://www.amazon.in/dp/${pId}`;
+    } else if (/^itm/i.test(pId)) {
+      initialDeepUrl = `https://www.flipkart.com/product/p/${pId}`;
+    } else {
+      initialDeepUrl = `https://www.amazon.in/dp/${pId}`;
     }
-  } else if (pathname.startsWith("/product/")) {
+  } else if (currentParams.has("url")) {
+    const rawUrl = currentParams.get("url").trim();
+    if (rawUrl) initialDeepUrl = rawUrl;
+  } else if (currentParams.has("id")) {
+    const prodId = currentParams.get("id").trim();
+    if (/^\d+$/.test(prodId)) {
+      fetch(`/api/products/${prodId}`)
+        .then((res) => (res.ok ? res.json() : null))
+        .then((pData) => {
+          const firstUrl = pData?.listings?.[0]?.url;
+          if (firstUrl) {
+            if (heroUrlInput) heroUrlInput.value = firstUrl;
+            analyzeUrl(firstUrl, { updateUrl: false });
+          }
+        })
+        .catch(() => {});
+    }
+  } else if (pathname && pathname.startsWith("/product/")) {
     const productTarget = pathname.replace(/^\/product\/?/, "").trim();
     if (productTarget) {
       if (/^\d+$/.test(productTarget)) {
@@ -131,16 +158,35 @@ function initApp() {
             const firstUrl = pData?.listings?.[0]?.url;
             if (firstUrl) {
               if (heroUrlInput) heroUrlInput.value = firstUrl;
-              analyzeUrl(firstUrl);
+              analyzeUrl(firstUrl, { updateUrl: false });
             }
           })
           .catch(() => {});
       } else {
-        if (heroUrlInput) heroUrlInput.value = productTarget;
-        setTimeout(() => analyzeUrl(productTarget), 60);
+        initialDeepUrl = productTarget;
       }
     }
   }
+
+  if (initialDeepUrl) {
+    if (heroUrlInput) heroUrlInput.value = initialDeepUrl;
+    showPdpSkeleton();
+    nav.showDetail(false);
+    setTimeout(() => analyzeUrl(initialDeepUrl, { updateUrl: false }), 40);
+  }
+
+  // Browser History Navigation (Back / Forward)
+  window.addEventListener("popstate", () => {
+    const p = new URLSearchParams(window.location.search);
+    if (p.has("p") || p.has("asin") || p.has("url")) {
+      const pId = p.get("p") || p.get("asin");
+      const targetUrl = p.get("url") || `https://www.amazon.in/dp/${pId}`;
+      analyzeUrl(targetUrl, { updateUrl: false });
+    } else {
+      nav.showHome(false);
+      document.title = "DealSense — Smart Shopping & Deal Verification for India";
+    }
+  });
 
   // 5. Initialize Omni-Search & Autocomplete Subsystem
   const searchModule = initOmniSearch({

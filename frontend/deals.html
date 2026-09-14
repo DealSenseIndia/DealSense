@@ -41,6 +41,7 @@
   <link rel="stylesheet" href="/css/footer.css">
   <!-- Deals Page Scoped Stylesheet -->
   <link rel="stylesheet" href="/css/deals.css">
+  <link rel="stylesheet" href="/css/coupons.css">
 
   <!-- Structured Data (Breadcrumbs & OfferCatalog) -->
   <script type="application/ld+json">
@@ -377,6 +378,30 @@
 
       <!-- RIGHT COLUMN (DEALS FEED) -->
       <section class="deals-feed-column">
+
+        <!-- Trending Coupons & Promo Codes Strip -->
+        <section class="trending-coupons-section" id="dealsCouponsSection" style="padding: 4px 0 16px 0; border: none; background: transparent;">
+          <div class="coupons-header-row" style="margin-bottom: 12px;">
+            <div class="coupons-title-group">
+              <div class="coupons-live-badge">
+                <span class="live-pulse-dot"></span>
+                <span>Verified Promo Codes</span>
+              </div>
+              <h2 class="coupons-section-title" style="font-size: 18px;">Trending Store Coupons</h2>
+            </div>
+            <div class="coupons-nav-actions">
+              <button type="button" class="coupon-carousel-nav prev" id="dealsCouponPrevBtn" aria-label="Previous coupons">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              </button>
+              <button type="button" class="coupon-carousel-nav next" id="dealsCouponNextBtn" aria-label="Next coupons">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              </button>
+            </div>
+          </div>
+          <div class="coupons-carousel-track" id="dealsCouponsContainer">
+            <!-- Dynamically populated by /js/deals.js -->
+          </div>
+        </section>
 
         <div class="deals-result-bar">
           <span class="deals-result-count-text">

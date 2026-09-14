@@ -121,14 +121,16 @@ export function initNavigation({ onShowSetup, onShowTrack } = {}) {
   const backToHomeBreadcrumb = document.getElementById("backToHomeBreadcrumb");
   const heroUrlInput = document.getElementById("heroUrlInput");
   const headerTrackNavBtn = document.getElementById("headerTrackNavBtn");
+  const dealsNavBtn = document.getElementById("dealsNavBtn");
 
   // Mobile nav links
   const mobileHomeBtn = document.getElementById("mobileHomeBtn");
   const mobileSetupBtn = document.getElementById("mobileSetupBtn");
   const mobileTrackBtn = document.getElementById("mobileTrackBtn");
+  const mobileDealsBtn = document.getElementById("mobileDealsBtn");
 
   function clearActive() {
-    [homeNavBtn, setupNavBtn, headerTrackNavBtn].forEach(btn => {
+    [homeNavBtn, setupNavBtn, headerTrackNavBtn, dealsNavBtn].forEach(btn => {
       if (btn) btn.classList.remove("active");
     });
   }
@@ -142,7 +144,12 @@ export function initNavigation({ onShowSetup, onShowTrack } = {}) {
     if (homeNavBtn) homeNavBtn.classList.add("active");
     if (modeAnalyzeBtn) modeAnalyzeBtn.classList.add("active");
     if (modeSetupBtn) modeSetupBtn.classList.remove("active");
-    if (pushState) window.location.hash = "#/";
+    if (pushState) {
+      if (window.location.search || window.location.hash) {
+        window.history.pushState({}, "", window.location.pathname);
+      }
+      document.title = "DealSense — Smart Shopping & Deal Verification for India";
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -152,7 +159,9 @@ export function initNavigation({ onShowSetup, onShowTrack } = {}) {
     if (setupView) setupView.style.display = "none";
     if (trackView) trackView.style.display = "none";
     clearActive();
-    if (pushState) window.location.hash = "#/product";
+    if (pushState && !window.location.search) {
+      window.location.hash = "#/product";
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -185,6 +194,20 @@ export function initNavigation({ onShowSetup, onShowTrack } = {}) {
     if (pushState) window.location.hash = "#/track";
   }
 
+  function showDeals(pushState = true) {
+    if (homeView) homeView.style.display = "block";
+    if (detailView) detailView.style.display = "none";
+    if (setupView) setupView.style.display = "none";
+    if (trackView) trackView.style.display = "none";
+    clearActive();
+    if (dealsNavBtn) dealsNavBtn.classList.add("active");
+    if (pushState) window.location.hash = "#liveDeals";
+    const liveDealsSec = document.getElementById("liveDeals");
+    if (liveDealsSec) {
+      setTimeout(() => liveDealsSec.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+    }
+  }
+
   // ── Event listeners ──
   if (navLogoBtn) navLogoBtn.addEventListener("click", (e) => { e.preventDefault(); showHome(); });
   if (homeNavBtn) homeNavBtn.addEventListener("click", (e) => { e.preventDefault(); showHome(); });
@@ -210,11 +233,13 @@ export function initNavigation({ onShowSetup, onShowTrack } = {}) {
   });
   if (backToHomeBreadcrumb) backToHomeBreadcrumb.addEventListener("click", (e) => { e.preventDefault(); showHome(); });
   if (headerTrackNavBtn) headerTrackNavBtn.addEventListener("click", (e) => { e.preventDefault(); showTrack(); });
+  if (dealsNavBtn) dealsNavBtn.addEventListener("click", (e) => { e.preventDefault(); showDeals(); });
 
   // Mobile nav
   if (mobileHomeBtn) mobileHomeBtn.addEventListener("click", (e) => { e.preventDefault(); showHome(); });
   if (mobileSetupBtn) mobileSetupBtn.addEventListener("click", (e) => { e.preventDefault(); showSetup(); });
   if (mobileTrackBtn) mobileTrackBtn.addEventListener("click", (e) => { e.preventDefault(); showTrack(); });
+  if (mobileDealsBtn) mobileDealsBtn.addEventListener("click", (e) => { e.preventDefault(); showDeals(); });
 
   // ── Hash-based routing ──
   function handleHashRoute() {
@@ -225,6 +250,8 @@ export function initNavigation({ onShowSetup, onShowTrack } = {}) {
       showSetup(false);
     } else if (hash.startsWith("#/track")) {
       showTrack(false);
+    } else if (hash === "#liveDeals" || hash === "#deals" || hash === "#/deals") {
+      showDeals(false);
     } else {
       showHome(false);
     }
@@ -235,6 +262,6 @@ export function initNavigation({ onShowSetup, onShowTrack } = {}) {
   // Initialize mobile menu
   initMobileMenu();
 
-  return { showHome, showDetail, showSetup, showTrack, handleHashRoute };
+  return { showHome, showDetail, showSetup, showTrack, showDeals, handleHashRoute };
 }
 

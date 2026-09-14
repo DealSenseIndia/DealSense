@@ -101,6 +101,39 @@ class ProductCompareRequest(BaseModel):
     session_id: Optional[str] = None
 
 
+class SyncPriceRequest(BaseModel):
+    price: float
+    reason: Optional[str] = "user_verified_sync"
+
+
+@app.post("/api/listings/{listing_id}/sync-price")
+def sync_listing_price(listing_id: int, req: SyncPriceRequest):
+    """
+    Allows user or client to record a verified live price observation,
+    locking it against unauthenticated scraper regressions.
+    """
+    if req.price <= 0:
+        raise HTTPException(status_code=400, detail="Price must be positive")
+    with get_session() as session:
+        listing = session.get(MerchantListing, listing_id)
+        if not listing:
+            raise HTTPException(status_code=404, detail="Listing not found")
+        listing.current_price = req.price
+        listing.last_checked_at = datetime.now(timezone.utc)
+        session.add(listing)
+        obs = PriceObservation(
+            listing_id=listing.id,
+            price=req.price,
+            currency="INR",
+            in_stock=True,
+            source="user_verified_sync",
+            observed_at=datetime.now(timezone.utc),
+        )
+        session.add(obs)
+        session.commit()
+        return {"status": "success", "listing_id": listing.id, "synced_price": req.price}
+
+
 @app.get("/api/health")
 def health_check():
     return {"status": "ok", "service": "Deal Intelligence Backend"}
@@ -405,6 +438,39 @@ def check_deal(req: CheckDealRequest):
     try:
         result = ingest_and_evaluate(req.url, force_refresh=req.force_refresh)
         return result
+    except ValueError as val_err:
+        raise HTTPException(status_code=400, detail=str(val_err))
+    except Exception as err:
+        raise HTTPException(status_code=500, detail=f"Failed to analyze deal: {str(err)}")
+
+
+@app.get("/api/check-deal")
+def check_deal_get(
+    url: Optional[str] = None,
+    p: Optional[str] = None,
+    asin: Optional[str] = None,
+    force_refresh: bool = False,
+):
+    """
+    Query-param accessible deal checker for deep links & browser share requests.
+    Accepts ?url=... or ?p=ASIN or ?asin=ASIN.
+    """
+    target_url = url
+    product_identifier = p or asin
+    if not target_url and product_identifier:
+        clean_id = product_identifier.strip()
+        if len(clean_id) == 10:
+            target_url = f"https://www.amazon.in/dp/{clean_id}"
+        elif clean_id.startswith("itm"):
+            target_url = f"https://www.flipkart.com/product/p/{clean_id}"
+        else:
+            target_url = f"https://www.amazon.in/dp/{clean_id}"
+
+    if not target_url:
+        raise HTTPException(status_code=400, detail="Either 'url' or 'p'/'asin' parameter is required")
+
+    try:
+        return ingest_and_evaluate(target_url, force_refresh=force_refresh)
     except ValueError as val_err:
         raise HTTPException(status_code=400, detail=str(val_err))
     except Exception as err:
@@ -1477,6 +1543,27 @@ def trigger_deals_refresh(background: bool = False):
     (Unofficial web scraping crawl has been removed).
     """
     return refresh_deals_feed()
+
+
+@app.get("/api/coupons/trending")
+def get_trending_coupons_feed(category: Optional[str] = None, limit: int = 20):
+    """
+    Returns verified active coupon codes and promo discounts from Cuelinks feed.
+    """
+    from backend.services.cuelinks_feed import get_trending_coupons
+    return {
+        "success": True,
+        "coupons": get_trending_coupons(category=category, limit=limit),
+    }
+
+
+@app.post("/api/cuelinks/sync")
+def trigger_cuelinks_sync(max_pages: int = 3, per_page: int = 50):
+    """
+    Triggers on-demand synchronization of Cuelinks V3 publisher offers & coupons into SQLite.
+    """
+    from backend.services.cuelinks_feed import sync_cuelinks_offers_to_db
+    return sync_cuelinks_offers_to_db(max_pages=max_pages, per_page=per_page)
 
 
 # ── Phase 4.2 Autonomous Discovery API Endpoints ──────────────────────────────
