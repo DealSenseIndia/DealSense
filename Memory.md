@@ -7,10 +7,11 @@
 ## 1. Project Health & Verified Baseline Status
 - **Repository**: `D:\Gursher\Affiliate\Deal Intelligence`
 - **Active Workspace**: Deal Intelligence (Antigravity IDE)
-- **Current Milestone**: Phase 4 (Distribution Wedge & Chrome/Kiwi Mobile Extension)
-- **Unit Test Health**: **216 / 216 Passing Unit Tests (100% Green)**
-- **Test Runner Command**: `.venv\Scripts\pytest.exe -q` (59.9s execution)
+- **Current Milestone**: Phase 5 (Programmatic SSR SEO & Production Scale)
+- **Unit Test Health**: **221 / 221 Passing Unit Tests (100% Green)**
+- **Test Runner Command**: `.venv\Scripts\pytest.exe -q` (66.2s execution)
 - **Verified Working Test Suites**:
+  - `test_extension_contracts.py` (Pass — 5/5 tests)
   - `test_alert_worker.py` (Pass — 5/5 tests)
   - `test_adk_deal_crawler.py` (Pass — 6/6 tests)
   - `test_affiliate_gateway_fallback.py` (Pass — 4/4 tests)
@@ -42,6 +43,7 @@
 - **ADR-004 (Stealth Anti-Bot Protocol)**: User-Agent and Client Hints (`Sec-Ch-Ua`) synchronized; randomized jitter (2.2s–4.8s); exponential backoff circuit breaker on CAPTCHA / 503 / 429 pages.
 - **ADR-005 (Autonomous Alert Dispatch Daemon)**: `AlertDispatchWorker` operates a background daemon thread in FastAPI lifespan using SQLite WAL mode to periodically sweep active ARMED alerts, evaluate deal intelligence, atomically claim triggers, and dispatch rich Telegram/WhatsApp alerts without thread leakage.
 - **ADR-006 (Multi-Tier Affiliate Gateway & ADK Deals Pipeline)**: Dual-rail monetization guarantees zero lost commission revenue via 3-tier fallback (Direct Associate Tag -> Cuelinks V3 `/links/convert` -> Clean Canonical URL fallback). `ADKDealHarvestPipeline` harvests cross-store candidates, executes full deal scoring via `backend.engine`, and exposes telemetry at `GET /api/v1/telemetry/pipeline`.
+- **ADR-007 (Manifest V3 Browser Extension & Shadow DOM In-Page Ingestion)**: Injects live deal intelligence directly onto Amazon.in and Flipkart product detail pages via encapsulated Shadow DOM (`attachShadow({ mode: 'open' })`) with zero page style collision. Supports desktop Chrome and Android Kiwi Browser with touch targets >= 44px, bank offer calculations, rival store comparison, and 1-click price alert modals.
 
 
 ---

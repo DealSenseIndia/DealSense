@@ -44,30 +44,35 @@
 - **Multi-Agent Runtime**: Google ADK (`adk.dev` / `google-adk`) for worker workflows.
 - **Database**: SQLite with WAL mode enabled (`models.py`).
 - **Frontend**: Vanilla JS (ES Modules) + Vite + Modern Dark Mode CSS + SVG Chart Renderer.
-- **Testing Suite**: Pytest (48/48 baseline unit tests currently passing).
+- **Testing Suite**: Pytest (221/221 unit tests currently passing, 100% green).
 
 ## 3. Directory Layout
 ```text
 dealsense/
 ├── .agents/                    # AI pair programming configs & subagent specs
-│   └── rules/
-│       └── dealsense-rules.md
+│   ├── agents/                 # 8 specialized subagent definitions
+│   └── plugins/dealsense/      # DealSense native plugin manifest & agents
 ├── backend/
-│   ├── api/                    # FastAPI route handlers
 │   ├── services/               # Core business logic
 │   │   ├── resolver.py         # URL cleaner & ID extractor
 │   │   ├── extractor.py        # Amazon/Flipkart HTML scraper
 │   │   ├── bank_calculator.py  # Instant card discount engine
 │   │   ├── engine.py           # Deal score (0-100) & verdicts
-│   │   ├── models.py           # SQLite relational schemas
+│   │   ├── affiliate_gateway.py # 3-Tier monetization routing
+│   │   ├── alert_worker.py     # Background alert daemon
 │   │   └── deals_crawler.py    # Deals discovery module
 │   ├── workers/                # Autonomous background workers
-│   │   ├── adk_deal_pipeline.py # Google ADK multi-agent pipeline
-│   │   └── alert_dispatcher.py # WhatsApp/Telegram/Email worker
-│   └── tests/                  # 48 passing unit tests
+│   │   └── adk_deal_pipeline.py # Google ADK multi-agent pipeline
+│   └── main.py                 # FastAPI application lifespan & endpoints
+├── extension/                  # Manifest V3 Chrome & Kiwi Mobile Extension
+│   ├── manifest.json           # MV3 specification & permissions
+│   ├── background.js           # Service worker (caching & API relay)
+│   ├── content.js              # In-page Shadow DOM detector & injector
+│   ├── styles.css              # Scoped Shadow-DOM CSS styling
+│   ├── popup/                  # Action popup (analyzer, watchlist, settings)
+│   └── icons/                  # 16px, 48px, 128px branded icons
 ├── frontend/                   # Vite + Vanilla JS web application
-│   ├── src/                    # UI components & SVG charts
-│   └── index.html
+├── tests/                      # 221 passing unit & contract tests
 ├── PRD.md
 ├── Architecture.md
 ├── Rules.md

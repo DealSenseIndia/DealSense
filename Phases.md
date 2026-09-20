@@ -22,12 +22,13 @@
 - [x] Task 3.4: Add health check and crawler telemetry dashboard endpoint. *(Owner: `backend_engineer` & `frontend_engineer`)*
 - [x] Continuous QA Sentinel Guardian: Enforce Rule #1 (216/216 passing tests, zero regressions). *(Owner: `qa_sentinel`)*
 
-## Phase 4: Distribution Wedge & Chrome/Kiwi Mobile Extension [STATUS: ACTIVE 🎯]
-- [ ] Task 4.1: Manifest V3 Chrome / Kiwi mobile browser extension foundation (`extension/manifest.json`, popup, background service worker).
-- [ ] Task 4.2: In-page floating price comparison pill on Amazon.in & Flipkart product detail pages.
-- [ ] Task 4.3: One-click "Set Deal Alert" modal inside extension syncing with backend `/api/v1/alerts`.
+## Phase 4: Distribution Wedge & Chrome/Kiwi Mobile Extension [STATUS: COMPLETED ✅]
+- [x] Task 4.1: Manifest V3 Chrome / Kiwi mobile browser extension foundation (`extension/manifest.json`, popup, background service worker). *(Owner: `extension_engineer`)*
+- [x] Task 4.2: In-page floating price comparison pill on Amazon.in & Flipkart product detail pages via encapsulated Shadow DOM. *(Owner: `extension_engineer`)*
+- [x] Task 4.3: One-click "Set Deal Alert" modal inside extension syncing with backend `/api/v1/alerts` and Telegram deep linking. *(Owner: `extension_engineer` & `bot_dispatcher`)*
+- [x] Continuous QA Sentinel Guardian: Enforce Rule #1 (221/221 passing tests, zero regressions). *(Owner: `qa_sentinel`)*
 
-## Phase 5: Programmatic SSR SEO & Scale [STATUS: QUEUED]
+## Phase 5: Programmatic SSR SEO & Scale [STATUS: ACTIVE 🎯]
 - [ ] Task 5.1: Fastify/SSR dynamic routes for `/compare/{slug}` indexing.
 - [ ] Task 5.2: Auto-generated dynamic XML sitemaps for top 10,000 tracked products.
 - [ ] Task 5.3: Production Docker containerization & Cloud deployment.

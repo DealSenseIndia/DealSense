@@ -474,7 +474,24 @@ def check_deal_get(
         raise HTTPException(status_code=400, detail="Either 'url' or 'p'/'asin' parameter is required")
 
     try:
-        return ingest_and_evaluate(target_url, force_refresh=force_refresh)
+        res = ingest_and_evaluate(target_url, force_refresh=force_refresh)
+        if isinstance(res, dict):
+            decision = res.get("decision", {})
+            pricing = res.get("pricing", {})
+            product = res.get("product", {})
+            if "deal_score" not in res:
+                res["deal_score"] = decision.get("score", 0)
+            if "score" not in res:
+                res["score"] = decision.get("score", 0)
+            if "verdict" not in res:
+                res["verdict"] = decision.get("verdict", "")
+            if "current_price" not in res:
+                res["current_price"] = pricing.get("current_price", 0)
+            if "price" not in res:
+                res["price"] = pricing.get("current_price", 0)
+            if "title" not in res:
+                res["title"] = product.get("title", "")
+        return res
     except ValueError as val_err:
         raise HTTPException(status_code=400, detail=str(val_err))
     except Exception as err:
