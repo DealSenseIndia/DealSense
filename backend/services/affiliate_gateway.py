@@ -43,7 +43,7 @@ def convert_via_cuelinks(
     if not settings.CUELINKS_API_KEY:
         return None
 
-    base_url = (settings.CUELINKS_BASE_URL or "https://api.cuelinks.com/v3").rstrip("/")
+    base_url = (settings.CUELINKS_BASE_URL or "https://developers.cuelinks.com/pub_api/v3").rstrip("/")
     endpoint = f"{base_url}/links/convert"
     headers = {
         "Authorization": f"Token {settings.CUELINKS_API_KEY}",
