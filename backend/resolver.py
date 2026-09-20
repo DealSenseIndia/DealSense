@@ -20,6 +20,8 @@ ALLOWED_DOMAINS = {
     # Merchant sites
     "amazon.in", "www.amazon.in", "m.amazon.in",
     "flipkart.com", "www.flipkart.com", "m.flipkart.com", "dl.flipkart.com",
+    "croma.com", "www.croma.com",
+    "reliancedigital.in", "www.reliancedigital.in",
     # Known shorteners that redirect to the above
     "amzn.to", "amzn.in", "fkrt.it", "bit.ly", "tinyurl.com",
 }
@@ -258,4 +260,42 @@ def resolve_product_url(url: str) -> ResolvedURL:
 
         raise ValueError(f"Could not extract Flipkart product ID from URL: {final_url}")
 
-    raise ValueError(f"Unsupported merchant domain: {hostname or 'unknown'}. Please provide an Amazon or Flipkart link.")
+    # --- Croma ---
+    if "croma" in hostname:
+        match = re.search(r"/p/([0-9]+)", parsed.path)
+        pid = match.group(1) if match else None
+        if not pid:
+            q = parse_qs(parsed.query)
+            if "pid" in q and q["pid"]:
+                pid = q["pid"][0].strip()
+        if pid:
+            clean_url = f"https://www.croma.com{parsed.path}" if "/p/" in parsed.path else f"https://www.croma.com/p/{pid}"
+            return ResolvedURL(
+                merchant="Croma",
+                product_id=pid,
+                clean_url=clean_url,
+                raw_url=url,
+            )
+        raise ValueError(f"Could not extract Croma product ID from URL: {final_url}")
+
+    # --- Reliance Digital ---
+    if "reliancedigital" in hostname:
+        match = re.search(r"/p/([0-9]+)", parsed.path)
+        pid = match.group(1) if match else None
+        if not pid:
+            q = parse_qs(parsed.query)
+            for k in ("pid", "item_id", "id"):
+                if k in q and q[k]:
+                    pid = q[k][0].strip()
+                    break
+        if pid:
+            clean_url = f"https://www.reliancedigital.in{parsed.path}" if "/p/" in parsed.path else f"https://www.reliancedigital.in/p/{pid}"
+            return ResolvedURL(
+                merchant="Reliance Digital",
+                product_id=pid,
+                clean_url=clean_url,
+                raw_url=url,
+            )
+        raise ValueError(f"Could not extract Reliance Digital product ID from URL: {final_url}")
+
+    raise ValueError(f"Unsupported merchant domain: {hostname or 'unknown'}. Supported merchants: Amazon, Flipkart, Croma, Reliance Digital.")

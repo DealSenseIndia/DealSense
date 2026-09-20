@@ -779,6 +779,47 @@ class AjioAdapter(BaseMerchantAdapter):
         return True
 
 
+class RelianceDigitalAdapter(BaseMerchantAdapter):
+    """
+    Reliance Digital Consumer Electronics Adapter.
+    Campaign 1052 on Cuelinks.
+    """
+    merchant_name = "Reliance Digital"
+    merchant_slug = "reliance_digital"
+    supported_domains = {"reliancedigital.in"}
+    is_core = True
+    affiliate_type = "cuelinks_v3"
+    cuelinks_campaign_id = 1052
+
+    def extract_product_id(self, url: str) -> Optional[str]:
+        parsed = urlparse(url)
+        match = re.search(r"/p/([0-9]+)", parsed.path)
+        if match:
+            return match.group(1)
+        q_params = parse_qs(parsed.query)
+        for k in ("pid", "item_id", "id"):
+            if k in q_params and q_params[k]:
+                return q_params[k][0].strip()
+        return None
+
+    def normalize_url(self, url: str) -> Optional[NormalizedURL]:
+        pid = self.extract_product_id(url)
+        if not pid:
+            return None
+        parsed = urlparse(url)
+        clean_url = f"https://www.reliancedigital.in{parsed.path}" if "/p/" in parsed.path else f"https://www.reliancedigital.in/p/{pid}"
+        return NormalizedURL(
+            merchant=self.merchant_name,
+            merchant_slug=self.merchant_slug,
+            product_id=pid,
+            clean_url=clean_url,
+            raw_url=url,
+        )
+
+    def is_affiliate_available(self) -> bool:
+        return True
+
+
 class AdapterRegistry:
     """Registry maintaining active merchant adapters and resolving URLs to adapters."""
 
@@ -790,6 +831,7 @@ class AdapterRegistry:
             VijaySalesAdapter(),
             NykaaAdapter(),
             CromaAdapter(),
+            RelianceDigitalAdapter(),
             MyntraAdapter(),
             AjioAdapter(),
         ]

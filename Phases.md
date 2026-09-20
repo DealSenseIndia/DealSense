@@ -33,3 +33,10 @@
 - [x] Task 5.2: Dynamic XML sitemaps (`/sitemap.xml`, `/sitemap-main.xml`, `/sitemap-products.xml`) with 1-hour in-memory cache and crawler-compliant `/robots.txt`. *(Owner: `backend_engineer`)*
 - [x] Task 5.3: Production multi-stage Docker containerization (`Dockerfile`, `docker-compose.yml`, `.dockerignore`) with persistent SQLite WAL volume. *(Owner: `backend_engineer`)*
 - [x] Continuous QA Sentinel Guardian: Enforce Rule #1 (229/229 passing tests, zero regressions). *(Owner: `qa_sentinel`)*
+
+## Phase 6: Multi-Store Retail Arbitrage (Croma & Reliance Digital) [STATUS: COMPLETED ✅]
+- [x] Task 6.1: Croma & Reliance Digital URL normalization and SSRF domain allowlisting (`backend/resolver.py`). *(Owner: `scraper_specialist`)*
+- [x] Task 6.2: Stealth extraction engines for Croma & Reliance Digital (`extract_croma_data`, `extract_reliance_digital_data` in `backend/extractor.py`). *(Owner: `scraper_specialist`)*
+- [x] Task 6.3: Cuelinks affiliate monetization routing (Croma campaign 1007, Reliance Digital campaign 1052 in `merchant_adapters.py`). *(Owner: `backend_engineer`)*
+- [x] Task 6.4: Multi-store comparison ranking engine with lowest price badges and SVG retailer brand assets (`store_comparison.py`). *(Owner: `backend_engineer` & `frontend_engineer`)*
+- [x] Continuous QA Sentinel Guardian: Enforce Rule #1 (237/237 passing tests, zero regressions). *(Owner: `qa_sentinel`)*

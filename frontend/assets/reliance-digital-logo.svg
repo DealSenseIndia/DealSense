@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60">
+  <defs>
+    <linearGradient id="rdGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e31837"/>
+      <stop offset="100%" stop-color="#c1122d"/>
+    </linearGradient>
+  </defs>
+  <rect width="240" height="60" rx="8" fill="url(#rdGrad)"/>
+  <!-- Reliance Digital Icon Symbol -->
+  <circle cx="36" cy="30" r="16" fill="#ffffff"/>
+  <polygon points="32,20 44,30 32,40" fill="#e31837"/>
+  <!-- Reliance Digital Text -->
+  <text x="64" y="27" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="14" font-weight="900" letter-spacing="0.5">RELIANCE</text>
+  <text x="64" y="44" fill="#ffccd2" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="12" font-weight="700" letter-spacing="1.5">DIGITAL</text>
+</svg>

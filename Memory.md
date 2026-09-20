@@ -7,10 +7,11 @@
 ## 1. Project Health & Verified Baseline Status
 - **Repository**: `D:\Gursher\Affiliate\Deal Intelligence`
 - **Active Workspace**: Deal Intelligence (Antigravity IDE)
-- **Current Milestone**: Phase 5 (Programmatic SSR SEO & Production Scale) [COMPLETED ✅]
-- **Unit Test Health**: **229 / 229 Passing Unit Tests (100% Green, 0 Deprecation Warnings in App Code)**
+- **Current Milestone**: Phase 6 (Multi-Store Retail Arbitrage: Croma & Reliance Digital) [COMPLETED ✅]
+- **Unit Test Health**: **237 / 237 Passing Unit Tests (100% Green, 0 Deprecation Warnings in App Code)**
 - **Test Runner Command**: `.venv\Scripts\pytest.exe -q` (64.6s execution)
 - **Verified Working Test Suites**:
+  - `test_croma_reliance_expansion.py` (Pass — 8/8 tests)
   - `test_seo_and_sitemap.py` (Pass — 8/8 tests)
   - `test_extension_contracts.py` (Pass — 5/5 tests)
   - `test_alert_worker.py` (Pass — 5/5 tests)
@@ -35,6 +36,7 @@
 | B-02 | Price drop alert daemon dispatch | Users submit alerts but automated daemon needed | Built `AlertDispatchWorker` in `backend/services/alert_worker.py` running in lifespan loop | RESOLVED ✅ |
 | B-03 | Sub-affiliate fallback routing | Unapproved categories lose affiliate monetization | Built 3-Tier fallback router in `backend/services/affiliate_gateway.py` (Direct Tag -> Cuelinks V3 -> Clean URL) | RESOLVED ✅ |
 | B-04 | Organic Search & Crawler Discovery | Pure SPA pages lack crawler indexing and Schema.org rich results | Implemented SSR comparison routes (`/compare/{slug}`), XML sitemaps index, and robots.txt | RESOLVED ✅ |
+| B-05 | Retailer Duopoly Limitation | Amazon & Flipkart alone miss major offline/omnichannel sales | Added Croma (1007) and Reliance Digital (1052) extractors, resolvers, and multi-store ranking | RESOLVED ✅ |
 
 ---
 
@@ -47,6 +49,7 @@
 - **ADR-006 (Multi-Tier Affiliate Gateway & ADK Deals Pipeline)**: Dual-rail monetization guarantees zero lost commission revenue via 3-tier fallback (Direct Associate Tag -> Cuelinks V3 `/links/convert` -> Clean Canonical URL fallback). `ADKDealHarvestPipeline` harvests cross-store candidates, executes full deal scoring via `backend.engine`, and exposes telemetry at `GET /api/v1/telemetry/pipeline`.
 - **ADR-007 (Manifest V3 Browser Extension & Shadow DOM In-Page Ingestion)**: Injects live deal intelligence directly onto Amazon.in and Flipkart product detail pages via encapsulated Shadow DOM (`attachShadow({ mode: 'open' })`) with zero page style collision. Supports desktop Chrome and Android Kiwi Browser with touch targets >= 44px, bank offer calculations, rival store comparison, and 1-click price alert modals.
 - **ADR-008 (Programmatic SSR SEO, XML Sitemaps, and Multi-Stage Containerization)**: High-performance Jinja2 SSR comparison pages at `/compare/{slug}` provide instant Googlebot crawlability with Schema.org `AggregateOffer` JSON-LD microdata, dynamic dual-store pricing, and bank discount estimates. Caching sitemap engine (`/sitemap.xml`, `/sitemap-main.xml`, `/sitemap-products.xml`) generates valid XML with 1-hour TTL. Production containerization via multi-stage `Dockerfile` and `docker-compose.yml` mounts persistent SQLite WAL database storage.
+- **ADR-009 (Multi-Store Retail Arbitrage Engine: Croma & Reliance Digital)**: Modular expansion extending URL resolution, SSRF domain allowlists (`croma.com`, `reliancedigital.in`), Schema.org/DOM stealth extractors (`extract_croma_data`, `extract_reliance_digital_data`), and Cuelinks sub-affiliate monetization (Campaigns 1007 and 1052). `build_multi_store_comparison_table` ranks Arbitrage across 4 stores (Amazon, Flipkart, Croma, Reliance Digital) with lowest price badges and SVG retailer assets while preserving strict backwards compatibility for legacy dual-store callers.
 
 
 ---

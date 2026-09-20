@@ -15,6 +15,85 @@ failure at the till.
 from typing import List, Dict, Any, Optional
 
 
+def _get_merchant_logo(name: str) -> str:
+    """Returns official logo path for supported retailers."""
+    n = (name or "").lower()
+    if "amazon" in n:
+        return "/assets/amazon-logo.svg"
+    elif "flipkart" in n:
+        return "/assets/flipkart-icon.svg"
+    elif "croma" in n:
+        return "/assets/croma-logo.svg"
+    elif "reliance" in n:
+        return "/assets/reliance-digital-logo.svg"
+    elif "myntra" in n:
+        return "/assets/myntra-logo.svg"
+    elif "meesho" in n:
+        return "/assets/meesho-logo.svg"
+    return "/assets/dealsense-icon.png"
+
+
+def build_multi_store_comparison_table(
+    store_listings: List[Dict[str, Any]],
+    mrp: Optional[float] = None,
+) -> Dict[str, Any]:
+    """
+    Builds a flexible multi-store price comparison grid supporting
+    Amazon, Flipkart, Croma, Reliance Digital, and additional retailers.
+    Ranks available stores by effective price ascending.
+    """
+    if not store_listings:
+        return {"stores": [], "lowest_store": None, "price_difference": 0, "savings_callout": "No active stores"}
+
+    processed_stores = []
+    for s in store_listings:
+        p = s.get("price")
+        base_mrp = mrp or s.get("mrp")
+        discount_pct = round(((base_mrp - p) / base_mrp) * 100, 1) if base_mrp and p and base_mrp > p else None
+        store_name = s.get("name") or s.get("merchant") or "Store"
+        processed_stores.append({
+            "name": store_name,
+            "logo": s.get("logo") or _get_merchant_logo(store_name),
+            "price": p,
+            "mrp": base_mrp,
+            "discount_pct": discount_pct,
+            "delivery": s.get("delivery", "FREE"),
+            "total_price": p,
+            "rating": s.get("rating"),
+            "ratings_count": s.get("ratings_count"),
+            "is_lowest": False,
+            "matched": bool(p and p > 0),
+            "status": "Available" if (p and p > 0) else "Out of Stock",
+            "url": s.get("url") or s.get("clean_url") or "#",
+        })
+
+    # Sort available stores by price ascending, unavailable at the end
+    available = [s for s in processed_stores if s["price"] and s["price"] > 0]
+    unavailable = [s for s in processed_stores if not s["price"] or s["price"] <= 0]
+
+    available.sort(key=lambda x: x["price"])
+    if available:
+        available[0]["is_lowest"] = True
+        lowest_store = available[0]
+        highest_store = available[-1]
+        price_diff = round(highest_store["price"] - lowest_store["price"])
+        if len(available) > 1 and price_diff > 0:
+            savings_callout = f"{lowest_store['name']} is ₹{price_diff:,} cheaper than {highest_store['name']}"
+        else:
+            savings_callout = f"Best price on {lowest_store['name']} at ₹{int(lowest_store['price']):,}"
+    else:
+        lowest_store = None
+        price_diff = 0
+        savings_callout = "Product currently out of stock across all stores"
+
+    return {
+        "stores": available + unavailable,
+        "lowest_store": lowest_store["name"] if lowest_store else None,
+        "price_difference": price_diff,
+        "savings_callout": savings_callout,
+    }
+
+
 def build_compare_stores_table(
     merchant: str,
     current_price: float,
@@ -32,13 +111,21 @@ def build_compare_stores_table(
     """
     base_mrp = mrp if mrp and mrp > current_price else None
     is_amazon_primary = "amazon" in merchant.lower()
-    rival_merchant = "Flipkart" if is_amazon_primary else "Amazon"
-    current_store_name = "Amazon" if is_amazon_primary else "Flipkart"
+    if is_amazon_primary:
+        current_store_name = "Amazon"
+        rival_merchant = "Flipkart"
+    elif "flipkart" in merchant.lower():
+        current_store_name = "Flipkart"
+        rival_merchant = "Amazon"
+    else:
+        current_store_name = merchant
+        rival_merchant = "Amazon"
+
     current_discount = round(((base_mrp - current_price) / base_mrp) * 100, 1) if base_mrp else None
 
     current_store = {
         "name": current_store_name,
-        "logo": "/assets/amazon-logo.svg" if is_amazon_primary else "/assets/flipkart-icon.svg",
+        "logo": _get_merchant_logo(current_store_name),
         "price": current_price,
         "mrp": base_mrp,
         "discount_pct": current_discount,

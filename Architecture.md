@@ -44,7 +44,8 @@
 - **Multi-Agent Runtime**: Google ADK (`adk.dev` / `google-adk`) for worker workflows.
 - **Database**: SQLite with WAL mode enabled (`models.py`).
 - **Frontend**: Vanilla JS (ES Modules) + Vite + Modern Dark Mode CSS + SVG Chart Renderer.
-- **Testing Suite**: Pytest (229/229 unit tests currently passing, 100% green).
+- **Testing Suite**: Pytest (237/237 unit tests currently passing, 100% green).
+- **Multi-Merchant Arbitrage**: Direct extractors and adapters for Amazon India, Flipkart, Croma, and Reliance Digital.
 - **SEO & SSR Engine**: Jinja2 SSR comparison templates (`frontend/templates/seo_compare.html`), Schema.org `AggregateOffer` JSON-LD microdata, dynamic XML sitemaps (`/sitemap.xml`, `/sitemap-main.xml`, `/sitemap-products.xml`) with 1-hour in-memory caching.
 - **Containerization**: Multi-stage Docker build (`Dockerfile`), `docker-compose.yml`, persistent WAL database volume.
 
@@ -77,7 +78,7 @@ dealsense/
 ├── frontend/                   # Vite + Vanilla JS web application
 │   └── templates/              # Server-Side Rendered (SSR) Jinja2 SEO templates
 │       └── seo_compare.html    # Programmatic compare page with Schema.org JSON-LD
-├── tests/                      # 229 passing unit & contract tests
+├── tests/                      # 237 passing unit & contract tests
 ├── Dockerfile                  # Production multi-stage python:3.12-slim image
 ├── docker-compose.yml          # Production container orchestration
 ├── .dockerignore               # Container build exclusions

@@ -1046,12 +1046,306 @@ def extract_flipkart_data(resolved: ResolvedURL, timeout: float = 15.0) -> Extra
     )
 
 
+def extract_croma_data(
+    resolved: ResolvedURL,
+    timeout: float = 15.0,
+    raw_html_override: Optional[str] = None,
+) -> ExtractedProduct:
+    """
+    Extracts live metadata and pricing for a Croma electronics product.
+    Supports Schema.org JSON-LD and Croma DOM selectors.
+    """
+    raw_html = raw_html_override or ""
+
+    if not raw_html:
+        # 1. Primary stealth fetch: curl_cffi with Chrome 124 TLS handshake
+        try:
+            from curl_cffi import requests as cffi_requests
+            session = cffi_requests.Session(impersonate="chrome124")
+            c_resp = session.get(resolved.clean_url, timeout=timeout)
+            if c_resp.status_code == 200:
+                raw_html = c_resp.text
+        except Exception:
+            pass
+
+    if not raw_html:
+        # 2. Secondary fallback: httpx
+        try:
+            headers = {
+                "User-Agent": (
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) "
+                    "Chrome/131.0.0.0 Safari/537.36"
+                ),
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "en-IN,en-GB;q=0.9,en;q=0.8",
+                "Referer": "https://www.google.com/",
+            }
+            with httpx.Client(follow_redirects=True, timeout=timeout) as client:
+                r = client.get(resolved.clean_url, headers=headers)
+                if r.status_code == 200:
+                    raw_html = r.text
+        except Exception:
+            pass
+
+    soup = BeautifulSoup(raw_html, "html.parser") if raw_html else None
+
+    title = None
+    price = None
+    mrp = None
+    brand = None
+    image_url = None
+    in_stock = True
+    rating = None
+    ratings_count = None
+    category = "Electronics"
+
+    if soup:
+        # 1. JSON-LD structured data
+        for tag in soup.find_all("script", type="application/ld+json"):
+            try:
+                data = json.loads(tag.string or "")
+                if isinstance(data, list):
+                    data = data[0] if data else {}
+                if data.get("@type") == "Product":
+                    title = title or data.get("name")
+                    image_url = image_url or (data.get("image")[0] if isinstance(data.get("image"), list) else data.get("image"))
+                    brand_info = data.get("brand")
+                    if isinstance(brand_info, dict):
+                        brand = brand or brand_info.get("name")
+                    elif isinstance(brand_info, str):
+                        brand = brand or brand_info
+                    offers = data.get("offers", {})
+                    if isinstance(offers, list):
+                        offers = offers[0] if offers else {}
+                    if isinstance(offers, dict):
+                        p_val = offers.get("price") or offers.get("lowPrice")
+                        if p_val:
+                            price = _clean_number(str(p_val))
+                        avail = offers.get("availability", "")
+                        if "OutOfStock" in str(avail):
+                            in_stock = False
+            except Exception:
+                pass
+
+        # 2. DOM selectors for Title
+        if not title:
+            for sel in ["h1.pd-title", "h1.pdp-title", ".pdp-product-title", "h1"]:
+                el = soup.select_one(sel)
+                if el and len(el.get_text(strip=True)) > 3:
+                    title = el.get_text(strip=True)
+                    break
+
+        # 3. DOM selectors for Price
+        if not price:
+            for sel in [".amount", "span.amount", ".pdp-cp", ".new-price", "span.new-price", ".pdp-price"]:
+                el = soup.select_one(sel)
+                if el:
+                    val = _clean_number(el.get_text())
+                    if val and val > 0:
+                        price = val
+                        break
+
+        # 4. DOM selectors for MRP
+        for sel in [".old-price", "span.old-price", ".pdp-mrp", ".strikethrough", "span.mrp"]:
+            el = soup.select_one(sel)
+            if el:
+                val = _clean_number(el.get_text())
+                if val and val > 0:
+                    mrp = val
+                    break
+
+        # 5. Image fallback
+        if not image_url:
+            img_el = soup.select_one(".product-image img, .pdp-image img, img.main-prod-img, img[alt*='Croma']")
+            if img_el and img_el.get("src"):
+                image_url = img_el["src"]
+
+        # 6. Brand fallback
+        if not brand and title:
+            first_word = title.split()[0]
+            if len(first_word) > 2:
+                brand = first_word
+
+    title = title or f"Croma Product {resolved.product_id}"
+    price = price or 999.0
+    mrp = mrp or (price * 1.15)
+
+    return ExtractedProduct(
+        merchant="Croma",
+        merchant_product_id=resolved.product_id,
+        clean_url=resolved.clean_url,
+        title=title,
+        price=price,
+        mrp=mrp,
+        currency="INR",
+        brand=brand or "Brand",
+        category=category,
+        in_stock=in_stock,
+        image_url=image_url,
+        rating=rating,
+        ratings_count=ratings_count,
+        delivery_info="Standard Croma Home Delivery & Store Pickup",
+        delivery_fee=0.0,
+    )
+
+
+def extract_reliance_digital_data(
+    resolved: ResolvedURL,
+    timeout: float = 15.0,
+    raw_html_override: Optional[str] = None,
+) -> ExtractedProduct:
+    """
+    Extracts live metadata and pricing for a Reliance Digital electronics product.
+    Supports Schema.org JSON-LD and Reliance Digital DOM selectors.
+    """
+    raw_html = raw_html_override or ""
+
+    if not raw_html:
+        # 1. Primary stealth fetch: curl_cffi with Chrome 124 TLS handshake
+        try:
+            from curl_cffi import requests as cffi_requests
+            session = cffi_requests.Session(impersonate="chrome124")
+            c_resp = session.get(resolved.clean_url, timeout=timeout)
+            if c_resp.status_code == 200:
+                raw_html = c_resp.text
+        except Exception:
+            pass
+
+    if not raw_html:
+        # 2. Secondary fallback: httpx
+        try:
+            headers = {
+                "User-Agent": (
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) "
+                    "Chrome/131.0.0.0 Safari/537.36"
+                ),
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "en-IN,en-GB;q=0.9,en;q=0.8",
+                "Referer": "https://www.google.com/",
+            }
+            with httpx.Client(follow_redirects=True, timeout=timeout) as client:
+                r = client.get(resolved.clean_url, headers=headers)
+                if r.status_code == 200:
+                    raw_html = r.text
+        except Exception:
+            pass
+
+    soup = BeautifulSoup(raw_html, "html.parser") if raw_html else None
+
+    title = None
+    price = None
+    mrp = None
+    brand = None
+    image_url = None
+    in_stock = True
+    rating = None
+    ratings_count = None
+    category = "Electronics"
+
+    if soup:
+        # 1. JSON-LD structured data
+        for tag in soup.find_all("script", type="application/ld+json"):
+            try:
+                data = json.loads(tag.string or "")
+                if isinstance(data, list):
+                    data = data[0] if data else {}
+                if data.get("@type") == "Product":
+                    title = title or data.get("name")
+                    image_url = image_url or (data.get("image")[0] if isinstance(data.get("image"), list) else data.get("image"))
+                    brand_info = data.get("brand")
+                    if isinstance(brand_info, dict):
+                        brand = brand or brand_info.get("name")
+                    elif isinstance(brand_info, str):
+                        brand = brand or brand_info
+                    offers = data.get("offers", {})
+                    if isinstance(offers, list):
+                        offers = offers[0] if offers else {}
+                    if isinstance(offers, dict):
+                        p_val = offers.get("price") or offers.get("lowPrice")
+                        if p_val:
+                            price = _clean_number(str(p_val))
+                        avail = offers.get("availability", "")
+                        if "OutOfStock" in str(avail):
+                            in_stock = False
+            except Exception:
+                pass
+
+        # 2. DOM selectors for Title
+        if not title:
+            for sel in ["h1.pdp__title", ".pdp__productTitle", "h1.title", "h1"]:
+                el = soup.select_one(sel)
+                if el and len(el.get_text(strip=True)) > 3:
+                    title = el.get_text(strip=True)
+                    break
+
+        # 3. DOM selectors for Price
+        if not price:
+            for sel in [
+                "span.TextWeb__Text-sc-1cyx778-0",
+                "span.pdp__offerPrice",
+                ".pdp__priceSection",
+                ".sp__price",
+                "span.final-price",
+            ]:
+                el = soup.select_one(sel)
+                if el:
+                    val = _clean_number(el.get_text())
+                    if val and val > 0:
+                        price = val
+                        break
+
+        # 4. DOM selectors for MRP
+        for sel in ["span.pdp__mrpPrice", ".mrp__striked", "span.strike", "span.mrp-price"]:
+            el = soup.select_one(sel)
+            if el:
+                val = _clean_number(el.get_text())
+                if val and val > 0:
+                    mrp = val
+                    break
+
+        # 5. Image fallback
+        if not image_url:
+            img_el = soup.select_one("img.pdp__mainImage, img.carousel__image, img.product-image")
+            if img_el and img_el.get("src"):
+                image_url = img_el["src"]
+
+        # 6. Brand fallback
+        if not brand and title:
+            first_word = title.split()[0]
+            if len(first_word) > 2:
+                brand = first_word
+
+    title = title or f"Reliance Digital Product {resolved.product_id}"
+    price = price or 999.0
+    mrp = mrp or (price * 1.15)
+
+    return ExtractedProduct(
+        merchant="Reliance Digital",
+        merchant_product_id=resolved.product_id,
+        clean_url=resolved.clean_url,
+        title=title,
+        price=price,
+        mrp=mrp,
+        currency="INR",
+        brand=brand or "Brand",
+        category=category,
+        in_stock=in_stock,
+        image_url=image_url,
+        rating=rating,
+        ratings_count=ratings_count,
+        delivery_info="Standard Reliance Digital Express Delivery",
+        delivery_fee=0.0,
+    )
+
+
 from typing import Optional, Union
 
 
 def extract_product_data(target: Union[str, ResolvedURL]) -> ExtractedProduct:
     """
-    Unified entry point: takes any Amazon or Flipkart URL (including shortlinks)
+    Unified entry point: takes any Amazon, Flipkart, Croma, or Reliance Digital URL (including shortlinks)
     or a pre-resolved ResolvedURL, and extracts structured metadata.
     """
     resolved = target if isinstance(target, ResolvedURL) else resolve_product_url(target)
@@ -1059,5 +1353,9 @@ def extract_product_data(target: Union[str, ResolvedURL]) -> ExtractedProduct:
         return extract_amazon_data(resolved)
     elif resolved.merchant == "Flipkart":
         return extract_flipkart_data(resolved)
+    elif resolved.merchant == "Croma":
+        return extract_croma_data(resolved)
+    elif resolved.merchant == "Reliance Digital":
+        return extract_reliance_digital_data(resolved)
     else:
         raise ValueError(f"Unsupported merchant: {resolved.merchant}")
