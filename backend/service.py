@@ -165,7 +165,7 @@ def ingest_and_evaluate(url: str, force_refresh: bool = False, compare_stores: b
         clean_url = resolved.clean_url
 
     now_utc = datetime.now(timezone.utc)
-    now_naive = datetime.utcnow()
+    now_naive = now_utc.replace(tzinfo=None)
 
     with get_session() as session:
         # Step 2: Check if MerchantListing already exists

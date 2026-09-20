@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" rx="24" fill="url(#bgGrad)"/>
+  <circle cx="200" cy="180" r="80" fill="url(#brandGrad)" opacity="0.15"/>
+  <!-- Shopping Bag / Box Vector -->
+  <path d="M140 160 C140 120, 260 120, 260 160 L280 280 C280 290, 270 300, 260 300 L140 300 C130 300, 120 290, 120 280 Z" fill="none" stroke="url(#brandGrad)" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M165 160 C165 135, 235 135, 235 160" fill="none" stroke="url(#brandGrad)" stroke-width="8" stroke-linecap="round"/>
+  <polygon points="200,190 190,215 210,215 195,245 220,210 200,210" fill="#34d399"/>
+  <text x="200" y="340" text-anchor="middle" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="14" font-weight="600" letter-spacing="1">DEALSENSE VERIFIED</text>
+</svg>

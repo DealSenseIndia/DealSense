@@ -250,7 +250,7 @@
     <!-- Product Hero -->
     <div class="hero-card">
       <div class="hero-img-box">
-        <img class="hero-img" src="{{ data.product.image_url }}" alt="{{ data.product.canonical_title }}" onerror="this.src='/assets/fallback.svg'">
+        <img class="hero-img" src="{{ data.product.image_url }}" alt="{{ data.product.canonical_title }}" onerror="this.onerror=null;this.src='/assets/fallback.svg'">
       </div>
       <div class="hero-info">
         <span class="product-tag">{{ data.product.brand or "Brand" }} • Verified Listing</span>
