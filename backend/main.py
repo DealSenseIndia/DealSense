@@ -26,6 +26,7 @@ from backend.search import search_catalog
 from backend.setup_engine import build_smart_setup, SetupRequest
 from backend.services.deals_crawler import get_live_deals_feed, refresh_deals_feed
 from backend.services.observation_worker import worker
+from backend.services.alert_worker import alert_worker
 from backend.services.observation_service import observe_listing
 from backend.services.universe_service import (
     record_discovery_event,
@@ -46,13 +47,16 @@ async def lifespan(app: FastAPI):
             build_html()
     except Exception as e:
         print(f"Warning: HTML auto-build skipped: {e}")
-    # Start autonomous price observation background worker in standard environments
+    # Start autonomous price observation and alert dispatcher background workers in standard environments
     if not (os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME")):
         worker.start()
+        alert_worker.start()
     yield
     # Graceful shutdown on application exit
     if not (os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME")):
         worker.stop()
+        alert_worker.stop()
+
 
 
 app = FastAPI(
@@ -1318,7 +1322,45 @@ def create_telegram_bind_request(req: TelegramBindRequest):
     }
 
 
+@app.get("/api/alerts/worker/status")
+@app.get("/api/v1/alerts/worker/status")
+def get_alert_worker_status():
+    """Returns runtime telemetry and active alert diagnostics for the background AlertDispatchWorker."""
+    return alert_worker.get_status()
+
+
+@app.post("/api/alerts/worker/trigger")
+@app.post("/api/v1/alerts/worker/trigger")
+def trigger_alert_worker_cycle():
+    """Manually triggers an immediate sweep cycle across all active ARMED/COOLDOWN price alerts."""
+    events = alert_worker.run_cycle()
+    return {
+        "success": True,
+        "events_triggered": len(events),
+        "dispatched_events": [e.to_dict() for e in events],
+    }
+
+
+@app.get("/api/telemetry/pipeline")
+@app.get("/api/v1/telemetry/pipeline")
+def get_pipeline_telemetry():
+    """Returns combined telemetry across deals crawler, observation worker, and alert daemon."""
+    from backend.services.deals_crawler import get_crawler_status
+    from backend.workers.adk_deal_pipeline import adk_coordinator
+
+    return {
+        "status": "healthy",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "deals_crawler": get_crawler_status(),
+        "adk_coordinator": adk_coordinator.get_telemetry(),
+        "observation_worker": worker.get_status(),
+        "alert_worker": alert_worker.get_status(),
+    }
+
+
 @app.post("/api/telegram/webhook")
+
+
 async def telegram_webhook(
     request: Request,
     x_telegram_bot_api_secret_token: Optional[str] = Header(None),

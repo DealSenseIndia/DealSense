@@ -1,9 +1,11 @@
 """
 DealSense Affiliate Gateway & Outbound URL Router.
-Implements dual-rail monetization:
-- Direct Amazon Associates tag injection (tag=dealintel-21)
-- Cuelinks V3 /links/convert for pre-approved merchants with sub-ID telemetry
-- Clean URL fallback for pending/unsupported merchants (Flipkart) to preserve user trust.
+Implements dual-rail monetization with automatic fallback:
+- Tier 1: Direct Associate Tag injection (e.g. Amazon Associates tag=dealsense-21)
+- Tier 2: Cuelinks V3 /links/convert fallback for sub-affiliate monetization on secondary
+          or unapproved direct stores (Flipkart, Croma, Tata CLiQ, Myntra) with Sub-ID telemetry.
+- Tier 3: Clean canonical URL fallback when monetization is unapproved or conversion fails,
+          preserving user trust and eliminating redirect loops.
 """
 
 from dataclasses import dataclass
@@ -25,49 +27,23 @@ class OutboundMonetizationResult:
     campaign_id: Optional[int] = None
 
 
-def resolve_outbound_affiliate_url(
-    adapter: BaseMerchantAdapter,
+def convert_via_cuelinks(
     clean_url: str,
+    merchant_slug: str,
     listing_id: Optional[int] = None,
     verdict: Optional[str] = None,
     subids: Optional[Dict[str, str]] = None,
-) -> OutboundMonetizationResult:
+    campaign_id: Optional[int] = None,
+    client: Optional[httpx.Client] = None,
+) -> Optional[OutboundMonetizationResult]:
     """
-    Routes outbound purchase clicks cleanly and safely based on verified merchant policy.
-    Never crashes on third-party network failures.
+    Attempts conversion of a clean product URL via Cuelinks V3 Publisher API.
+    Returns OutboundMonetizationResult if monetized, or None if conversion fails/unaffiliated.
     """
-    # 1. If merchant is Direct Tag (e.g. Amazon India)
-    if adapter.affiliate_type == "direct_tag":
-        is_available = adapter.is_affiliate_available()
-        tagged_url = adapter.generate_affiliate_url(clean_url, subids=subids)
-        return OutboundMonetizationResult(
-            outbound_url=tagged_url,
-            is_monetized=is_available,
-            affiliate_type="direct_tag" if is_available else "unverified_store_id",
-            campaign_id=adapter.cuelinks_campaign_id,
-        )
-
-    # 2. If merchant is not affiliated / pending (e.g. Flipkart today)
-    if not adapter.is_affiliate_available():
-        return OutboundMonetizationResult(
-            outbound_url=clean_url,
-            is_monetized=False,
-            affiliate_type="clean_fallback",
-            campaign_id=adapter.cuelinks_campaign_id,
-        )
-
-    # 3. If merchant is approved on Cuelinks (Tata CLiQ, Vijay Sales, Nykaa)
-    # If API key is not configured, fall back cleanly
     if not settings.CUELINKS_API_KEY:
-        return OutboundMonetizationResult(
-            outbound_url=clean_url,
-            is_monetized=False,
-            affiliate_type="clean_fallback",
-            campaign_id=adapter.cuelinks_campaign_id,
-        )
+        return None
 
-    # Convert via Cuelinks V3 API with telemetry Sub-IDs
-    base_url = settings.CUELINKS_BASE_URL.rstrip("/")
+    base_url = (settings.CUELINKS_BASE_URL or "https://api.cuelinks.com/v3").rstrip("/")
     endpoint = f"{base_url}/links/convert"
     headers = {
         "Authorization": f"Token {settings.CUELINKS_API_KEY}",
@@ -77,9 +53,9 @@ def resolve_outbound_affiliate_url(
     }
     payload = {
         "url": clean_url,
-        "channel_id": 317867,  # Verified DealSense Channel
+        "channel_id": getattr(settings, "CUELINKS_CHANNEL_ID", 317867) or 317867,
         "subid": str(listing_id or "0"),
-        "subid2": adapter.merchant_slug,
+        "subid2": merchant_slug,
         "subid3": "deal_analyze",
         "subid4": str(verdict or "UNKNOWN"),
     }
@@ -89,11 +65,11 @@ def resolve_outbound_affiliate_url(
                 payload[s_key] = str(subids[s_key])
 
     try:
-        with httpx.Client(timeout=4.0) as client:
-            resp = client.post(endpoint, json=payload, headers=headers)
+        http_client = client or httpx.Client(timeout=4.0)
+        try:
+            resp = http_client.post(endpoint, json=payload, headers=headers)
             if resp.status_code == 200:
                 raw_json = resp.json()
-                # Cuelinks V3 wraps link details inside {"data": {"tracking_url": "...", "affiliated": True/False, ...}}
                 data = raw_json.get("data", raw_json) if isinstance(raw_json, dict) else {}
                 tracking_url = data.get("tracking_url") or data.get("url") or data.get("affiliate_url")
                 affiliated = bool(data.get("affiliated", False))
@@ -102,15 +78,68 @@ def resolve_outbound_affiliate_url(
                         outbound_url=tracking_url,
                         is_monetized=True,
                         affiliate_type="cuelinks_v3",
-                        campaign_id=adapter.cuelinks_campaign_id,
+                        campaign_id=campaign_id,
                     )
+        finally:
+            if not client:
+                http_client.close()
     except Exception as e:
-        logger.warning(f"Cuelinks conversion failed for {clean_url}: {e}")
+        logger.warning(f"[AffiliateGateway] Cuelinks conversion failed for {clean_url}: {e}")
 
-    # Fallback if conversion fails or affiliated is False
+    return None
+
+
+def resolve_outbound_affiliate_url(
+    adapter: BaseMerchantAdapter,
+    clean_url: str,
+    listing_id: Optional[int] = None,
+    verdict: Optional[str] = None,
+    subids: Optional[Dict[str, str]] = None,
+    client: Optional[httpx.Client] = None,
+) -> OutboundMonetizationResult:
+    """
+    Routes outbound purchase clicks cleanly and safely based on verified multi-tier monetization policy:
+    1. Direct Tag (e.g. Amazon Associates) if active and available.
+    2. Sub-Affiliate Cuelinks V3 fallback if direct tag is unapproved/unavailable or for secondary stores.
+    3. Clean URL fallback if affiliate programs are unavailable or API conversion fails.
+    """
+    # -------------------------------------------------------------------------
+    # Tier 1: Direct Associate Tag (e.g. Amazon India)
+    # -------------------------------------------------------------------------
+    if adapter.affiliate_type == "direct_tag" and adapter.is_affiliate_available():
+        tagged_url = adapter.generate_affiliate_url(clean_url, subids=subids)
+        return OutboundMonetizationResult(
+            outbound_url=tagged_url,
+            is_monetized=True,
+            affiliate_type="direct_tag",
+            campaign_id=adapter.cuelinks_campaign_id,
+        )
+
+    # -------------------------------------------------------------------------
+    # Tier 2: Sub-Affiliate Fallback via Cuelinks V3
+    # Applies to:
+    # - Merchants with affiliate_type == "cuelinks_v3"
+    # - Direct tag merchants that are currently unapproved or pending direct accounts
+    # -------------------------------------------------------------------------
+    cuelinks_res = convert_via_cuelinks(
+        clean_url=clean_url,
+        merchant_slug=adapter.merchant_slug,
+        listing_id=listing_id,
+        verdict=verdict,
+        subids=subids,
+        campaign_id=adapter.cuelinks_campaign_id,
+        client=client,
+    )
+    if cuelinks_res:
+        return cuelinks_res
+
+    # -------------------------------------------------------------------------
+    # Tier 3: Clean URL Fallback (Preserve trust, zero broken redirects)
+    # -------------------------------------------------------------------------
+    fallback_type = "unverified_store_id" if adapter.affiliate_type == "direct_tag" else "clean_fallback"
     return OutboundMonetizationResult(
         outbound_url=clean_url,
         is_monetized=False,
-        affiliate_type="clean_fallback",
+        affiliate_type=fallback_type,
         campaign_id=adapter.cuelinks_campaign_id,
     )
