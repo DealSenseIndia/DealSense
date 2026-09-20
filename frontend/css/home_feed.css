@@ -572,12 +572,41 @@
   padding: 2.5px 7px;
   border-radius: 5px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
 }
 
 .badge-all-time-low { background: #DCFCE7; color: #15803D; border: 1px solid #86EFAC; }
-.badge-steep-drop { background: #FEF3C7; color: #92400E; border: 1px solid #FCD34D; }
+.badge-steep-drop { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
 .badge-card-stack { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; }
 .badge-setup-bundle { background: #F3E8FF; color: #7E22CE; border: 1px solid #D8B4FE; }
+
+.deal-card-store-pill {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  padding: 2.5px 7px;
+  border-radius: 6px;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  z-index: 2;
+}
+
+.store-pill-img {
+  height: 13px;
+  max-width: 40px;
+  object-fit: contain;
+}
+
+.store-pill-name {
+  font-size: 9.5px;
+  font-weight: 750;
+  color: #475569;
+}
 
 .deal-card-merchant-logo {
   position: absolute;
@@ -596,7 +625,7 @@
   padding: 12px 14px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
   flex: 1;
 }
 
@@ -609,6 +638,18 @@
   text-transform: uppercase;
   color: #64748B;
   letter-spacing: 0.3px;
+}
+
+.card-brand-tag {
+  font-weight: 750;
+  color: #64748B;
+  font-size: 10.5px;
+}
+
+.card-rating-tag {
+  color: #16A34A;
+  font-weight: 750;
+  font-size: 11px;
 }
 
 .deal-card-title-text {
@@ -627,14 +668,15 @@
   display: flex;
   align-items: baseline;
   gap: 6px;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .deal-card-cur-price {
-  font-size: 17.5px;
+  font-size: 18px;
   font-weight: 850;
   color: #16A34A;
   font-family: var(--font-mono, monospace);
+  letter-spacing: -0.3px;
 }
 
 .deal-card-struck-mrp {
@@ -644,12 +686,62 @@
 }
 
 .deal-card-disc-pill {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 800;
   color: #DC2626;
   background: #FEE2E2;
+  padding: 1.5px 5px;
+  border-radius: 4px;
+}
+
+.deal-card-drop-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #B91C1C;
+  background: #FEF2F2;
+  padding: 2.5px 7px;
+  border-radius: 5px;
+  border: 1px solid #FECACA;
+  margin-top: 2px;
+}
+
+.drop-arrow {
+  font-size: 11px;
+}
+
+.drop-amount-text {
+  font-size: 10.5px;
+  color: #991B1B;
+}
+
+.drop-amount-text strong {
+  font-weight: 800;
+  color: #DC2626;
+}
+
+.deal-card-score-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2px;
+}
+
+.deal-score-meter {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+}
+
+.score-verdict-tag {
+  font-size: 9.5px;
+  font-weight: 800;
   padding: 1px 5px;
-  border-radius: 3px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
 }
 
 .deal-card-tagline {
@@ -658,6 +750,60 @@
   line-height: 1.3;
   margin-top: 2px;
   flex: 1;
+}
+
+.deal-card-actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px solid #F1F5F9;
+}
+
+.btn-card-chart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 5px 6px;
+  font-size: 11px;
+  font-weight: 750;
+  color: #334155;
+  background: #F8FAFC;
+  border: 1px solid #CBD5E1;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-card-chart:hover {
+  background: #0F172A;
+  color: #FFFFFF;
+  border-color: #0F172A;
+}
+
+.btn-card-deal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 5px 6px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #FFFFFF !important;
+  background: #16A34A;
+  border: 1px solid #16A34A;
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-card-deal:hover {
+  background: #15803D;
+  border-color: #15803D;
+  transform: translateY(-1px);
 }
 
 .deal-card-footer-row {
@@ -700,6 +846,104 @@
 .deal-modern-card:hover .btn-card-analyze-cta {
   background: #16A34A;
   color: #FFFFFF;
+}
+
+/* Header Live Pulse & Refresh Button */
+.live-tracker-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 750;
+  color: #15803D;
+  background: #DCFCE7;
+  border: 1px solid #86EFAC;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 6px;
+}
+
+.btn-refresh-scanner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 750;
+  color: #334155;
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-refresh-scanner:hover {
+  background: #F8FAFC;
+  border-color: #94A3B8;
+}
+
+/* All-Time Low Hall of Fame Section */
+.mockup-all-time-lows-section {
+  padding: 36px 0;
+  background: linear-gradient(180deg, #F0FDF4 0%, #FFFFFF 100%);
+  border-top: 1px solid #DCFCE7;
+  border-bottom: 1px solid #E2E8F0;
+  margin: 16px 0 28px 0;
+}
+
+.all-time-low-header {
+  margin-bottom: 20px;
+}
+
+.all-time-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #B45309;
+  background: #FEF3C7;
+  border: 1px solid #FCD34D;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+
+.all-time-title {
+  font-size: 22px;
+  font-weight: 850;
+  color: #0F172A;
+  letter-spacing: -0.3px;
+}
+
+.all-time-sub {
+  font-size: 13.5px;
+  color: #475569;
+  margin-top: 4px;
+}
+
+.all-time-lows-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.atl-card {
+  border-color: #86EFAC !important;
+  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.08) !important;
+}
+
+@media (max-width: 1100px) {
+  .all-time-lows-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .all-time-lows-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* 5. Popular Stores Strip */

@@ -40,3 +40,11 @@
 - [x] Task 6.3: Cuelinks affiliate monetization routing (Croma campaign 1007, Reliance Digital campaign 1052 in `merchant_adapters.py`). *(Owner: `backend_engineer`)*
 - [x] Task 6.4: Multi-store comparison ranking engine with lowest price badges and SVG retailer brand assets (`store_comparison.py`). *(Owner: `backend_engineer` & `frontend_engineer`)*
 - [x] Continuous QA Sentinel Guardian: Enforce Rule #1 (237/237 passing tests, zero regressions). *(Owner: `qa_sentinel`)*
+
+## Phase 7: Product-First Homepage & Price Drop Showcase (Buyhatke & PriceHistory Paradigm) [STATUS: COMPLETED ✅]
+- [x] Task 7.1: Reorganize homepage visual hierarchy to place "🔥 Today's Biggest Price Drops" (`#liveDeals`) immediately under the hero search bar, demoting coupons to bottom utility status. *(Owner: `frontend_engineer`)*
+- [x] Task 7.2: Implement rich product cards with dual CTAs (`📊 Price History` & `🛒 View Deal ↗`), merchant logo pills (Amazon, Flipkart, Croma, Reliance Digital), real price drop delta callouts (`↓ ₹X,XXX saved`), and Deal Score badges. *(Owner: `frontend_engineer`)*
+- [x] Task 7.3: Build "⚡ All-Time Low Hall of Fame" (`#allTimeLowsSection`) highlighting 365-day historic lows across categories. *(Owner: `frontend_engineer`)*
+- [x] Task 7.4: Upgrade category filtering pills (`🔥 All Drops`, `📱 Mobiles & 5G`, `💻 Laptops`, `🎧 Audio`, `⌚ Smartwatches`, `📺 4K Smart TVs`, `🍳 Appliances`, `⚡ Under ₹999`) and deal-type toggles (`Steep Drops`, `All-Time Lows`, `Score 85+`). *(Owner: `frontend_engineer`)*
+- [x] Continuous QA Sentinel Guardian: Enforce Rule #1 (237/237 passing tests, zero regressions). *(Owner: `qa_sentinel`)*
+

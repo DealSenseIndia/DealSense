@@ -7,9 +7,9 @@
 ## 1. Project Health & Verified Baseline Status
 - **Repository**: `D:\Gursher\Affiliate\Deal Intelligence`
 - **Active Workspace**: Deal Intelligence (Antigravity IDE)
-- **Current Milestone**: Phase 6 (Multi-Store Retail Arbitrage: Croma & Reliance Digital) [COMPLETED ✅]
+- **Current Milestone**: Phase 7 (Product-First Homepage & Price Drop Showcase: Buyhatke / PriceHistory Paradigm) [COMPLETED ✅]
 - **Unit Test Health**: **237 / 237 Passing Unit Tests (100% Green, 0 Deprecation Warnings in App Code)**
-- **Test Runner Command**: `.venv\Scripts\pytest.exe -q` (64.6s execution)
+- **Test Runner Command**: `.venv\Scripts\pytest.exe -q` (72.3s execution)
 - **Verified Working Test Suites**:
   - `test_croma_reliance_expansion.py` (Pass — 8/8 tests)
   - `test_seo_and_sitemap.py` (Pass — 8/8 tests)
@@ -50,7 +50,7 @@
 - **ADR-007 (Manifest V3 Browser Extension & Shadow DOM In-Page Ingestion)**: Injects live deal intelligence directly onto Amazon.in and Flipkart product detail pages via encapsulated Shadow DOM (`attachShadow({ mode: 'open' })`) with zero page style collision. Supports desktop Chrome and Android Kiwi Browser with touch targets >= 44px, bank offer calculations, rival store comparison, and 1-click price alert modals.
 - **ADR-008 (Programmatic SSR SEO, XML Sitemaps, and Multi-Stage Containerization)**: High-performance Jinja2 SSR comparison pages at `/compare/{slug}` provide instant Googlebot crawlability with Schema.org `AggregateOffer` JSON-LD microdata, dynamic dual-store pricing, and bank discount estimates. Caching sitemap engine (`/sitemap.xml`, `/sitemap-main.xml`, `/sitemap-products.xml`) generates valid XML with 1-hour TTL. Production containerization via multi-stage `Dockerfile` and `docker-compose.yml` mounts persistent SQLite WAL database storage.
 - **ADR-009 (Multi-Store Retail Arbitrage Engine: Croma & Reliance Digital)**: Modular expansion extending URL resolution, SSRF domain allowlists (`croma.com`, `reliancedigital.in`), Schema.org/DOM stealth extractors (`extract_croma_data`, `extract_reliance_digital_data`), and Cuelinks sub-affiliate monetization (Campaigns 1007 and 1052). `build_multi_store_comparison_table` ranks Arbitrage across 4 stores (Amazon, Flipkart, Croma, Reliance Digital) with lowest price badges and SVG retailer assets while preserving strict backwards compatibility for legacy dual-store callers.
-
+- **ADR-010 (Product-First Visual Architecture & Price-Drop Showcase)**: Migrated DealSense homepage from a coupon/room-first layout to an immediate product-discovery experience modeled after Buyhatke and PriceHistory.app. Promoted "🔥 Today's Biggest Price Drops" (`#liveDeals`) and "⚡ All-Time Low Hall of Fame" (`#allTimeLowsSection`) directly beneath the Hero search fold. Implemented high-converting dual CTAs (`📊 Price History` to open the DealSense interactive chart & verdict modal, and `🛒 View Deal ↗` for direct store link) along with merchant store pills, price drop delta callouts (`↓ ₹X,XXX saved`), and instant multi-category filter pills (`mobiles`, `laptops`, `audio`, `smartwatches`, `tvs`, `appliances`, `under_999`). Demoted coupons to Section 6 at the page footer as a checkout discount utility.
 
 ---
 
