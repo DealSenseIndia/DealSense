@@ -28,7 +28,8 @@
 - [x] Task 4.3: One-click "Set Deal Alert" modal inside extension syncing with backend `/api/v1/alerts` and Telegram deep linking. *(Owner: `extension_engineer` & `bot_dispatcher`)*
 - [x] Continuous QA Sentinel Guardian: Enforce Rule #1 (221/221 passing tests, zero regressions). *(Owner: `qa_sentinel`)*
 
-## Phase 5: Programmatic SSR SEO & Scale [STATUS: ACTIVE 🎯]
-- [ ] Task 5.1: Fastify/SSR dynamic routes for `/compare/{slug}` indexing.
-- [ ] Task 5.2: Auto-generated dynamic XML sitemaps for top 10,000 tracked products.
-- [ ] Task 5.3: Production Docker containerization & Cloud deployment.
+## Phase 5: Programmatic SSR SEO & Scale [STATUS: COMPLETED ✅]
+- [x] Task 5.1: Programmatic SSR dynamic route `/compare/{slug}` with Jinja2 rendering, OpenGraph social cards, and Schema.org `AggregateOffer` JSON-LD microdata. *(Owner: `frontend_engineer` & `backend_engineer`)*
+- [x] Task 5.2: Dynamic XML sitemaps (`/sitemap.xml`, `/sitemap-main.xml`, `/sitemap-products.xml`) with 1-hour in-memory cache and crawler-compliant `/robots.txt`. *(Owner: `backend_engineer`)*
+- [x] Task 5.3: Production multi-stage Docker containerization (`Dockerfile`, `docker-compose.yml`, `.dockerignore`) with persistent SQLite WAL volume. *(Owner: `backend_engineer`)*
+- [x] Continuous QA Sentinel Guardian: Enforce Rule #1 (229/229 passing tests, zero regressions). *(Owner: `qa_sentinel`)*

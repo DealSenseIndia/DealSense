@@ -44,7 +44,9 @@
 - **Multi-Agent Runtime**: Google ADK (`adk.dev` / `google-adk`) for worker workflows.
 - **Database**: SQLite with WAL mode enabled (`models.py`).
 - **Frontend**: Vanilla JS (ES Modules) + Vite + Modern Dark Mode CSS + SVG Chart Renderer.
-- **Testing Suite**: Pytest (221/221 unit tests currently passing, 100% green).
+- **Testing Suite**: Pytest (229/229 unit tests currently passing, 100% green).
+- **SEO & SSR Engine**: Jinja2 SSR comparison templates (`frontend/templates/seo_compare.html`), Schema.org `AggregateOffer` JSON-LD microdata, dynamic XML sitemaps (`/sitemap.xml`, `/sitemap-main.xml`, `/sitemap-products.xml`) with 1-hour in-memory caching.
+- **Containerization**: Multi-stage Docker build (`Dockerfile`), `docker-compose.yml`, persistent WAL database volume.
 
 ## 3. Directory Layout
 ```text
@@ -60,10 +62,11 @@ dealsense/
 │   │   ├── engine.py           # Deal score (0-100) & verdicts
 │   │   ├── affiliate_gateway.py # 3-Tier monetization routing
 │   │   ├── alert_worker.py     # Background alert daemon
-│   │   └── deals_crawler.py    # Deals discovery module
+│   │   ├── deals_crawler.py    # Deals discovery module
+│   │   └── seo_service.py      # SSR SEO, JSON-LD, and XML sitemaps
 │   ├── workers/                # Autonomous background workers
 │   │   └── adk_deal_pipeline.py # Google ADK multi-agent pipeline
-│   └── main.py                 # FastAPI application lifespan & endpoints
+│   └── main.py                 # FastAPI application lifespan, API, & SSR routes
 ├── extension/                  # Manifest V3 Chrome & Kiwi Mobile Extension
 │   ├── manifest.json           # MV3 specification & permissions
 │   ├── background.js           # Service worker (caching & API relay)
@@ -72,7 +75,12 @@ dealsense/
 │   ├── popup/                  # Action popup (analyzer, watchlist, settings)
 │   └── icons/                  # 16px, 48px, 128px branded icons
 ├── frontend/                   # Vite + Vanilla JS web application
-├── tests/                      # 221 passing unit & contract tests
+│   └── templates/              # Server-Side Rendered (SSR) Jinja2 SEO templates
+│       └── seo_compare.html    # Programmatic compare page with Schema.org JSON-LD
+├── tests/                      # 229 passing unit & contract tests
+├── Dockerfile                  # Production multi-stage python:3.12-slim image
+├── docker-compose.yml          # Production container orchestration
+├── .dockerignore               # Container build exclusions
 ├── PRD.md
 ├── Architecture.md
 ├── Rules.md

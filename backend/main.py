@@ -1765,6 +1765,75 @@ async def product_deep_link_page(product_id_or_slug: str):
     return FileResponse(str(FRONTEND_DIR / "index.html"), media_type="text/html")
 
 
+# ── Programmatic SSR SEO & Sitemap Routes (Phase 5) ──────────────────────────
+from fastapi.responses import HTMLResponse, Response
+from jinja2 import Environment, FileSystemLoader
+from backend.services.seo_service import (
+    resolve_product_from_slug,
+    build_compare_seo_data,
+    generate_sitemap_index_xml,
+    generate_main_sitemap_xml,
+    generate_products_sitemap_xml,
+    generate_robots_txt,
+)
+
+TEMPLATES_DIR = FRONTEND_DIR / "templates"
+jinja_env = Environment(loader=FileSystemLoader(str(TEMPLATES_DIR)), autoescape=True)
+
+
+@app.get("/compare/{slug}", response_class=HTMLResponse, include_in_schema=False)
+def compare_ssr_page(slug: str, request: Request):
+    """
+    Server-Side Rendered (SSR) public comparison page for search engine indexing.
+    Pre-renders product hero, dual-store pricing cards, Deal Score badge,
+    and Schema.org JSON-LD microdata for rich search snippets.
+    """
+    base_url = str(request.base_url).rstrip("/")
+    with get_session() as session:
+        product = resolve_product_from_slug(session, slug)
+        if not product:
+            raise HTTPException(status_code=404, detail=f"Product comparison page for '{slug}' not found.")
+
+        seo_data = build_compare_seo_data(session=session, product=product, base_url=base_url)
+        template = jinja_env.get_template("seo_compare.html")
+        rendered_html = template.render(data=seo_data)
+        return HTMLResponse(content=rendered_html, status_code=200)
+
+
+@app.get("/sitemap.xml", include_in_schema=False)
+def get_sitemap_index(request: Request):
+    """Serves the root sitemap index pointing to sub-sitemaps."""
+    base_url = str(request.base_url).rstrip("/")
+    xml_content = generate_sitemap_index_xml(base_url=base_url)
+    return Response(content=xml_content, media_type="application/xml")
+
+
+@app.get("/sitemap-main.xml", include_in_schema=False)
+def get_sitemap_main(request: Request):
+    """Serves the sitemap for core public routes."""
+    base_url = str(request.base_url).rstrip("/")
+    xml_content = generate_main_sitemap_xml(base_url=base_url)
+    return Response(content=xml_content, media_type="application/xml")
+
+
+@app.get("/sitemap-products.xml", include_in_schema=False)
+def get_sitemap_products(request: Request):
+    """Serves the dynamic sitemap of all tracked product comparison pages."""
+    base_url = str(request.base_url).rstrip("/")
+    with get_session() as session:
+        xml_content = generate_products_sitemap_xml(session=session, base_url=base_url)
+        return Response(content=xml_content, media_type="application/xml")
+
+
+@app.get("/robots.txt", include_in_schema=False)
+def get_robots_txt(request: Request):
+    """Serves robots.txt with crawling rules and sitemap location."""
+    base_url = str(request.base_url).rstrip("/")
+    txt_content = generate_robots_txt(base_url=base_url)
+    return Response(content=txt_content, media_type="text/plain")
+
+
+
 
 # ── Static files (catch-all — must be last) ──────────────────────────────────
 if FRONTEND_DIR.exists():

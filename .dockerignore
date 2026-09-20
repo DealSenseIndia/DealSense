@@ -1,0 +1,16 @@
+.venv/
+.git/
+.gitignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+*.log
+logs/*.log
+temp_puppeteer/
+scratch/
+scratch_*.png
+scratch_*.py
+*.png
+node_modules/

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ data.title }}</title>
+  <meta name="description" content="{{ data.meta_description }}">
+  <link rel="canonical" href="{{ data.canonical_url }}">
+
+  <!-- OpenGraph / Social Sharing -->
+  <meta property="og:type" content="product">
+  <meta property="og:title" content="{{ data.title }}">
+  <meta property="og:description" content="{{ data.meta_description }}">
+  <meta property="og:url" content="{{ data.canonical_url }}">
+  <meta property="og:image" content="{{ data.product.image_url }}">
+  <meta property="og:site_name" content="DealSense India">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ data.title }}">
+  <meta name="twitter:description" content="{{ data.meta_description }}">
+  <meta name="twitter:image" content="{{ data.product.image_url }}">
+
+  <!-- Schema.org Structured Microdata for Google Search Snippets -->
+  <script type="application/ld+json">
+{{ data.json_ld_raw | safe }}
+  </script>
+
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: #131b2e;
+      --bg-surface: #1e293b;
+      --accent-emerald: #10b981;
+      --accent-indigo: #6366f1;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(99, 102, 241, 0.3);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
+      padding: 0;
+    }
+    header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #fff;
+    }
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent-emerald) 0%, var(--accent-indigo) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #fff;
+    }
+    .brand-title { font-size: 18px; font-weight: 800; }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+    .breadcrumbs {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .breadcrumbs a { color: #818cf8; text-decoration: none; }
+    .hero-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+    .hero-img-box {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 280px;
+    }
+    .hero-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .hero-info {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .product-tag {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #a5b4fc;
+      letter-spacing: 0.05em;
+    }
+    h1 {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.3;
+      color: #ffffff;
+    }
+    .score-badge-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--bg-surface);
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      align-self: flex-start;
+    }
+    .score-num {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--accent-emerald);
+    }
+    .verdict-tag {
+      font-weight: 800;
+      font-size: 13px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    /* Comparison Battle */
+    .battle-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    .store-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+    }
+    .store-card.winner {
+      border-color: var(--accent-emerald);
+      box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.3);
+    }
+    .winner-pill {
+      position: absolute;
+      top: -12px;
+      right: 20px;
+      background: var(--accent-emerald);
+      color: #000;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+    }
+    .store-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .price-val {
+      font-size: 32px;
+      font-weight: 900;
+      color: #34d399;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      color: #fff;
+      background: var(--accent-indigo);
+      transition: background 0.2s;
+    }
+    .cta-btn:hover { background: #4f46e5; }
+    .cta-btn.amazon { background: #ea580c; }
+    .cta-btn.amazon:hover { background: #c2410c; }
+    .cta-btn.flipkart { background: #2563eb; }
+    .cta-btn.flipkart:hover { background: #1d4ed8; }
+
+    .breakdown-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+    .footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 32px 20px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 768px) {
+      .hero-card { grid-template-columns: 1fr; }
+      .battle-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="brand">
+      <div class="brand-logo">⚡</div>
+      <span class="brand-title">DealSense India</span>
+    </a>
+    <a href="/deals" style="color:#a5b4fc;text-decoration:none;font-size:13px;font-weight:600;">Browse All Deals →</a>
+  </header>
+
+  <div class="container">
+    <div class="breadcrumbs">
+      <a href="/">Home</a> / <a href="/categories">{{ data.product.category or "Electronics" }}</a> / <span>{{ data.product.canonical_title }}</span>
+    </div>
+
+    <!-- Product Hero -->
+    <div class="hero-card">
+      <div class="hero-img-box">
+        <img class="hero-img" src="{{ data.product.image_url }}" alt="{{ data.product.canonical_title }}" onerror="this.src='/assets/fallback.svg'">
+      </div>
+      <div class="hero-info">
+        <span class="product-tag">{{ data.product.brand or "Brand" }} • Verified Listing</span>
+        <h1>{{ data.product.canonical_title }}</h1>
+        <div class="score-badge-wrap">
+          <div>
+            <div class="score-num">{{ data.deal_score }}<span style="font-size:14px;color:#94a3b8">/100</span></div>
+            <div style="font-size:10px;color:#94a3b8;text-transform:uppercase;">DealScore</div>
+          </div>
+          <div>
+            <div class="verdict-tag">{{ data.verdict }}</div>
+            <div style="font-size:12px;color:#cbd5e1;margin-top:4px;">{{ data.verdict_reason }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dual Store Price Battle -->
+    <div class="battle-grid">
+      <!-- Amazon Card -->
+      <div class="store-card {% if data.amazon_price and (not data.flipkart_price or data.amazon_price <= data.flipkart_price) %}winner{% endif %}">
+        {% if data.amazon_price and (not data.flipkart_price or data.amazon_price <= data.flipkart_price) %}
+          <div class="winner-pill">Lowest Price</div>
+        {% endif %}
+        <div class="store-name">Amazon India</div>
+        <div class="price-val">{% if data.amazon_price %}₹{{ "{:,.0f}".format(data.amazon_price) }}{% else %}Out of Stock{% endif %}</div>
+        <div style="font-size:12px;color:#94a3b8;">Includes standard shipping and seller warranty.</div>
+        <a href="{{ data.amazon_url }}" target="_blank" rel="noopener noreferrer nofollow" class="cta-btn amazon">
+          View on Amazon ↗
+        </a>
+      </div>
+
+      <!-- Flipkart Card -->
+      <div class="store-card {% if data.flipkart_price and (not data.amazon_price or data.flipkart_price < data.amazon_price) %}winner{% endif %}">
+        {% if data.flipkart_price and (not data.amazon_price or data.flipkart_price < data.amazon_price) %}
+          <div class="winner-pill">Lowest Price</div>
+        {% endif %}
+        <div class="store-name">Flipkart</div>
+        <div class="price-val">{% if data.flipkart_price %}₹{{ "{:,.0f}".format(data.flipkart_price) }}{% else %}Out of Stock{% endif %}</div>
+        <div style="font-size:12px;color:#94a3b8;">Includes standard delivery and Flipkart Assured badge.</div>
+        <a href="{{ data.flipkart_url }}" target="_blank" rel="noopener noreferrer nofollow" class="cta-btn flipkart">
+          View on Flipkart ↗
+        </a>
+      </div>
+    </div>
+
+    <!-- True Landed Price Breakdown -->
+    <div class="breakdown-box">
+      <h2 style="font-size:18px;margin-bottom:12px;color:#fff;">True Landed Cost Breakdown</h2>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:14px;">
+        <div style="display:flex;justify-content:space-between;color:#cbd5e1;">
+          <span>Best Live Store Price:</span>
+          <span>₹{{ "{:,.0f}".format(data.lowest_price) }}</span>
+        </div>
+        {% if data.best_bank %}
+        <div style="display:flex;justify-content:space-between;color:#34d399;font-weight:600;">
+          <span>Instant Card Offer ({{ data.best_bank.bank }}):</span>
+          <span>-₹{{ "{:,.0f}".format(data.best_bank.discount) }}</span>
+        </div>
+        {% endif %}
+        <div style="display:flex;justify-content:space-between;color:#fff;font-weight:800;font-size:16px;border-top:1px solid var(--border-subtle);padding-top:8px;">
+          <span>Effective Final Price:</span>
+          <span style="color:#34d399;">₹{{ "{:,.0f}".format(data.landed_lowest) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>DealSense India — Real-Time Price Arbitrage & Verified Deal Intelligence.</p>
+    <p style="margin-top:6px;font-size:11px;color:#64748b;">
+      Amazon and the Amazon logo are trademarks of Amazon.com, Inc. or its affiliates. Flipkart is a trademark of Flipkart Internet Pvt. Ltd.
+      DealSense is an independent platform funded via verified affiliate links.
+    </p>
+  </footer>
+</body>
+</html>
