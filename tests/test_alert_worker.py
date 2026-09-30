@@ -20,8 +20,14 @@ from backend.services.notification_dispatcher import TestConsoleDispatcher
 
 @pytest.fixture(autouse=True)
 def setup_database():
-    """Initializes SQLite schema before each test."""
+    """Initializes SQLite schema before each test and guarantees worker isolation."""
+    from backend.services.alert_worker import alert_worker
+    if alert_worker.is_running:
+        alert_worker.stop(timeout=2.0)
     init_db()
+    yield
+    if alert_worker.is_running:
+        alert_worker.stop(timeout=2.0)
 
 
 def _create_fixture_product_and_listing(

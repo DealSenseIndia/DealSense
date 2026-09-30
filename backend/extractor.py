@@ -240,16 +240,9 @@ def extract_amazon_data(resolved: ResolvedURL, timeout: float = 15.0) -> Extract
     if not title:
         title = f"Amazon Product {resolved.product_id}"
 
-    # Price resolution fallback without fatal crash
-    if price is None:
-        if not in_stock:
-            price = 0.0
-        else:
-            price = mrp or 0.0
-
-    # If MRP was lower than price or absent, fallback to price
-    if mrp and price > 0 and mrp < price:
-        mrp = price
+    # No fallback - if price or MRP cannot be extracted, leave as None
+    # Upstream handling will deal with missing data appropriately
+    pass
 
     # 6. Brand
     brand = None

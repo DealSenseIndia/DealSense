@@ -226,10 +226,17 @@
       has_sufficient_history: Boolean(d.has_sufficient_history),
       store: merchant || (isFlipkart ? 'Flipkart' : 'Amazon'),
       store_logo: d.merchant_logo || (isFlipkart ? '/assets/flipkart-icon.svg' : '/assets/amazon-logo.svg'),
-      image: d.image_url || null,
+      image: (
+        typeof d.image_url === "string"
+        && d.image_url.trim()
+        && !["null", "none"].includes(d.image_url.trim().toLowerCase())
+      ) ? d.image_url : "/assets/fallback.svg",
       url: d.affiliate_url || d.url || null,
       price_history: history,
       observed_at: d.observed_at || null,
+      freshness_status: d.freshness_status || 'unknown',
+      freshness_label: d.freshness_label || 'Freshness unavailable',
+      age_minutes: Number.isFinite(Number(d.age_minutes)) ? Number(d.age_minutes) : null,
       drop_pct: dropPct,
       previous_price: previousPrice,
       source: d.source || 'pipeline_crawler',
@@ -497,6 +504,15 @@
   function renderDealCard(deal) {
     const isWishlisted = state.wishlist.has(deal.id);
     const observedLabel = relativeTime(deal.observed_at);
+    const freshnessClass = ['fresh', 'aging', 'stale'].includes(deal.freshness_status)
+      ? deal.freshness_status
+      : 'unknown';
+    const freshnessHtml = `
+      <span class="deal-freshness deal-freshness-${freshnessClass}"
+            title="${escapeHtml(deal.freshness_label)}">
+        <span class="deal-freshness-dot" aria-hidden="true"></span>
+        ${escapeHtml(deal.freshness_label)}
+      </span>`;
 
     const badge = deal.badge_text
       ? `<span class="deal-badge badge-${escapeHtml(deal.badge_type)}">${escapeHtml(deal.badge_text)}</span>`
@@ -569,7 +585,8 @@
 
         <div class="deal-card-footer">
           <img src="${escapeHtml(deal.store_logo)}" alt="${escapeHtml(deal.store)}" class="deal-store-logo" loading="lazy">
-          ${observedLabel ? `<span class="deal-observed-at">Checked ${escapeHtml(observedLabel)}</span>` : ''}
+          <span class="deal-observed-at">${observedLabel ? `Checked ${escapeHtml(observedLabel)}` : 'Check time unavailable'}</span>
+          ${freshnessHtml}
           ${buyHtml}
         </div>
       </article>

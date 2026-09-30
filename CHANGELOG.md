@@ -4,6 +4,30 @@ All notable changes to the DealSense project are documented in this file.
 
 ---
 
+## [Phase 8] - 2026-09-30
+
+### Objective
+Implement Data Truth, Observation Freshness Contract, and Synthetic Fallback Elimination across frontend and backend surfaces.
+
+### Changes Implemented
+- **Deal Freshness Signals (`backend/services/deal_pipeline.py`, `frontend/js/deals.js`, `frontend/js/live_deals.js`, `frontend/css/deals.css`)**:
+  - Attached `freshness_status` (`fresh`, `aging`, `stale`, `unknown`), `freshness_label`, and `age_minutes` to all deal cards.
+  - Added visual color-coded freshness dots and tooltips across modern deals cards and deal list items.
+- **Image Contract Enforcement (`backend/services/deal_pipeline.py`, `frontend/templates/views/detail_view.html`, `frontend/index.html`)**:
+  - Ensured backend deal cards never emit `null`, `"null"`, or empty strings for image URLs; fallbacks route directly to `/assets/fallback.svg`.
+  - Replaced empty `src=""` on PDP sticky bars, main photo, and lightbox thumbnails with `/assets/fallback.svg`.
+- **Elimination of Synthetic Comparative History (`frontend/js/pdp.js`)**:
+  - Removed artificial competitor price curve generation in `buildClientComparativeFallback`, returning an honest unmatched state when competitor data is missing.
+- **Honest Catalogue & Extractor Counts (`backend/main.py`, `backend/extractor.py`)**:
+  - Removed fabricated baseline counts (5,000) for empty categories in `/api/v1/categories`.
+  - Removed artificial price/MRP synthetic fallback in Amazon extractor when data cannot be extracted.
+- **Test Suite Expansion & Worker Isolation (`tests/test_deal_freshness.py`, `tests/test_image_contract.py`, `tests/test_alert_worker.py`)**:
+  - Added unit test suites verifying freshness calculations and image contract guarantees.
+  - Hardened `test_alert_worker.py` fixtures to ensure background alert daemon isolation across full test suite runs.
+  - Verified 100% green test suite: 240 / 240 passing tests.
+
+---
+
 ## [Phase 4.2 Layer 2B] - 2026-09-10
 
 ### Objective

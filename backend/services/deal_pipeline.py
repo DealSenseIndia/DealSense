@@ -171,16 +171,28 @@ def build_deal_card(
         tagline = "Verified live price observation. Lowest among tracked records."
 
     merchant_name = listing.merchant or "Amazon"
-    merchant_logo = (
-        "/assets/flipkart-icon.svg"
-        if merchant_name.lower() == "flipkart"
-        else "/assets/amazon-logo.svg"
+    merchant_logo_by_name = {
+        "amazon": "/assets/amazon-logo.svg",
+        "flipkart": "/assets/flipkart-icon.svg",
+        "croma": "/assets/croma-logo.svg",
+        "reliance digital": "/assets/reliance-digital-logo.svg",
+    }
+    merchant_logo = merchant_logo_by_name.get(
+        merchant_name.lower(),
+        "/assets/fallback.svg",
     )
 
     # No stock-photo fallback. A generic Unsplash image presented in a product
     # slot is a claim we cannot support; the frontend renders a neutral
     # placeholder when this is null.
-    image_url = product.image_url if product else None
+    raw_image_url = product.image_url if product else None
+    image_url = (
+        raw_image_url
+        if isinstance(raw_image_url, str)
+        and raw_image_url.strip()
+        and raw_image_url.strip().lower() not in {"null", "none"}
+        else "/assets/fallback.svg"
+    )
 
     brand = (product.brand if product else None) or (title.split()[0] if title else "Brand")
 
@@ -201,6 +213,27 @@ def build_deal_card(
         o.observed_at.date() for o in valid_obs if o.observed_at
     }
     has_sufficient_history = len(valid_obs) >= 3 and len(distinct_dates) >= 2
+    observed_at = current_obs.observed_at
+    if observed_at and observed_at.tzinfo is None:
+        observed_at = observed_at.replace(tzinfo=timezone.utc)
+    age_minutes = (
+        max(0, int((datetime.now(timezone.utc) - observed_at).total_seconds() // 60))
+        if observed_at
+        else None
+    )
+    fresh_limit = max(1, settings.DEAL_REFRESH_INTERVAL_MINUTES) * 2
+    if age_minutes is None:
+        freshness_status = "unknown"
+        freshness_label = "Freshness unavailable"
+    elif age_minutes <= fresh_limit:
+        freshness_status = "fresh"
+        freshness_label = "Price checked recently"
+    elif age_minutes <= 1440:
+        freshness_status = "aging"
+        freshness_label = "Price may have changed"
+    else:
+        freshness_status = "stale"
+        freshness_label = "Price check is stale"
 
     return {
         "id": f"deal_{merchant_name.lower()}_{listing.merchant_product_id}",
@@ -222,7 +255,10 @@ def build_deal_card(
         "price_drop_amount": max(0, mrp - current_price),
         "tagline": tagline,
         "deal_type": deal_type,
-        "observed_at": current_obs.observed_at.isoformat() if current_obs.observed_at else None,
+        "observed_at": observed_at.isoformat() if observed_at else None,
+        "freshness_status": freshness_status,
+        "freshness_label": freshness_label,
+        "age_minutes": age_minutes,
         # Evidence the card can show instead of inventing its own.
         "verdict": verdict.verdict,
         "confidence": verdict.confidence,

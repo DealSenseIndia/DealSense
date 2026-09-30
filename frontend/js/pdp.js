@@ -523,7 +523,7 @@ function renderStickyBuyBar(p, l, pr, d) {
   const buyBtn = document.getElementById("stickyBuyBtn");
   const storeLbl = document.getElementById("stickyStoreLabel");
 
-  if (img) img.src = p.image_url || "";
+  if (img) img.src = p.image_url || "/assets/fallback.svg";
   if (title) title.textContent = p.title || "Product";
   if (price) price.textContent = pr.current_price ? Math.round(pr.current_price).toLocaleString("en-IN") : "0";
   if (mrp) mrp.textContent = pr.mrp && pr.mrp > pr.current_price ? `₹${Math.round(pr.mrp).toLocaleString("en-IN")}` : "";
@@ -843,7 +843,7 @@ function renderBottomCtaBanner(p, l, pr) {
   const bCtaStoreLbl = document.getElementById("pdpBottomStoreLabel");
 
   bCtaBanner.style.display = "block";
-  if (bCtaImg) bCtaImg.src = p.image_url || "";
+  if (bCtaImg) bCtaImg.src = p.image_url || "/assets/fallback.svg";
   if (bCtaTitle) bCtaTitle.textContent = p.title || p.canonical_title || "Product";
   if (bCtaRating) bCtaRating.textContent = p.rating ? `★ ${p.rating}` : "★ 4.4";
   if (bCtaReviews) bCtaReviews.textContent = p.ratings_count ? `(${p.ratings_count})` : "(Verified)";
@@ -1187,77 +1187,11 @@ function updateStoreLegendChips(payload, rivalComp) {
 }
 
 function buildClientComparativeFallback(listingId, currentPrice, rivalComp) {
-  const base = currentPrice || 1500;
-  const rivalBase = (rivalComp && rivalComp.rival_price) ? rivalComp.rival_price : Math.round(base * 1.04);
-  const nowMs = Date.now();
-  const dayMs = 86400000;
-
-  const isPrimaryAmazon = (currentMerchant || "").toLowerCase().includes("amazon");
-  const amzBase = isPrimaryAmazon ? base : rivalBase;
-  const fkBase = isPrimaryAmazon ? rivalBase : base;
-
-  const amzPoints = [
-    { price: Math.round(amzBase * 1.25), date: "10 Jun", timestamp: nowMs - 90 * dayMs },
-    { price: Math.round(amzBase * 1.20), date: "24 Jun", timestamp: nowMs - 76 * dayMs },
-    { price: Math.round(amzBase * 1.15), date: "08 Jul", timestamp: nowMs - 62 * dayMs },
-    { price: Math.round(amzBase * 1.24), date: "20 Jul", timestamp: nowMs - 50 * dayMs },
-    { price: Math.round(amzBase * 1.10), date: "02 Aug", timestamp: nowMs - 37 * dayMs },
-    { price: Math.round(amzBase * 0.91), date: "15 Aug", timestamp: nowMs - 24 * dayMs }, // Amazon Great Indian Festival dip
-    { price: Math.round(amzBase * 1.04), date: "25 Aug", timestamp: nowMs - 14 * dayMs },
-    { price: Math.round(amzBase * 1.02), date: "01 Sep", timestamp: nowMs - 7 * dayMs },
-    { price: Math.round(amzBase), date: "Today", timestamp: nowMs },
-  ];
-
-  const fkPoints = [
-    { price: Math.round(fkBase * 1.22), date: "10 Jun", timestamp: nowMs - 90 * dayMs },
-    { price: Math.round(fkBase * 1.18), date: "24 Jun", timestamp: nowMs - 76 * dayMs },
-    { price: Math.round(fkBase * 1.20), date: "08 Jul", timestamp: nowMs - 62 * dayMs },
-    { price: Math.round(fkBase * 1.16), date: "20 Jul", timestamp: nowMs - 50 * dayMs },
-    { price: Math.round(fkBase * 1.12), date: "02 Aug", timestamp: nowMs - 37 * dayMs },
-    { price: Math.round(fkBase * 1.05), date: "15 Aug", timestamp: nowMs - 24 * dayMs },
-    { price: Math.round(fkBase * 0.93), date: "21 Aug", timestamp: nowMs - 18 * dayMs }, // Flipkart Big Billion Days dip
-    { price: Math.round(fkBase * 1.01), date: "01 Sep", timestamp: nowMs - 7 * dayMs },
-    { price: Math.round(fkBase), date: "Today", timestamp: nowMs },
-  ];
-
-  const pPoints = isPrimaryAmazon ? amzPoints : fkPoints;
-  const rPoints = isPrimaryAmazon ? fkPoints : amzPoints;
-  const rMerchant = isPrimaryAmazon ? "Flipkart" : "Amazon";
-
+  // Return empty structure - no synthetic data generation
   return {
-    primary: {
-      matched: true,
-      merchant: isPrimaryAmazon ? "Amazon" : "Flipkart",
-      price: base,
-      in_stock: true,
-      lowest_price: Math.min(...pPoints.map(p => p.price)),
-      lowest_date: "15 Aug",
-      highest_price: Math.max(...pPoints.map(p => p.price)),
-      average_price: Math.round(pPoints.reduce((a, b) => a + b.price, 0) / pPoints.length),
-      history: pPoints.map(p => ({ price: p.price, observed_at: new Date(p.timestamp).toISOString() })),
-    },
-    rival: {
-      matched: Boolean(rivalComp && rivalComp.matched && rivalComp.rival_price),
-      merchant: rMerchant,
-      price: (rivalComp && rivalComp.rival_price) ? rivalComp.rival_price : null,
-      in_stock: (rivalComp && rivalComp.rival_in_stock !== false),
-      lowest_price: Math.min(...rPoints.map(p => p.price)),
-      lowest_date: isPrimaryAmazon ? "21 Aug" : "15 Aug",
-      highest_price: Math.max(...rPoints.map(p => p.price)),
-      average_price: Math.round(rPoints.reduce((a, b) => a + b.price, 0) / rPoints.length),
-      history: (rivalComp && rivalComp.matched && rivalComp.rival_price)
-        ? rPoints.map(p => ({ price: p.price, observed_at: new Date(p.timestamp).toISOString() }))
-        : [],
-    },
-    combined: {
-      lowest_price: Math.min(Math.min(...pPoints.map(p => p.price)), Math.min(...rPoints.map(p => p.price))),
-      lowest_date: "15 Aug",
-      lowest_store: "Amazon",
-      highest_price: Math.max(Math.max(...pPoints.map(p => p.price)), Math.max(...rPoints.map(p => p.price))),
-      average_price: Math.round((base + rivalBase) / 2),
-      price_drops_count: 14,
-      price_difference: Math.round(Math.abs(base - rivalBase)),
-    },
+    primary: { matched: false, merchant: null, price: null, in_stock: null, lowest_price: null, lowest_date: null, highest_price: null, average_price: null, history: [] },
+    rival: { matched: false, merchant: null, price: null, in_stock: null, lowest_price: null, lowest_date: null, highest_price: null, average_price: null, history: [] },
+    combined: { lowest_price: null, lowest_date: null, lowest_store: null, highest_price: null, average_price: null, price_drops_count: 0, price_difference: null }
   };
 }
 

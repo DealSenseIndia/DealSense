@@ -28,7 +28,36 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: #64748B;
+  color: #64748b;
+}
+
+.deal-freshness {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.deal-freshness-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.deal-freshness-fresh {
+  color: #15803d;
+}
+
+.deal-freshness-aging {
+  color: #b45309;
+}
+
+.deal-freshness-stale,
+.deal-freshness-unknown {
+  color: #b91c1c;
   margin-bottom: 12px;
 }
 

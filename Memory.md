@@ -8,9 +8,11 @@
 - **Repository**: `D:\Gursher\Affiliate\Deal Intelligence`
 - **Active Workspace**: Deal Intelligence (Antigravity IDE)
 - **Current Milestone**: Phase 7 (Product-First Homepage & Price Drop Showcase: Buyhatke / PriceHistory Paradigm) [COMPLETED ✅]
-- **Unit Test Health**: **237 / 237 Passing Unit Tests (100% Green, 0 Deprecation Warnings in App Code)**
-- **Test Runner Command**: `.venv\Scripts\pytest.exe -q` (72.3s execution)
+- **Unit Test Health**: **240 / 240 Passing Unit Tests (100% Green, 0 Deprecation Warnings in App Code)**
+- **Test Runner Command**: `.venv\Scripts\pytest.exe -q` (76.6s execution)
 - **Verified Working Test Suites**:
+  - `test_deal_freshness.py` (Pass — 2/2 tests)
+  - `test_image_contract.py` (Pass — 1/1 test)
   - `test_croma_reliance_expansion.py` (Pass — 8/8 tests)
   - `test_seo_and_sitemap.py` (Pass — 8/8 tests)
   - `test_extension_contracts.py` (Pass — 5/5 tests)
@@ -37,6 +39,7 @@
 | B-03 | Sub-affiliate fallback routing | Unapproved categories lose affiliate monetization | Built 3-Tier fallback router in `backend/services/affiliate_gateway.py` (Direct Tag -> Cuelinks V3 -> Clean URL) | RESOLVED ✅ |
 | B-04 | Organic Search & Crawler Discovery | Pure SPA pages lack crawler indexing and Schema.org rich results | Implemented SSR comparison routes (`/compare/{slug}`), XML sitemaps index, and robots.txt | RESOLVED ✅ |
 | B-05 | Retailer Duopoly Limitation | Amazon & Flipkart alone miss major offline/omnichannel sales | Added Croma (1007) and Reliance Digital (1052) extractors, resolvers, and multi-store ranking | RESOLVED ✅ |
+| B-06 | Deceptive / Synthetic Data Fallbacks | Fabricated deal counts and synthetic competitor history risk user trust | Implemented Data Truth Contract: honest category counts, image fallback contract, and real freshness indicators | RESOLVED ✅ |
 
 ---
 
@@ -51,6 +54,7 @@
 - **ADR-008 (Programmatic SSR SEO, XML Sitemaps, and Multi-Stage Containerization)**: High-performance Jinja2 SSR comparison pages at `/compare/{slug}` provide instant Googlebot crawlability with Schema.org `AggregateOffer` JSON-LD microdata, dynamic dual-store pricing, and bank discount estimates. Caching sitemap engine (`/sitemap.xml`, `/sitemap-main.xml`, `/sitemap-products.xml`) generates valid XML with 1-hour TTL. Production containerization via multi-stage `Dockerfile` and `docker-compose.yml` mounts persistent SQLite WAL database storage.
 - **ADR-009 (Multi-Store Retail Arbitrage Engine: Croma & Reliance Digital)**: Modular expansion extending URL resolution, SSRF domain allowlists (`croma.com`, `reliancedigital.in`), Schema.org/DOM stealth extractors (`extract_croma_data`, `extract_reliance_digital_data`), and Cuelinks sub-affiliate monetization (Campaigns 1007 and 1052). `build_multi_store_comparison_table` ranks Arbitrage across 4 stores (Amazon, Flipkart, Croma, Reliance Digital) with lowest price badges and SVG retailer assets while preserving strict backwards compatibility for legacy dual-store callers.
 - **ADR-010 (Product-First Visual Architecture & Price-Drop Showcase)**: Migrated DealSense homepage from a coupon/room-first layout to an immediate product-discovery experience modeled after Buyhatke and PriceHistory.app. Promoted "🔥 Today's Biggest Price Drops" (`#liveDeals`) and "⚡ All-Time Low Hall of Fame" (`#allTimeLowsSection`) directly beneath the Hero search fold. Implemented high-converting dual CTAs (`📊 Price History` to open the DealSense interactive chart & verdict modal, and `🛒 View Deal ↗` for direct store link) along with merchant store pills, price drop delta callouts (`↓ ₹X,XXX saved`), and instant multi-category filter pills (`mobiles`, `laptops`, `audio`, `smartwatches`, `tvs`, `appliances`, `under_999`). Demoted coupons to Section 6 at the page footer as a checkout discount utility.
+- **ADR-011 (Data Truth, Freshness Badging & Zero Synthetic Ingestion Contract)**: Established strict data veracity rules across the platform: (1) Added deal observation freshness indicators (`fresh`, `aging`, `stale`, `unknown`) with relative timestamps and color-coded status dots on homepage and deal cards; (2) Guaranteed image contract preventing null/empty image references via neutral `/assets/fallback.svg` fallbacks in pipeline and DOM templates; (3) Eliminated synthetic comparative rival price generation in PDP (`buildClientComparativeFallback` returns honest unmatched state); (4) Eliminated fabricated category deal counts; (5) Enforced background worker isolation across automated test suites to maintain a 100% green test baseline (240/240 tests).
 
 ---
 

@@ -43,8 +43,8 @@
 - **Scraping & Parsing**: Requests / HTTPX, BeautifulSoup4, fake-useragent, challenge backoff heuristics.
 - **Multi-Agent Runtime**: Google ADK (`adk.dev` / `google-adk`) for worker workflows.
 - **Database**: SQLite with WAL mode enabled (`models.py`).
-- **Frontend**: Vanilla JS (ES Modules) + Vite + Modern Dark Mode CSS + SVG Chart Renderer.
-- **Testing Suite**: Pytest (237/237 unit tests currently passing, 100% green).
+- **Frontend**: Vanilla JS (ES Modules) served by FastAPI + Modern Dark Mode CSS + SVG Chart Renderer. The repository currently has no Vite package manifest; do not assume a Vite build step.
+- **Testing Suite**: Pytest (240/240 unit tests currently passing, 100% green).
 - **Multi-Merchant Arbitrage**: Direct extractors and adapters for Amazon India, Flipkart, Croma, and Reliance Digital.
 - **SEO & SSR Engine**: Jinja2 SSR comparison templates (`frontend/templates/seo_compare.html`), Schema.org `AggregateOffer` JSON-LD microdata, dynamic XML sitemaps (`/sitemap.xml`, `/sitemap-main.xml`, `/sitemap-products.xml`) with 1-hour in-memory caching.
 - **Containerization**: Multi-stage Docker build (`Dockerfile`), `docker-compose.yml`, persistent WAL database volume.

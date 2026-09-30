@@ -305,9 +305,9 @@ def get_categories_tree():
             ]
             children.sort(key=lambda c: next((cc.display_order for cc in all_cats if cc.id == c["id"]), 0))
 
-            # Live DB count if products linked, otherwise fallback to development seed counts
+            # Empty catalogues must remain honest; never fabricate deal counts.
             product_count = len(rc.products) if rc.products else 0
-            deal_count = product_count if product_count > 0 else DEAL_COUNTS_MAP.get(rc.slug, 5000)
+            deal_count = product_count if product_count > 0 else DEAL_COUNTS_MAP.get(rc.slug, 0)
 
             result.append({
                 "id": rc.id,
@@ -1838,4 +1838,3 @@ def get_robots_txt(request: Request):
 # ── Static files (catch-all — must be last) ──────────────────────────────────
 if FRONTEND_DIR.exists():
     app.mount("/", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
-

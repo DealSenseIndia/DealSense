@@ -8,7 +8,7 @@
 ## 2. Success Metrics & Key Performance Indicators
 - **Scraper Reliability**: >98% success rate on URL resolution and price extraction without IP blocks.
 - **Verdict Accuracy**: 100% mathematical consistency in 0–100 Deal Scores and True Landed Price calculations.
-- **Test Integrity**: Maintain 100% test pass rate across all unit and integration test suites (currently 48/48 passing).
+- **Test Integrity**: Maintain 100% test pass rate across all unit and integration test suites (currently 240/240 passing in the verified baseline).
 - **Distribution Velocity**: Reach 5,000 active Indian shoppers via Telegram/WhatsApp deal feeds and Chrome/Kiwi mobile extension.
 
 ## 3. Core Features & Capabilities

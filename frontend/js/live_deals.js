@@ -475,6 +475,10 @@ export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {})
     const dealScore = deal.deal_score || 85;
     const scoreText = dealScore >= 88 ? "BUY NOW" : (dealScore >= 75 ? "GOOD DEAL" : "FAIR");
     const scoreColor = dealScore >= 85 ? "#16A34A" : "#2563EB";
+    const freshnessStatus = ["fresh", "aging", "stale"].includes(deal.freshness_status)
+      ? deal.freshness_status
+      : "unknown";
+    const freshnessLabel = deal.freshness_label || "Freshness unavailable";
 
     card.innerHTML = `
       <div class="deal-card-media-wrap">
@@ -483,7 +487,7 @@ export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {})
           <img src="${merchantLogo}" alt="${merchantName}" class="store-pill-img" onerror="this.src='/assets/dealsense-icon.png'">
           <span class="store-pill-name">${merchantName}</span>
         </div>
-        <img src="${deal.image_url}" alt="${escapeHtml(deal.title)}" class="deal-card-thumb-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/dealsense-icon.png'">
+        <img src="${deal.image_url || '/assets/fallback.svg'}" alt="${escapeHtml(deal.title)}" class="deal-card-thumb-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/fallback.svg'">
       </div>
 
       <div class="deal-card-body">
@@ -520,6 +524,10 @@ export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {})
             <span style="color:${scoreColor}; font-weight:750;">Score: ${dealScore}/100</span>
             <span class="score-verdict-tag" style="background:${dealScore >= 85 ? '#DCFCE7' : '#EFF6FF'}; color:${scoreColor};">${scoreText}</span>
           </div>
+        </div>
+        <div class="deal-freshness deal-freshness-${freshnessStatus}" title="${escapeHtml(freshnessLabel)}">
+          <span class="deal-freshness-dot" aria-hidden="true"></span>
+          ${escapeHtml(freshnessLabel)}
         </div>
 
         <div class="deal-card-actions-row">
@@ -606,7 +614,7 @@ export function renderAllTimeLowsSection(deals, { onDealClick, onSetupClick } = 
           <img src="${merchantLogo}" alt="${merchantName}" class="store-pill-img">
           <span class="store-pill-name">${merchantName}</span>
         </div>
-        <img src="${deal.image_url}" alt="${escapeHtml(deal.title)}" class="deal-card-thumb-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/dealsense-icon.png'">
+        <img src="${deal.image_url || '/assets/fallback.svg'}" alt="${escapeHtml(deal.title)}" class="deal-card-thumb-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/fallback.svg'">
       </div>
       <div class="deal-card-body">
         <div class="deal-card-cat-brand">
