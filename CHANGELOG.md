@@ -22,6 +22,10 @@ Implement Resilient Multi-Stage Serverless Scraper and Synchronize Multi-Categor
   - Gated "🔥 All-Time Low" badges on genuine multi-date historical records.
   - Gated "⚡ Price Drop Today" badges on fresh observations.
   - Cleaned placeholder `"dealintel"` default in `FLIPKART_AFFILIATE_ID`.
+- **Vercel Serverless Function Runtime Fix (`api/check-deal.js`, `frontend/api/check-deal.js`)**:
+  - Replaced legacy CJS `require("https")` / `require("http")` with native ES module `fetch()` and `AbortSignal.timeout` to eliminate `ReferenceError: require is not defined in ES module scope` causing `FUNCTION_INVOCATION_FAILED` (HTTP 500) on Vercel.
+  - Declared `discountPct` and `dealScore` variables to resolve strict-mode `ReferenceError`.
+  - Verified clean HTTP 200 execution and zero false "Could not reach the DealSense analyser" client errors.
 - **Test Suite Verification**:
   - All 240 unit tests passing (100% green, zero regressions).
 

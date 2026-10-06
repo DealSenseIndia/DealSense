@@ -3,8 +3,6 @@
 // DealSense High-Res Live Product Extractor & Deal Intelligence Engine
 // ==========================================================================
 
-const https = require("https");
-const http = require("http");
 
 const VERIFIED_CATALOG = [
   {
@@ -126,42 +124,26 @@ const VERIFIED_CATALOG = [
   },
 ];
 
-function fetchJson(url, options = {}) {
-  return new Promise((resolve) => {
-    const client = url.startsWith("https") ? https : http;
-    const req = client.get(url, options, (res) => {
-      let data = "";
-      res.on("data", (c) => (data += c));
-      res.on("end", () => {
-        try {
-          resolve(JSON.parse(data));
-        } catch (_) {
-          resolve(null);
-        }
-      });
-    });
-    req.on("error", () => resolve(null));
-    req.setTimeout(options.timeout || 6000, () => {
-      req.destroy();
-      resolve(null);
-    });
-  });
+async function fetchJson(url, options = {}) {
+  try {
+    const timeout = options.timeout || 6000;
+    const resp = await fetch(url, { signal: AbortSignal.timeout(timeout) });
+    if (!resp.ok) return null;
+    return await resp.json();
+  } catch (_) {
+    return null;
+  }
 }
 
-function fetchText(url, options = {}) {
-  return new Promise((resolve) => {
-    const client = url.startsWith("https") ? https : http;
-    const req = client.get(url, options, (res) => {
-      let data = "";
-      res.on("data", (c) => (data += c));
-      res.on("end", () => resolve(data));
-    });
-    req.on("error", () => resolve(""));
-    req.setTimeout(options.timeout || 6000, () => {
-      req.destroy();
-      resolve("");
-    });
-  });
+async function fetchText(url, options = {}) {
+  try {
+    const timeout = options.timeout || 6000;
+    const resp = await fetch(url, { signal: AbortSignal.timeout(timeout) });
+    if (!resp.ok) return "";
+    return await resp.text();
+  } catch (_) {
+    return "";
+  }
 }
 
 function parsePriceNumber(str) {
@@ -418,6 +400,8 @@ export default async function handler(req, res) {
   const category = detectCategory(finalTitle);
   const finalImage = liveImage || "/assets/fallback.svg";
 
+  let discountPct = null;
+  let dealScore = 70;
   let decisionOutcome = "CONSIDER";
 
   if (livePrice && livePrice > 0) {
