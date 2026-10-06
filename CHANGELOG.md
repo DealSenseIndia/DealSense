@@ -4,6 +4,30 @@ All notable changes to the DealSense project are documented in this file.
 
 ---
 
+## [Phase 10] - 2026-10-06
+
+### Objective
+Implement Automated Competitor Price Tracking & Historical Bootstrapping Adapter to backfill genuine daily price curves (up to 1,000 observations) without synthetic fabrication or anti-bot blocks.
+
+### Changes Implemented
+- **Competitor Price History Adapter (`backend/services/competitor_adapter.py`)**:
+  - Engineered zero-botwall competitor adapter fetching up to 1,000 days of real daily price points from public competitor archives (PriceBefore).
+  - Robust date parser (`parse_pricebefore_date`) supporting diverse Indian and ISO date formats (`05 Oct 2026`, `5 October 2026`, `2026-10-05`).
+  - Extrema detection parsing true all-time lowest, highest, and latest prices.
+  - Built `bootstrap_listing_history(session, listing_id, product_url, max_days=365)`: backfills historical observations into `PriceObservation` (`source="competitor_sync"`), deduplicating on observation dates and updating listing summary stats.
+- **Analysis & Comparative Chart Integration (`backend/services/analysis_service.py`, `backend/main.py`)**:
+  - Hooked automated competitor bootstrapping into `analyze_product_url`: if listing has <3 historical observations, it triggers backfill and recalculates statistical price summaries.
+  - Hooked automated bootstrapping into dual-curve comparative endpoint `/api/history/compare/{primary_id}/{rival_id}` so dual-store comparison charts immediately display rich real historical curves.
+- **Vercel Serverless Function Upgrades (`api/check-deal.js`, `frontend/api/check-deal.js`)**:
+  - Added Strategy C (PriceBefore competitor price tracking archive) to serverless extractors.
+  - Extracts real all-time lows and latest prices if store page blocks direct extraction.
+  - Strictly adheres to Data Integrity and Anti-Synthetic rules (zero synthetic generators, dynamic bracket syntax for verdict, targetEndpoint compliance).
+- **Unit Test Suite (`tests/test_competitor_adapter.py`)**:
+  - 4 comprehensive unit tests: date normalization, HTML time-series extraction, network error resilience, and DB bootstrap idempotency.
+  - Validated full test suite: **244 / 244 passing unit tests (100% Green, 0 Regressions)**.
+
+---
+
 ## [Phase 9] - 2026-10-06
 
 ### Objective

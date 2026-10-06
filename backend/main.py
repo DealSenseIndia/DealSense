@@ -1082,6 +1082,23 @@ def get_compare_history(primary_id: int, rival_id: int = 0, rival_price: Optiona
                 current_mrp=mrp_val,
             )
 
+            # Autonomous Competitor History Bootstrap: If insufficient history, backfill real observations
+            if not summary.has_sufficient_history and listing.clean_url:
+                from backend.services.competitor_adapter import bootstrap_listing_history
+                b_count = bootstrap_listing_history(session, listing.id, listing.clean_url)
+                if b_count > 0:
+                    observations = session.exec(
+                        select(PriceObservation)
+                        .where(PriceObservation.listing_id == listing_id)
+                        .order_by(PriceObservation.observed_at.asc())
+                    ).all()
+                    summary = get_historical_price_summary(
+                        session=session,
+                        listing_id=listing_id,
+                        current_price=cur_price,
+                        current_mrp=mrp_val,
+                    )
+
             if summary.has_sufficient_history:
                 history_pts = summary.history_points
                 low_p = summary.lowest_price

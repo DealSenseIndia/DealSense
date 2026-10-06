@@ -8,9 +8,10 @@
 - **Repository**: `D:\Gursher\Affiliate\Deal Intelligence`
 - **Active Workspace**: Deal Intelligence (Antigravity IDE)
 - **Current Milestone**: Phase 7 (Product-First Homepage & Price Drop Showcase: Buyhatke / PriceHistory Paradigm) [COMPLETED ✅]
-- **Unit Test Health**: **240 / 240 Passing Unit Tests (100% Green, 0 Deprecation Warnings in App Code)**
-- **Test Runner Command**: `.venv\Scripts\pytest.exe -q` (76.6s execution)
+- **Unit Test Health**: **244 / 244 Passing Unit Tests (100% Green, 0 Deprecation Warnings in App Code)**
+- **Test Runner Command**: `.venv\Scripts\pytest.exe -q` (68.4s execution)
 - **Verified Working Test Suites**:
+  - `test_competitor_adapter.py` (Pass — 4/4 tests: date normalization, HTML chart extraction, error resilience, DB bootstrap idempotency)
   - `test_deal_freshness.py` (Pass — 2/2 tests)
   - `test_image_contract.py` (Pass — 1/1 test)
   - `test_croma_reliance_expansion.py` (Pass — 8/8 tests)
@@ -40,6 +41,7 @@
 | B-04 | Organic Search & Crawler Discovery | Pure SPA pages lack crawler indexing and Schema.org rich results | Implemented SSR comparison routes (`/compare/{slug}`), XML sitemaps index, and robots.txt | RESOLVED ✅ |
 | B-05 | Retailer Duopoly Limitation | Amazon & Flipkart alone miss major offline/omnichannel sales | Added Croma (1007) and Reliance Digital (1052) extractors, resolvers, and multi-store ranking | RESOLVED ✅ |
 | B-06 | Deceptive / Synthetic Data Fallbacks | Fabricated deal counts and synthetic competitor history risk user trust | Implemented Data Truth Contract: honest category counts, image fallback contract, and real freshness indicators | RESOLVED ✅ |
+| B-07 | Cold-Start Historical Price Gaps | New listings lack historical price depth for dual curves and real all-time lows | Integrated competitor archive bootstrapping via `backend/services/competitor_adapter.py` and Strategy C in serverless proxies | RESOLVED ✅ |
 
 ---
 
@@ -57,6 +59,7 @@
 - **ADR-011 (Data Truth, Freshness Badging & Zero Synthetic Ingestion Contract)**: Established strict data veracity rules across the platform: (1) Added deal observation freshness indicators (`fresh`, `aging`, `stale`, `unknown`) with relative timestamps and color-coded status dots on homepage and deal cards; (2) Guaranteed image contract preventing null/empty image references via neutral `/assets/fallback.svg` fallbacks in pipeline and DOM templates; (3) Eliminated synthetic comparative rival price generation in PDP (`buildClientComparativeFallback` returns honest unmatched state); (4) Eliminated fabricated category deal counts; (5) Enforced background worker isolation across automated test suites to maintain a 100% green test baseline (240/240 tests).
 - **ADR-012 (Resilient Multi-Stage Serverless Scraper & Live Deals Catalog)**: Upgraded `/api/check-deal` across `api/` and `frontend/api/` with a 4-tier anti-bot bypass pipeline: (1) Optional persistent `BACKEND_URL` proxying; (2) In-memory verified catalog lookup; (3) High-res image and metadata extraction via Microlink & Jina Reader bypassing Amazon/Flipkart AWS IP CAPTCHA walls; (4) Strict zero-synthetic fallback contract eliminating fabricated ₹2,999 prices and bogus BUY verdicts when store blocks access. Synchronized 48 verified multi-merchant deals and dynamic category filtering directly into `frontend/api/deals/live.js` and `api/deals/live.js`.
 - **ADR-013 (Vercel Serverless Function ESM Runtime Stabilization)**: Resolved Vercel `FUNCTION_INVOCATION_FAILED` (HTTP 500) caused by mixing CommonJS `require()` in an ES module (`export default handler`). Replaced all legacy `http`/`https` calls with Node 18+ standard `fetch()` and `AbortSignal.timeout(timeout)`. Explicitly declared `discountPct` and `dealScore` to prevent strict-mode runtime reference exceptions. Validated both in local Node ESM runner and end-to-end HTTP payload testing.
+- **ADR-014 (Competitor Price Tracking Archive & Historical Bootstrapping)**: Overcame cold-start historical gaps for new listings by implementing automated competitor price intelligence in `backend/services/competitor_adapter.py`. Leverages public price tracking archives (PriceBefore) without botwalls, extracting up to 1,000 real daily historical price points. When a listing has <3 historical observations, `bootstrap_listing_history` automatically backfills timestamped observations into SQLite `PriceObservation` (`source="competitor_sync"`), deduplicating by observation date. Integrated into `analyze_product_url`, dual-curve compare endpoint (`/api/history/compare`), and Vercel serverless functions (`/api/check-deal`). Preserves the Zero Synthetic Data Contract by strictly recording genuine timestamped data points.
 
 ---
 

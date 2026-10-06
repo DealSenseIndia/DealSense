@@ -394,6 +394,56 @@ export default async function handler(req, res) {
     } catch (_) {}
   }
 
+  // Strategy C: Competitor Price Tracking Archive (PriceBefore Zero-Botwall Integration)
+  let competitorAllTimeLow = null;
+  if (!livePrice || !liveTitle) {
+    try {
+      const pbUrl = `https://www.pricebefore.com/search/?q=${encodeURIComponent(cleanUrl)}`;
+      const pbHtml = await fetchText(pbUrl, {
+        timeout: 5000,
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+          "Referer": "https://www.pricebefore.com/",
+        },
+      });
+      if (pbHtml) {
+        const dataMatch = pbHtml.match(/var\s+data\s*=\s*(\{[^;]+\});/);
+        if (dataMatch) {
+          try {
+            const chartData = JSON.parse(dataMatch[1]);
+            if (chartData.prices && Array.isArray(chartData.prices) && chartData.prices.length > 0) {
+              const numericPrices = chartData.prices
+                .map((p) => Number(p))
+                .filter((p) => !isNaN(p) && p > 0);
+              if (numericPrices.length > 0) {
+                if (!livePrice) {
+                  livePrice = numericPrices[numericPrices.length - 1];
+                }
+                const histLow = Math.min(...numericPrices);
+                const histHigh = Math.max(...numericPrices);
+                if (histHigh > (livePrice || 0) && !liveMrp) {
+                  liveMrp = histHigh;
+                }
+                if (histLow > 0) {
+                  competitorAllTimeLow = histLow;
+                }
+              }
+            }
+          } catch (_) {}
+        }
+        if (!liveTitle) {
+          const pbTitleMatch = pbHtml.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+          if (pbTitleMatch) {
+            const raw = pbTitleMatch[1].replace(/<[^>]+>/g, "").trim();
+            if (raw && !raw.toLowerCase().includes("search results")) {
+              liveTitle = cleanTitle(raw);
+            }
+          }
+        }
+      }
+    } catch (_) {}
+  }
+
   // 5. Finalize Data Truth Payload
   const finalTitle = liveTitle || `${merchant} Deal`;
   const brand = detectBrand(finalTitle);
@@ -432,7 +482,7 @@ export default async function handler(req, res) {
   const decisionObj = {
     score: livePrice ? dealScore : null,
     confidence: livePrice ? "HIGH" : "UNVERIFIED",
-    historical_low: livePrice,
+    historical_low: competitorAllTimeLow || livePrice,
     message: livePrice ? "Price observation verified live." : "Anti-bot challenge active. Click to view deal directly on store.",
   };
   decisionObj["ver" + "dict"] = livePrice ? decisionOutcome : "VIEW_STORE";

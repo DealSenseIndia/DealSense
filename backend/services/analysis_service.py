@@ -248,6 +248,22 @@ def analyze_product_url(url: str, force_refresh: bool = False) -> Dict[str, Any]
             current_mrp=current_mrp,
         )
 
+        # Autonomous Competitor History Bootstrap: If fresh listing, backfill real historical observations
+        if not history_summary.has_sufficient_history and listing.clean_url:
+            from backend.services.competitor_adapter import bootstrap_listing_history
+            bootstrapped_count = bootstrap_listing_history(
+                session=session,
+                listing_id=listing.id,
+                product_url=listing.clean_url,
+            )
+            if bootstrapped_count > 0:
+                history_summary = get_historical_price_summary(
+                    session=session,
+                    listing_id=listing.id,
+                    current_price=current_price or 0.0,
+                    current_mrp=current_mrp,
+                )
+
         # Step 6: Compute Explainable Deal Decision
         deal_result: DealAnalysisResult = evaluate_deal_intelligence(
             current_price=current_price or 0.0,
