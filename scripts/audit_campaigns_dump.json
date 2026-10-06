@@ -24,7 +24,7 @@
       "name": "Flipkart",
       "url": "https://www.flipkart.com",
       "domain": "flipkart.com",
-      "image": "https://cdn0.cuelinks.com/campaigns/1/medium/Flipkart_store_logo.jpeg?1716545170",
+      "image": "https://cdn0.cuelinks.com/campaigns/1/medium/image_%287%29.png?1790611339",
       "payout_type": "Per Sale(%)",
       "payout": "6.0",
       "payout_currency": "%",
@@ -82,7 +82,7 @@
       "epc_7d": "0.34",
       "epc_90d": "0.24",
       "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.flipkart.com",
-      "updated_at": "2026-08-12T11:04:57Z",
+      "updated_at": "2026-09-28T16:02:19Z",
       "important_info_html": "<b>Flipkart campaign does not help with the missing transactions. </b><br><br><b>Tracking Details&nbsp;</b><ul><li>Please note your commission can take up-to 72 hours after your shipment has been dispatched for delivery to track for Flipkart.</li></ul><ul><li>Please note that Flipkart does not allow to advertise affiliate links as a cashback offer.</li></ul><ul><li>New Customer is defined as the 1st order/transaction done by a customer on Flipkart.com in the last 6 months (counting from the date of transaction).&nbsp;</li></ul><ul><li>Affiliate tracking on all Mobile Apps is possible only through Deeplink Affiliate URLs</li></ul><ul><li>You will not receive any referral payouts (affiliate commission) for purchases done on the following: Mobile Recharges, Value Added Services, Flipkart First subscription, iOS &amp; Windows App Installs (both Direct as well as Fallback), and/or any other products/ services/categories notified by us.</li></ul><br><b>Conversion Flow:<br><br></b><div>1. User makes a purchase on Website/ Mobile site/App</div><div>2. Sale is counted &amp; added <br><br></div>",
       "payout_categories": [
         {
@@ -94,7 +94,7 @@
         {
           "name": "Grocery (Sugar, Atta, Tea, Coffee, Rice, Oil) - Live in Delhi, Pune, Kolkata, Lucknow, Ahmedabad, Mumbai, Chennai, Patna, Hyderabad, Bengaluru, Vellore, Tirupati, Jaipur, Chandigarh, Vadodara, Allahabad)",
           "payout_type": "Per Sale(%)",
-          "payout": "1.5",
+          "payout": "3.0",
           "is_header": false
         },
         {
@@ -122,7 +122,7 @@
           "is_header": false
         },
         {
-          "name": "Core Electronics - Automobile, Camera, IT Accessory, IT Peripheral, Laptop & Desktop, Personal Health Care, Storage, Tablet",
+          "name": "Core Electronics - Tablet, Storage, Personal Health Care, LaptopAndDesktop, ITAccessory, Camera, Automobile, Service, ITPeripherals.",
           "payout_type": "Per Sale(%)",
           "payout": "2.25",
           "is_header": false
@@ -134,7 +134,7 @@
           "is_header": false
         },
         {
-          "name": "Emerging Electronics - Audio, Gaming, IOT, Mobile Protection, Power Bank, Rest of Mobile Accessories, SHA [Smart Home Automation], Video",
+          "name": "Emerging Electronics - Video, SHA, Rest Of Mobile Accessory, Power Bank, Mobile Protection, IOT, Gaming, Audio.",
           "payout_type": "Per Sale(%)",
           "payout": "2.25",
           "is_header": false
@@ -188,27 +188,9 @@
           "is_header": false
         },
         {
-          "name": "Mobile Tier B - Redmi A5(MOBHB2HGCDC45QQ3),\r\nRedmi A5(MOBHB2HGH5DCFNWZ),\r\nRedmi A5(MOBHB2HGCWUUBBUM),\r\nRedmi A5(MOBHB2HGNGFWXSGA),\r\nRedmi A5(MOBHB2HGZY5PDGBR),\r\nRedmi A5(MOBHB2HGG8RN2GUC),\r\nSamsung Galaxy A36 5G(MOBH9RNG5BH5JHPE),\r\nSamsung Galaxy A36 5G(MOBH9RNGJZSYWDKR),\r\nSamsung Galaxy A36 5G(MOBH9RNG8NGYKDEQ),\r\nSamsung Galaxy A36 5G(MOBH9RNGFN76WMFF),\r\nSamsung Galaxy A36 5G(MOBH9RNGK9ACFMRQ),\r\nSamsung Galaxy A36 5G(MOBH9RNGMSYW6BVB),\r\nSamsung Galaxy A36 5G(MOBH9RNG3KTYVZKE),\r\nSamsung Galaxy A36 5G(MOBH9RNGWSX2XDZX),\r\nVivo T4 Lite 5G(MOBHDY9FCZV9HPM9),\r\nVivo T4 Lite 5G(MOBHDY9F2NKVDSYE),\r\nVivo T4 Lite 5G(MOBHDY9FP7WFPCEE),\r\nVivo T4 Lite 5G(MOBHDY9FWXVJYCFM),\r\nVivo T4 Lite 5G(MOBHDY9FPSBK8D4E),\r\nVivo T4 Lite 5G(MOBHDY9FNTHSYQCV),\r\nOPPO K13 Turbo Pro 5G(MOBHEP9WEM5ZXDMZ),\r\nOPPO K13 Turbo Pro 5G(MOBHEP9WPESR5YHV),\r\nOPPO K13 Turbo Pro 5G(MOBHEP9W5YVWKW7J),\r\nOPPO K13 Turbo Pro 5G(MOBHEP9WSHND47SQ),\r\nOPPO K13 Turbo Pro 5G(MOBHEP9WWZ7GUD4R),\r\nOPPO K13 Turbo Pro 5G(MOBHEP9WGUVYBKD8),\r\nRealme P4 Pro 5G(MOBHERXKZCGAA4QC),\r\nRealme P4 Pro 5G(MOBHERXKQUSFA6GM),\r\nRealme P4 Pro 5G(MOBHERXKXPYUPFQG),\r\nRealme P4 Pro 5G(MOBHERXKVQED7HGC),\r\nRealme P4 Pro 5G(MOBHERXKCPGRQCYZ),\r\nRealme P4 Pro 5G(MOBHERXK3YKZUWWZ),\r\nRealme P4 Pro 5G(MOBHERXKUV3RGG5F),\r\nRealme P4 Pro 5G(MOBHERXKMUKYHPU8),\r\nRealme P4 Pro 5G(MOBHERXKFEKTNPNH),\r\nRedmi A5(MOBHFKGTC2C7Y6TG),\r\nRedmi A5(MOBHFKGTEXFPRECW),\r\nRedmi A5(MOBHFKGTMYUXNYXU),\r\nPOCO C85 5G(MOBHHWYSM9YV9QZ9),\r\nPOCO C85 5G(MOBHHWYSPT9X4GB3),\r\nPOCO C85 5G(MOBHHWYSV7EGQ63W),\r\nPOCO C85 5G(MOBHHWYS2CRXPX8C),\r\nPOCO C85 5G(MOBHHWYSKGGRFVXN),\r\nPOCO C85 5G(MOBHHWYSZNNKT8CJ),\r\nPOCO C85 5G(MOBHHWYSSXXSECJE),\r\nPOCO C85 5G(MOBHHWYSRWXYG7GE),\r\nPOCO C85 5G(MOBHHWYSHAKCRM4Q),\r\nVivo T4 Lite 5G(MOBHJ8QDSPMWNJZ8),\r\nVivo T4 Lite 5G(MOBHJ8QD9JTVTUEX),\r\nVivo V70 Elite(MOBHK7E7GFACWJAY),\r\nVivo V70 Elite(MOBHK7E7QKFMWGE9),\r\nVivo V70 Elite(MOBHK7E7Y7KFSGGQ),\r\nVivo V70 Elite(MOBHK7E76G5PPGYZ),\r\nVivo V70 Elite(MOBHK7E7AFAQXXZK),\r\nVivo V70 Elite(MOBHK7E7EPMQ92HA),\r\nVivo V70 Elite(MOBHK7E7Y2VYVEJV),\r\nVivo V70 Elite(MOBHK7E77YFNRGGS),\r\nPoco C85X(MOBHHFC8JKRZRGFG),\r\nPoco C85X(MOBHHFC8S2U92G5M),\r\nPoco C85X(MOBHHFC8MQWQ6ZUH),\r\nPoco C85X(MOBHHFC82ZZHCZDX),\r\nPoco C85X(MOBHHFC8CJSWHCEJ),\r\nPoco C85X(MOBHHFC85FVQZUSC),\r\nVivo V70 FE(MOBHHPSHDZWCGN43),\r\nVivo V70 FE(MOBHHPSHVGYMKB6E),\r\nVivo V70 FE(MOBHHPSHWDF2PWHM),\r\nVivo V70 FE(MOBHHPSHXXTNT7YP),\r\nVivo V70 FE(MOBHHPSHQGXKZGXZ),\r\nVivo V70 FE(MOBHHPSHHZ6JH6VN),\r\nREDMI Note 15 SE 5G(MOBHHAFATAJXVPAK),\r\nREDMI Note 15 SE 5G(MOBHHAFAYA6UYMB9),\r\nREDMI Note 15 SE 5G(MOBHHAFAWYEGSZDZ),\r\nREDMI Note 15 SE 5G(MOBHHAFAQQPFFYKF),\r\nREDMI Note 15 SE 5G(MOBHHAFACACMRBJJ),\r\nREDMI Note 15 SE 5G(MOBHHAFAF63SZA5U),\r\nREDMI Note 15 SE 5G(MOBHHAFAWGRRGRMU),\r\nREDMI Note 15 SE 5G(MOBHHAFAWFUPPTBE),\r\nREDMI Note 15 SE 5G(MOBHHAFA9MZKBZAH),\r\nVivo T5 Pro 5G(MOBHM4FZPA8A7KVS),\r\nVivo T5 Pro 5G(MOBHM4FZVHBWFRHM),\r\nVivo T5 Pro 5G(MOBHM4FZRMHBQHP5),\r\nVivo T5 Pro 5G(MOBHM4FZHYYZW8YZ),\r\nVivo T5 Pro 5G(MOBHM4FZTRCGHUTG),\r\nVivo T5 Pro 5G(MOBHM4FZQVGR3RJ5),\r\nPOCO C85 5G(MOBHMGG5DNYPWU9Q),\r\nPOCO C85 5G(MOBHMGG5UZHEVJBK),\r\nPOCO C85 5G(MOBHMGG5GUM8R5GJ),\r\nPOCO C85 5G(MOBHMGG5HZK65TMX),\r\nPOCO C85 5G(MOBHMGG5ZM2KRGEG),\r\nPOCO C85 5G(MOBHMGG5UNCKYGPH),\r\nPOCO C85 5G(MOBHMGG5ZE4MHZUB),\r\nPOCO C85 5G(MOBHMGG55EG8Y8R8),\r\nPOCO C85 5G(MOBHMGG5CR7GHJHN),\r\nREDMI Note 15 SE 5G(MOBHN52FTTUWZGBA),\r\nREDMI Note 15 SE 5G(MOBHN52FR8YCYGSZ),\r\nREDMI Note 15 SE 5G(MOBHN52FDHRHXYKD),\r\nREDMI Note 15 SE 5G(MOBHN52F84BRGFEG),\r\nREDMI Note 15 SE 5G(MOBHN52FBUDPFNXC),\r\nREDMI Note 15 SE 5G(MOBHN52FS8S3WUPB),\r\nREDMI Note 15 SE 5G(MOBHN52FUSYGZSZD),\r\nREDMI Note 15 SE 5G(MOBHN52FMT5ZSDSW),\r\nREDMI Note 15 SE 5G(MOBHN52FYUMHG9WD),\r\nHMD VIBE2 5G(MOBHN6XYZXVBYZHA),\r\nHMD VIBE2 5G(MOBHN6XYHR2G4DPH),\r\nHMD VIBE2 5G(MOBHN6XYY52DMZKH),\r\nHMD VIBE2 5G(MOBHN6XYGKZEYC64),\r\nHMD VIBE2 5G(MOBHN6XYSHFH3BNJ),\r\nHMD VIBE2 5G(MOBHN6XYNGZQCBWB),\r\nPoco C85X(MOBHMGG5GHZKTSDZ),\r\nPoco C85X(MOBHMGG5SMZEFPTQ),\r\nPoco C85X(MOBHMGG5PYZRFMKU),\r\nPoco C85X(MOBHMGG5JUYG9DCY),\r\nPoco C85X(MOBHMGG5BR94DQRY),\r\nPoco C85X(MOBHMGG5NGH9MQBY),\r\nrealme 16T 5G(MOBHN4XWZUSTFFNJ),\r\nrealme 16T 5G(MOBHN4XWTT882MCE),\r\nrealme 16T 5G(MOBHN4XWYB6WEQTM),\r\nrealme 16T 5G(MOBHN4XWNXGJGPZX),\r\nrealme 16T 5G(MOBHN4XWWCX2WRHG),\r\nrealme 16T 5G(MOBHN4XWEVJWYPAM),\r\nrealme 16T 5G(MOBHN4XWHKKYHNGR),\r\nrealme 16T 5G(MOBHN4XW8GNQQXCP),\r\nrealme 16T 5G(MOBHN4XW4YRU3ABP),\r\nSamsung Galaxy A36 5G(MOBHNJ8FRCKPXUAS),\r\nSamsung Galaxy A36 5G(MOBHNJ8FMV7RRDBA),\r\nSamsung Galaxy A36 5G(MOBHNJ8FASRHRJZS),\r\nSamsung Galaxy A36 5G(MOBHNJ8FTGCB8SUP),\r\nrealme 16x 5G(MOBHNVEDKYZYZHDF),\r\nrealme 16x 5G(MOBHNVEDY8RSX4E5),\r\nrealme 16x 5G(MOBHNVEDTAZQYXPV),\r\nrealme 16x 5G(MOBHNVEDZQBZ4SNY),\r\nrealme 16x 5G(MOBHNVEDJFBDSGFT),\r\nrealme 16x 5G(MOBHNVEDT4PZF88H),\r\nVivo V70 FE(MOBHMF7DHNNDNHHJ),\r\nVivo V70 FE(MOBHME4YEZF8JGHS),\r\nVivo V70 FE(MOBHME46D9NMFGJX),\r\nVivo V70 FE(MOBHME48GASN6JUG),\r\nvivo V70 5G(MOBHMGHKUVHVUXXX),\r\nVivo V70 Elite(MOBHME45WMYHDVA7),\r\nVivo V70 FE(MOBHN62B4WRPGJR6),\r\nVivo V70 FE(MOBHMGHWUMUYCWSG),\r\nVivo V70 FE(MOBHMHJFHXWDH8S9),\r\nVivo V70 Elite(MOBHME4NK5UEZRHN),\r\nVivo V70 FE(MOBHZFFH4MRXJ8DB),\r\nVivo V70 FE(MOBHZFFH8ZT8QZCR),\r\nVivo V70 FE(MOBHZFFHGXCAJDHT),\r\nVivo V70 FE(MOBHZFFHH5CXYZDB),\r\nVivo V70 FE(MOBHZFFHH3UZ2FZQ),\r\nVivo V70 FE(MOBHZFFHZ5ZXJZC3),\r\nOPPO Reno16 5G(MOBHZMBRFYYSGE2Y),\r\nOPPO Reno16 5G(MOBHZMBRUXGP4JEU),\r\nOPPO Reno16 5G(MOBHZMBRBETH2USJ),\r\nOPPO Reno16 5G(MOBHZMBRQ63HUMVQ),\r\nOPPO Reno16 5G(MOBHZMBRFJK9WQPR),\r\nOPPO Reno16 5G(MOBHZMBR6KNRJYZV),\r\nOPPO Reno16c 5G(MOBHZMBRJENF5PYK),\r\nOPPO Reno16c 5G(MOBHZMBRZX9P5WGU),\r\nOPPO Reno16c 5G(MOBHZMBRQFXPEWGR),\r\nOPPO Reno16c 5G(MOBHZMBRUYMZCNR9),\r\nOPPO Reno16c 5G(MOBHZMBRYCHUSQEF),\r\nOPPO Reno16c 5G(MOBHZMBRZXJHNNKY),\r\nOPPO Reno16c 5G(MOBHZMBRFSTWZANJ),\r\nOPPO Reno16c 5G(MOBHZMBRRFTBYMDJ),\r\nOPPO Reno16c 5G(MOBHZMBR6AGMEDDZ),\r\nrealme P4s 5G(MOBHPBHAFUZTDTPX),\r\nrealme P4s 5G(MOBHPBHATYTBGZXN),\r\nrealme P4s 5G(MOBHPBHAPFJPCA4E),\r\nrealme P4s 5G(MOBHPBHAGEJZ4KWF),\r\nrealme P4s 5G(MOBHPBHARTPRKMA8),\r\nrealme P4s 5G(MOBHPBHAEHZXGFCV),\r\nLava Virat V1 Pro 5G(MOBHQDFAP3AAZUFG \u00a0 \u00a0),\r\nLava Virat V1 Pro 5G(MOBHQDFAGHJJMSJG \u00a0 \u00a0),\r\nLava Virat V1 Pro 5G(MOBHQDFAP3AAZUFG),\r\nLava Virat V1 Pro 5G(MOBHQDFAGHJJMSJG),\r\nSamsung Galaxy F70 Pro\u00a05G(MOBHZ8YSHHX6C4KX),\r\nSamsung Galaxy F70 Pro\u00a05G(MOBHZ8YSNQQDFHFT),\r\nSamsung Galaxy F70 Pro\u00a05G(MOBHZ8YSEBSR9U77),\r\nSamsung Galaxy F70 Pro\u00a05G(MOBHZ8YSB7NVXSGY),\r\nSamsung Galaxy F70 Pro\u00a05G(MOBHZ8YSUXXHYGBR),\r\nSamsung Galaxy F70 Pro\u00a05G(MOBHZ8YSJ2AJQEBZ)",
+          "name": "Categories not mentioned",
           "payout_type": "Per Sale(%)",
-          "payout": "0.38",
-          "is_header": false
-        },
-        {
-          "name": "MOTOROLA Signature(MOBHGVJY37KPCFHB),\r\nMOTOROLA Signature(MOBHGVJYTCM8BZQF),\r\nMOTOROLA Signature(MOBHGVJYGVP6G2NY),\r\nMOTOROLA Signature(MOBHGVJY6SUYWYTK),\r\nMOTOROLA Signature(MOBHGVJYGJYGSV8X),\r\nMOTOROLA Signature(MOBHGVJYRCA9AUCG),\r\nMotorola Edge 70 pro +(MOBHHXQRQJX8USUW),\r\nMotorola Edge 70 pro +(MOBHHXQRYAYXMA86),\r\nMotorola Edge 70 pro +(MOBHHXQRSGJ3MDV7)",
-          "payout_type": "Per Sale",
-          "payout": "150.0",
-          "is_header": false
-        },
-        {
-          "name": "Mobile Tier A - Motorola G06 Power(MOBHFSCECY35PFSB),\r\nMotorola G06 Power(MOBHFSCEW8DQVKDZ),\r\nMotorola G06 Power(MOBHFSCEDQXXDXUQ),\r\nRealme P4x 5G(MOBHHTPHPSEFFZJA),\r\nRealme P4x 5G(MOBHHTPHYT457HJN),\r\nRealme P4x 5G(MOBHHTPHQ94KD9HB),\r\nRealme P4x 5G(MOBHHTPHPGSDJJUC),\r\nRealme P4x 5G(MOBHHTPHXHFUNPSB),\r\nRealme P4x 5G(MOBHHTPHUPFCS6GJ),\r\nRealme P4x 5G(MOBHHTPHZDHND92D),\r\nRealme P4x 5G(MOBHHTPHKGSMJA3J),\r\nRealme P4x 5G(MOBHHTPHYUEJYUAV),\r\nVivo X300(MOBHHZBC6RGX2S83),\r\nVivo X300(MOBHHZBCZYZHY24Q),\r\nVivo X300(MOBHHZBCAAZK5MU2),\r\nVivo X300(MOBHHZBCNHH5VMFZ),\r\nVivo X300(MOBHHZBCACFNAZZG),\r\nVivo X300(MOBHHZBCT62B3HYR),\r\nVivo X300(MOBHHZBCW6ZDZPC6),\r\nVivo X300(MOBHHZBCQRGMFFHY),\r\nVivo X300(MOBHHZBCRTA4QAFQ),\r\nVivo X300 Pro(MOBHHZBCYBWTZ3F7),\r\nVivo X300 Pro(MOBHHZBCNHJVGGCD),\r\nrealme P4 Power 5G(MOBHJHSHMQDGQSAD),\r\nrealme P4 Power 5G(MOBHJHSHGN2UUGX8),\r\nrealme P4 Power 5G(MOBHJHSH4HHMYHEG),\r\nrealme P4 Power 5G(MOBHJHSHPRM435M6),\r\nrealme P4 Power 5G(MOBHJHSH2THUTPUU),\r\nrealme P4 Power 5G(MOBHJHSHGVSSMYW9),\r\nrealme P4 Power 5G(MOBHJHSHGY5GKFFK),\r\nrealme P4 Power 5G(MOBHJHSHUERM43UB),\r\nrealme P4 Power 5G(MOBHJHSHZ2C6HGKF),\r\nSamsung Galaxy F70e 5G(MOBHK55ANBSGUGCJ),\r\nSamsung Galaxy F70e 5G(MOBHK55AG6VHCDYG),\r\nSamsung Galaxy F70e 5G(MOBHK55AS9FDDYFE),\r\nSamsung Galaxy F70e 5G(MOBHK55ADSJPFVBS),\r\nGoogle Pixel 10a(MOBHK7FHYUEFHSZG),\r\nGoogle Pixel 10a(MOBHK7FHRFDZ8CYY),\r\nGoogle Pixel 10a(MOBHK7FH66BBP4PE),\r\nGoogle Pixel 10a(MOBHK7FHFTXREG7T),\r\nSamsung Galaxy S26 5G(MOBHKGAPDXGWGVMC),\r\nSamsung Galaxy S26 5G(MOBHKGAPAZ3N7GNF),\r\nSamsung Galaxy S26 5G(MOBHKGAPMGQUBJTQ),\r\nSamsung Galaxy S26 5G(MOBHKGAPUSBAHSUM),\r\nSamsung Galaxy S26 5G(MOBHKGAPFVDATGBR),\r\nSamsung Galaxy S26 5G(MOBHKGAP89XKG7BB),\r\nSamsung Galaxy S26 5G(MOBHKGAPH5JGKK3E),\r\nSamsung Galaxy S26 5G(MOBHKGAP4VP3KRAJ),\r\nSamsung Galaxy S26+ 5G(MOBHKGAPHK5QZ3AR),\r\nSamsung Galaxy S26+ 5G(MOBHKGAPSUWSYAVH),\r\nSamsung Galaxy S26+ 5G(MOBHKGAPB8KGXFUW),\r\nSamsung Galaxy S26+ 5G(MOBHKGAPB2BGWTGR),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPUGH5KGWK),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPHZHYA5GQ),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPRHSYRRH4),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPBMXRGGXZ),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPUXRHVXHZ),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPGSJRTV6E),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPMASN63J5),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPAUFFEHR5),\r\nSamsung Galaxy S26 Ultra 5G(MOBHKGAPVZXYFYD5),\r\nOppo K14 5G(MOBHKQYYEP5PV9RH),\r\nOppo K14 5G(MOBHKQYY9JJPHATW),\r\nOppo K14 5G(MOBHKQYY9S6MVDHH),\r\nOppo K14 5G(MOBHKQYYNFMURAYF),\r\nOppo K14 5G(MOBHKQYYPHXEGF7W),\r\nOppo K14 5G(MOBHKQYYPFBYDP3Z),\r\nOppo K14 5G(MOBHKQYYTYEXAVMG),\r\nOppo K14 5G(MOBHKQYYS6KNAPHZ),\r\nSamsung Galaxy S26 Ultra 5G(MOBHHY6NNGPJXHZM),\r\nSamsung Galaxy S26 Ultra 5G(MOBHHY6NSUJJXZKS),\r\nrealme P4 Lite 5G(MOBHHFBUHTZG3GTN),\r\nrealme P4 Lite 5G(MOBHHFBUUUQNXRGX),\r\nrealme P4 Lite 5G(MOBHHFBUDHTKZZDZ),\r\nrealme P4 Lite 5G(MOBHHFBUFXBGDWBV),\r\nrealme P4 Lite 5G(MOBHHFBUAZUXKQ5P),\r\nrealme P4 Lite 5G(MOBHHFBUKRW2G8DX),\r\nrealme P4 Lite 5G(MOBHHHU9GMFBHH7T),\r\nrealme P4 Lite 5G(MOBHHHU9JBQATGFU),\r\nrealme P4 Lite 5G(MOBHHHU9ZHHHMGGG),\r\nrealme P4 Lite 5G(MOBHHHU93JGCQGUM),\r\nrealme P4 Lite 5G(MOBHHHU9ZZVKKDWT),\r\nrealme P4 Lite 5G(MOBHHHU9Y2XCZVAJ),\r\nrealme P4R 5G(MOBHMYR3EJZ8J2ES),\r\nrealme P4R 5G(MOBHMYR3WJZZMJCK),\r\nrealme P4R 5G(MOBHMYR337CQEU8E),\r\nrealme P4R 5G(MOBHMYR3NMRPYBY4),\r\nrealme P4R 5G(MOBHMYR3MZ62YN7F),\r\nrealme P4R 5G(MOBHMYR3NPFHTFHE),\r\nrealme P4R 5G(MOBHMYR3NGRA6CGK),\r\nrealme P4R 5G(MOBHMYR3ZUEXFHCM),\r\nrealme P4R 5G(MOBHMYR3M5QYWBGD),\r\nRealme P4x 5G(MOBHHWGMECHS3DZJ),\r\nRealme P4x 5G(MOBHHWGMCXRADYYG),\r\nRealme P4x 5G(MOBHHWGMD2SAKRCJ),\r\nRealme P4x 5G(MOBHHWGMSNNCU5ZQ),\r\nRealme P4x 5G(MOBHHWGMJA4GNTVD),\r\nRealme P4x 5G(MOBHHWGMEFWZNZ4R),\r\nPOCO C81(MOBHMYWR2GCKNVWK),\r\nPOCO C81(MOBHMYWRYFQZG9PP),\r\nPOCO C81(MOBHMYWRFE7GZVJF),\r\nPoco C81x(MOBHMYWRWPE4S8G6),\r\nPoco C81x(MOBHMYWRXCQBZ7D2),\r\nrealme P4 Power 5G(MOBHN7A8E2QAXYCZ),\r\nrealme P4 Power 5G(MOBHN7A8ZPRTDQSD),\r\nrealme P4 Power 5G(MOBHN7A8QB7ZQBMQ),\r\nrealme P4 Power 5G(MOBHN8YRNFNCF8QV),\r\nrealme P4 Power 5G(MOBHN7A8SZU7BRH6),\r\nrealme P4 Power 5G(MOBHN8YRKQMFAHAU),\r\nrealme P4 Power 5G(MOBHN7A8KWXBASES),\r\nrealme P4 Power 5G(MOBHN8YZK2PPDEBJ),\r\nRealme P4x 5G(MOBHN7A8H9WAG4PD),\r\nRealme P4x 5G(MOBHN7A8WK5SGBYN),\r\nRealme P4x 5G(MOBHN7A8GXPNGYW4),\r\nRealme P4x 5G(MOBHN7A8HYC9BPAU),\r\nRealme P4x 5G(MOBHN7A8P2KPBEVZ),\r\nRealme P4x 5G(MOBHN7A8XGT43KXX),\r\nRealme P4x 5G(MOBHN8YRJQHY39YM),\r\nRealme P4x 5G(MOBHN8YRGUFWXSNC),\r\nrealme P4 Lite 5G(MOBHN7A8SZ7F9C7T),\r\nrealme P4 Lite 5G(MOBHN7A8CMJGRACT),\r\nrealme P4 Lite 5G(MOBHN7A8PBUWNHG5),\r\nrealme P4 Lite 5G(MOBHN7A8MNWG6FFH),\r\nrealme P4 Lite 5G(MOBHN7A8YFWPC9ZV),\r\nrealme P4 Lite 5G(MOBHN7A8AG9TYTW6),\r\nMotorola g37 power(MOBHHVFYC3QU3CAQ),\r\nMotorola g37 power(MOBHHVFYGN57RYAH),\r\nMotorola g37 power(MOBHHVFYHG7QUTDZ),\r\nMotorola g37 power(MOBHMHG6CCNS5UWR),\r\nMotorola g37 power(MOBHMHG6KZXMFNKF),\r\nMotorola g37 power(MOBHMHG65H7QGMHS),\r\nMotorola g37 power(MOBHMX5Y6G5HKRFS),\r\nMotorola g37 power(MOBHMX5YNNYGMVWH),\r\nMotorola g37 power(MOBHMX5YXCBREREH),\r\nVivo X300 FE(MOBHMKZ8KFFYHSZ5),\r\nVivo X300 FE(MOBHMKZ8QBZCHJHZ),\r\nVivo X300 FE(MOBHMKZ8CGVGTRBF),\r\nVivo X300 FE(MOBHMKZ8XZA9YY3C),\r\nVivo X300 FE(MOBHMKZ8HGPZDPZK),\r\nVivo X300 FE(MOBHMKZ89GMYKBMG),\r\nVivo X300 Ultra(MOBHMKZ8SQQXZSR3),\r\nVivo X300 Ultra(MOBHMKZ8K8YRHE4P),\r\nVivo X300 Ultra(MOBHMME9HYCGYWMJ),\r\nMotorola G06 Power(MOBHN973VRPBQTKY),\r\nMotorola G06 Power(MOBHN973FFYHGUGG),\r\nMotorola G06 Power(MOBHN973UQNPMAAN),\r\nSamsung Galaxy F70e 5G(MOBHMGHQPNBA9RPY),\r\nSamsung Galaxy F70e 5G(MOBHMGHQ7MHMMHJZ),\r\nSamsung Galaxy F70e 5G(MOBHMGHQF8KKB99Q),\r\nSamsung Galaxy F70e 5G(MOBHMGHQ9NY7Q4JR),\r\nMotorola g77 power(MOBHZNDFKFBFTBHF),\r\nMotorola g77 power(MOBHZNDFQUUACV4Z),\r\nMotorola g77 power(MOBHZNDFR7K9NSGH),\r\nMotorola g77 power(MOBHZNDFDUZ2ZKFZ),\r\nMotorola g77 power(MOBHNEZPY2XEQHKG),\r\nMotorola g77 power(MOBHNEZPDE4ZW8KA),\r\nMotorola g77 power(MOBHNEZPKXSZXFY6),\r\nMotorola g77 power(MOBHZNDFQGJRV8ZH),\r\nrealme P4R 5G(MOBHP2V864KVEWSG),\r\nrealme P4R 5G(MOBHP2V8BYYCWHPP),\r\nrealme P4R 5G(MOBHP2V8SRWKXMSF),\r\nMotorola edge 70 pro(MOBHN973YGSQZH7U),\r\nMotorola edge 70 pro(MOBHN9734ZPCKBAC),\r\nMotorola edge 70 pro(MOBHN973MHGP4S2S),\r\nMotorola edge 70 pro(MOBHN973JRZJXD9Y),\r\nMotorola edge 70 pro(MOBHN973YUTCVRVP),\r\nMotorola edge 70 pro(MOBHN9739XAPWTP3),\r\nPOCO M8 Power 5G(MOBHPCYN7CHENHFF),\r\nPOCO M8 Power 5G(MOBHPCYNBFXP5TG9),\r\nPOCO M8 Power 5G(MOBHPCYNPNCJG2UV),\r\nPOCO M8 Power 5G(MOBHPCYNSNYCGRDN),\r\nPOCO M8 Power 5G(MOBHPCYNPTEZQTHC),\r\nPOCO M8 Power 5G(MOBHPCYNFWHRJD8C),\r\nSamsung Galaxy S26+ 5G(MOBHZVAGMXHJ3SR4),\r\nSamsung Galaxy S26+ 5G(MOBHZVAGZCVMEFYW),\r\nSamsung Galaxy S26+ 5G(MOBHZVAGZVBZCKGF),\r\nSamsung Galaxy S26+ 5G(MOBHZVAGXSHDDUPH),\r\nVivo X300 FE(MOBHQYFNFVCHHFYC),\r\nVivo X300 FE(MOBHQYFNGEVZV3VK),\r\nVivo X300 FE(MOBHQYFNKHC7JFDZ),\r\nGoogle Pixel 11(MOBHPHNV4FA6ZKGF),\r\nGoogle Pixel 11(MOBHPHNVBH6BSZ4M),\r\nGoogle Pixel 11(MOBHPHNVEC2P4WV3),\r\nGoogle Pixel 11(MOBHPHNVKVFNMHM3),\r\nGoogle Pixel 11(MOBHPHNVKY9PHBXD),\r\nGoogle Pixel 11(MOBHPHNVYZSFXPGY),\r\nNothing Phone (4a)(MOBHK7DDGFM46V5M),\r\nNothing Phone (4a)(MOBHK7DDJDQBDTWF),\r\nNothing Phone (4a)(MOBHK7DDCE4EREEK),\r\nNothing Phone (4a)(MOBHK7DDRAKBHNT5),\r\nNothing Phone (4a)(MOBHM2ZU8YYYQRCJ),\r\nNothing Phone (4a)(MOBHM2ZUSN6EFFVG),\r\nNothing Phone (4a)(MOBHM2ZUKS9DZ7HV),\r\nNothing Phone (4a)(MOBHM2ZU4VKVQ4JV),\r\nNothing Phone (4a)(MOBHM2ZUSXGAN4DY),\r\nNothing Phone (4a)(MOBHM2ZUJCAWYH4E),\r\nNothing Phone (4a)(MOBHM2ZUZRZARU6Z),\r\nNothing Phone (4a)(MOBHM2ZUY8AQJV7F),\r\nNothing Phone (4a)(MOBHM2ZUECQGQB6R),\r\nNothing Phone (4a)(MOBHM2ZUF4WSKQEY),\r\nNothing Phone (4a)(MOBHZAWYHMRFGNFF),\r\nNothing Phone (4a)(MOBHZAWYGYRAH4PY),\r\nNothing Phone (4a)(MOBHZAWYZG6ZRHSA),\r\nNothing Phone (4a)(MOBHZAWYUQDFFTRB),\r\nNothing Phone (4a)(MOBHZAWYHRHFGS4X),\r\nNothing Phone (4a)(MOBHZAWYHWYKGGWD),\r\nNothing Phone (4a)(MOBHZAWYGU9RENGN),\r\nNothing Phone (4a)(MOBHZAWYPQ3DQ6DS),\r\nNothing Phone (4a)(MOBHZAWYWRAW9YGT),\r\nNothing Phone (4a)(MOBHZAWYVBT49JSC),\r\nNothing Phone (4a)(MOBHP9NHUZ6JZZBY),\r\nPOCO C81x(MOBHMYWRXCQBZ7D2),\r\nPOCO C81x(MOBHMYWRWPE4S8G6),\r\nPOCO C81x(MOBHMYWRWPE4S8G6),\r\nPOCO C81x(MOBHMYWRXCQBZ7D2).",
-          "payout_type": "Per Sale(%)",
-          "payout": "0.75",
-          "is_header": false
-        },
-        {
-          "name": "User maximum earn commission on Mobile Tier B",
-          "payout_type": "Per Sale",
-          "payout": "75.0",
+          "payout": "0.0",
           "is_header": false
         },
         {
@@ -218,9 +200,21 @@
           "is_header": false
         },
         {
-          "name": "Categories not mentioned",
+          "name": "Infinix Hot 60i(MOBHERZEBTBE6KDK), Infinix Hot 60i(MOBHERZERAFFCH7M), Infinix Hot 60i(MOBHERZEN4ZUNYQV), Infinix Hot 60i(MOBHERZEA3AN4VMQ), Lava Virat V1 5G(MOBHZGPPCXREAUTN), Lava Virat V1 5G(MOBHZGPPZAGBEKG3), Lava Virat V1 Pro 5G(MOBHQDFAP3AAZUFG), Lava Virat V1 Pro 5G(MOBHQDFAGHJJMSJG), Lava Virat V1 Pro 5G(MOBHQDFAP3AAZUFG), Lava Virat V1 Pro 5G(MOBHQDFAGHJJMSJG), POCO M8 Power 5G(MOBHPCYN7CHENHFF), POCO M8 Power 5G(MOBHPCYNBFXP5TG9), POCO M8 Power 5G(MOBHPCYNPNCJG2UV), POCO M8 Power 5G(MOBHPCYNSNYCGRDN), POCO M8 Power 5G(MOBHPCYNPTEZQTHC), POCO M8 Power 5G(MOBHPCYNFWHRJD8C), realme P4 Lite 5G(MOBHN7A8SZ7F9C7T), realme P4 Lite 5G(MOBHN7A8CMJGRACT), realme P4 Lite 5G(MOBHN7A8PBUWNHG5), realme P4 Lite 5G(MOBHN7A8MNWG6FFH), realme P4 Lite 5G(MOBHN7A8YFWPC9ZV), realme P4 Lite 5G(MOBHN7A8AG9TYTW6), realme P4 Lite 5G(MOBHHFBUHTZG3GTN), realme P4 Lite 5G(MOBHHFBUUUQNXRGX), realme P4 Lite 5G(MOBHHFBUDHTKZZDZ), realme P4 Lite 5G(MOBHHFBUFXBGDWBV), realme P4 Lite 5G(MOBHHFBUAZUXKQ5P), realme P4 Lite 5G(MOBHHFBUKRW2G8DX), realme P4 Lite 5G(MOBHHHU9GMFBHH7T), realme P4 Lite 5G(MOBHHHU9JBQATGFU), realme P4 Lite 5G(MOBHHHU9ZHHHMGGG), realme P4 Lite 5G(MOBHHHU93JGCQGUM), realme P4 Lite 5G(MOBHHHU9ZZVKKDWT), realme P4 Lite 5G(MOBHHHU9Y2XCZVAJ), REDMI Note 15 SE 5G(MOBHHAFATAJXVPAK), REDMI Note 15 SE 5G(MOBHHAFAYA6UYMB9), REDMI Note 15 SE 5G(MOBHHAFAWYEGSZDZ), REDMI Note 15 SE 5G(MOBHHAFAQQPFFYKF), REDMI Note 15 SE 5G(MOBHHAFACACMRBJJ), REDMI Note 15 SE 5G(MOBHHAFAF63SZA5U), REDMI Note 15 SE 5G(MOBHHAFAWGRRGRMU), REDMI Note 15 SE 5G(MOBHHAFAWFUPPTBE), REDMI Note 15 SE 5G(MOBHHAFA9MZKBZAH), REDMI Note 15 SE 5G(MOBHN52FTTUWZGBA), REDMI Note 15 SE 5G(MOBHN52FR8YCYGSZ), REDMI Note 15 SE 5G(MOBHN52FDHRHXYKD), REDMI Note 15 SE 5G(MOBHN52F84BRGFEG), REDMI Note 15 SE 5G(MOBHN52FBUDPFNXC), REDMI Note 15 SE 5G(MOBHN52FS8S3WUPB), REDMI Note 15 SE 5G(MOBHN52FUSYGZSZD), REDMI Note 15 SE 5G(MOBHN52FMT5ZSDSW), REDMI Note 15 SE 5G(MOBHN52FYUMHG9WD), Tecno Spark 50(MOBHHH5TZMHQCMSU), Tecno Spark 50(MOBHHH5TPTZJJESV), Tecno Spark 50(MOBHHH5TE3SB8AS3), Tecno Spark 50(MOBHHH5TUZSFP75H), Tecno Spark 50(MOBHHH5T8CKZF98F), Tecno Spark 50(MOBHHH5TTKP7QEEA), Tecno Spark 50(MOBHHH5TXA8SA2ST), Tecno Spark 50(MOBHHH5TDHVFWPEY).",
+          "payout_type": "Per Sale",
+          "payout": "90.0",
+          "is_header": false
+        },
+        {
+          "name": "Motorola edge 70 pro(MOBHN973YGSQZH7U), Motorola edge 70 pro(MOBHN9734ZPCKBAC), Motorola edge 70 pro(MOBHN973MHGP4S2S), Motorola edge 70 pro(MOBHN973JRZJXD9Y), Motorola edge 70 pro(MOBHN973YUTCVRVP), Motorola edge 70 pro(MOBHN9739XAPWTP3), Motorola Edge 70 pro +(MOBHHXQRQJX8USUW), Motorola Edge 70 pro +(MOBHHXQRYAYXMA86), Motorola Edge 70 pro +(MOBHHXQRSGJ3MDV7), Nothing Phone (4b)(MOBHZMBDHVTPQTWY), Nothing Phone (4b)(MOBHZMBDSF3JAFTF), Nothing Phone (4b)(MOBHZMBD9WNP9HHB), Nothing Phone (4b)(MOBHZMBDNBKCHZ7B), Nothing Phone (4b)(MOBHZMBD5MZZDUYA), Nothing Phone (4b)(MOBHZMBDHJGVM8N5), POCO X8 Power 5G(MOBHQ6XZQ52XVZ9U), POCO X8 Power 5G(MOBHQ6XZVH98SKHM), POCO X8 Power 5G(MOBHQ6XZZQTFHDSX), POCO X8 Power 5G(MOBHQ6XZBJWKEJGJ), Redmi Note 15 Pro+(MOBHPHU7QHRVGRW2), Redmi Note 15 Pro+(MOBHPHU74JNPCVC7), Redmi Note 15 Pro+(MOBHPHU77SGPHGMG).",
+          "payout_type": "Per Sale",
+          "payout": "150.0",
+          "is_header": false
+        },
+        {
+          "name": "Mobile Tier A - vivo V70 5G(MOBHMGHKUVHVUXXX), Vivo V70 Elite(MOBHK7E7GFACWJAY), Vivo V70 Elite(MOBHK7E7QKFMWGE9), Vivo V70 Elite(MOBHK7E7Y7KFSGGQ), Vivo V70 Elite(MOBHK7E76G5PPGYZ), Vivo V70 Elite(MOBHK7E7AFAQXXZK), Vivo V70 Elite(MOBHK7E7EPMQ92HA), Vivo V70 Elite(MOBHK7E7Y2VYVEJV), Vivo V70 Elite(MOBHK7E77YFNRGGS), Vivo V70 Elite(MOBHME45WMYHDVA7), Vivo V70 Elite(MOBHME4NK5UEZRHN), Vivo V70 FE(MOBHHPSHDZWCGN43), Vivo V70 FE(MOBHHPSHVGYMKB6E), Vivo V70 FE(MOBHHPSHWDF2PWHM), Vivo V70 FE(MOBHHPSHXXTNT7YP), Vivo V70 FE(MOBHHPSHQGXKZGXZ), Vivo V70 FE(MOBHHPSHHZ6JH6VN), Vivo V70 FE(MOBHMF7DHNNDNHHJ), Vivo V70 FE(MOBHME4YEZF8JGHS), Vivo V70 FE(MOBHME46D9NMFGJX), Vivo V70 FE(MOBHME48GASN6JUG), Vivo V70 FE(MOBHN62B4WRPGJR6), Vivo V70 FE(MOBHMGHWUMUYCWSG), Vivo V70 FE(MOBHMHJFHXWDH8S9), Vivo V70 FE(MOBHZFFH4MRXJ8DB), Vivo V70 FE(MOBHZFFH8ZT8QZCR), Vivo V70 FE(MOBHZFFHGXCAJDHT), Vivo V70 FE(MOBHZFFHH5CXYZDB), Vivo V70 FE(MOBHZFFHH3UZ2FZQ), Vivo V70 FE(MOBHZFFHZ5ZXJZC3), vivo X200T(MOBHJK5M62ZH9FAM), vivo X200T(MOBHJK5MWVU36Z9H), vivo X200T(MOBHJK5MSMEHG5XS), vivo X200T(MOBHJK5MBRDS3GUQ), Vivo X300(MOBHHZBC6RGX2S83), Vivo X300(MOBHHZBCZYZHY24Q), Vivo X300(MOBHHZBCAAZK5MU2), Vivo X300(MOBHHZBCNHH5VMFZ), Vivo X300(MOBHHZBCACFNAZZG), Vivo X300(MOBHHZBCT62B3HYR), Vivo X300(MOBHHZBCW6ZDZPC6), Vivo X300(MOBHHZBCQRGMFFHY), Vivo X300(MOBHHZBCRTA4QAFQ), Vivo X300 FE(MOBHMKZ8KFFYHSZ5), Vivo X300 FE(MOBHMKZ8QBZCHJHZ), Vivo X300 FE(MOBHMKZ8CGVGTRBF), Vivo X300 FE(MOBHMKZ8XZA9YY3C), Vivo X300 FE(MOBHMKZ8HGPZDPZK), Vivo X300 FE(MOBHMKZ89GMYKBMG), Vivo X300 FE(MOBHQYFNFVCHHFYC), Vivo X300 FE(MOBHQYFNGEVZV3VK), Vivo X300 FE(MOBHQYFNKHC7JFDZ), Vivo X300 Pro(MOBHHZBCYBWTZ3F7), Vivo X300 Pro(MOBHHZBCNHJVGGCD), Vivo X300 Ultra(MOBHMKZ8SQQXZSR3), Vivo X300 Ultra(MOBHMKZ8K8YRHE4P), Vivo X300 Ultra(MOBHMME9HYCGYWMJ).",
           "payout_type": "Per Sale(%)",
-          "payout": "0.0",
+          "payout": "0.75",
           "is_header": false
         }
       ],
@@ -348,98 +342,6 @@
         "Step 1": "User clicks on your tracking link",
         "Step 2": "User lands on the advertiser website and purchase any product within cookie period",
         "Step 3": "User successfully paid and receive his/her purchase"
-      }
-    },
-    "38854": {
-      "id": 38854,
-      "name": "SBI Flipkart Credit Card",
-      "url": "https://www.sbicard.com/sprint/Flipkart",
-      "domain": "sbicard.com",
-      "image": "https://cdn0.cuelinks.com/campaigns/38854/medium/New_Project_-_2026-01-13T161407.392.png?1768320874",
-      "payout_type": "Per Lead",
-      "payout": "1890.0",
-      "payout_currency": "INR",
-      "campaign_type": "CPL",
-      "access_status": "open",
-      "categories": [
-        {
-          "id": 20,
-          "name": "Credit Card"
-        }
-      ],
-      "countries": [
-        {
-          "id": 252,
-          "iso": "IN",
-          "name": "India"
-        }
-      ],
-      "reporting_type": "Offline",
-      "deeplink_allowed": false,
-      "sub_ids_allowed": true,
-      "cashback_publishers_allowed": true,
-      "social_media_publishers_allowed": false,
-      "missing_transactions_accepted": true,
-      "cookie_duration": "30 Days",
-      "is_featured": false,
-      "epc_7d": "0.0",
-      "epc_90d": "0.0",
-      "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.sbicard.com%2Fsprint%2FFlipkart",
-      "updated_at": "2026-04-02T12:06:10Z",
-      "important_info_html": "<div><b>Tracking -&nbsp;</b>Offline<br><b><br></b>Validation Criteria -&nbsp;successful&nbsp;Card&nbsp;disbursals<b><br><br>Campaign Does not help with the missing transactions.</b><br><br><ul><li>Target: 25-50 yrs Male/Female<br></li><li>Cibil Score: 780+ cibil score<br></li><li>Minimum salary bracket range 3Lac+</li></ul></div><div><br></div><div><b>Special Instructions:</b><br></div><div>1. Final numbers would be billed as per advertiser report and would be updated at the time of billing.</div><div>2. The campaign is billable on card dispersal.</div><div>3. On panel, application submitted will be updated. Validation will be done on card dispersal.<div><br>Serviceable Pin code -&nbsp;<a href=\"https://cdn0.cuelinks.com/campaign_files/210/SBI_Pincode.zip?1733479808\" target=\"\" rel=\"\">https://cdn0.cuelinks.com/campaign_files/210/SBI_Pincode.zip?1733479808</a><br><br>Gross Annual Income greater than Rs. 300000, already having credit history<br><br><b>lease find below validation details for SBI Campaign.</b><u></u><u></u><u></u><b>&nbsp;</b><u></u><ol><li>List of non-serviceable pin code- (Serviceable pin-code list)<u></u><u></u></li><li>List of CAT A &amp; B company (Top Company Name who usually high conversion rate)<u></u><u></u></li><li>List of negative parameter where customer gets straight reject- low CIBIL, Self-employed (CCB4-New to credit)<u></u><u></u></li><li>We need to target those people who have CIBIL score more 780 and have CIBIL history since last 6-12 month. No defaulter history.<u></u><u></u></li><li>Minimum salary bracket range (3Lac+), it will increase on basis of card type.<u></u><u></u></li><li>Designation \u2013 Manager &amp; Above<u></u><u></u></li><li>Age criteria \u2013 Ideally 25+<u></u><u></u></li><li>The combination of SALARIED + CCB4 leads will be payable now.</li></ol>Payout is not applicable on Multi-account case - A multi-account case in credit cards typically refers to a situation where multiple credit card accounts are associated with the same individual or business.<br><br>1. Bureau Score Criteria:&nbsp;A minimum bureau score of&nbsp;780+ is required. NTC (New to Credit / -1 CIBIL) applications are not allowed.<br><br>2. Customer should use Aadhar linked mobile number only to apply for credit cards.<br><br>3. VKYC done over 50km from your Aadhaar/communication address will result in application rejection and loss of commission</div></div>",
-      "payout_categories": [
-        {
-          "name": "ETCC & Multi-account case",
-          "payout_type": "Per Lead",
-          "payout": "0.0",
-          "is_header": false
-        },
-        {
-          "name": "Payout on Card disbursals - NTB & ETB User",
-          "payout_type": "Per Lead",
-          "payout": "1890.0",
-          "is_header": false
-        }
-      ],
-      "platforms": {
-        "allowed": [
-          "Web",
-          "Mobile Web"
-        ],
-        "disallowed": [
-          "Android App",
-          "iOS App"
-        ]
-      },
-      "media": {
-        "allowed": [
-          "Text Link",
-          "Banner",
-          "Deals",
-          "Coupons",
-          "Cashback, Reward Points, Incentives, Charity"
-        ],
-        "disallowed": [
-          "Email (Text)",
-          "Custom Email (Text)",
-          "Email (HTML)",
-          "Custom Email (HTML)",
-          "POP Traffic",
-          "Native Ads",
-          "Social Media",
-          "Facebook Ads",
-          "SEM - Brand Keyword(s)",
-          "SEM - Generic Keyword(s)",
-          "SEM - Brand + Generic Keyword(s)"
-        ]
-      },
-      "tracking_time": "1 Week",
-      "validation_time": "60 Days",
-      "payment_time": "90 Days",
-      "conversion_flow": {
-        "Step 1": "User clicks on your tracking link",
-        "Step 2": "User lands on the advertiser website ",
-        "Step 3": "User successfully paid on card dispersal"
       }
     },
     "59199": {
@@ -694,119 +596,6 @@
         "Step 3": "User buys a product"
       }
     },
-    "8": {
-      "id": 8,
-      "name": "Amazon UK",
-      "url": "http://www.amazon.co.uk/",
-      "domain": "amazon.co.uk",
-      "image": "https://cdn0.cuelinks.com/campaigns/8/medium/amazoncouk.jpg?1342775846",
-      "payout_type": "Per Click",
-      "payout": "0.13",
-      "payout_currency": "INR",
-      "campaign_type": "CPC",
-      "access_status": "not_applied",
-      "categories": [
-        {
-          "id": 1,
-          "name": "Fashion"
-        },
-        {
-          "id": 2,
-          "name": "Baby & Kids"
-        },
-        {
-          "id": 3,
-          "name": "Books"
-        },
-        {
-          "id": 4,
-          "name": "Electronics"
-        },
-        {
-          "id": 6,
-          "name": "Flowers & Gifts"
-        },
-        {
-          "id": 7,
-          "name": "Food & Grocery"
-        },
-        {
-          "id": 8,
-          "name": "Health & Beauty"
-        },
-        {
-          "id": 9,
-          "name": "Home & Kitchen"
-        }
-      ],
-      "countries": [
-        {
-          "id": 77,
-          "iso": "GB",
-          "name": "United Kingdom"
-        }
-      ],
-      "reporting_type": "Offline",
-      "deeplink_allowed": true,
-      "sub_ids_allowed": true,
-      "cashback_publishers_allowed": false,
-      "social_media_publishers_allowed": false,
-      "missing_transactions_accepted": false,
-      "cookie_duration": "30 minutes",
-      "is_featured": false,
-      "epc_7d": "1.0",
-      "epc_90d": "1.15",
-      "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=http%3A%2F%2Fwww.amazon.co.uk%2F",
-      "updated_at": "2026-09-03T17:11:23Z",
-      "important_info_html": "For CPC campaign, it is recommended to pass your click id in &amp;scid= parameter in the tracking link<br><br>This is average CPC campaign.<br><br>The payout can increase / decrease depending on the quality of traffic.<br><br>The commission will get track and validation will be processed based on successful&nbsp;order/sale made out of delivered traffic.<br><br>Not allowed:<br>SEM, Brand bidding, PPC, adult traffic, bot traffic.<br>",
-      "payout_categories": [
-        {
-          "name": "CPC (Dynamic)",
-          "payout_type": "Per Click",
-          "payout": "0.13",
-          "is_header": false
-        }
-      ],
-      "platforms": {
-        "allowed": [
-          "Web",
-          "Mobile Web",
-          "Android App",
-          "iOS App"
-        ],
-        "disallowed": []
-      },
-      "media": {
-        "allowed": [
-          "Text Link",
-          "Banner"
-        ],
-        "disallowed": [
-          "Deals",
-          "Coupons",
-          "Cashback, Reward Points, Incentives, Charity",
-          "Email (Text)",
-          "Custom Email (Text)",
-          "Email (HTML)",
-          "Custom Email (HTML)",
-          "POP Traffic",
-          "Native Ads",
-          "Social Media",
-          "Facebook Ads",
-          "SEM - Brand Keyword(s)",
-          "SEM - Generic Keyword(s)",
-          "SEM - Brand + Generic Keyword(s)"
-        ]
-      },
-      "tracking_time": "48 hours",
-      "validation_time": "60 days",
-      "payment_time": "90 days",
-      "conversion_flow": {
-        "Step 1": "User clicks on the link",
-        "Step 2": "User visit the merchant page",
-        "Step 3": "User purchases the product"
-      }
-    },
     "9": {
       "id": 9,
       "name": "Amazon US",
@@ -814,7 +603,7 @@
       "domain": "amazon.com",
       "image": "https://cdn0.cuelinks.com/campaigns/9/medium/Amazon.com_store_logo.jpg?1716545111",
       "payout_type": "Per Click",
-      "payout": "6.38",
+      "payout": "6.5",
       "payout_currency": "INR",
       "campaign_type": "CPC",
       "access_status": "not_applied",
@@ -876,7 +665,7 @@
         {
           "name": "Payout per click (dynamic payout)",
           "payout_type": "Per Click",
-          "payout": "5.1",
+          "payout": "5.2",
           "is_header": false
         }
       ],
@@ -1047,7 +836,78 @@
       "epc_7d": "0.0",
       "epc_90d": "0.0",
       "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amazingclubs.com",
-      "updated_at": "2026-09-01T18:12:51Z",
+      "updated_at": "2026-10-02T06:19:06Z",
+      "important_info_html": "For CPC campaign, it is recommended to pass your click id in &scid= parameter in the tracking link<br><br>This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.<br><br><b>Note:</b> To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.",
+      "payout_categories": [
+        {
+          "name": "CPC (Dynamic)",
+          "payout_type": "Per Click",
+          "payout": "0.15",
+          "is_header": false
+        }
+      ],
+      "platforms": {
+        "allowed": [
+          "Web"
+        ],
+        "disallowed": [
+          "Mobile Web",
+          "Android App",
+          "iOS App"
+        ]
+      },
+      "media": {
+        "allowed": [
+          "Text Link",
+          "Banner"
+        ],
+        "disallowed": []
+      },
+      "tracking_time": "72 hours",
+      "validation_time": "60 days",
+      "payment_time": "90 days",
+      "conversion_flow": {
+        "Step 1": "User clicks on the link",
+        "Step 2": "User visit the merchant website",
+        "Step 3": "User buys a product"
+      }
+    },
+    "17044": {
+      "id": 17044,
+      "name": "Amazinggizmo",
+      "url": "https://www.amazinggizmo.com",
+      "domain": "amazinggizmo.com",
+      "image": "https://cdn0.cuelinks.com/uploads/images/Placeholder-Campaign.png",
+      "payout_type": "Per Click",
+      "payout": "0.15",
+      "payout_currency": "INR",
+      "campaign_type": "CPC",
+      "access_status": "not_applied",
+      "categories": [
+        {
+          "id": 4,
+          "name": "Electronics"
+        }
+      ],
+      "countries": [
+        {
+          "id": 57,
+          "iso": "DE",
+          "name": "Germany"
+        }
+      ],
+      "reporting_type": "Offline",
+      "deeplink_allowed": true,
+      "sub_ids_allowed": false,
+      "cashback_publishers_allowed": false,
+      "social_media_publishers_allowed": false,
+      "missing_transactions_accepted": false,
+      "cookie_duration": "30 minutes",
+      "is_featured": false,
+      "epc_7d": "0.0",
+      "epc_90d": "0.0",
+      "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amazinggizmo.com",
+      "updated_at": "2026-09-18T00:07:42Z",
       "important_info_html": "For CPC campaign, it is recommended to pass your click id in &scid= parameter in the tracking link<br><br>This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.<br><br><b>Note:</b> To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.",
       "payout_categories": [
         {
@@ -1420,128 +1280,6 @@
         "Step 3": "User successfully paid and receive his/her purchase\r\n"
       }
     },
-    "11799": {
-      "id": 11799,
-      "name": "Amazon Mexico",
-      "url": "https://www.amazon.com.mx",
-      "domain": "amazon.com.mx",
-      "image": "https://cdn0.cuelinks.com/campaigns/11799/medium/New_Project_-_2025-08-19T164041.244.png?1755622419",
-      "payout_type": "Per Click",
-      "payout": "0.15",
-      "payout_currency": "INR",
-      "campaign_type": "CPC",
-      "access_status": "not_applied",
-      "categories": [
-        {
-          "id": 1,
-          "name": "Fashion"
-        },
-        {
-          "id": 2,
-          "name": "Baby & Kids"
-        },
-        {
-          "id": 3,
-          "name": "Books"
-        },
-        {
-          "id": 4,
-          "name": "Electronics"
-        },
-        {
-          "id": 6,
-          "name": "Flowers & Gifts"
-        },
-        {
-          "id": 7,
-          "name": "Food & Grocery"
-        },
-        {
-          "id": 8,
-          "name": "Health & Beauty"
-        },
-        {
-          "id": 9,
-          "name": "Home & Kitchen"
-        },
-        {
-          "id": 18,
-          "name": "Entertainment"
-        },
-        {
-          "id": 19,
-          "name": "Pets"
-        }
-      ],
-      "countries": [
-        {
-          "id": 158,
-          "iso": "MX",
-          "name": "Mexico"
-        }
-      ],
-      "reporting_type": "Offline",
-      "deeplink_allowed": true,
-      "sub_ids_allowed": false,
-      "cashback_publishers_allowed": false,
-      "social_media_publishers_allowed": false,
-      "missing_transactions_accepted": false,
-      "cookie_duration": "30 minutes",
-      "is_featured": false,
-      "epc_7d": "0.5",
-      "epc_90d": "0.75",
-      "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amazon.com.mx",
-      "updated_at": "2026-04-30T12:23:05Z",
-      "important_info_html": "For CPC campaign, it is recommended to pass your click id in &scid= parameter in the tracking link<br><br>This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.<br><br><b>Note:</b> To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.",
-      "payout_categories": [
-        {
-          "name": "CPC (Dynamic)",
-          "payout_type": "Per Click",
-          "payout": "0.15",
-          "is_header": false
-        }
-      ],
-      "platforms": {
-        "allowed": [
-          "Web"
-        ],
-        "disallowed": [
-          "Mobile Web",
-          "Android App",
-          "iOS App"
-        ]
-      },
-      "media": {
-        "allowed": [
-          "Text Link",
-          "Banner"
-        ],
-        "disallowed": [
-          "Deals",
-          "Coupons",
-          "Cashback, Reward Points, Incentives, Charity",
-          "Email (Text)",
-          "Custom Email (Text)",
-          "Email (HTML)",
-          "Custom Email (HTML)",
-          "POP Traffic",
-          "Native Ads",
-          "Social Media",
-          "Facebook Ads",
-          "SEM - Brand Keyword(s)",
-          "SEM - Generic Keyword(s)",
-          "SEM - Brand + Generic Keyword(s)"
-        ]
-      },
-      "tracking_time": "72 hours",
-      "validation_time": "60 days",
-      "payment_time": "90 days",
-      "conversion_flow": {
-        "Step 1": "User clicks on the link",
-        "Step 2": "User visit the merchant website",
-        "Step 3": "User buys a product"
-      }
-    },
     "6393": {
       "id": 6393,
       "name": "Amazon Sweden",
@@ -1768,86 +1506,6 @@
         "Step 1": "User clicks on your tracking link",
         "Step 2": "User lands on the advertiser website",
         "Step 3": "User successfully paid and receive his/her purchase"
-      }
-    },
-    "5647": {
-      "id": 5647,
-      "name": "Amazon Germany",
-      "url": "https://www.amazon.de",
-      "domain": "amazon.de",
-      "image": "https://cdn0.cuelinks.com/campaigns/5647/medium/images.png?1699460038",
-      "payout_type": "Per Sale",
-      "payout": "0.15",
-      "payout_currency": "INR",
-      "campaign_type": "CPC",
-      "access_status": "not_applied",
-      "categories": [
-        {
-          "id": 4,
-          "name": "Electronics"
-        }
-      ],
-      "countries": [
-        {
-          "id": 57,
-          "iso": "DE",
-          "name": "Germany"
-        }
-      ],
-      "reporting_type": "Offline",
-      "deeplink_allowed": true,
-      "sub_ids_allowed": true,
-      "cashback_publishers_allowed": false,
-      "social_media_publishers_allowed": false,
-      "missing_transactions_accepted": false,
-      "cookie_duration": "30 minutes",
-      "is_featured": false,
-      "epc_7d": "1.17",
-      "epc_90d": "6.57",
-      "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amazon.de",
-      "updated_at": "2025-10-01T02:30:48Z",
-      "important_info_html": "For CPC campaign, it is recommended to pass your click id in &scid= parameter in the tracking link<br><br>This is average CPC campaign.<br><br>The payout can increase / decrease depending on the quality of traffic.<br><br>The commission will get track and validation will be processed based on successful&nbsp;order/sale made out of delivered traffic.<br><br>Not allowed:<br>SEM, Brand bidding, PPC, adult traffic, bot traffic.",
-      "payout_categories": [
-        {
-          "name": "CPC (Dynamic)",
-          "payout_type": "Per Click",
-          "payout": "0.15",
-          "is_header": false
-        }
-      ],
-      "platforms": {
-        "allowed": [],
-        "disallowed": []
-      },
-      "media": {
-        "allowed": [
-          "Text Link",
-          "Banner"
-        ],
-        "disallowed": [
-          "Deals",
-          "Coupons",
-          "Cashback, Reward Points, Incentives, Charity",
-          "Email (Text)",
-          "Custom Email (Text)",
-          "Email (HTML)",
-          "Custom Email (HTML)",
-          "POP Traffic",
-          "Native Ads",
-          "Social Media",
-          "Facebook Ads",
-          "SEM - Brand Keyword(s)",
-          "SEM - Generic Keyword(s)",
-          "SEM - Brand + Generic Keyword(s)"
-        ]
-      },
-      "tracking_time": "48 hours",
-      "validation_time": "60 days",
-      "payment_time": "90 days",
-      "conversion_flow": {
-        "Step 1": "User clicks on link",
-        "Step 2": "User visit the merchant site",
-        "Step 3": "User purchases the product"
       }
     },
     "2997": {
@@ -2305,7 +1963,7 @@
       "epc_7d": "0.0",
       "epc_90d": "0.0",
       "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.omazonia.com",
-      "updated_at": "2026-09-03T00:07:23Z",
+      "updated_at": "2026-10-03T12:05:36Z",
       "important_info_html": "For CPC campaign, it is recommended to pass your click id in &scid= parameter in the tracking link<br><br>This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.<br><br><b>Note:</b> To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.",
       "payout_categories": [
         {
@@ -2428,144 +2086,6 @@
         "Step 3": "User buys a product"
       }
     },
-    "32801": {
-      "id": 32801,
-      "name": "Amazon Netherlands",
-      "url": "https://www.amazon.nl/",
-      "domain": "amazon.nl",
-      "image": "https://cdn0.cuelinks.com/campaigns/32801/medium/New_Project_-_2025-08-19T164041.244.png?1755621660",
-      "payout_type": "Per Click",
-      "payout": "0.15",
-      "payout_currency": "INR",
-      "campaign_type": "CPC",
-      "access_status": "not_applied",
-      "categories": [
-        {
-          "id": 1,
-          "name": "Fashion"
-        },
-        {
-          "id": 2,
-          "name": "Baby & Kids"
-        },
-        {
-          "id": 3,
-          "name": "Books"
-        },
-        {
-          "id": 4,
-          "name": "Electronics"
-        },
-        {
-          "id": 6,
-          "name": "Flowers & Gifts"
-        },
-        {
-          "id": 7,
-          "name": "Food & Grocery"
-        },
-        {
-          "id": 8,
-          "name": "Health & Beauty"
-        },
-        {
-          "id": 9,
-          "name": "Home & Kitchen"
-        },
-        {
-          "id": 10,
-          "name": "Recharge"
-        },
-        {
-          "id": 13,
-          "name": "Gaming"
-        },
-        {
-          "id": 16,
-          "name": "Education"
-        },
-        {
-          "id": 17,
-          "name": "Sports"
-        },
-        {
-          "id": 18,
-          "name": "Entertainment"
-        },
-        {
-          "id": 19,
-          "name": "Pets"
-        }
-      ],
-      "countries": [
-        {
-          "id": 167,
-          "iso": "NL",
-          "name": "Netherlands"
-        }
-      ],
-      "reporting_type": "Offline",
-      "deeplink_allowed": true,
-      "sub_ids_allowed": false,
-      "cashback_publishers_allowed": false,
-      "social_media_publishers_allowed": false,
-      "missing_transactions_accepted": false,
-      "cookie_duration": "30 minutes",
-      "is_featured": false,
-      "epc_7d": "0.0",
-      "epc_90d": "0.0",
-      "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amazon.nl%2F",
-      "updated_at": "2026-09-03T18:08:26Z",
-      "important_info_html": "For CPC campaign, it is recommended to pass your click id in &scid= parameter in the tracking link<br><br>This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.",
-      "payout_categories": [
-        {
-          "name": "CPC (Dynamic)",
-          "payout_type": "Per Click",
-          "payout": "0.15",
-          "is_header": false
-        }
-      ],
-      "platforms": {
-        "allowed": [
-          "Web"
-        ],
-        "disallowed": [
-          "Mobile Web",
-          "Android App",
-          "iOS App"
-        ]
-      },
-      "media": {
-        "allowed": [
-          "Text Link",
-          "Banner"
-        ],
-        "disallowed": [
-          "Deals",
-          "Coupons",
-          "Cashback, Reward Points, Incentives, Charity",
-          "Email (Text)",
-          "Custom Email (Text)",
-          "Email (HTML)",
-          "Custom Email (HTML)",
-          "POP Traffic",
-          "Native Ads",
-          "Social Media",
-          "Facebook Ads",
-          "SEM - Brand Keyword(s)",
-          "SEM - Generic Keyword(s)",
-          "SEM - Brand + Generic Keyword(s)"
-        ]
-      },
-      "tracking_time": "72 hours",
-      "validation_time": "60 Days",
-      "payment_time": "90 Days",
-      "conversion_flow": {
-        "Step 1": "User clicks on your tracking link",
-        "Step 2": "User lands on the advertiser website ",
-        "Step 3": "User successfully paid and receive his/her purchase"
-      }
-    },
     "27893": {
       "id": 27893,
       "name": "Amazgifts",
@@ -2684,7 +2204,7 @@
       "epc_7d": "0.0",
       "epc_90d": "0.0",
       "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB07P1XFYJP",
-      "updated_at": "2026-05-11T17:15:08Z",
+      "updated_at": "2026-09-28T10:14:28Z",
       "important_info_html": "",
       "payout_categories": [
         {
@@ -3413,6 +2933,92 @@
         "Step 3": "User successfully paid and receive his/her purchase"
       }
     },
+    "8488": {
+      "id": 8488,
+      "name": "agadon",
+      "url": "https://www.agadon.com",
+      "domain": "agadon.com",
+      "image": "https://cdn0.cuelinks.com/campaigns/8488/medium/616a7b04d565cd4d47d2cd98003eaebb70c1e44415ee252c94d53a82b22083c5.png?1729791536",
+      "payout_type": "Per Click",
+      "payout": "0.15",
+      "payout_currency": "INR",
+      "campaign_type": "CPC",
+      "access_status": "not_applied",
+      "categories": [
+        {
+          "id": 9,
+          "name": "Home & Kitchen"
+        }
+      ],
+      "countries": [
+        {
+          "id": 57,
+          "iso": "DE",
+          "name": "Germany"
+        }
+      ],
+      "reporting_type": "Offline",
+      "deeplink_allowed": false,
+      "sub_ids_allowed": true,
+      "cashback_publishers_allowed": false,
+      "social_media_publishers_allowed": false,
+      "missing_transactions_accepted": false,
+      "cookie_duration": "30 minutes",
+      "is_featured": false,
+      "epc_7d": "0.0",
+      "epc_90d": "0.0",
+      "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.agadon.com",
+      "updated_at": "2026-09-29T10:14:51Z",
+      "important_info_html": "<li>Commission rates are dynamic.</li><li>Commission rates are dynamic.</li><li>Disallowed mediums:</li><li>PPC, SEM, Adult, Gambling, Google ads.</li><li>Note: To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.</li>",
+      "payout_categories": [
+        {
+          "name": "CPC",
+          "payout_type": "Per Click",
+          "payout": "0.15",
+          "is_header": false
+        }
+      ],
+      "platforms": {
+        "allowed": [
+          "Web"
+        ],
+        "disallowed": [
+          "Mobile Web",
+          "Android App",
+          "iOS App"
+        ]
+      },
+      "media": {
+        "allowed": [
+          "Text Link",
+          "Banner"
+        ],
+        "disallowed": [
+          "Deals",
+          "Coupons",
+          "Cashback, Reward Points, Incentives, Charity",
+          "Email (Text)",
+          "Custom Email (Text)",
+          "Email (HTML)",
+          "Custom Email (HTML)",
+          "POP Traffic",
+          "Native Ads",
+          "Social Media",
+          "Facebook Ads",
+          "SEM - Brand Keyword(s)",
+          "SEM - Generic Keyword(s)",
+          "SEM - Brand + Generic Keyword(s)"
+        ]
+      },
+      "tracking_time": "72 hours",
+      "validation_time": "60 days",
+      "payment_time": "90 days",
+      "conversion_flow": {
+        "Step 1": "User clicks on the link",
+        "Step 2": "User visit the merchant website",
+        "Step 3": "User buys a product"
+      }
+    },
     "16450": {
       "id": 16450,
       "name": "Amadine",
@@ -3605,7 +3211,7 @@
       "epc_7d": "0.0",
       "epc_90d": "0.0",
       "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.wamazing.com",
-      "updated_at": "2026-07-15T01:00:54Z",
+      "updated_at": "2026-10-02T12:09:45Z",
       "important_info_html": "This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.<br><br><b>Note:</b> To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.",
       "payout_categories": [
         {
@@ -3748,6 +3354,148 @@
       "epc_90d": "0.0",
       "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amronet.pl",
       "updated_at": "2026-07-15T10:27:00Z",
+      "important_info_html": "This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.<br><br><b>Note:</b> To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.",
+      "payout_categories": [
+        {
+          "name": "CPC (Dynamic)",
+          "payout_type": "Per Click",
+          "payout": "0.15",
+          "is_header": false
+        }
+      ],
+      "platforms": {
+        "allowed": [
+          "Web"
+        ],
+        "disallowed": [
+          "Mobile Web",
+          "Android App",
+          "iOS App"
+        ]
+      },
+      "media": {
+        "allowed": [
+          "Text Link",
+          "Banner"
+        ],
+        "disallowed": []
+      },
+      "tracking_time": "72 hours",
+      "validation_time": "60 days",
+      "payment_time": "90 days",
+      "conversion_flow": {
+        "Step 1": "User clicks on the link",
+        "Step 2": "User visit the merchant website",
+        "Step 3": "User buys a product"
+      }
+    },
+    "79090": {
+      "id": 79090,
+      "name": "Aaronano",
+      "url": "https://www.aaronano.com",
+      "domain": "aaronano.com",
+      "image": "https://cdn0.cuelinks.com/uploads/images/Placeholder-Campaign.png",
+      "payout_type": "Per Click",
+      "payout": "0.15",
+      "payout_currency": "INR",
+      "campaign_type": "CPC",
+      "access_status": "not_applied",
+      "categories": [
+        {
+          "id": 12,
+          "name": "Others"
+        }
+      ],
+      "countries": [
+        {
+          "id": 233,
+          "iso": "US",
+          "name": "United States"
+        }
+      ],
+      "reporting_type": "Offline",
+      "deeplink_allowed": true,
+      "sub_ids_allowed": false,
+      "cashback_publishers_allowed": false,
+      "social_media_publishers_allowed": false,
+      "missing_transactions_accepted": false,
+      "cookie_duration": "30 minutes",
+      "is_featured": false,
+      "epc_7d": "0.0",
+      "epc_90d": "0.0",
+      "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.aaronano.com",
+      "updated_at": "2026-08-30T12:51:00Z",
+      "important_info_html": "This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.<br><br><b>Note:</b> To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.",
+      "payout_categories": [
+        {
+          "name": "CPC (Dynamic)",
+          "payout_type": "Per Click",
+          "payout": "0.15",
+          "is_header": false
+        }
+      ],
+      "platforms": {
+        "allowed": [
+          "Web"
+        ],
+        "disallowed": [
+          "Mobile Web",
+          "Android App",
+          "iOS App"
+        ]
+      },
+      "media": {
+        "allowed": [
+          "Text Link",
+          "Banner"
+        ],
+        "disallowed": []
+      },
+      "tracking_time": "72 hours",
+      "validation_time": "60 days",
+      "payment_time": "90 days",
+      "conversion_flow": {
+        "Step 1": "User clicks on the link",
+        "Step 2": "User visit the merchant website",
+        "Step 3": "User buys a product"
+      }
+    },
+    "62385": {
+      "id": 62385,
+      "name": "Amzingfba",
+      "url": "https://www.amzingfba.com",
+      "domain": "amzingfba.com",
+      "image": "https://cdn0.cuelinks.com/uploads/images/Placeholder-Campaign.png",
+      "payout_type": "Per Click",
+      "payout": "0.15",
+      "payout_currency": "INR",
+      "campaign_type": "CPC",
+      "access_status": "not_applied",
+      "categories": [
+        {
+          "id": 16,
+          "name": "Education"
+        }
+      ],
+      "countries": [
+        {
+          "id": 75,
+          "iso": "FR",
+          "name": "France"
+        }
+      ],
+      "reporting_type": "Offline",
+      "deeplink_allowed": true,
+      "sub_ids_allowed": false,
+      "cashback_publishers_allowed": false,
+      "social_media_publishers_allowed": false,
+      "missing_transactions_accepted": false,
+      "cookie_duration": "30 minutes",
+      "is_featured": false,
+      "epc_7d": "0.0",
+      "epc_90d": "0.0",
+      "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amzingfba.com",
+      "updated_at": "2026-07-14T11:47:22Z",
       "important_info_html": "This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.<br><br><b>Note:</b> To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.",
       "payout_categories": [
         {
@@ -4269,17 +4017,11 @@
       "epc_7d": "0.0",
       "epc_90d": "0.0",
       "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.tataharperskincare.com",
-      "updated_at": "2026-09-05T10:24:49Z",
+      "updated_at": "2026-10-04T10:26:22Z",
       "important_info_html": "<li>Commission rates are dynamic.</li><li>Commission rates are dynamic.</li><li>Disallowed mediums:</li><li>PPC, SEM, Adult, Gambling, Google ads.</li><li>Note: To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.</li>",
       "payout_categories": [
         {
           "name": "CPC",
-          "payout_type": "Per Click",
-          "payout": "0.15",
-          "is_header": false
-        },
-        {
-          "name": "CPC (Dynamic)",
           "payout_type": "Per Click",
           "payout": "0.15",
           "is_header": false
@@ -4316,77 +4058,6 @@
           "SEM - Generic Keyword(s)",
           "SEM - Brand + Generic Keyword(s)"
         ]
-      },
-      "tracking_time": "72 hours",
-      "validation_time": "60 days",
-      "payment_time": "90 days",
-      "conversion_flow": {
-        "Step 1": "User clicks on the link",
-        "Step 2": "User visit the merchant website",
-        "Step 3": "User buys a product"
-      }
-    },
-    "79765": {
-      "id": 79765,
-      "name": "Abc-clinic",
-      "url": "https://www.abc-clinic.com",
-      "domain": "abc-clinic.com",
-      "image": "https://cdn0.cuelinks.com/uploads/images/Placeholder-Campaign.png",
-      "payout_type": "Per Click",
-      "payout": "0.15",
-      "payout_currency": "INR",
-      "campaign_type": "CPC",
-      "access_status": "not_applied",
-      "categories": [
-        {
-          "id": 8,
-          "name": "Health & Beauty"
-        }
-      ],
-      "countries": [
-        {
-          "id": 57,
-          "iso": "DE",
-          "name": "Germany"
-        }
-      ],
-      "reporting_type": "Offline",
-      "deeplink_allowed": true,
-      "sub_ids_allowed": false,
-      "cashback_publishers_allowed": false,
-      "social_media_publishers_allowed": false,
-      "missing_transactions_accepted": false,
-      "cookie_duration": "30 minutes",
-      "is_featured": false,
-      "epc_7d": "0.0",
-      "epc_90d": "0.0",
-      "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.abc-clinic.com",
-      "updated_at": "2026-09-04T11:25:37Z",
-      "important_info_html": "This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.<br><br><b>Note:</b> To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.",
-      "payout_categories": [
-        {
-          "name": "CPC (Dynamic)",
-          "payout_type": "Per Click",
-          "payout": "0.15",
-          "is_header": false
-        }
-      ],
-      "platforms": {
-        "allowed": [
-          "Web"
-        ],
-        "disallowed": [
-          "Mobile Web",
-          "Android App",
-          "iOS App"
-        ]
-      },
-      "media": {
-        "allowed": [
-          "Text Link",
-          "Banner"
-        ],
-        "disallowed": []
       },
       "tracking_time": "72 hours",
       "validation_time": "60 days",
@@ -5767,7 +5438,7 @@
       "epc_7d": "0.0",
       "epc_90d": "0.0",
       "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.clicksy.uk",
-      "updated_at": "2026-09-01T18:12:34Z",
+      "updated_at": "2026-09-10T06:18:19Z",
       "important_info_html": "For CPC campaign, it is recommended to pass your click id in &scid= parameter in the tracking link<br><br>This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.<br><br><b>Note:</b> To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.",
       "payout_categories": [
         {
@@ -5810,7 +5481,7 @@
       "domain": "climatuo.it",
       "image": "https://cdn0.cuelinks.com/campaigns/11412/medium/logo.png?1749584481",
       "payout_type": "Per Click",
-      "payout": "0.15",
+      "payout": "0.13",
       "payout_currency": "INR",
       "campaign_type": "CPC",
       "access_status": "not_applied",
@@ -5838,13 +5509,13 @@
       "epc_7d": "0.0",
       "epc_90d": "0.0",
       "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.climatuo.it",
-      "updated_at": "2026-09-01T08:02:16Z",
+      "updated_at": "2026-10-01T08:02:12Z",
       "important_info_html": "For CPC campaign, it is recommended to pass your click id in &scid= parameter in the tracking link<br><br>This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.<br><br><b>Note:</b> To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.",
       "payout_categories": [
         {
           "name": "CPC (Dynamic)",
           "payout_type": "Per Click",
-          "payout": "0.15",
+          "payout": "0.13",
           "is_header": false
         }
       ],
@@ -5881,7 +5552,7 @@
       "domain": "clinique.com",
       "image": "https://cdn0.cuelinks.com/campaigns/6579/medium/Screenshot_2024-05-21_at_6.51.30_PM.png?1716317520",
       "payout_type": "Per Click",
-      "payout": "2.01",
+      "payout": "1.76",
       "payout_currency": "INR",
       "campaign_type": "CPC",
       "access_status": "not_applied",
@@ -5915,7 +5586,7 @@
         {
           "name": "CPC (Dynamic)",
           "payout_type": "Per Click",
-          "payout": "2.01",
+          "payout": "1.76",
           "is_header": false
         }
       ],
@@ -6418,7 +6089,7 @@
       "domain": "clickgolf.co.uk",
       "image": "https://cdn0.cuelinks.com/campaigns/7575/medium/New_Project_-_2024-08-23T125304.810.png?1724417596",
       "payout_type": "Per Click",
-      "payout": "6.36",
+      "payout": "6.48",
       "payout_currency": "INR",
       "campaign_type": "CPC",
       "access_status": "not_applied",
@@ -6452,7 +6123,7 @@
         {
           "name": "CPC (Dynamic)",
           "payout_type": "Per Click",
-          "payout": "6.36",
+          "payout": "6.48",
           "is_header": false
         }
       ],
@@ -6534,6 +6205,77 @@
       "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.clickroam.com",
       "updated_at": "2026-07-17T16:15:44Z",
       "important_info_html": "This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.<br><br><b>Note:</b> To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.",
+      "payout_categories": [
+        {
+          "name": "CPC (Dynamic)",
+          "payout_type": "Per Click",
+          "payout": "0.15",
+          "is_header": false
+        }
+      ],
+      "platforms": {
+        "allowed": [
+          "Web"
+        ],
+        "disallowed": [
+          "Mobile Web",
+          "Android App",
+          "iOS App"
+        ]
+      },
+      "media": {
+        "allowed": [
+          "Text Link",
+          "Banner"
+        ],
+        "disallowed": []
+      },
+      "tracking_time": "72 hours",
+      "validation_time": "60 days",
+      "payment_time": "90 days",
+      "conversion_flow": {
+        "Step 1": "User clicks on the link",
+        "Step 2": "User visit the merchant website",
+        "Step 3": "User buys a product"
+      }
+    },
+    "25413": {
+      "id": 25413,
+      "name": "Pro-clipper",
+      "url": "https://www.pro-clipper.de",
+      "domain": "pro-clipper.de",
+      "image": "https://cdn0.cuelinks.com/uploads/images/Placeholder-Campaign.png",
+      "payout_type": "Per Click",
+      "payout": "0.15",
+      "payout_currency": "INR",
+      "campaign_type": "CPC",
+      "access_status": "not_applied",
+      "categories": [
+        {
+          "id": 8,
+          "name": "Health & Beauty"
+        }
+      ],
+      "countries": [
+        {
+          "id": 57,
+          "iso": "DE",
+          "name": "Germany"
+        }
+      ],
+      "reporting_type": "Offline",
+      "deeplink_allowed": true,
+      "sub_ids_allowed": false,
+      "cashback_publishers_allowed": false,
+      "social_media_publishers_allowed": false,
+      "missing_transactions_accepted": false,
+      "cookie_duration": "30 minutes",
+      "is_featured": false,
+      "epc_7d": "0.0",
+      "epc_90d": "0.0",
+      "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.pro-clipper.de",
+      "updated_at": "2026-10-04T06:19:33Z",
+      "important_info_html": "For CPC campaign, it is recommended to pass your click id in &scid= parameter in the tracking link<br><br>This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.<br><br><b>Note:</b> To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.",
       "payout_categories": [
         {
           "name": "CPC (Dynamic)",
@@ -6796,7 +6538,7 @@
       "epc_7d": "0.0",
       "epc_90d": "0.0",
       "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.clim-planete.com",
-      "updated_at": "2026-09-01T08:02:15Z",
+      "updated_at": "2026-10-01T08:02:11Z",
       "important_info_html": "For CPC campaign, it is recommended to pass your click id in &scid= parameter in the tracking link<br><br>This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.<br><br><b>Note:</b> To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.",
       "payout_categories": [
         {
@@ -6839,7 +6581,7 @@
       "domain": "climonline.fr",
       "image": "https://cdn0.cuelinks.com/uploads/images/Placeholder-Campaign.png",
       "payout_type": "Per Click",
-      "payout": "0.15",
+      "payout": "0.13",
       "payout_currency": "INR",
       "campaign_type": "CPC",
       "access_status": "not_applied",
@@ -6867,13 +6609,13 @@
       "epc_7d": "0.0",
       "epc_90d": "0.0",
       "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.climonline.fr",
-      "updated_at": "2026-09-06T16:02:36Z",
+      "updated_at": "2026-10-04T16:02:31Z",
       "important_info_html": "For CPC campaign, it is recommended to pass your click id in &scid= parameter in the tracking link<br><br>This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.<br><br><b>Note:</b> To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.",
       "payout_categories": [
         {
           "name": "CPC (Dynamic)",
           "payout_type": "Per Click",
-          "payout": "0.15",
+          "payout": "0.13",
           "is_header": false
         }
       ],
@@ -7024,17 +6766,11 @@
       "epc_7d": "0.0",
       "epc_90d": "0.0",
       "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.clickferry.com",
-      "updated_at": "2026-03-26T10:12:38Z",
+      "updated_at": "2026-09-25T10:15:49Z",
       "important_info_html": "<li>Commission rates are dynamic.</li><li>Commission rates are dynamic.</li><li>Disallowed mediums:</li><li>PPC, SEM, Adult, Gambling, Google ads.</li><li>Note: To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.</li>",
       "payout_categories": [
         {
           "name": "CPC",
-          "payout_type": "Per Click",
-          "payout": "0.15",
-          "is_header": false
-        },
-        {
-          "name": "CPC (Dynamic)",
           "payout_type": "Per Click",
           "payout": "0.15",
           "is_header": false
@@ -7187,7 +6923,7 @@
       "epc_7d": "0.0",
       "epc_90d": "0.0",
       "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fclimamarket.com%2Fde",
-      "updated_at": "2026-09-01T08:02:16Z",
+      "updated_at": "2026-10-01T08:02:11Z",
       "important_info_html": "For CPC campaign, it is recommended to pass your click id in &scid= parameter in the tracking link<br><br>This is a CPC campaign.<br><br>Commission rates are dynamic.<br><br>Disallowed mediums:<br>PPC, SEM, Adult, Gambling, Google ads.<br><br><b>Note:</b> To maintain your place in the program, your clicks should ideally result in sales. Non-converting clicks may cause the advertiser to remove you from the program.",
       "payout_categories": [
         {
@@ -7400,7 +7136,7 @@
       "epc_7d": "1.42",
       "epc_90d": "1.23",
       "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.nykaa.com",
-      "updated_at": "2026-08-04T13:24:07Z",
+      "updated_at": "2026-09-23T12:14:11Z",
       "important_info_html": "<li>Tracking - Online</li><li>Reselling/bulk buying is not allowed</li><li>Coupons Policy - Coupons shared by the Cuelinks team and coupons mentioned on the website (generic) are only payable.&nbsp;</li><li>Please note, Coupon code not provided by Cuelinks and are not available on advertiser website will not be paid.</li><li>Brand Bidding/ PPC/ Meta ads etc is strictly prohibited</li><li></li>",
       "payout_categories": [
         {
@@ -7492,7 +7228,7 @@
       "epc_7d": "0.02",
       "epc_90d": "0.14",
       "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.nykaafashion.com%2F",
-      "updated_at": "2026-07-14T14:23:34Z",
+      "updated_at": "2026-09-23T12:14:27Z",
       "important_info_html": "<div><b>Tracking -&nbsp;</b>Offline</div><div><b><br></b></div><div><b>Allowed-Disallowed Media:</b></div><div><br></div><div>Brand Bidding - Forbidden</div><div>SEM - Forbidden</div><div>M-site - Allowed</div><div>Geos - Pan India</div><div>Cookie time -&nbsp;7 DAYS</div><div>Payout Applicable for all users</div><div>Payout applicable on all products</div><div>Help with the missing transaction - Yes</div><div>Cashback applicable on payment with store credit/gift cards - No<br><br></div><br><div>Coupons Policy - Coupons shared by the Cuelinks team and coupons mentioned on the website (generic) are only payable.&nbsp;Please note, Coupon code not provided by Cuelinks and are not available on advertiser website will not be paid..<br><br>Reselling/bulk buying is not allowed<br><br>BRAND BIDDING is strictly not allowed, If caught bidding on NYKAA FASHION or any other keyword with NYKAA as a part of the keyword, All payments (pending and Due)&nbsp;will be nullified.<br><br>Terms:&nbsp;<ul><li>Nykaa Omniture report is final truth of source for validation</li><li>Payout only on successful delivered sales.</li><li>Payout is not applicable if you pay with Nykaa Credits and Gift Cards</li><li>Payout on Nykaa App Orders: Not Applicable</li><li>Payout is applicable Thrice per unique user per month basis email, phone number and address</li><li>No payout for Bulk Transactions</li><li>100% cancellation on Brand bidding and PPC violations<br></li><li>Mixed panel report frequency - Every Next Day.&nbsp;</li><li>Final source of attribution - Mixed panel reports.&nbsp;</li></ul></div>",
       "payout_categories": [
         {
@@ -7643,7 +7379,7 @@
         "name": "Flipkart",
         "url": "https://www.flipkart.com",
         "domain": "flipkart.com",
-        "image": "https://cdn0.cuelinks.com/campaigns/1/medium/Flipkart_store_logo.jpeg?1716545170",
+        "image": "https://cdn0.cuelinks.com/campaigns/1/medium/image_%287%29.png?1790611339",
         "payout_type": "Per Sale(%)",
         "payout": "6.0",
         "payout_currency": "%",
@@ -7701,7 +7437,7 @@
         "epc_7d": "0.34",
         "epc_90d": "0.24",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.flipkart.com",
-        "updated_at": "2026-08-12T11:04:57Z"
+        "updated_at": "2026-09-28T16:02:19Z"
       },
       {
         "id": 66947,
@@ -7739,43 +7475,6 @@
         "epc_90d": "0.0",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fseller.flipkart.com%2FsignUp%2FaccountCreation%2Fnew%3F",
         "updated_at": "2026-07-16T10:44:21Z"
-      },
-      {
-        "id": 38854,
-        "name": "SBI Flipkart Credit Card",
-        "url": "https://www.sbicard.com/sprint/Flipkart",
-        "domain": "sbicard.com",
-        "image": "https://cdn0.cuelinks.com/campaigns/38854/medium/New_Project_-_2026-01-13T161407.392.png?1768320874",
-        "payout_type": "Per Lead",
-        "payout": "1890.0",
-        "payout_currency": "INR",
-        "campaign_type": "CPL",
-        "access_status": "open",
-        "categories": [
-          {
-            "id": 20,
-            "name": "Credit Card"
-          }
-        ],
-        "countries": [
-          {
-            "id": 252,
-            "iso": "IN",
-            "name": "India"
-          }
-        ],
-        "reporting_type": "Offline",
-        "deeplink_allowed": false,
-        "sub_ids_allowed": true,
-        "cashback_publishers_allowed": true,
-        "social_media_publishers_allowed": false,
-        "missing_transactions_accepted": true,
-        "cookie_duration": "30 Days",
-        "is_featured": false,
-        "epc_7d": "0.0",
-        "epc_90d": "0.0",
-        "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.sbicard.com%2Fsprint%2FFlipkart",
-        "updated_at": "2026-04-02T12:06:10Z"
       }
     ],
     "Amazon India": [
@@ -7915,78 +7614,13 @@
         "updated_at": "2025-10-01T02:30:56Z"
       },
       {
-        "id": 8,
-        "name": "Amazon UK",
-        "url": "http://www.amazon.co.uk/",
-        "domain": "amazon.co.uk",
-        "image": "https://cdn0.cuelinks.com/campaigns/8/medium/amazoncouk.jpg?1342775846",
-        "payout_type": "Per Click",
-        "payout": "0.13",
-        "payout_currency": "INR",
-        "campaign_type": "CPC",
-        "access_status": "not_applied",
-        "categories": [
-          {
-            "id": 9,
-            "name": "Home & Kitchen"
-          },
-          {
-            "id": 8,
-            "name": "Health & Beauty"
-          },
-          {
-            "id": 7,
-            "name": "Food & Grocery"
-          },
-          {
-            "id": 6,
-            "name": "Flowers & Gifts"
-          },
-          {
-            "id": 4,
-            "name": "Electronics"
-          },
-          {
-            "id": 3,
-            "name": "Books"
-          },
-          {
-            "id": 2,
-            "name": "Baby & Kids"
-          },
-          {
-            "id": 1,
-            "name": "Fashion"
-          }
-        ],
-        "countries": [
-          {
-            "id": 77,
-            "iso": "GB",
-            "name": "United Kingdom"
-          }
-        ],
-        "reporting_type": "Offline",
-        "deeplink_allowed": true,
-        "sub_ids_allowed": true,
-        "cashback_publishers_allowed": false,
-        "social_media_publishers_allowed": false,
-        "missing_transactions_accepted": false,
-        "cookie_duration": "30 minutes",
-        "is_featured": false,
-        "epc_7d": "1.0",
-        "epc_90d": "1.15",
-        "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=http%3A%2F%2Fwww.amazon.co.uk%2F",
-        "updated_at": "2026-09-03T17:11:23Z"
-      },
-      {
         "id": 9,
         "name": "Amazon US",
         "url": "https://www.amazon.com/",
         "domain": "amazon.com",
         "image": "https://cdn0.cuelinks.com/campaigns/9/medium/Amazon.com_store_logo.jpg?1716545111",
         "payout_type": "Per Click",
-        "payout": "6.38",
+        "payout": "6.5",
         "payout_currency": "INR",
         "campaign_type": "CPC",
         "access_status": "not_applied",
@@ -8116,7 +7750,44 @@
         "epc_7d": "0.0",
         "epc_90d": "0.0",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amazingclubs.com",
-        "updated_at": "2026-09-01T18:12:51Z"
+        "updated_at": "2026-10-02T06:19:06Z"
+      },
+      {
+        "id": 17044,
+        "name": "Amazinggizmo",
+        "url": "https://www.amazinggizmo.com",
+        "domain": "amazinggizmo.com",
+        "image": "https://cdn0.cuelinks.com/uploads/images/Placeholder-Campaign.png",
+        "payout_type": "Per Click",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "campaign_type": "CPC",
+        "access_status": "not_applied",
+        "categories": [
+          {
+            "id": 4,
+            "name": "Electronics"
+          }
+        ],
+        "countries": [
+          {
+            "id": 57,
+            "iso": "DE",
+            "name": "Germany"
+          }
+        ],
+        "reporting_type": "Offline",
+        "deeplink_allowed": true,
+        "sub_ids_allowed": false,
+        "cashback_publishers_allowed": false,
+        "social_media_publishers_allowed": false,
+        "missing_transactions_accepted": false,
+        "cookie_duration": "30 minutes",
+        "is_featured": false,
+        "epc_7d": "0.0",
+        "epc_90d": "0.0",
+        "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amazinggizmo.com",
+        "updated_at": "2026-09-18T00:07:42Z"
       },
       {
         "id": 817,
@@ -8166,79 +7837,6 @@
         "epc_90d": "0.61",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amazon.in%2F",
         "updated_at": "2026-08-12T11:03:44Z"
-      },
-      {
-        "id": 11799,
-        "name": "Amazon Mexico",
-        "url": "https://www.amazon.com.mx",
-        "domain": "amazon.com.mx",
-        "image": "https://cdn0.cuelinks.com/campaigns/11799/medium/New_Project_-_2025-08-19T164041.244.png?1755622419",
-        "payout_type": "Per Click",
-        "payout": "0.15",
-        "payout_currency": "INR",
-        "campaign_type": "CPC",
-        "access_status": "not_applied",
-        "categories": [
-          {
-            "id": 19,
-            "name": "Pets"
-          },
-          {
-            "id": 18,
-            "name": "Entertainment"
-          },
-          {
-            "id": 9,
-            "name": "Home & Kitchen"
-          },
-          {
-            "id": 8,
-            "name": "Health & Beauty"
-          },
-          {
-            "id": 7,
-            "name": "Food & Grocery"
-          },
-          {
-            "id": 6,
-            "name": "Flowers & Gifts"
-          },
-          {
-            "id": 3,
-            "name": "Books"
-          },
-          {
-            "id": 2,
-            "name": "Baby & Kids"
-          },
-          {
-            "id": 1,
-            "name": "Fashion"
-          },
-          {
-            "id": 4,
-            "name": "Electronics"
-          }
-        ],
-        "countries": [
-          {
-            "id": 158,
-            "iso": "MX",
-            "name": "Mexico"
-          }
-        ],
-        "reporting_type": "Offline",
-        "deeplink_allowed": true,
-        "sub_ids_allowed": false,
-        "cashback_publishers_allowed": false,
-        "social_media_publishers_allowed": false,
-        "missing_transactions_accepted": false,
-        "cookie_duration": "30 minutes",
-        "is_featured": false,
-        "epc_7d": "0.5",
-        "epc_90d": "0.75",
-        "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amazon.com.mx",
-        "updated_at": "2026-04-30T12:23:05Z"
       },
       {
         "id": 6393,
@@ -8369,43 +7967,6 @@
         "epc_90d": "0.13",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amazon.com.be%2F",
         "updated_at": "2026-04-30T12:33:15Z"
-      },
-      {
-        "id": 5647,
-        "name": "Amazon Germany",
-        "url": "https://www.amazon.de",
-        "domain": "amazon.de",
-        "image": "https://cdn0.cuelinks.com/campaigns/5647/medium/images.png?1699460038",
-        "payout_type": "Per Sale",
-        "payout": "0.15",
-        "payout_currency": "INR",
-        "campaign_type": "CPC",
-        "access_status": "not_applied",
-        "categories": [
-          {
-            "id": 4,
-            "name": "Electronics"
-          }
-        ],
-        "countries": [
-          {
-            "id": 57,
-            "iso": "DE",
-            "name": "Germany"
-          }
-        ],
-        "reporting_type": "Offline",
-        "deeplink_allowed": true,
-        "sub_ids_allowed": true,
-        "cashback_publishers_allowed": false,
-        "social_media_publishers_allowed": false,
-        "missing_transactions_accepted": false,
-        "cookie_duration": "30 minutes",
-        "is_featured": false,
-        "epc_7d": "1.17",
-        "epc_90d": "6.57",
-        "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amazon.de",
-        "updated_at": "2025-10-01T02:30:48Z"
       },
       {
         "id": 2997,
@@ -8549,7 +8110,7 @@
         "epc_7d": "0.0",
         "epc_90d": "0.0",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.omazonia.com",
-        "updated_at": "2026-09-03T00:07:23Z"
+        "updated_at": "2026-10-03T12:05:36Z"
       },
       {
         "id": 4217,
@@ -8582,95 +8143,6 @@
         "epc_90d": "0.0",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amazfit.com",
         "updated_at": "2026-03-18T14:45:01Z"
-      },
-      {
-        "id": 32801,
-        "name": "Amazon Netherlands",
-        "url": "https://www.amazon.nl/",
-        "domain": "amazon.nl",
-        "image": "https://cdn0.cuelinks.com/campaigns/32801/medium/New_Project_-_2025-08-19T164041.244.png?1755621660",
-        "payout_type": "Per Click",
-        "payout": "0.15",
-        "payout_currency": "INR",
-        "campaign_type": "CPC",
-        "access_status": "not_applied",
-        "categories": [
-          {
-            "id": 19,
-            "name": "Pets"
-          },
-          {
-            "id": 18,
-            "name": "Entertainment"
-          },
-          {
-            "id": 17,
-            "name": "Sports"
-          },
-          {
-            "id": 16,
-            "name": "Education"
-          },
-          {
-            "id": 13,
-            "name": "Gaming"
-          },
-          {
-            "id": 10,
-            "name": "Recharge"
-          },
-          {
-            "id": 9,
-            "name": "Home & Kitchen"
-          },
-          {
-            "id": 8,
-            "name": "Health & Beauty"
-          },
-          {
-            "id": 7,
-            "name": "Food & Grocery"
-          },
-          {
-            "id": 6,
-            "name": "Flowers & Gifts"
-          },
-          {
-            "id": 4,
-            "name": "Electronics"
-          },
-          {
-            "id": 3,
-            "name": "Books"
-          },
-          {
-            "id": 2,
-            "name": "Baby & Kids"
-          },
-          {
-            "id": 1,
-            "name": "Fashion"
-          }
-        ],
-        "countries": [
-          {
-            "id": 167,
-            "iso": "NL",
-            "name": "Netherlands"
-          }
-        ],
-        "reporting_type": "Offline",
-        "deeplink_allowed": true,
-        "sub_ids_allowed": false,
-        "cashback_publishers_allowed": false,
-        "social_media_publishers_allowed": false,
-        "missing_transactions_accepted": false,
-        "cookie_duration": "30 minutes",
-        "is_featured": false,
-        "epc_7d": "0.0",
-        "epc_90d": "0.0",
-        "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amazon.nl%2F",
-        "updated_at": "2026-09-03T18:08:26Z"
       },
       {
         "id": 27893,
@@ -8756,7 +8228,7 @@
         "epc_7d": "0.0",
         "epc_90d": "0.0",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amazon.com%2Fdp%2FB07P1XFYJP",
-        "updated_at": "2026-05-11T17:15:08Z"
+        "updated_at": "2026-09-28T10:14:28Z"
       },
       {
         "id": 56792,
@@ -9102,6 +8574,43 @@
         "updated_at": "2026-05-11T17:13:54Z"
       },
       {
+        "id": 8488,
+        "name": "agadon",
+        "url": "https://www.agadon.com",
+        "domain": "agadon.com",
+        "image": "https://cdn0.cuelinks.com/campaigns/8488/medium/616a7b04d565cd4d47d2cd98003eaebb70c1e44415ee252c94d53a82b22083c5.png?1729791536",
+        "payout_type": "Per Click",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "campaign_type": "CPC",
+        "access_status": "not_applied",
+        "categories": [
+          {
+            "id": 9,
+            "name": "Home & Kitchen"
+          }
+        ],
+        "countries": [
+          {
+            "id": 57,
+            "iso": "DE",
+            "name": "Germany"
+          }
+        ],
+        "reporting_type": "Offline",
+        "deeplink_allowed": false,
+        "sub_ids_allowed": true,
+        "cashback_publishers_allowed": false,
+        "social_media_publishers_allowed": false,
+        "missing_transactions_accepted": false,
+        "cookie_duration": "30 minutes",
+        "is_featured": false,
+        "epc_7d": "0.0",
+        "epc_90d": "0.0",
+        "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.agadon.com",
+        "updated_at": "2026-09-29T10:14:51Z"
+      },
+      {
         "id": 16450,
         "name": "Amadine",
         "url": "https://www.amadine.com",
@@ -9210,7 +8719,7 @@
         "epc_7d": "0.0",
         "epc_90d": "0.0",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.wamazing.com",
-        "updated_at": "2026-07-15T01:00:54Z"
+        "updated_at": "2026-10-02T12:09:45Z"
       },
       {
         "id": 31821,
@@ -9285,6 +8794,80 @@
         "epc_90d": "0.0",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amronet.pl",
         "updated_at": "2026-07-15T10:27:00Z"
+      },
+      {
+        "id": 79090,
+        "name": "Aaronano",
+        "url": "https://www.aaronano.com",
+        "domain": "aaronano.com",
+        "image": "https://cdn0.cuelinks.com/uploads/images/Placeholder-Campaign.png",
+        "payout_type": "Per Click",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "campaign_type": "CPC",
+        "access_status": "not_applied",
+        "categories": [
+          {
+            "id": 12,
+            "name": "Others"
+          }
+        ],
+        "countries": [
+          {
+            "id": 233,
+            "iso": "US",
+            "name": "United States"
+          }
+        ],
+        "reporting_type": "Offline",
+        "deeplink_allowed": true,
+        "sub_ids_allowed": false,
+        "cashback_publishers_allowed": false,
+        "social_media_publishers_allowed": false,
+        "missing_transactions_accepted": false,
+        "cookie_duration": "30 minutes",
+        "is_featured": false,
+        "epc_7d": "0.0",
+        "epc_90d": "0.0",
+        "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.aaronano.com",
+        "updated_at": "2026-08-30T12:51:00Z"
+      },
+      {
+        "id": 62385,
+        "name": "Amzingfba",
+        "url": "https://www.amzingfba.com",
+        "domain": "amzingfba.com",
+        "image": "https://cdn0.cuelinks.com/uploads/images/Placeholder-Campaign.png",
+        "payout_type": "Per Click",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "campaign_type": "CPC",
+        "access_status": "not_applied",
+        "categories": [
+          {
+            "id": 16,
+            "name": "Education"
+          }
+        ],
+        "countries": [
+          {
+            "id": 75,
+            "iso": "FR",
+            "name": "France"
+          }
+        ],
+        "reporting_type": "Offline",
+        "deeplink_allowed": true,
+        "sub_ids_allowed": false,
+        "cashback_publishers_allowed": false,
+        "social_media_publishers_allowed": false,
+        "missing_transactions_accepted": false,
+        "cookie_duration": "30 minutes",
+        "is_featured": false,
+        "epc_7d": "0.0",
+        "epc_90d": "0.0",
+        "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.amzingfba.com",
+        "updated_at": "2026-07-14T11:47:22Z"
       }
     ],
     "Tata CLiQ": [
@@ -9549,44 +9132,7 @@
         "epc_7d": "0.0",
         "epc_90d": "0.0",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.tataharperskincare.com",
-        "updated_at": "2026-09-05T10:24:49Z"
-      },
-      {
-        "id": 79765,
-        "name": "Abc-clinic",
-        "url": "https://www.abc-clinic.com",
-        "domain": "abc-clinic.com",
-        "image": "https://cdn0.cuelinks.com/uploads/images/Placeholder-Campaign.png",
-        "payout_type": "Per Click",
-        "payout": "0.15",
-        "payout_currency": "INR",
-        "campaign_type": "CPC",
-        "access_status": "not_applied",
-        "categories": [
-          {
-            "id": 8,
-            "name": "Health & Beauty"
-          }
-        ],
-        "countries": [
-          {
-            "id": 57,
-            "iso": "DE",
-            "name": "Germany"
-          }
-        ],
-        "reporting_type": "Offline",
-        "deeplink_allowed": true,
-        "sub_ids_allowed": false,
-        "cashback_publishers_allowed": false,
-        "social_media_publishers_allowed": false,
-        "missing_transactions_accepted": false,
-        "cookie_duration": "30 minutes",
-        "is_featured": false,
-        "epc_7d": "0.0",
-        "epc_90d": "0.0",
-        "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.abc-clinic.com",
-        "updated_at": "2026-09-04T11:25:37Z"
+        "updated_at": "2026-10-04T10:26:22Z"
       },
       {
         "id": 2767,
@@ -10910,7 +10456,7 @@
         "epc_7d": "0.0",
         "epc_90d": "0.0",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.clicksy.uk",
-        "updated_at": "2026-09-01T18:12:34Z"
+        "updated_at": "2026-09-10T06:18:19Z"
       },
       {
         "id": 11412,
@@ -10919,7 +10465,7 @@
         "domain": "climatuo.it",
         "image": "https://cdn0.cuelinks.com/campaigns/11412/medium/logo.png?1749584481",
         "payout_type": "Per Click",
-        "payout": "0.15",
+        "payout": "0.13",
         "payout_currency": "INR",
         "campaign_type": "CPC",
         "access_status": "not_applied",
@@ -10947,7 +10493,7 @@
         "epc_7d": "0.0",
         "epc_90d": "0.0",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.climatuo.it",
-        "updated_at": "2026-09-01T08:02:16Z"
+        "updated_at": "2026-10-01T08:02:12Z"
       },
       {
         "id": 6579,
@@ -10956,7 +10502,7 @@
         "domain": "clinique.com",
         "image": "https://cdn0.cuelinks.com/campaigns/6579/medium/Screenshot_2024-05-21_at_6.51.30_PM.png?1716317520",
         "payout_type": "Per Click",
-        "payout": "2.01",
+        "payout": "1.76",
         "payout_currency": "INR",
         "campaign_type": "CPC",
         "access_status": "not_applied",
@@ -11210,7 +10756,7 @@
         "domain": "clickgolf.co.uk",
         "image": "https://cdn0.cuelinks.com/campaigns/7575/medium/New_Project_-_2024-08-23T125304.810.png?1724417596",
         "payout_type": "Per Click",
-        "payout": "6.36",
+        "payout": "6.48",
         "payout_currency": "INR",
         "campaign_type": "CPC",
         "access_status": "not_applied",
@@ -11276,6 +10822,43 @@
         "epc_90d": "0.0",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.clickroam.com",
         "updated_at": "2026-07-17T16:15:44Z"
+      },
+      {
+        "id": 25413,
+        "name": "Pro-clipper",
+        "url": "https://www.pro-clipper.de",
+        "domain": "pro-clipper.de",
+        "image": "https://cdn0.cuelinks.com/uploads/images/Placeholder-Campaign.png",
+        "payout_type": "Per Click",
+        "payout": "0.15",
+        "payout_currency": "INR",
+        "campaign_type": "CPC",
+        "access_status": "not_applied",
+        "categories": [
+          {
+            "id": 8,
+            "name": "Health & Beauty"
+          }
+        ],
+        "countries": [
+          {
+            "id": 57,
+            "iso": "DE",
+            "name": "Germany"
+          }
+        ],
+        "reporting_type": "Offline",
+        "deeplink_allowed": true,
+        "sub_ids_allowed": false,
+        "cashback_publishers_allowed": false,
+        "social_media_publishers_allowed": false,
+        "missing_transactions_accepted": false,
+        "cookie_duration": "30 minutes",
+        "is_featured": false,
+        "epc_7d": "0.0",
+        "epc_90d": "0.0",
+        "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.pro-clipper.de",
+        "updated_at": "2026-10-04T06:19:33Z"
       },
       {
         "id": 6180,
@@ -11386,7 +10969,7 @@
         "epc_7d": "0.0",
         "epc_90d": "0.0",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.clim-planete.com",
-        "updated_at": "2026-09-01T08:02:15Z"
+        "updated_at": "2026-10-01T08:02:11Z"
       },
       {
         "id": 12005,
@@ -11395,7 +10978,7 @@
         "domain": "climonline.fr",
         "image": "https://cdn0.cuelinks.com/uploads/images/Placeholder-Campaign.png",
         "payout_type": "Per Click",
-        "payout": "0.15",
+        "payout": "0.13",
         "payout_currency": "INR",
         "campaign_type": "CPC",
         "access_status": "not_applied",
@@ -11423,7 +11006,7 @@
         "epc_7d": "0.0",
         "epc_90d": "0.0",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.climonline.fr",
-        "updated_at": "2026-09-06T16:02:36Z"
+        "updated_at": "2026-10-04T16:02:31Z"
       },
       {
         "id": 77152,
@@ -11497,7 +11080,7 @@
         "epc_7d": "0.0",
         "epc_90d": "0.0",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.clickferry.com",
-        "updated_at": "2026-03-26T10:12:38Z"
+        "updated_at": "2026-09-25T10:15:49Z"
       },
       {
         "id": 75330,
@@ -11571,7 +11154,7 @@
         "epc_7d": "0.0",
         "epc_90d": "0.0",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fclimamarket.com%2Fde",
-        "updated_at": "2026-09-01T08:02:16Z"
+        "updated_at": "2026-10-01T08:02:11Z"
       },
       {
         "id": 27724,
@@ -11684,7 +11267,7 @@
         "epc_7d": "1.42",
         "epc_90d": "1.23",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.nykaa.com",
-        "updated_at": "2026-08-04T13:24:07Z"
+        "updated_at": "2026-09-23T12:14:11Z"
       },
       {
         "id": 3907,
@@ -11721,7 +11304,7 @@
         "epc_7d": "0.02",
         "epc_90d": "0.14",
         "tracking_url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.nykaafashion.com%2F",
-        "updated_at": "2026-07-14T14:23:34Z"
+        "updated_at": "2026-09-23T12:14:27Z"
       },
       {
         "id": 6092,

@@ -25,7 +25,7 @@ class Settings:
     AMAZON_AFFILIATE_TAG: str = os.getenv("AMAZON_AFFILIATE_TAG", "dealsense-21")
 
     # Replace with your direct Flipkart Affiliate ID if approved
-    FLIPKART_AFFILIATE_ID: str = os.getenv("FLIPKART_AFFILIATE_ID", "dealintel")
+    FLIPKART_AFFILIATE_ID: str = os.getenv("FLIPKART_AFFILIATE_ID", "")
 
     # Affiliate Aggregator Setting (e.g. Cuelinks / EarnKaro)
     # When enabled, wraps raw merchant URLs into a universal tracking redirect

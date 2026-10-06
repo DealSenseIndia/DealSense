@@ -4,6 +4,29 @@ All notable changes to the DealSense project are documented in this file.
 
 ---
 
+## [Phase 9] - 2026-10-06
+
+### Objective
+Implement Resilient Multi-Stage Serverless Scraper and Synchronize Multi-Category Live Deals Feed across Vercel and Backend Surfaces.
+
+### Changes Implemented
+- **Resilient Multi-Stage Serverless Scraper (`frontend/api/check-deal.js`, `api/check-deal.js`)**:
+  - Implemented 4-tier anti-bot extraction pipeline: persistent `BACKEND_URL` proxying, in-memory verified catalog lookup, Microlink & Jina Reader metadata extraction bypassing AWS datacenter IP CAPTCHA walls on Amazon.in and Flipkart.
+  - Eliminated synthetic fallback trap (fabricated ₹2,999 prices and fake BUY verdicts); honest unverified price reporting when store botwalls block extraction.
+  - Automatic affiliate parameter injection (`tag=dealsense-21`).
+- **Synchronized Multi-Merchant Deals Feed (`frontend/api/deals/live.js`, `api/deals/live.js`)**:
+  - Upgraded live deals endpoint from 7 static items to 48 verified deals across all categories (Mobiles, Audio, Laptops, Smartwatches, TVs, Appliances).
+  - Dynamic category counting and instant category filtering.
+  - Automatic proxying to persistent backend when `BACKEND_URL` is configured.
+- **Data Truth Contract & Integrity (`backend/services/deal_pipeline.py`, `backend/config.py`)**:
+  - Gated "🔥 All-Time Low" badges on genuine multi-date historical records.
+  - Gated "⚡ Price Drop Today" badges on fresh observations.
+  - Cleaned placeholder `"dealintel"` default in `FLIPKART_AFFILIATE_ID`.
+- **Test Suite Verification**:
+  - All 240 unit tests passing (100% green, zero regressions).
+
+---
+
 ## [Phase 8] - 2026-09-30
 
 ### Objective

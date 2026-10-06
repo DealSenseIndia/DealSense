@@ -113,16 +113,25 @@ def determine_deal_type_and_badge(
     discount_pct: float,
     current_price: float,
     historical_low: Optional[float],
+    has_sufficient_history: bool = True,
+    is_fresh: bool = True,
 ) -> tuple[str, str]:
-    """Classifies deal type and assigns compelling badge."""
-    if historical_low and current_price <= (historical_low * 1.01):
+    """Classifies deal type and assigns a badge.
+
+    Data Truth Contract: "All-Time Low" is only claimed when there is real
+    price history behind it, and "Price Drop Today" only when the price
+    observation is recent. Otherwise a factual discount-vs-MRP label is used.
+    """
+    if has_sufficient_history and historical_low and current_price <= (historical_low * 1.01):
         return "all_time_low", "🔥 All-Time Low"
     if deal_score >= 88:
-        return "all_time_low", "🔥 Top Deal Score"
+        return "steep_drop", "🔥 Top Deal Score"
     if discount_pct >= 35:
         return "steep_drop", f"⚡ {int(discount_pct)}% Off"
     if discount_pct >= 15:
-        return "steep_drop", "⚡ Price Drop Today"
+        if is_fresh:
+            return "steep_drop", "⚡ Price Drop Today"
+        return "steep_drop", f"⚡ {int(discount_pct)}% Off MRP"
     return "card_stack", "💳 Verified Deal"
 
 
@@ -150,11 +159,24 @@ def build_deal_card(
     discount_pct = int(verdict.discount_pct) if verdict.discount_pct else 0
     deal_score = int(verdict.deal_score)
 
+    _hist_dates = {o.observed_at.date() for o in valid_obs if o.observed_at}
+    _hist_ok = len(valid_obs) >= 3 and len(_hist_dates) >= 2
+    _obs_at = current_obs.observed_at
+    if _obs_at and _obs_at.tzinfo is None:
+        _obs_at = _obs_at.replace(tzinfo=timezone.utc)
+    _fresh_limit = max(1, settings.DEAL_REFRESH_INTERVAL_MINUTES) * 2
+    _is_fresh = bool(
+        _obs_at
+        and (datetime.now(timezone.utc) - _obs_at).total_seconds() // 60 <= _fresh_limit
+    )
+
     deal_type, deal_badge = determine_deal_type_and_badge(
         deal_score=deal_score,
         discount_pct=discount_pct,
         current_price=current_price,
         historical_low=verdict.historical_low,
+        has_sufficient_history=_hist_ok,
+        is_fresh=_is_fresh,
     )
 
     seed_cat = seed_info.get("category") if seed_info else None
