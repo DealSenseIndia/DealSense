@@ -25,7 +25,7 @@
   font-size: 38px;
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: #0F172A;
+  color: var(--text-headline, #F8FAFC);
   line-height: 1.15;
   margin-bottom: 14px;
 }
@@ -36,11 +36,13 @@
 }
 
 .setup-configurator-card {
-  background: #FFFFFF;
-  border: 1px solid var(--border-subtle);
+  background: var(--bg-card, rgba(15, 23, 42, 0.72));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
   border-radius: 20px;
   padding: 32px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-card);
   margin-bottom: 40px;
 }
 .config-steps-grid {
@@ -66,7 +68,7 @@
 .step-label {
   font-size: 14px;
   font-weight: 700;
-  color: #0F172A;
+  color: var(--text-headline);
 }
 .step-label .sub-tip {
   font-size: 11.5px;
@@ -87,20 +89,20 @@
   align-items: flex-start;
   padding: 14px 16px;
   border-radius: 12px;
-  border: 1.5px solid #E2E8F0;
-  background: #FFFFFF;
+  border: 1.5px solid var(--border-card);
+  background: rgba(15, 23, 42, 0.6);
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
 }
 .space-card:hover {
-  border-color: #CBD5E1;
+  border-color: rgba(255, 255, 255, 0.15);
   transform: translateY(-1px);
 }
 .space-card.active {
-  border-color: #16A34A;
-  background: #F0FDF4;
-  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.12);
+  border-color: rgba(16, 185, 129, 0.5);
+  background: rgba(16, 185, 129, 0.15);
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.2);
 }
 .space-icon {
   font-size: 24px;
@@ -109,7 +111,7 @@
 .space-title {
   font-size: 13.5px;
   font-weight: 700;
-  color: #0F172A;
+  color: var(--text-headline);
 }
 .space-sub {
   font-size: 11px;
@@ -143,15 +145,20 @@
   border-radius: 8px;
   font-size: 12px;
   font-weight: 600;
-  border: 1px solid #E2E8F0;
-  background: #F8FAFC;
-  color: #475569;
+  border: 1px solid var(--border-card);
+  background: rgba(15, 23, 42, 0.6);
+  color: var(--text-secondary);
   cursor: pointer;
+  transition: all 0.15s ease;
+}
+.budget-pill:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-headline);
 }
 .budget-pill.active {
-  background: #0F172A;
-  color: #FFFFFF;
-  border-color: #0F172A;
+  background: rgba(16, 185, 129, 0.18);
+  color: #34D399;
+  border-color: rgba(16, 185, 129, 0.5);
 }
 
 .owned-items-flex {
@@ -167,10 +174,10 @@
   border-radius: 9999px;
   font-size: 12px;
   font-weight: 600;
-  background: #F1F5F9;
-  color: #334155;
+  background: rgba(15, 23, 42, 0.6);
+  color: var(--text-secondary);
   cursor: pointer;
-  border: 1px solid #E2E8F0;
+  border: 1px solid var(--border-card);
 }
 .owned-pill input[type="checkbox"] {
   accent-color: #16A34A;
@@ -186,15 +193,16 @@
   border-radius: 9999px;
   font-size: 12.5px;
   font-weight: 600;
-  border: 1.5px solid #E2E8F0;
-  background: #FFFFFF;
-  color: #334155;
+  border: 1.5px solid var(--border-card);
+  background: rgba(15, 23, 42, 0.6);
+  color: var(--text-secondary);
   cursor: pointer;
+  transition: all 0.15s ease;
 }
 .style-pill.active {
-  border-color: #16A34A;
-  background: #F0FDF4;
-  color: #16A34A;
+  border-color: rgba(16, 185, 129, 0.5);
+  background: rgba(16, 185, 129, 0.18);
+  color: #34D399;
   font-weight: 700;
 }
 
@@ -297,16 +305,16 @@
   flex: 1;
   padding: 16px 20px;
   border-radius: 14px;
-  border: 2px solid #E2E8F0;
-  background: #FFFFFF;
+  border: 1.5px solid var(--border-card);
+  background: var(--bg-card);
   cursor: pointer;
   text-align: left;
   transition: all 0.2s ease;
 }
 .tier-tab-btn.active {
-  border-color: var(--tier-accent, #16A34A);
-  background: #F8FAFC;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  border-color: rgba(16, 185, 129, 0.5);
+  background: rgba(16, 185, 129, 0.12);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
 }
 .tier-tab-header {
   display: flex;
@@ -317,7 +325,7 @@
 .tier-tab-title {
   font-size: 14.5px;
   font-weight: 800;
-  color: #0F172A;
+  color: var(--text-headline);
 }
 .tier-tab-badge {
   font-size: 10px;
@@ -420,17 +428,21 @@
   gap: 18px;
 }
 .setup-item-card {
-  background: #FFFFFF;
-  border: 1px solid var(--border-subtle);
+  background: var(--bg-card, rgba(15, 23, 42, 0.72));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
   border-radius: 14px;
   padding: 16px;
   display: flex;
   flex-direction: column;
   transition: all 0.2s ease;
+  box-shadow: var(--shadow-card);
 }
 .setup-item-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
 }
 .setup-card-top {
   display: flex;
@@ -464,7 +476,7 @@
 .setup-item-title {
   font-size: 13.5px;
   font-weight: 700;
-  color: #0F172A;
+  color: var(--text-headline);
   line-height: 1.35;
   margin-bottom: 6px;
 }
@@ -491,7 +503,9 @@
 .setup-card-price {
   font-size: 16px;
   font-weight: 800;
-  color: #0F172A;
+  color: #F8FAFC;
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
 }
 .setup-card-mrp {
   font-size: 11.5px;
@@ -501,27 +515,30 @@
 .btn-buy-item {
   padding: 6px 14px;
   border-radius: 8px;
-  background: #0F172A;
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
   color: #FFFFFF;
   font-size: 12px;
   font-weight: 700;
   text-decoration: none;
-  transition: background 0.15s ease;
+  transition: transform 0.15s ease, filter 0.15s ease;
 }
 .btn-buy-item:hover {
-  background: #16A34A;
+  filter: brightness(1.1);
+  transform: translateY(-1px);
 }
 
 .setup-bottom-checkout-bar {
   margin-top: 40px;
-  background: #FFFFFF;
-  border: 1px solid var(--border-subtle);
+  background: var(--bg-card, rgba(15, 23, 42, 0.85));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-card);
   border-radius: 16px;
   padding: 18px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-card);
 }
 .checkout-bar-left {
   display: flex;
@@ -529,7 +546,7 @@
 }
 .checkout-bar-left strong {
   font-size: 16px;
-  color: #0F172A;
+  color: var(--text-headline);
 }
 .checkout-bar-left span {
   font-size: 12px;
@@ -546,8 +563,9 @@
   gap: 6px;
   padding: 10px 16px;
   border-radius: 10px;
-  border: 1.5px solid #CBD5E1;
-  background: #FFFFFF;
+  border: 1px solid var(--border-card);
+  background: rgba(15, 23, 42, 0.7);
+  color: var(--text-secondary);
   color: #334155;
   font-size: 13px;
   font-weight: 700;

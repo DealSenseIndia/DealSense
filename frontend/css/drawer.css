@@ -1,13 +1,14 @@
 /* ==========================================================================
-   DEALSENSE TRACKED DEALS & WATCHLIST SLIDE-OUT DRAWER
+   DEALSENSE TRACKED DEALS & WATCHLIST SLIDE-OUT DRAWER 2.0
+   Deep Obsidian Glassmorphic Drawer
    ========================================================================== */
 
 .drawer-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.45);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(4, 7, 13, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   z-index: 2500;
   display: flex;
   justify-content: flex-end;
@@ -25,8 +26,9 @@
   width: 440px;
   max-width: 92vw;
   height: 100vh;
-  background: #FFFFFF;
-  box-shadow: -8px 0 36px rgba(15, 23, 42, 0.16);
+  background: #0B101D;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
@@ -42,8 +44,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 24px 14px;
-  border-bottom: 1px solid #F1F5F9;
+  padding: 22px 24px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .drawer-title-group {
@@ -59,46 +61,47 @@
 .drawer-heading {
   font-size: 17px;
   font-weight: 800;
-  color: #0F172A;
-  letter-spacing: -0.3px;
+  color: #F8FAFC;
+  letter-spacing: -0.02em;
   margin: 0;
 }
 
 .drawer-count-badge {
   font-size: 11.5px;
-  font-weight: 750;
-  color: #15803D;
-  background: #DCFCE7;
+  font-weight: 700;
+  color: #34D399;
+  background: rgba(16, 185, 129, 0.16);
+  border: 1px solid rgba(16, 185, 129, 0.3);
   padding: 2px 8px;
-  border-radius: 12px;
+  border-radius: var(--radius-pill);
 }
 
 .drawer-close-btn {
-  background: #F8FAFC;
-  border: 1px solid #E2E8F0;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
   width: 32px;
   height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #64748B;
-  transition: all 0.15s ease;
+  color: #94A3B8;
+  transition: all var(--transition-fast);
 }
 
 .drawer-close-btn:hover {
-  background: #F1F5F9;
-  color: #0F172A;
+  background: rgba(255, 255, 255, 0.12);
+  color: #F8FAFC;
 }
 
 .drawer-subhead-txt {
   font-size: 12px;
-  color: #64748B;
+  color: #94A3B8;
   padding: 10px 24px 14px;
   margin: 0;
   line-height: 1.45;
-  border-bottom: 1px solid #F1F5F9;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .drawer-alerts-list {
@@ -112,19 +115,20 @@
 
 /* Individual Tracked Alert Item Card */
 .tracked-alert-card {
-  background: #FFFFFF;
-  border: 1.5px solid #E2E8F0;
-  border-radius: 12px;
-  padding: 14px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-card);
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  transition: all 0.2s ease;
+  gap: 12px;
+  transition: all var(--transition-fast);
 }
 
 .tracked-alert-card:hover {
-  border-color: #10B981;
-  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.08);
+  border-color: rgba(34, 197, 94, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(34, 197, 94, 0.1);
+  transform: translateY(-2px);
 }
 
 .alert-card-top-row {
@@ -137,7 +141,7 @@
 .alert-card-title {
   font-size: 13px;
   font-weight: 700;
-  color: #0F172A;
+  color: #F8FAFC;
   line-height: 1.35;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -148,29 +152,30 @@
 .btn-delete-alert {
   background: transparent;
   border: none;
-  color: #94A3B8;
+  color: #64748B;
   cursor: pointer;
   padding: 4px;
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s ease;
+  transition: all var(--transition-fast);
   flex-shrink: 0;
 }
 
 .btn-delete-alert:hover {
-  color: #DC2626;
-  background: #FEE2E2;
+  color: #EF4444;
+  background: rgba(239, 68, 68, 0.15);
 }
 
 .alert-card-pricing-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
-  background: #F8FAFC;
-  border-radius: 8px;
+  padding: 10px 14px;
+  background: rgba(3, 7, 18, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
 }
 
 .alert-target-col {
@@ -180,15 +185,16 @@
 
 .alert-lbl {
   font-size: 10.5px;
-  color: #64748B;
+  color: #94A3B8;
   text-transform: uppercase;
   font-weight: 600;
 }
 
 .alert-target-val {
-  font-size: 14px;
+  font-family: var(--font-mono);
+  font-size: 14.5px;
   font-weight: 800;
-  color: #15803D;
+  color: #34D399;
 }
 
 .alert-cur-col {
@@ -198,9 +204,10 @@
 }
 
 .alert-cur-val {
-  font-size: 13px;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
   font-weight: 700;
-  color: #475569;
+  color: #CBD5E1;
 }
 
 .alert-card-meta-row {
@@ -220,17 +227,19 @@
 }
 
 .alert-channel-chip.whatsapp {
-  background: #DCFCE7;
-  color: #15803D;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .alert-channel-chip.email {
-  background: #EFF6FF;
-  color: #1D4ED8;
+  background: rgba(56, 189, 248, 0.15);
+  color: #38BDF8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
 }
 
 .alert-date-txt {
-  color: #94A3B8;
+  color: #64748B;
 }
 
 /* Empty State */
@@ -253,13 +262,13 @@
 .drawer-empty-title {
   font-size: 15px;
   font-weight: 750;
-  color: #0F172A;
+  color: #F8FAFC;
   margin: 0;
 }
 
 .drawer-empty-desc {
   font-size: 12.5px;
-  color: #64748B;
+  color: #94A3B8;
   line-height: 1.5;
   max-width: 280px;
   margin: 0;
@@ -268,8 +277,8 @@
 /* Drawer Footer */
 .drawer-footer-actions {
   padding: 16px 24px;
-  border-top: 1px solid #F1F5F9;
-  background: #FAFAFA;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(3, 7, 18, 0.5);
 }
 
 .drawer-guarantee-note {
@@ -277,7 +286,7 @@
   align-items: center;
   gap: 8px;
   font-size: 11px;
-  color: #64748B;
+  color: #94A3B8;
   line-height: 1.4;
 }
 

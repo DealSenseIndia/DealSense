@@ -4,6 +4,39 @@ All notable changes to the DealSense project are documented in this file.
 
 ---
 
+## [Phase 16] - 2026-10-06
+
+### Objective
+Frontend 2.0 Deep Obsidian Glassmorphic Redesign & Benchmark Competitor UI Feature Integration across all views and pages.
+
+### Changes Implemented
+- **Deep Obsidian Glassmorphism Design System (`DESIGN.md`, `frontend/css/base.css`, `frontend/css/buttons.css`)**:
+  - Implemented `#080C14` dark void canvas background, `#0B101D` surface cards, and `rgba(15, 23, 42, 0.72)` glass cards with `backdrop-filter: blur(16px)` to `20px`.
+  - Upgraded typography with JetBrains Mono for monetary values and percentage metrics, and Inter for UI copy.
+  - Implemented vibrant emerald glow accents (`#10B981` / `#22C55E` / `#34D399`) and translucent hairline borders.
+  - Added dedicated store CTA styling (`.btn-store-amazon`, `.btn-store-flipkart`, `.btn-store-croma`) and micro-animations.
+- **Global Header, Navigation, and Footer Glassmorphism (`frontend/css/header.css`, `frontend/css/footer.css`, `frontend/css/drawer.css`)**:
+  - Frosted glass sticky header with glowing brand icon, dark search pill with emerald focus glow, and smooth drawer toggle.
+  - Redesigned slide-out watchlist drawer with dark glass alert cards, target price badges, and active notification dot.
+  - Transformed footer into a dark fintech ribbon with glass stats cards, glowing social icons, and trust badges.
+- **Homepage & Feed Modernization (`frontend/css/hero.css`, `frontend/css/home_feed.css`)**:
+  - Dark hero search fold with instant category suggestion pills, search dropdown autocomplete, and floating live deal metrics.
+  - Rebuilt high-converting deal cards (`.deal-modern-card`) with smooth SVG sparkline charts, deal score badges, and dual CTAs.
+  - Restyled All-Time Low Hall of Fame, category deal grids, and Why-Choose-Us trust cards in Deep Obsidian glassmorphism.
+- **Competitor Benchmark PDP Architecture (`frontend/css/pdp.css`)**:
+  - Integrated *PriceBefore* 4-metric Price Summary strip (Current Price, All-Time Low with date badge, All-Time High, 90D Benchmark Average).
+  - Integrated *Keepa / PriceHistory.in* interactive dual-curve SVG chart container with crosshair tooltips and timeframe toggles (`1M` | `3M` | `6M` | `1Y` | `All`).
+  - Integrated *Buyhatke* True Landed Price calculator with instant bank offer pills (SBI, HDFC, ICICI, Axis) and step-down receipt breakdown.
+  - Enhanced Store Comparison matrix with 1-click affiliate redirect buttons, Deal Score gauge, Seller Trust scorecard, and AI sentiment pros/cons.
+- **Secondary Pages & Utilities Alignment (`frontend/css/deals.css`, `frontend/css/categories.css`, `frontend/css/coupons.css`, `frontend/css/setup_builder.css`)**:
+  - Replaced legacy light backgrounds across `/deals`, `/categories`, and Smart Setup builder with Deep Obsidian glass cards.
+  - Harmonized breadcrumb links and active states to use CSS custom variables (`var(--primary)`, `var(--text-headline)`).
+- **Test Integrity & Regression Verification**:
+  - Recompiled `frontend/index.html` via `scripts/build_html.py`.
+  - Ran full test suite: **259 / 259 passing tests (100% green)** in 111s.
+
+---
+
 ## [Phase 15] - 2026-10-06
 
 ### Objective

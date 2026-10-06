@@ -78,3 +78,12 @@
 - [x] Task 15.4: Automated cron sweep route (`/api/cron/sweep`) with optional `CRON_SECRET` authentication and worker execution. *(Owner: `backend_engineer`)*
 - [x] Task 15.5: End-to-end regression audit expanding test suite to 259/259 green tests (100% passing). *(Owner: `qa_sentinel`)*
 
+## Phase 16: Frontend 2.0 — Deep Obsidian Glassmorphism & Competitor-Grade Intelligence UI [STATUS: COMPLETED ✅]
+- [x] Task 16.1: Core Design Tokens & Glassmorphism foundation in `frontend/css/base.css`, `header.css`, `buttons.css`, and `footer.css`. *(Owner: `frontend_engineer`)*
+- [x] Task 16.2: Homepage Hero & Omni-Search overhaul in `frontend/css/hero.css`, `home_feed.css`, and `frontend/templates/views/home_view.html`. *(Owner: `frontend_engineer`)*
+- [x] Task 16.3: High-Density Deal Cards elevation with dynamic SVG sparklines, Deal Score badges (9.4/10), and direct 1-click affiliate redirect buttons. *(Owner: `frontend_engineer`)*
+- [x] Task 16.4: Interactive Product Detail Page (PDP) & Price Intelligence Modal overhaul in `frontend/css/pdp.css` and `frontend/templates/views/detail_view.html` (PriceBefore stats bar, dual-curve SVG chart, Buyhatke bank card calculator, store comparison matrix). *(Owner: `frontend_engineer`)*
+- [x] Task 16.5: Dedicated Deals Page (`frontend/deals.html`, `frontend/css/deals.css`) and Categories Explorer (`frontend/categories.html`, `frontend/css/categories.css`) redesign. *(Owner: `frontend_engineer`)*
+- [x] Task 16.6: HTML Compilation (`scripts/build_html.py`) and full regression test suite verification (259/259 green). *(Owner: `qa_sentinel`)*
+
+

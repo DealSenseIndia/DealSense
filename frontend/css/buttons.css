@@ -1,47 +1,62 @@
 /* ==========================================================================
-   STANDARDIZED PRIMARY BUTTON SYSTEM
-   Clean, solid DealSense green (#16A34A) (No double patterns, No 3D bevels)
+   DEALSENSE STANDARDIZED BUTTON SYSTEM 2.0
+   Sleek Emerald Gradients, Frosted Glow, Neon Traces & Store Action Buttons
    ========================================================================== */
+
+/* ── Primary Action Buttons (Emerald Glow) ── */
 .btn-cta-analyze,
 .btn-primary-view-deal,
 .btn-alert-submit-action,
-.btn-table-view-cta {
+.btn-table-view-cta,
+.btn-ttb-set-alert {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border-radius: 11px;
-  border: none;
-  background: #16A34A;
+  border-radius: var(--radius-btn);
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
   color: #FFFFFF;
-  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.22);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   font-family: var(--font-inter);
   font-size: 14px;
   font-weight: 600;
   line-height: 1;
   cursor: pointer;
   text-decoration: none;
-  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
   white-space: nowrap;
 }
 
 .btn-cta-analyze:hover,
 .btn-primary-view-deal:hover,
 .btn-alert-submit-action:hover,
-.btn-table-view-cta:hover {
-  background: #15803D;
-  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.28);
-  transform: translateY(-1px);
+.btn-table-view-cta:hover,
+.btn-ttb-set-alert:hover {
+  background: linear-gradient(135deg, #22C55E 0%, #10B981 100%);
+  border-color: rgba(74, 222, 128, 0.6);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-cta-analyze:active,
+.btn-primary-view-deal:active,
+.btn-alert-submit-action:active,
+.btn-table-view-cta:active,
+.btn-ttb-set-alert:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
 }
 
 /* Specific button dimensions */
 .btn-cta-analyze {
   height: 48px;
-  padding: 0 18px;
-  min-width: 110px;
+  padding: 0 22px;
+  min-width: 130px;
   flex-shrink: 0;
   overflow: hidden;
+  font-size: 14.5px;
 }
 
 .btn-primary-view-deal {
@@ -51,17 +66,108 @@
 }
 
 .btn-alert-submit-action {
-  height: 36px;
-  padding: 0 16px;
-  font-size: 12.5px;
-  border-radius: 8px;
+  height: 40px;
+  padding: 0 18px;
+  font-size: 13px;
+  border-radius: var(--radius-sm);
 }
 
 .btn-table-view-cta {
-  height: 28px;
-  padding: 0 10px;
-  font-size: 11.5px;
-  border-radius: 6px;
+  height: 32px;
+  padding: 0 14px;
+  font-size: 12px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Store Affiliate Direct Buttons (Amazon & Flipkart) ── */
+.btn-store-amazon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: var(--radius-btn);
+  background: linear-gradient(135deg, #FF9900 0%, #E67A00 100%);
+  color: #111827;
+  font-weight: 700;
+  font-size: 13px;
+  border: 1px solid rgba(255, 153, 0, 0.4);
+  box-shadow: 0 4px 12px rgba(255, 153, 0, 0.3);
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.btn-store-amazon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 153, 0, 0.45);
+}
+
+.btn-store-flipkart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: var(--radius-btn);
+  background: linear-gradient(135deg, #2874F0 0%, #1754B5 100%);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 13px;
+  border: 1px solid rgba(40, 116, 240, 0.4);
+  box-shadow: 0 4px 12px rgba(40, 116, 240, 0.3);
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.btn-store-flipkart:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(40, 116, 240, 0.45);
+}
+
+/* ── Ghost & Secondary Buttons ── */
+.btn-icon-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-card);
+  color: var(--text-body);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.btn-icon-ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text-headline);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-btn);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-card);
+  color: var(--text-body);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--text-headline);
+  transform: translateY(-1px);
 }
 
 /* ==========================================================================
@@ -77,12 +183,6 @@
   width: 100%;
 }
 
-.btn-analyze-sparkle-ico {
-  display: block;
-  flex-shrink: 0;
-}
-
-/* Spinner */
 .btn-spinner-ring {
   animation: dwSpinRing 0.8s linear infinite;
   display: block;
@@ -94,7 +194,6 @@
   to { transform: rotate(360deg); }
 }
 
-/* Checkmark */
 .btn-check-svg {
   display: block;
   flex-shrink: 0;
@@ -121,29 +220,9 @@
   stroke-dashoffset: 410;
 }
 
-/* Success flash state */
+/* Success Flash State */
 .btn-cta-analyze.is-verified {
-  background: #15803D !important;
-  box-shadow: 0 0 14px rgba(34, 197, 94, 0.45) !important;
+  background: linear-gradient(135deg, #10B981 0%, #047857 100%) !important;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.6) !important;
+  border-color: #34D399 !important;
 }
-
-/* Hover State */
-.btn-cta-analyze:hover:not(:disabled),
-.btn-primary-view-deal:hover,
-.btn-alert-submit-action:hover,
-.btn-table-view-cta:hover {
-  background: #15803D;
-  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.28);
-  transform: translateY(-1px);
-}
-
-/* Active State */
-.btn-cta-analyze:active:not(:disabled),
-.btn-primary-view-deal:active,
-.btn-alert-submit-action:active,
-.btn-table-view-cta:active {
-  background: #166534;
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(22, 163, 74, 0.18);
-}
-

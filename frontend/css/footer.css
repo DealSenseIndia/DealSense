@@ -1,21 +1,20 @@
 /* ==========================================================================
-   DEALSENSE GLOBAL FOOTER STYLES
-   Complete styles for the 5-column footer, trust ribbons, QR code, and badges.
+   DEALSENSE GLOBAL FOOTER 2.0 — DEEP OBSIDIAN FINTECH FOOTER
    ========================================================================== */
 
 .site-footer-bar {
-  background: #FFFFFF;
-  border-top: 1px solid var(--border-subtle, #EEF2F4);
+  background: #05080F;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   font-size: 13px;
-  color: var(--text-secondary, #64748B);
-  margin-top: 60px;
+  color: #94A3B8;
+  margin-top: 80px;
 }
 
 /* 1. Live Platform Impact & Shopper Numbers Ribbon */
 .footer-stats-ribbon {
-  background: #F8FAFC;
-  border-top: 1px solid #E2E8F0;
-  border-bottom: 1px solid #E2E8F0;
+  background: rgba(15, 23, 42, 0.45);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   padding: 24px 0;
 }
 
@@ -44,18 +43,15 @@
 
 .stat-num-highlight {
   font-size: 22px;
-  font-weight: 850;
-  color: #0F172A;
+  font-weight: 800;
+  color: #F8FAFC;
   letter-spacing: -0.02em;
 }
 
-/* Method statements in the trust ribbon. These are short phrases rather than
-   single figures, so they run smaller than .stat-num-highlight and are
-   allowed to wrap to a second line on narrow screens. */
 .stat-method-value {
   font-size: 14.5px;
-  font-weight: 750;
-  color: #0F172A;
+  font-weight: 700;
+  color: #F8FAFC;
   letter-spacing: -0.01em;
   line-height: 1.3;
   text-wrap: balance;
@@ -63,20 +59,22 @@
 
 .stat-trend-chip {
   font-size: 10.5px;
-  font-weight: 750;
-  color: #16A34A;
-  background: #DCFCE7;
-  padding: 1px 6px;
-  border-radius: 10px;
+  font-weight: 700;
+  color: #34D399;
+  background: rgba(16, 185, 129, 0.16);
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .stat-badge-guard {
   font-size: 10.5px;
-  font-weight: 750;
-  color: #D97706;
-  background: #FEF3C7;
-  padding: 1px 6px;
-  border-radius: 10px;
+  font-weight: 700;
+  color: #FBBF24;
+  background: rgba(245, 158, 11, 0.16);
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .stat-stars-icon {
@@ -87,91 +85,97 @@
 
 .stat-lbl-txt {
   font-size: 11px;
-  font-weight: 650;
+  font-weight: 600;
   color: #64748B;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
 }
 
 .footer-stat-sep {
   width: 1px;
   height: 36px;
-  background: #E2E8F0;
+  background: rgba(255, 255, 255, 0.08);
   flex-shrink: 0;
 }
 
 /* 2. Modern 5-Column Footer Grid */
 .footer-v2-container {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 48px 20px 24px 20px;
+  padding: 56px 24px 28px 24px;
 }
 
 .footer-v2-grid {
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1.6fr;
-  gap: 28px;
-  margin-bottom: 36px;
+  gap: 32px;
+  margin-bottom: 40px;
 }
 
 .footer-brand-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .footer-brand-logo {
-  width: 26px !important;
-  height: 26px !important;
-  max-width: 26px !important;
-  max-height: 26px !important;
+  width: 28px !important;
+  height: 28px !important;
+  max-width: 28px !important;
+  max-height: 28px !important;
   object-fit: contain !important;
   display: block !important;
+  filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.3));
 }
 
 .footer-brand-name {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 800;
-  color: #0F172A;
+  color: #F8FAFC;
+  letter-spacing: -0.02em;
 }
 
 .footer-brand-tagline {
   font-size: 13px;
-  color: #64748B;
-  margin-bottom: 16px;
+  color: #94A3B8;
+  margin-bottom: 18px;
 }
 
 .footer-social-links {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .social-circle-btn {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: #F1F5F9;
-  color: #475569;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94A3B8;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.18s ease;
+  transition: all var(--transition-fast);
   text-decoration: none;
 }
 
 .social-circle-btn:hover {
-  background: #16A34A;
+  background: #10B981;
+  border-color: #10B981;
   color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
 }
 
 .footer-col-title {
   font-size: 12px;
-  font-weight: 800;
-  color: #0F172A;
-  letter-spacing: 0.05em;
-  margin-bottom: 14px;
+  font-weight: 700;
+  color: #F8FAFC;
+  letter-spacing: 0.06em;
+  margin-bottom: 16px;
   text-transform: uppercase;
 }
 
@@ -181,62 +185,64 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 10px;
 }
 
 .footer-link-list a {
   font-size: 13px;
-  color: #64748B;
+  color: #94A3B8;
   text-decoration: none;
-  transition: color 0.16s ease;
+  transition: color var(--transition-fast);
 }
 
 .footer-link-list a:hover {
-  color: #16A34A;
+  color: #34D399;
 }
 
 .footer-qr-label {
   font-size: 11.5px;
-  color: #64748B;
-  margin-bottom: 8px;
+  color: #94A3B8;
+  margin-bottom: 10px;
   display: block;
 }
 
 .footer-qr-wrap {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   align-items: center;
 }
 
 .footer-qr-img {
-  width: 72px;
-  height: 72px;
-  border: 1px solid #E2E8F0;
-  border-radius: 8px;
-  padding: 3px;
+  width: 74px;
+  height: 74px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  padding: 4px;
   background: #FFFFFF;
 }
 
 .footer-app-badges {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .app-badge-btn {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #0F172A;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: #FFFFFF;
-  padding: 5px 10px;
-  border-radius: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
   text-decoration: none;
-  transition: opacity 0.16s;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
 }
 
 .app-badge-btn:hover {
-  opacity: 0.9;
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(34, 197, 94, 0.4);
 }
 
 .badge-sub {
@@ -248,20 +254,20 @@
 }
 
 .badge-title {
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 700;
   display: block;
   line-height: 1.2;
 }
 
 .footer-affiliate-note {
-  font-size: 11px;
-  color: #94A3B8;
-  line-height: 1.5;
-  padding: 16px 0;
-  border-top: 1px solid #F1F5F9;
-  border-bottom: 1px solid #F1F5F9;
-  margin-bottom: 16px;
+  font-size: 11.5px;
+  color: #64748B;
+  line-height: 1.55;
+  padding: 18px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 18px;
 }
 
 .footer-v2-bottom-bar {
@@ -275,20 +281,21 @@
 .footer-legal-links {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .footer-legal-links a {
   color: #64748B;
   text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
 .footer-legal-links a:hover {
-  color: #0F172A;
+  color: #F8FAFC;
 }
 
 .dot-sep {
-  color: #CBD5E1;
+  color: rgba(255, 255, 255, 0.15);
 }
 
 /* 3. Responsive Adjustments */

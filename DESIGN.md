@@ -1,31 +1,74 @@
-# DealSense — Visual Identity & Design System
+# DealSense — Visual Identity & Design System (Frontend 2.0)
 
 ## 1. Aesthetic Identity
-- **Theme**: Premium Sleek Dark Mode (Slate / Midnight Blue base).
-- **Inspiration**: High-performance fintech dashboards (Linear / Stripe style) tuned for Indian deal-hunting psychology.
+- **Theme**: Premium Deep Obsidian Glassmorphism (Slate / Midnight Blue / Obsidian base).
+- **Inspiration**: High-performance fintech dashboards (Linear / Stripe / Raycast) fused with premier e-commerce intelligence (Buyhatke / PriceBefore / Keepa).
+- **Core Principle**: Zero fake clutter, maximum transparency, high visual impact, instant comprehension of deal quality.
 
 ## 2. Color Tokens
 - **Backgrounds**:
-  - Root App: `#0B0F19` (Deep Obsidian)
-  - Card Surfaces: `#111827` (Rich Gray 900)
-  - Interactive Panels / Modals: `#1F2937` (Gray 800)
+  - Root App: `#080C14` (Deep Obsidian Void)
+  - Secondary Surface: `#0E1524` (Subtle Midnight Surface)
+  - Card & Container Surface: `rgba(15, 23, 42, 0.75)` with `backdrop-filter: blur(16px)`
+  - Elevated / Interactive Surface: `rgba(30, 41, 59, 0.85)`
+  - Modal / Drawer Overlays: `rgba(4, 7, 13, 0.82)` with `backdrop-filter: blur(12px)`
+- **Borders & Strokes**:
+  - Card Border Default: `rgba(255, 255, 255, 0.08)`
+  - Card Border Hover: `rgba(34, 197, 94, 0.35)` (Emerald Glow)
+  - Hairline Dividers: `rgba(255, 255, 255, 0.06)`
+- **Typography**:
+  - Primary Text: `#F8FAFC` (Slate 50)
+  - Secondary Text: `#94A3B8` (Slate 400)
+  - Muted Text: `#64748B` (Slate 500)
+  - Accent Green: `#22C55E` / `#10B981` (Vibrant Emerald)
+  - Accent Cyan: `#06B6D4` / `#38BDF8` (Sky Blue)
+  - Warning Amber: `#F59E0B`
+  - Alert Crimson: `#EF4444`
 - **Store Identifiers**:
-  - Amazon Orange: `#FF9900`
-  - Flipkart Blue: `#2874F0`
+  - Amazon: Brand Yellow/Orange `#FF9900` on `#1F1A10` pill
+  - Flipkart: Brand Blue `#2874F0` on `#0F1E36` pill
+  - Croma: Teal `#00E8BF`
+  - Reliance Digital: Crimson `#E42529`
 - **Deal Verdict Badges**:
-  - `BUY_NOW`: `#10B981` (Vibrant Emerald)
-  - `FAIR_PRICE`: `#38BDF8` (Sky Blue)
-  - `WAIT_FOR_DROP`: `#F59E0B` (Amber Orange)
-  - `AVOID_FAKE_DEAL`: `#EF4444` (Crimson Red)
+  - `BUY_NOW`: `#10B981` (Emerald Glow, background `rgba(16, 185, 129, 0.12)`)
+  - `FAIR_PRICE`: `#38BDF8` (Sky Blue Glow, background `rgba(56, 189, 248, 0.12)`)
+  - `WAIT_FOR_DROP`: `#F59E0B` (Amber Glow, background `rgba(245, 158, 11, 0.12)`)
+  - `AVOID_FAKE_DEAL`: `#EF4444` (Crimson Glow, background `rgba(239, 68, 68, 0.12)`)
 
-## 3. Typography
-- **Primary Font**: Inter (`font-sans`), geometric, highly legible at small sizes.
-- **Data & Price Figures**: Monospace font (`font-mono` / JetBrains Mono) with tabular numbers enabled (`font-variant-numeric: tabular-nums`).
+## 3. Typography & Hierarchy
+- **Headline Font**: `Inter`, `-apple-system`, `BlinkMacSystemFont`, `sans-serif` (weight 700 / 800 / 900).
+- **Body & Labels**: `Inter` (weight 400 / 500 / 600).
+- **Price Figures & Metrics**: `JetBrains Mono`, `monospace` with `font-variant-numeric: tabular-nums`.
 
-## 4. Interactive Components
-- **Dual-Curve SVG Price Chart**:
-  - Rendered via native `<svg>` path with cubic bezier calculations (`M x y C ...`).
-  - Vertical crosshair hover guide synchronized with tooltip.
-  - Quick range pills: `1M` | `3M` | `6M` | `1Y` | `All`.
-- **True Landed Price Calculator Card**:
-  - Step-down accounting layout showing Base Price, Shipping, Coupon, and Bank Card Instant Discount.
+## 4. Component Standards
+
+### A. High-Density Deal Cards (Live Feeds & Feeds Grid)
+- Glassmorphic card surface with smooth hover elevation (`transform: translateY(-4px)` with emerald radial box shadow).
+- Top meta row: Merchant badge (Amazon/Flipkart) + Deal Score pill (e.g. `9.4/10 🔥 CRAZY DROP`) + All-Time Low badge when applicable.
+- Product photo with self-healing image fallback (`/assets/fallback.svg`) and clean aspect ratio.
+- Micro-SVG Sparkline: Real historical price trajectory with emerald line (`#22C55E`) for falling prices and amber line (`#F59E0B`) for rising prices.
+- Transparent price block: Live verified price (large, bold), MRP with strike-through, and discount badge (`xx% OFF`).
+- 1-Click Action Button: Direct store affiliate redirect with store icon and external link arrow.
+
+### B. Interactive Product Detail & Intelligence (PDP)
+- **Price at a Glance Strip (PriceBefore style)**: 4 clean metric tiles: Current Price, All-Time Low (with date badge), All-Time High, and 90D Average Benchmark.
+- **Dual-Curve SVG Price History Chart**:
+  - Native `<svg>` bezier curves for Amazon (amber) vs Flipkart (blue).
+  - Timeframe toggles: `1M`, `3M`, `6M`, `1Y`, `All`.
+  - Glassmorphic hover crosshair tooltip showing exact date, store prices, and delta.
+- **True Landed Price Calculator Card (Buyhatke style)**:
+  - Interactive Indian bank card pills: SBI Card (10%), HDFC (10%), ICICI (5%), Axis, and No Offer.
+  - Step-down accounting receipt showing Base Price, Eligible Coupon deduction, Instant Card discount, and final Landed Total.
+- **Live Multi-Store Comparison Matrix**:
+  - Direct side-by-side table comparing price, delivery, return policy, and stock across Amazon & Flipkart.
+  - Callout banner showing exact price differential.
+- **Deal Score & Evidence Card**:
+  - Radial score meter, AI verdict explanation, and seller trust audit badge.
+  - One-click WhatsApp & email Price Drop Alert modal.
+
+### C. Hero Omni-Search Section
+- Glassmorphic search card with neon-glow focus ring.
+- Store shortcut badges (Amazon, Flipkart, Croma, Reliance Digital).
+- Instant autocomplete dropdown showing verified products with prices and store badges.
+- Popular deal pill tags with instant search execution.
+

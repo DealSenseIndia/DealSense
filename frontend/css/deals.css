@@ -7,8 +7,8 @@
 
 /* Page layout container */
 .deals-page-body {
-  background-color: #F8FAFC;
-  color: #0F172A;
+  background-color: var(--bg-primary, #080C14);
+  color: var(--text-primary, #E2E8F0);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   margin: 0;
   padding: 0;
@@ -91,7 +91,7 @@
 .deals-hero-title {
   font-size: 32px;
   font-weight: 800;
-  color: #0F172A;
+  color: var(--text-headline, #F8FAFC);
   letter-spacing: -0.02em;
   margin: 0 0 6px;
   line-height: 1.2;
@@ -110,11 +110,13 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
+  background: var(--bg-card, rgba(15, 23, 42, 0.72));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card, rgba(255, 255, 255, 0.08));
   border-radius: 16px;
   padding: 16px 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-card);
 }
 
 .deals-hero-card-img {
@@ -132,7 +134,7 @@
 .deals-hero-card-title {
   font-size: 16px;
   font-weight: 700;
-  color: #0F172A;
+  color: var(--text-headline, #F8FAFC);
   margin: 0 0 2px;
 }
 
@@ -209,12 +211,12 @@
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-card);
   border-radius: 9999px;
   font-size: 13px;
   font-weight: 500;
-  color: #334155;
+  color: var(--text-secondary);
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.15s ease;
@@ -222,16 +224,17 @@
 }
 
 .deals-pill-btn:hover {
-  background: #F1F5F9;
-  border-color: #CBD5E1;
-  color: #0F172A;
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--text-headline);
 }
 
 .deals-pill-btn.active {
-  background: #15803D;
-  border-color: #15803D;
-  color: #FFFFFF;
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #34D399;
   font-weight: 600;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
 }
 
 .deals-pill-dot {
@@ -254,13 +257,13 @@
 
 .deals-sort-select {
   appearance: none;
-  background: #FFFFFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 12px center;
+  background: rgba(15, 23, 42, 0.8) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 12px center;
   padding: 8px 36px 8px 14px;
-  border: 1px solid #E2E8F0;
+  border: 1px solid var(--border-card);
   border-radius: 8px;
   font-size: 13px;
   font-weight: 500;
-  color: #334155;
+  color: var(--text-headline);
   cursor: pointer;
   outline: none;
   transition: border-color 0.15s ease;
@@ -285,11 +288,13 @@
    LEFT SIDEBAR FILTERS
    -------------------------------------------------------------------------- */
 .deals-sidebar {
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
+  background: var(--bg-card, rgba(15, 23, 42, 0.72));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
   border-radius: 14px;
   padding: 18px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+  box-shadow: var(--shadow-card);
   position: sticky;
   top: 80px;
 }
@@ -300,13 +305,13 @@
   justify-content: space-between;
   margin-bottom: 16px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #F1F5F9;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .deals-filter-head-title {
   font-size: 15px;
   font-weight: 700;
-  color: #0F172A;
+  color: var(--text-headline);
   margin: 0;
 }
 
@@ -470,13 +475,14 @@
 }
 
 .price-val-badge {
-  background: #F1F5F9;
-  border: 1px solid #E2E8F0;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-card);
   border-radius: 6px;
   padding: 4px 10px;
   font-size: 11px;
   font-weight: 600;
-  color: #334155;
+  color: var(--text-headline);
+  font-family: 'JetBrains Mono', monospace;
   text-align: center;
   min-width: 65px;
 }
@@ -485,18 +491,19 @@
 .store-search-box {
   width: 100%;
   box-sizing: border-box;
-  padding: 6px 10px;
+  padding: 8px 12px;
   font-size: 12px;
-  border: 1px solid #E2E8F0;
-  border-radius: 6px;
+  border: 1px solid var(--border-card);
+  border-radius: 8px;
   margin-bottom: 10px;
   outline: none;
-  background: #FAFAFA;
+  background: rgba(8, 12, 20, 0.8);
+  color: var(--text-headline);
 }
 
 .store-search-box:focus {
-  border-color: #16A34A;
-  background: #FFFFFF;
+  border-color: #10B981;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
 }
 
 /* --------------------------------------------------------------------------
@@ -510,21 +517,23 @@
 }
 
 .deal-card {
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  border-radius: 12px;
+  background: var(--bg-card, rgba(15, 23, 42, 0.72));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
+  border-radius: 14px;
   padding: 12px 10px;
   display: flex;
   flex-direction: column;
   position: relative;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow: var(--shadow-card);
 }
 
 .deal-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-  border-color: #CBD5E1;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  border-color: rgba(16, 185, 129, 0.4);
 }
 
 /* Card Header: Badge & Wishlist Heart */
@@ -549,21 +558,21 @@
 }
 
 .deal-badge.badge-hot {
-  background: #FFF1F2;
-  color: #E11D48;
-  border: 1px solid #FFE4E6;
+  background: rgba(225, 29, 72, 0.15);
+  color: #FB7185;
+  border: 1px solid rgba(225, 29, 72, 0.3);
 }
 
 .deal-badge.badge-great {
-  background: #EFF6FF;
-  color: #2563EB;
-  border: 1px solid #DBEAFE;
+  background: rgba(37, 99, 235, 0.15);
+  color: #60A5FA;
+  border: 1px solid rgba(37, 99, 235, 0.3);
 }
 
 .deal-badge.badge-good {
-  background: #F0FDF4;
-  color: #16A34A;
-  border: 1px solid #DCFCE7;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .deal-heart-btn {
@@ -613,7 +622,7 @@
 .deal-product-title {
   font-size: 13px;
   font-weight: 700;
-  color: #0F172A;
+  color: var(--text-headline);
   margin: 0 0 6px;
   line-height: 1.35;
   display: -webkit-box;
@@ -639,7 +648,9 @@
 .deal-price-now {
   font-size: 15px;
   font-weight: 800;
-  color: #0F172A;
+  color: #F8FAFC;
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
 }
 
@@ -708,7 +719,7 @@
   justify-content: space-between;
   margin-top: auto;
   padding-top: 8px;
-  border-top: 1px solid #F8FAFC;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .deal-store-logo {
@@ -722,9 +733,9 @@
   align-items: center;
   justify-content: center;
   padding: 4px 10px;
-  border: 1px solid #86EFAC;
-  background: #FFFFFF;
-  color: #15803D;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.12);
+  color: #34D399;
   font-size: 11px;
   font-weight: 600;
   border-radius: 6px;
@@ -733,9 +744,9 @@
 }
 
 .deal-view-btn:hover {
-  background: #F0FDF4;
-  border-color: #16A34A;
-  color: #16A34A;
+  background: rgba(16, 185, 129, 0.22);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #10B981;
 }
 
 /* --------------------------------------------------------------------------
@@ -755,7 +766,7 @@
 .section-head-title {
   font-size: 18px;
   font-weight: 800;
-  color: #0F172A;
+  color: var(--text-headline);
   margin: 0;
 }
 
@@ -796,15 +807,21 @@
 .dropped-card {
   flex: 0 0 calc((100% - 60px) / 6);
   min-width: 165px;
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
+  background: var(--bg-card, rgba(15, 23, 42, 0.72));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
   border-radius: 12px;
   padding: 10px;
   display: flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.dropped-card:hover {
+  border-color: rgba(16, 185, 129, 0.4);
 }
 
 .dropped-card:hover {
@@ -847,7 +864,7 @@
 .dropped-title {
   font-size: 11px;
   font-weight: 700;
-  color: #0F172A;
+  color: var(--text-headline);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -864,7 +881,9 @@
 .dropped-price-now {
   font-size: 12px;
   font-weight: 800;
-  color: #0F172A;
+  color: #34D399;
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
 }
 
 .dropped-price-was {
@@ -896,22 +915,24 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-card);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 5;
-  color: #334155;
+  color: var(--text-headline);
   transition: all 0.15s ease;
 }
 
 .carousel-next-btn:hover {
-  background: #F8FAFC;
-  color: #0F172A;
-  transform: scale(1.05);
+  background: rgba(16, 185, 129, 0.25);
+  color: #34D399;
+  border-color: rgba(16, 185, 129, 0.5);
+  transform: scale(1.08);
 }
 
 /* --------------------------------------------------------------------------
@@ -928,17 +949,23 @@
 }
 
 .store-deal-card {
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
+  background: var(--bg-card, rgba(15, 23, 42, 0.72));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
   border-radius: 14px;
   padding: 16px 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
   cursor: pointer;
+}
+
+.store-deal-card:hover {
+  border-color: rgba(16, 185, 129, 0.4);
 }
 
 .store-deal-card:hover {
@@ -968,7 +995,7 @@
 .store-deal-discount {
   font-size: 12px;
   font-weight: 600;
-  color: #0F172A;
+  color: var(--text-headline);
   margin: 0 0 10px;
 }
 
@@ -1005,9 +1032,9 @@
    BOTTOM TRUST BAR (6 Pillars)
    -------------------------------------------------------------------------- */
 .deals-trust-bar {
-  background: #FFFFFF;
-  border-top: 1px solid #E2E8F0;
-  border-bottom: 1px solid #E2E8F0;
+  background: rgba(11, 16, 29, 0.6);
+  border-top: 1px solid var(--border-card);
+  border-bottom: 1px solid var(--border-card);
   padding: 24px 0;
   margin-top: 40px;
 }
@@ -1039,7 +1066,7 @@
 .deals-trust-title {
   font-size: 12px;
   font-weight: 700;
-  color: #0F172A;
+  color: var(--text-headline);
   margin: 0 0 2px;
 }
 
