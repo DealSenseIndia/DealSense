@@ -721,6 +721,38 @@
   color: #DC2626;
 }
 
+/* Sparkline Micro-Chart */
+.deal-sparkline-wrap {
+  width: 100%;
+  height: 28px;
+  margin: 6px 0 4px 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: #F8FAFC;
+  border-radius: 6px;
+  padding: 2px 6px;
+  border: 1px solid #F1F5F9;
+  overflow: hidden;
+}
+
+.deal-sparkline-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.deal-sparkline-empty {
+  display: block;
+  font-size: 10px;
+  color: #94A3B8;
+  font-style: italic;
+  padding: 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .deal-card-score-row {
   display: flex;
   align-items: center;

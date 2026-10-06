@@ -4,6 +4,28 @@ All notable changes to the DealSense project are documented in this file.
 
 ---
 
+## [Phase 12] - 2026-10-06
+
+### Objective
+Synchronize Curated Hero Deals into Homepage & Serverless Live Feeds with Real Price History Sparklines, True All-Time Low Badges, and Instant Dual-Curve Chart Deep Linking.
+
+### Changes Implemented
+- **Curated Deals Synchronizer (`scripts/sync_deals_to_serverless.py`)**:
+  - Pulls ranked deals from SQLite database via `get_ranked_deals()` and samples real price history points.
+  - Synchronizes top 48 deals across 7 categories into `api/deals/live.js`, `frontend/api/deals/live.js`, and `frontend/js/live_deals.js`.
+- **Interactive SVG Sparklines (`frontend/js/live_deals.js`, `frontend/css/home_feed.css`)**:
+  - Implemented `renderSparkline(priceHistory)`: computes dynamic cubic-bezier SVG paths (`M ... C ...`), rendering falling price trends in emerald green (`#10B981`) and rising trends in amber (`#F59E0B`).
+  - Strict Zero-Synthetic fallback: returns honest `<span class="deal-sparkline-empty">Not enough price history yet</span>` when points are `< 3`.
+  - Added scoped container styling `.deal-sparkline-wrap` and `.deal-sparkline-svg` in `frontend/css/home_feed.css`.
+- **Dual CTAs & Price Chart Modal Deep Linking**:
+  - Every deal card features dual CTAs (`📊 Price History` to open the modal and `🛒 View Deal ↗` for direct merchant link).
+  - Clicking "Price History" triggers `analyzeUrl(deal.url)`, which loads the full 365-day dual-curve comparison chart modal.
+- **Test Integrity & Regression Verification**:
+  - Full test suite verified: 244 / 244 passing tests in 39.28s.
+  - Phase 3.1 Data Integrity Suite verified: 12 / 12 tests passed.
+
+---
+
 ## [Phase 11] - 2026-10-06
 
 ### Objective

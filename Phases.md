@@ -52,4 +52,11 @@
 - [x] Task 11.4: Batch competitor historical bootstrapper (`scripts/bootstrap_curated_catalog.py`) pulling up to 1,000 real daily points from PriceBefore for hero products. *(Owner: `backend_engineer` & `scraper_specialist`)*
 - [x] Task 11.5: SQLite database `VACUUM` and full test suite verification (244/244 passing tests in 38.6s). *(Owner: `qa_sentinel`)*
 
+## Phase 12: Hero Deals Synchronization & Interactive Sparklines [STATUS: COMPLETED ✅]
+- [x] Task 12.1: Serverless & local feed deal synchronizer (`scripts/sync_deals_to_serverless.py`) selecting top 48 deals with real price histories across 7 tech categories. *(Owner: `backend_engineer`)*
+- [x] Task 12.2: Synchronized clean deals and real price history arrays into `api/deals/live.js`, `frontend/api/deals/live.js`, and `frontend/js/live_deals.js`. *(Owner: `backend_engineer`)*
+- [x] Task 12.3: Implemented SVG sparkline micro-chart renderer (`renderSparkline`) in `frontend/js/live_deals.js` with cubic-bezier paths, green falling/amber rising strokes, and zero-synthetic fallback. *(Owner: `frontend_engineer`)*
+- [x] Task 12.4: Added responsive styling for `.deal-sparkline-wrap`, `.deal-sparkline-svg`, and `.deal-sparkline-empty` in `frontend/css/home_feed.css`. *(Owner: `frontend_engineer`)*
+- [x] Task 12.5: Zero regression verification across full test suite (244/244 green tests). *(Owner: `qa_sentinel`)*
+
 

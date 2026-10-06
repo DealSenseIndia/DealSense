@@ -12,324 +12,2218 @@ let activeDealType = "all";
 
 const VERIFIED_FALLBACK_DEALS = [
   {
-    id: "deal_iphone_15",
-    title: "Apple iPhone 15 (Black, 128 GB)",
-    brand: "Apple",
-    category: "mobiles",
-    price: 59900,
-    mrp: 79900,
-    discount_pct: 25,
-    deal_score: 93,
-    deal_badge: "Lowest in 90D",
-    deal_type: "steep_drop",
-    merchant: "Amazon",
-    merchant_logo: "/assets/amazon-logo.svg",
-    rating: 4.6,
-    ratings_count: 12540,
-    price_drop_amount: 20000,
-    image_url: "/assets/deals/products/iphone-15.png",
-    url: "https://www.amazon.in/dp/B0CHX1W1XY",
-    tagline: "Lowest verified price this quarter. Save ₹20,000 off MRP."
+    "id": "deal_amazon_B09G9HD6PD",
+    "title": "Apple iPhone 13 (128GB) - Midnight",
+    "brand": "Apple",
+    "category": "mobiles",
+    "price": 49900,
+    "mrp": 49900,
+    "discount_pct": 0,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": null,
+    "ratings_count": null,
+    "image_url": "/assets/deals/products/iphone-15.png",
+    "url": "https://www.amazon.in/dp/B09G9HD6PD",
+    "affiliate_url": "https://www.amazon.in/dp/B09G9HD6PD?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹49,900.00.",
+    "price_history": [
+      {
+        "price": 49900,
+        "observed_at": "2025-10-07T00:00:00"
+      },
+      {
+        "price": 49900,
+        "observed_at": "2025-11-12T00:00:00"
+      },
+      {
+        "price": 49900,
+        "observed_at": "2025-12-18T00:00:00"
+      },
+      {
+        "price": 49900,
+        "observed_at": "2026-01-23T00:00:00"
+      },
+      {
+        "price": 49900,
+        "observed_at": "2026-02-28T00:00:00"
+      },
+      {
+        "price": 49900,
+        "observed_at": "2026-04-05T00:00:00"
+      },
+      {
+        "price": 49900,
+        "observed_at": "2026-05-11T00:00:00"
+      },
+      {
+        "price": 49900,
+        "observed_at": "2026-06-16T00:00:00"
+      },
+      {
+        "price": 49900,
+        "observed_at": "2026-07-22T00:00:00"
+      },
+      {
+        "price": 49900,
+        "observed_at": "2026-08-27T00:00:00"
+      },
+      {
+        "price": 49900,
+        "observed_at": "2026-10-02T00:00:00"
+      },
+      {
+        "price": 49900,
+        "observed_at": "2026-10-06T00:00:00"
+      }
+    ]
   },
   {
-    id: "deal_sony_xm5",
-    title: "Sony WH-1000XM5 Wireless Noise Cancelling Headphones",
-    brand: "Sony",
-    category: "audio",
-    price: 24990,
-    mrp: 34990,
-    discount_pct: 29,
-    deal_score: 95,
-    deal_badge: "All-Time Low",
-    deal_type: "all_time_low",
-    merchant: "Amazon",
-    merchant_logo: "/assets/amazon-logo.svg",
-    rating: 4.5,
-    ratings_count: 8320,
-    price_drop_amount: 10000,
-    image_url: "/assets/deals/dropped/sony-xm5.png",
-    url: "https://www.amazon.in/dp/B09XS7JWHH",
-    tagline: "Industry-leading ANC at absolute historical rock-bottom price."
+    "id": "deal_flipkart_MOBHMX5YNNYGMVWH",
+    "title": "MOTOROLA g37 power (PANTONE Nautical Blue, 128 GB)",
+    "brand": "MOTOROLA",
+    "category": "mobiles",
+    "price": 25999,
+    "mrp": 37999,
+    "discount_pct": 31,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": 4.2,
+    "ratings_count": "8,184",
+    "image_url": "https://rukmini1.flixcart.com/image/1500/1500/xif0q/mobile/w/g/r/-original-imahng2y4zgbb6ej.jpeg?q=70",
+    "url": "https://www.flipkart.com/motorola-g37-power-pantone-nautical-blue-128-gb/p/itm48ade38c32669?pid=MOBHMX5YNNYGMVWH",
+    "affiliate_url": "https://www.flipkart.com/motorola-g37-power-pantone-nautical-blue-128-gb/p/itm48ade38c32669?pid=MOBHMX5YNNYGMVWH",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹25,999.00.",
+    "price_history": [
+      {
+        "price": 25999,
+        "observed_at": "2026-09-02T10:47:50.396203"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-02T10:48:43.628045"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-02T10:49:43.030223"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-02T11:47:22.358170"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-02T11:48:19.972673"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-02T13:41:56.983978"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-02T14:58:51.183449"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-02T21:27:14.101789"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-04T12:18:56.584440"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-04T16:23:20.109078"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-06T11:36:12.712252"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-08T09:39:20.343571"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-08T09:43:15.696945"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-10T11:02:40.609474"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-13T11:36:40.384259"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-14T08:03:18.293536"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-20T11:01:59.116468"
+      },
+      {
+        "price": 25999,
+        "observed_at": "2026-09-24T09:41:32.335028"
+      }
+    ]
   },
   {
-    id: "deal_nord_4",
-    title: "OnePlus Nord 4 5G (Oasis Green, 256 GB)",
-    brand: "OnePlus",
-    category: "mobiles",
-    price: 28999,
-    mrp: 32999,
-    discount_pct: 12,
-    deal_score: 87,
-    deal_badge: "Drop Today",
-    deal_type: "steep_drop",
-    merchant: "Amazon",
-    merchant_logo: "/assets/amazon-logo.svg",
-    rating: 4.4,
-    ratings_count: 5120,
-    price_drop_amount: 4000,
-    image_url: "/assets/deals/dropped/nord-4.png",
-    url: "https://www.amazon.in/dp/B0D77YMWX3",
-    tagline: "Solid metal unibody performance. ₹4,000 price drop today."
+    "id": "deal_amazon_B0CHX1W1XY",
+    "title": "Apple iPhone 15 (128 GB) - Black",
+    "brand": "Apple",
+    "category": "mobiles",
+    "price": 59900,
+    "mrp": 59900,
+    "discount_pct": 0,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": 4.5,
+    "ratings_count": "11,845",
+    "image_url": "https://m.media-amazon.com/images/I/71657TiFeHL._SL1500_.jpg",
+    "url": "https://www.amazon.in/dp/B0CHX1W1XY",
+    "affiliate_url": "https://www.amazon.in/dp/B0CHX1W1XY?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹59,900.00.",
+    "price_history": [
+      {
+        "price": 59900,
+        "observed_at": "2026-09-06T16:51:21"
+      },
+      {
+        "price": 59900,
+        "observed_at": "2026-09-08T10:13:36.489254"
+      },
+      {
+        "price": 59900,
+        "observed_at": "2026-09-08T11:01:10.329196"
+      },
+      {
+        "price": 59900,
+        "observed_at": "2026-09-08T19:53:15.557129"
+      },
+      {
+        "price": 59900,
+        "observed_at": "2026-09-08T19:54:11.365241"
+      },
+      {
+        "price": 59900,
+        "observed_at": "2026-09-08T19:55:14.535362"
+      },
+      {
+        "price": 59900,
+        "observed_at": "2026-09-24T10:51:39.444278"
+      }
+    ]
   },
   {
-    id: "deal_watch_s9",
-    title: "Apple Watch Series 9 (GPS, 45mm) Midnight Aluminium",
-    brand: "Apple",
-    category: "smartwatches",
-    price: 39900,
-    mrp: 45900,
-    discount_pct: 13,
-    deal_score: 88,
-    deal_badge: "Verified Drop",
-    deal_type: "steep_drop",
-    merchant: "Amazon",
-    merchant_logo: "/assets/amazon-logo.svg",
-    rating: 4.6,
-    ratings_count: 3410,
-    price_drop_amount: 6000,
-    image_url: "/assets/apple-watch-s9.png",
-    url: "https://www.amazon.in/dp/B0CHX6PXX6",
-    tagline: "S9 SiP chip with Double Tap gesture. Lowest in 60 days."
+    "id": "deal_amazon_B0D7D7R8QK",
+    "title": "OnePlus Nord 4 5G (128GB, Oasis Green)",
+    "brand": "OnePlus",
+    "category": "mobiles",
+    "price": 26999,
+    "mrp": 26999,
+    "discount_pct": 0,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": null,
+    "ratings_count": null,
+    "image_url": "/assets/deals/dropped/nord-4.png",
+    "url": "https://www.amazon.in/dp/B0D7D7R8QK",
+    "affiliate_url": "https://www.amazon.in/dp/B0D7D7R8QK?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹26,999.00.",
+    "price_history": [
+      {
+        "price": 26999,
+        "observed_at": "2026-09-08T10:13:33.334385"
+      },
+      {
+        "price": 26999,
+        "observed_at": "2026-09-08T10:15:38.999729"
+      },
+      {
+        "price": 26999,
+        "observed_at": "2026-09-10T11:16:21.243447"
+      },
+      {
+        "price": 26999,
+        "observed_at": "2026-09-10T11:16:47.098478"
+      },
+      {
+        "price": 26999,
+        "observed_at": "2026-09-10T11:16:47.129512"
+      }
+    ]
   },
   {
-    id: "deal_lg_tv",
-    title: "LG 108 cm (43 inches) 4K Ultra HD Smart LED TV",
-    brand: "LG",
-    category: "tvs",
-    price: 23990,
-    mrp: 49990,
-    discount_pct: 52,
-    deal_score: 94,
-    deal_badge: "52% Off",
-    deal_type: "steep_drop",
-    merchant: "Flipkart",
-    merchant_logo: "/assets/flipkart-icon.svg",
-    rating: 4.3,
-    ratings_count: 14200,
-    price_drop_amount: 26000,
-    image_url: "/assets/deals/dropped/lg-tv.png",
-    url: "https://www.flipkart.com/product/p/item?pid=TVEG7W4Z",
-    tagline: "4K HDR10 webOS TV. Huge ₹26,000 discount off MRP."
+    "id": "deal_amazon india_B0H297XH3K",
+    "title": "REDMI Turbo 5 (8GB + 256GB) Asphalt Black | Dimensity 8500 Ultra | Mega 7540mAh Battery | 100W HyperCharge | Compact 16.75cm(6.59) 120Hz AMOLED Screen | 50MP Sony OIS Camera",
+    "brand": "Redmi",
+    "category": "mobiles",
+    "price": 41999,
+    "mrp": 54999,
+    "discount_pct": 23,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon India",
+    "merchant_logo": "/assets/fallback.svg",
+    "rating": 4.2,
+    "ratings_count": "594",
+    "image_url": "https://m.media-amazon.com/images/I/41oSmkKcg2L._SY300_SX300_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B0H297XH3K",
+    "affiliate_url": "https://www.amazon.in/dp/B0H297XH3K?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹41,999.00.",
+    "price_history": [
+      {
+        "price": 41999,
+        "observed_at": "2026-09-10T14:45:18.281388"
+      },
+      {
+        "price": 41999,
+        "observed_at": "2026-09-13T12:51:26.931450"
+      },
+      {
+        "price": 41999,
+        "observed_at": "2026-09-13T12:51:27.809659"
+      },
+      {
+        "price": 41999,
+        "observed_at": "2026-09-14T08:45:46.579009"
+      },
+      {
+        "price": 41999,
+        "observed_at": "2026-09-30T19:24:19.969782"
+      }
+    ]
   },
   {
-    id: "deal_asus_tuf",
-    title: "ASUS TUF Gaming F15 Core i5 11th Gen (16GB/512GB SSD/RTX 3050)",
-    brand: "ASUS",
-    category: "laptops",
-    price: 64990,
-    mrp: 77990,
-    discount_pct: 17,
-    deal_score: 89,
-    deal_badge: "Gaming Deal",
-    deal_type: "steep_drop",
-    merchant: "Flipkart",
-    merchant_logo: "/assets/flipkart-icon.svg",
-    rating: 4.4,
-    ratings_count: 6720,
-    price_drop_amount: 13000,
-    image_url: "/assets/deals/products/dell-laptop.png",
-    url: "https://www.flipkart.com/product/p/item?pid=COMG657Z",
-    tagline: "High-FPS RTX graphics with 144Hz display. Save ₹13,000."
+    "id": "deal_amazon india_B0HDD8H49F",
+    "title": "Lava Bold N2 5G (Billionaire Blue, 4GB RAM, 128GB Storage) | 6000 mAh Super Battery | Octacore Ultrafast Processor | Biggest 6.75 (HD+) 120Hz Display | IP64 Dust-Water Resistant | Free Service @ Home",
+    "brand": "Lava",
+    "category": "mobiles",
+    "price": 14498,
+    "mrp": 17499,
+    "discount_pct": 17,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon India",
+    "merchant_logo": "/assets/fallback.svg",
+    "rating": 4.0,
+    "ratings_count": "176",
+    "image_url": "https://m.media-amazon.com/images/I/4120tymFBBL._SY300_SX300_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B0HDD8H49F",
+    "affiliate_url": "https://www.amazon.in/dp/B0HDD8H49F?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹14,498.00.",
+    "price_history": [
+      {
+        "price": 14499,
+        "observed_at": "2026-09-10T14:45:23.935647"
+      },
+      {
+        "price": 14499,
+        "observed_at": "2026-09-13T12:51:45.010775"
+      },
+      {
+        "price": 14499,
+        "observed_at": "2026-09-13T12:51:45.671616"
+      },
+      {
+        "price": 15263,
+        "observed_at": "2026-09-24T14:48:15.099504"
+      },
+      {
+        "price": 14498,
+        "observed_at": "2026-09-30T19:24:39.520480"
+      }
+    ]
   },
   {
-    id: "deal_macbook_air_m2",
-    title: "Apple MacBook Air M2 (13.6-inch, 8GB RAM, 256GB SSD) Midnight",
-    brand: "Apple",
-    category: "laptops",
-    price: 84990,
-    mrp: 99900,
-    discount_pct: 15,
-    deal_score: 92,
-    deal_badge: "All-Time Low",
-    deal_type: "all_time_low",
-    merchant: "Croma",
-    merchant_logo: "/assets/croma-logo.svg",
-    rating: 4.7,
-    ratings_count: 4180,
-    price_drop_amount: 14910,
-    image_url: "/assets/deals/dropped/hp-pavilion.png",
-    url: "https://www.croma.com/apple-macbook-air-2022-m2/p/256605",
-    tagline: "Unmatched battery life & Liquid Retina display at Croma."
+    "id": "deal_amazon_B08N5W4NNB",
+    "title": "Apple MacBook Air Laptop: Apple M1 chip, 13.3-inch/33.74 cm Retina Display, 8GB RAM, 256GB SSD Storage, Backlit Keyboard, FaceTime HD Camera, Touch ID. Works with iPhone/iPad; Space Grey",
+    "brand": "Apple",
+    "category": "laptops",
+    "price": 72990,
+    "mrp": 72990,
+    "discount_pct": 0,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": null,
+    "ratings_count": null,
+    "image_url": "/assets/deals/products/iphone-15.png",
+    "url": "https://www.amazon.in/dp/B08N5W4NNB",
+    "affiliate_url": "https://www.amazon.in/dp/B08N5W4NNB?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹72,990.00.",
+    "price_history": [
+      {
+        "price": 72990,
+        "observed_at": "2025-10-07T00:00:00"
+      },
+      {
+        "price": 72990,
+        "observed_at": "2025-11-12T00:00:00"
+      },
+      {
+        "price": 72990,
+        "observed_at": "2025-12-18T00:00:00"
+      },
+      {
+        "price": 72990,
+        "observed_at": "2026-01-23T00:00:00"
+      },
+      {
+        "price": 72990,
+        "observed_at": "2026-02-28T00:00:00"
+      },
+      {
+        "price": 72990,
+        "observed_at": "2026-04-05T00:00:00"
+      },
+      {
+        "price": 72990,
+        "observed_at": "2026-05-11T00:00:00"
+      },
+      {
+        "price": 72990,
+        "observed_at": "2026-06-16T00:00:00"
+      },
+      {
+        "price": 72990,
+        "observed_at": "2026-07-22T00:00:00"
+      },
+      {
+        "price": 72990,
+        "observed_at": "2026-08-27T00:00:00"
+      },
+      {
+        "price": 72990,
+        "observed_at": "2026-10-02T00:00:00"
+      },
+      {
+        "price": 72990,
+        "observed_at": "2026-10-06T00:00:00"
+      }
+    ]
   },
   {
-    id: "deal_galaxy_s23_fe",
-    title: "Samsung Galaxy S23 FE 5G (Graphite, 128 GB)",
-    brand: "Samsung",
-    category: "mobiles",
-    price: 33999,
-    mrp: 54999,
-    discount_pct: 38,
-    deal_score: 93,
-    deal_badge: "38% Off",
-    deal_type: "steep_drop",
-    merchant: "Reliance Digital",
-    merchant_logo: "/assets/reliance-digital-logo.svg",
-    rating: 4.3,
-    ratings_count: 7890,
-    price_drop_amount: 21000,
-    image_url: "/assets/deals/products/iphone-15.png",
-    url: "https://www.reliancedigital.in/samsung-galaxy-s23-fe-5g-128-gb/p/493839211",
-    tagline: "Flagship cameras with Galaxy AI at Reliance Digital."
+    "id": "deal_flipkart_itm7ddc2f24ed7e3",
+    "title": "Logitech K120 Wired Keyboard for Windows, USB Plug-and-Play, Full-Size, Spill-Resistant, Curved Space Bar, Compatible with PC, Laptop",
+    "brand": "Logitech",
+    "category": "laptops",
+    "price": 625,
+    "mrp": 895,
+    "discount_pct": 30,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": 4.3,
+    "ratings_count": "8,712",
+    "image_url": "https://m.media-amazon.com/images/I/51cXd5gEhIL._SL1500_.jpg",
+    "url": "https://www.flipkart.com/product/p/itm7ddc2f24ed7e3",
+    "affiliate_url": "https://www.flipkart.com/product/p/itm7ddc2f24ed7e3",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹625.00.",
+    "price_history": [
+      {
+        "price": 751,
+        "observed_at": "2026-09-14T11:38:11.807854"
+      },
+      {
+        "price": 751,
+        "observed_at": "2026-09-14T12:00:25.037566"
+      },
+      {
+        "price": 751,
+        "observed_at": "2026-09-14T12:01:01.184967"
+      },
+      {
+        "price": 751,
+        "observed_at": "2026-09-14T12:22:02.838160"
+      },
+      {
+        "price": 751,
+        "observed_at": "2026-09-14T12:24:55.195349"
+      },
+      {
+        "price": 751,
+        "observed_at": "2026-09-14T12:25:07.327322"
+      },
+      {
+        "price": 751,
+        "observed_at": "2026-09-14T12:25:46.415914"
+      },
+      {
+        "price": 625,
+        "observed_at": "2026-09-14T12:29:35.168760"
+      },
+      {
+        "price": 751,
+        "observed_at": "2026-09-20T11:03:39.788402"
+      },
+      {
+        "price": 625,
+        "observed_at": "2026-09-30T15:11:19.844068"
+      },
+      {
+        "price": 625,
+        "observed_at": "2026-10-06T12:17:17.666151"
+      }
+    ]
   },
   {
-    id: "deal_philips_fryer",
-    title: "PHILIPS Air Fryer NA120/00 Rapid Air Technology 4.2L",
-    brand: "Philips",
-    category: "appliances",
-    price: 4706,
-    mrp: 6995,
-    discount_pct: 33,
-    deal_score: 91,
-    deal_badge: "Hot Drop",
-    deal_type: "steep_drop",
-    merchant: "Amazon",
-    merchant_logo: "/assets/amazon-logo.svg",
-    rating: 4.3,
-    ratings_count: 9410,
-    price_drop_amount: 2289,
-    image_url: "/assets/deals/products/philips-airfryer.png",
-    url: "https://www.amazon.in/dp/B0D14BB5XY",
-    tagline: "Crispy cooking with up to 90% less oil. Genuine drop."
+    "id": "deal_flipkart_ACCH4V72HPA2QDGQ",
+    "title": "EVOFOX Katana X2 Mechanical Dynamic Backlighting Wired USB Standard Gaming Keyboard Compatible with Desktop, Laptop, Mac multimedia_keys",
+    "brand": "EVOFOX",
+    "category": "laptops",
+    "price": 1999,
+    "mrp": 3499,
+    "discount_pct": 42,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": null,
+    "ratings_count": null,
+    "image_url": "https://rukmini1.flixcart.com/image/1500/1500/xif0q/keyboard/gaming-keyboard/h/y/z/x2-mechanical-evofox-original-imahexbusm7hyxqy.jpeg?q=70",
+    "url": "https://www.flipkart.com/evofox-katana-x2-mechanical-dynamic-backlighting-wired-usb-standard-gaming-keyboard-compatible-desktop-laptop-mac-multimedia-keys/p/itm18c8895567a92?pid=ACCH4V72HPA2QDGQ",
+    "affiliate_url": "https://www.flipkart.com/evofox-katana-x2-mechanical-dynamic-backlighting-wired-usb-standard-gaming-keyboard-compatible-desktop-laptop-mac-multimedia-keys/p/itm18c8895567a92?pid=ACCH4V72HPA2QDGQ",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹1,999.00.",
+    "price_history": [
+      {
+        "price": 1999,
+        "observed_at": "2026-09-14T09:26:41.289218"
+      },
+      {
+        "price": 1999,
+        "observed_at": "2026-09-20T11:00:37.380088"
+      },
+      {
+        "price": 1999,
+        "observed_at": "2026-09-24T09:40:19.797060"
+      },
+      {
+        "price": 1999,
+        "observed_at": "2026-09-30T15:07:05.391906"
+      },
+      {
+        "price": 1999,
+        "observed_at": "2026-10-06T12:11:51.288574"
+      }
+    ]
   },
   {
-    id: "deal_airpods_4",
-    title: "Apple AirPods 4 with Active Noise Cancellation",
-    brand: "Apple",
-    category: "audio",
-    price: 17900,
-    mrp: 19900,
-    discount_pct: 10,
-    deal_score: 86,
-    deal_badge: "New Release",
-    deal_type: "hot",
-    merchant: "Amazon",
-    merchant_logo: "/assets/amazon-logo.svg",
-    rating: 4.6,
-    ratings_count: 1820,
-    price_drop_amount: 2000,
-    image_url: "/assets/deals/products/airpods-4.png",
-    url: "https://www.amazon.in/dp/B0DGH7P83Y",
-    tagline: "Open-ear ANC with spatial audio and USB-C case."
+    "id": "deal_flipkart_ACCH3VFVRDPFDYXE",
+    "title": "Kreo Swarm Wireless Mechanical Gaming Keyboard, 5-Pin Hot Swap PCB and RGB Backlight Wireless Tenkeyless Gaming Keyboard Compatible with Desktop, Laptop, Mac , with gaming mode ,stand support,Magnetic closure,Built-in Stand,no more dirt&scratches,Micro USB Connector,Wireless Mechanical Gaming Keyboard",
+    "brand": "Kreo",
+    "category": "laptops",
+    "price": 5399,
+    "mrp": 10000,
+    "discount_pct": 46,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": null,
+    "ratings_count": null,
+    "image_url": "https://rukmini1.flixcart.com/image/1500/1500/xif0q/keyboard/i/a/s/-original-imahp33zhjyafhqe.jpeg?q=70",
+    "url": "https://www.flipkart.com/kreo-swarm-wireless-mechanical-gaming-keyboard-5-pin-hot-swap-pcb-rgb-backlight-tenkeyless-keyboard-compatible-desktop-laptop-mac-mode-stand-support-magnetic-closure-built-in-stand-no-more-dirt-scratches-micro-usb-connector-wireless/p/itm5e86df8f408e3?pid=ACCH3VFVRDPFDYXE",
+    "affiliate_url": "https://www.flipkart.com/kreo-swarm-wireless-mechanical-gaming-keyboard-5-pin-hot-swap-pcb-rgb-backlight-tenkeyless-keyboard-compatible-desktop-laptop-mac-mode-stand-support-magnetic-closure-built-in-stand-no-more-dirt-scratches-micro-usb-connector-wireless/p/itm5e86df8f408e3?pid=ACCH3VFVRDPFDYXE",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹5,399.00.",
+    "price_history": [
+      {
+        "price": 5399,
+        "observed_at": "2026-09-14T11:10:58.129633"
+      },
+      {
+        "price": 5399,
+        "observed_at": "2026-09-20T11:02:54.958137"
+      },
+      {
+        "price": 5399,
+        "observed_at": "2026-09-24T09:42:39.225119"
+      },
+      {
+        "price": 5399,
+        "observed_at": "2026-09-30T15:07:48.548224"
+      },
+      {
+        "price": 5399,
+        "observed_at": "2026-10-06T12:12:41.597114"
+      }
+    ]
   },
   {
-    id: "deal_boat_rockerz",
-    title: "boAt Rockerz 450 Bluetooth On-Ear Headphones with 15H Playback",
-    brand: "boAt",
-    category: "audio",
-    price: 1299,
-    mrp: 3990,
-    discount_pct: 67,
-    deal_score: 90,
-    deal_badge: "67% Off",
-    deal_type: "steep_drop",
-    merchant: "Flipkart",
-    merchant_logo: "/assets/flipkart-icon.svg",
-    rating: 4.2,
-    ratings_count: 89400,
-    price_drop_amount: 2691,
-    image_url: "/assets/deals/dropped/sony-xm5.png",
-    url: "https://www.flipkart.com/item/p/itm23498b",
-    tagline: "Huge 67% discount off ₹3,990 MRP. Punchy bass audio."
+    "id": "deal_flipkart_itm82786e1229a0c",
+    "title": "Ant Esports MK1700 RGB Wired Gaming Keyboard, Full Size 104 Keys with LED Backlit, Silent Membrane, 12 Multimedia Keys, USB Plug & Play for PC & Laptop (Mercury)",
+    "brand": "Ant Esports Store",
+    "category": "laptops",
+    "price": 749,
+    "mrp": 1199,
+    "discount_pct": 37,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": null,
+    "ratings_count": null,
+    "image_url": "https://m.media-amazon.com/images/I/41OStVhjIqL._SY300_SX300_QL70_FMwebp_.jpg",
+    "url": "https://www.flipkart.com/product/p/itm82786e1229a0c",
+    "affiliate_url": "https://www.flipkart.com/product/p/itm82786e1229a0c",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹749.00.",
+    "price_history": [
+      {
+        "price": 749,
+        "observed_at": "2026-09-14T11:15:33.326316"
+      },
+      {
+        "price": 749,
+        "observed_at": "2026-09-20T11:03:02.048796"
+      },
+      {
+        "price": 749,
+        "observed_at": "2026-09-24T09:42:46.674236"
+      },
+      {
+        "price": 749,
+        "observed_at": "2026-09-30T15:11:28.061282"
+      },
+      {
+        "price": 749,
+        "observed_at": "2026-10-06T12:16:16.463709"
+      }
+    ]
   },
   {
-    id: "deal_noise_watch",
-    title: "Noise ColorFit Pulse 2 Max 1.85\" Display Bluetooth Calling Watch",
-    brand: "Noise",
-    category: "smartwatches",
-    price: 1199,
-    mrp: 5999,
-    discount_pct: 80,
-    deal_score: 92,
-    deal_badge: "80% Off",
-    deal_type: "steep_drop",
-    merchant: "Amazon",
-    merchant_logo: "/assets/amazon-logo.svg",
-    rating: 4.1,
-    ratings_count: 38200,
-    price_drop_amount: 4800,
-    image_url: "/assets/deals/dropped/noise-watch.png",
-    url: "https://www.amazon.in/dp/B0B5LVS72C",
-    tagline: "Massive 80% discount off MRP. 550 nits bright display."
+    "id": "deal_flipkart_ACCH59G3KYSFFNUG",
+    "title": "Kreo Hive RGB 75% Wired Mechanical Gaming Keyboard, Hot Swappable, Anti-ghosting Wired USB Tenkeyless Gaming Keyboard Compatible with Desktop, Laptop, Mac",
+    "brand": "Kreo",
+    "category": "laptops",
+    "price": 3199,
+    "mrp": 4600,
+    "discount_pct": 30,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": null,
+    "ratings_count": null,
+    "image_url": "https://rukmini1.flixcart.com/image/1500/1500/xif0q/keyboard/c/p/i/-original-imahp9ngzsyhwmzj.jpeg?q=70",
+    "url": "https://www.flipkart.com/kreo-hive-rgb-75-wired-mechanical-gaming-keyboard-hot-swappable-anti-ghosting-usb-tenkeyless-keyboard-compatible-desktop-laptop-mac/p/itmcb9e85920e518?pid=ACCH59G3KYSFFNUG",
+    "affiliate_url": "https://www.flipkart.com/kreo-hive-rgb-75-wired-mechanical-gaming-keyboard-hot-swappable-anti-ghosting-usb-tenkeyless-keyboard-compatible-desktop-laptop-mac/p/itmcb9e85920e518?pid=ACCH59G3KYSFFNUG",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹3,199.00.",
+    "price_history": [
+      {
+        "price": 3199,
+        "observed_at": "2026-09-14T11:17:54.567177"
+      },
+      {
+        "price": 3199,
+        "observed_at": "2026-09-20T11:03:09.613374"
+      },
+      {
+        "price": 3199,
+        "observed_at": "2026-09-24T09:42:54.199409"
+      },
+      {
+        "price": 3199,
+        "observed_at": "2026-09-30T15:07:56.412507"
+      },
+      {
+        "price": 3199,
+        "observed_at": "2026-10-06T12:12:50.123752"
+      }
+    ]
   },
   {
-    id: "deal_fireboltt_watch",
-    title: "Fire-Boltt Phoenix Ultra Luxury Stainless Steel Smartwatch",
-    brand: "Fire-Boltt",
-    category: "smartwatches",
-    price: 1499,
-    mrp: 12499,
-    discount_pct: 88,
-    deal_score: 91,
-    deal_badge: "Lowest Ever",
-    deal_type: "all_time_low",
-    merchant: "Amazon",
-    merchant_logo: "/assets/amazon-logo.svg",
-    rating: 4.2,
-    ratings_count: 45100,
-    price_drop_amount: 11000,
-    image_url: "/assets/deals/products/boat-watch.png",
-    url: "https://www.amazon.in/dp/B0D5VF8VYX",
-    tagline: "Steel unibody with Bluetooth calling. ₹11,000 drop."
+    "id": "deal_amazon_B0CHX3TW6X",
+    "title": "Apple iPhone 15 (128 GB) - Pink",
+    "brand": "Apple",
+    "category": "audio",
+    "price": 59900,
+    "mrp": 59900,
+    "discount_pct": 0,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": null,
+    "ratings_count": null,
+    "image_url": "/assets/deals/products/iphone-15.png",
+    "url": "https://www.amazon.in/dp/B0CHX3TW6X",
+    "affiliate_url": "https://www.amazon.in/dp/B0CHX3TW6X?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹59,900.00.",
+    "price_history": [
+      {
+        "price": 59900,
+        "observed_at": "2026-04-20T00:00:00"
+      },
+      {
+        "price": 59900,
+        "observed_at": "2026-05-07T00:00:00"
+      },
+      {
+        "price": 59900,
+        "observed_at": "2026-05-24T00:00:00"
+      },
+      {
+        "price": 59900,
+        "observed_at": "2026-06-10T00:00:00"
+      },
+      {
+        "price": 59900,
+        "observed_at": "2026-06-27T00:00:00"
+      },
+      {
+        "price": 59900,
+        "observed_at": "2026-07-14T00:00:00"
+      },
+      {
+        "price": 59900,
+        "observed_at": "2026-07-31T00:00:00"
+      },
+      {
+        "price": 59900,
+        "observed_at": "2026-08-17T00:00:00"
+      },
+      {
+        "price": 59900,
+        "observed_at": "2026-09-03T00:00:00"
+      },
+      {
+        "price": 59900,
+        "observed_at": "2026-09-20T00:00:00"
+      },
+      {
+        "price": 59900,
+        "observed_at": "2026-10-06T00:00:00"
+      }
+    ]
   },
   {
-    id: "deal_hisense_tv",
-    title: "Hisense 139 cm (55 inches) 4K Ultra HD Smart Google TV",
-    brand: "Hisense",
-    category: "tvs",
-    price: 29990,
-    mrp: 49990,
-    discount_pct: 40,
-    deal_score: 93,
-    deal_badge: "All-Time Low",
-    deal_type: "all_time_low",
-    merchant: "Amazon",
-    merchant_logo: "/assets/amazon-logo.svg",
-    rating: 4.4,
-    ratings_count: 5200,
-    price_drop_amount: 20000,
-    image_url: "/assets/deals/products/samsung-tv.png",
-    url: "https://www.amazon.in/dp/B08L7V4L2T",
-    tagline: "Dolby Vision Atmos Google TV. Absolute lowest recorded price."
+    "id": "deal_amazon_B07PR1CL3S",
+    "title": "boAt Rockerz 450/450R, 15 HRS Battery, 40mm Drivers, Padded Ear Cushions, Integrated Controls, Dual Modes, Bluetooth Headphones, Wireless Headphone with Mic (Luscious Black)",
+    "brand": "boAt",
+    "category": "audio",
+    "price": 1299,
+    "mrp": 1299,
+    "discount_pct": 0,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": 4.0,
+    "ratings_count": "122,139",
+    "image_url": "https://m.media-amazon.com/images/I/41212WwiTgL._SY300_SX300_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B07PR1CL3S",
+    "affiliate_url": "https://www.amazon.in/dp/B07PR1CL3S?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹1,299.00.",
+    "price_history": [
+      {
+        "price": 1299,
+        "observed_at": "2026-09-02T17:57:10.427473"
+      },
+      {
+        "price": 1299,
+        "observed_at": "2026-09-02T19:59:48.152315"
+      },
+      {
+        "price": 1299,
+        "observed_at": "2026-09-02T21:01:21.601284"
+      },
+      {
+        "price": 1299,
+        "observed_at": "2026-09-04T09:04:08.972740"
+      },
+      {
+        "price": 1299,
+        "observed_at": "2026-09-04T09:05:13.297468"
+      },
+      {
+        "price": 1299,
+        "observed_at": "2026-09-04T09:19:52.383025"
+      },
+      {
+        "price": 1299,
+        "observed_at": "2026-09-04T09:41:25.239130"
+      },
+      {
+        "price": 1299,
+        "observed_at": "2026-09-04T11:49:22.876208"
+      },
+      {
+        "price": 1299,
+        "observed_at": "2026-09-04T12:11:35.700591"
+      },
+      {
+        "price": 1299,
+        "observed_at": "2026-09-04T12:12:50.867514"
+      },
+      {
+        "price": 1299,
+        "observed_at": "2026-09-04T12:18:54.142093"
+      },
+      {
+        "price": 1299,
+        "observed_at": "2026-09-04T15:36:06.090370"
+      },
+      {
+        "price": 1299,
+        "observed_at": "2026-09-04T16:59:31.018612"
+      },
+      {
+        "price": 1299,
+        "observed_at": "2026-09-04T19:03:52.525647"
+      },
+      {
+        "price": 1299,
+        "observed_at": "2026-09-08T10:13:30.597404"
+      }
+    ]
   },
   {
-    id: "deal_dyson_vacuum",
-    title: "Dyson V15 Detect Cordless Vacuum Cleaner with Laser Fluffy Head",
-    brand: "Dyson",
-    category: "appliances",
-    price: 55900,
-    mrp: 65900,
-    discount_pct: 15,
-    deal_score: 89,
-    deal_badge: "Premium Deal",
-    deal_type: "steep_drop",
-    merchant: "Croma",
-    merchant_logo: "/assets/croma-logo.svg",
-    rating: 4.5,
-    ratings_count: 1420,
-    price_drop_amount: 10000,
-    image_url: "/assets/deals/dropped/dyson-v15.png",
-    url: "https://www.croma.com/dyson-v15-detect-cordless-vacuum/p/243120",
-    tagline: "Piezo sensor particle counter with laser illumination at Croma."
+    "id": "deal_amazon_B09XS7JWHH",
+    "title": "Sony WH-1000XM5 Best Active Noise Cancelling Wireless Bluetooth Over Ear Headphones with Mic for Clear Calling,Battery Life 30 Hours -Black",
+    "brand": "Sony",
+    "category": "audio",
+    "price": 27949,
+    "mrp": 34990,
+    "discount_pct": 20,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": 4.4,
+    "ratings_count": "17,184",
+    "image_url": "https://m.media-amazon.com/images/I/31fEv99XZ+L._SX300_SY300_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B09XS7JWHH",
+    "affiliate_url": "https://www.amazon.in/dp/B09XS7JWHH?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹27,949.00.",
+    "price_history": [
+      {
+        "price": 39336,
+        "observed_at": "2026-09-02T21:32:32.838051"
+      },
+      {
+        "price": 28499,
+        "observed_at": "2026-09-10T11:11:23.889365"
+      },
+      {
+        "price": 28129,
+        "observed_at": "2026-09-10T15:12:44.212114"
+      },
+      {
+        "price": 27989,
+        "observed_at": "2026-09-13T12:55:59.330921"
+      },
+      {
+        "price": 27989,
+        "observed_at": "2026-09-13T12:56:01.740097"
+      },
+      {
+        "price": 27949,
+        "observed_at": "2026-09-14T08:50:01.010623"
+      }
+    ]
   },
   {
-    id: "deal_pigeon_induction",
-    title: "Pigeon by Stovekraft Cruise 1800-Watt Induction Cooktop",
-    brand: "Pigeon",
-    category: "appliances",
-    price: 1399,
-    mrp: 3195,
-    discount_pct: 56,
-    deal_score: 89,
-    deal_badge: "56% Off",
-    deal_type: "steep_drop",
-    merchant: "Amazon",
-    merchant_logo: "/assets/amazon-logo.svg",
-    rating: 4.1,
-    ratings_count: 67300,
-    price_drop_amount: 1796,
-    image_url: "/assets/deals/products/philips-airfryer.png",
-    url: "https://www.amazon.in/dp/B00EDLWW70",
-    tagline: "7 segments LED display. Over 56% off original MRP."
+    "id": "deal_amazon_B0BS1QCFHX",
+    "title": "Sony WH-CH720N Active Noise Cancellation Wireless Bluetooth Over Ear Headphones with Mic, Adaptive Sound Control, Quick Charge, Up to 35Hrs Battery, Customized EQ- Black",
+    "brand": "Sony",
+    "category": "audio",
+    "price": 8969,
+    "mrp": 14990,
+    "discount_pct": 40,
+    "deal_score": 85,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": 4.2,
+    "ratings_count": "16,724",
+    "image_url": "https://m.media-amazon.com/images/I/31+CMjgVyHL._SY300_SX300_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B0BS1QCFHX",
+    "affiliate_url": "https://www.amazon.in/dp/B0BS1QCFHX?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹8,969.00.",
+    "price_history": [
+      {
+        "price": 16327,
+        "observed_at": "2026-09-04T09:05:29.549130"
+      },
+      {
+        "price": 16327,
+        "observed_at": "2026-09-04T09:20:10.448114"
+      },
+      {
+        "price": 16327,
+        "observed_at": "2026-09-04T09:41:42.587571"
+      },
+      {
+        "price": 16327,
+        "observed_at": "2026-09-04T11:49:40.748299"
+      },
+      {
+        "price": 16327,
+        "observed_at": "2026-09-04T12:13:07.570185"
+      },
+      {
+        "price": 16327,
+        "observed_at": "2026-09-04T12:19:10.047245"
+      },
+      {
+        "price": 16327,
+        "observed_at": "2026-09-04T15:36:23.508335"
+      },
+      {
+        "price": 16327,
+        "observed_at": "2026-09-04T16:59:47.968974"
+      },
+      {
+        "price": 16327,
+        "observed_at": "2026-09-04T19:04:09.958546"
+      },
+      {
+        "price": 8979,
+        "observed_at": "2026-09-10T11:12:37.498067"
+      },
+      {
+        "price": 8949,
+        "observed_at": "2026-09-10T15:13:21.758164"
+      },
+      {
+        "price": 8969,
+        "observed_at": "2026-09-13T12:56:20.056035"
+      },
+      {
+        "price": 8969,
+        "observed_at": "2026-09-14T08:50:40.737526"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon_B0TESTXM50",
+    "title": "Sony WH-1000XM5 Test",
+    "brand": "Sony",
+    "category": "audio",
+    "price": 24990,
+    "mrp": 24990,
+    "discount_pct": 0,
+    "deal_score": 55,
+    "deal_badge": "💳 Verified Deal",
+    "deal_type": "card_stack",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": null,
+    "ratings_count": null,
+    "image_url": "/assets/deals/dropped/sony-xm5.png",
+    "url": "https://www.amazon.in/dp/B0TESTXM50",
+    "affiliate_url": "https://www.amazon.in/dp/B0TESTXM50?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹24,990.00.",
+    "price_history": [
+      {
+        "price": 29990,
+        "observed_at": "2026-08-01T00:00:00"
+      },
+      {
+        "price": 27990,
+        "observed_at": "2026-08-15T00:00:00"
+      },
+      {
+        "price": 23940,
+        "observed_at": "2026-09-01T00:00:00"
+      },
+      {
+        "price": 24990,
+        "observed_at": "2026-09-15T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon_B0F75BC652",
+    "title": "MultiDay Product f75bc652",
+    "brand": "RealBrand",
+    "category": "audio",
+    "price": 2499,
+    "mrp": 3999,
+    "discount_pct": 37,
+    "deal_score": 50,
+    "deal_badge": "⚡ 37% Off",
+    "deal_type": "steep_drop",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": null,
+    "ratings_count": null,
+    "image_url": "/assets/deals/dropped/sony-xm5.png",
+    "url": "https://amazon.in/dp/B0F75BC652",
+    "affiliate_url": "https://amazon.in/dp/B0F75BC652?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹2,499.00.",
+    "price_history": [
+      {
+        "price": 2999,
+        "observed_at": "2026-08-31T10:23:59.775319"
+      },
+      {
+        "price": 2799,
+        "observed_at": "2026-09-05T10:23:59.775319"
+      },
+      {
+        "price": 2499,
+        "observed_at": "2026-09-10T10:23:59.775319"
+      }
+    ]
+  },
+  {
+    "id": "deal_flipkart_SMWHHC2H2UCKFZFG",
+    "title": "Ubon Boss Round Smart Watch BT Calling Menstrual Cycle Tracking HD Display SW161 Smartwatch",
+    "brand": "Ubon",
+    "category": "smartwatches",
+    "price": 1099,
+    "mrp": 3799,
+    "discount_pct": 71,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": 4.1,
+    "ratings_count": "79",
+    "image_url": "https://rukmini1.flixcart.com/image/1500/1500/xif0q/smartwatch/n/c/g/-original-imahpr76nvcadzca.jpeg?q=70",
+    "url": "https://www.flipkart.com/product/p/item?pid=SMWHHC2H2UCKFZFG",
+    "affiliate_url": "https://www.flipkart.com/product/p/item?pid=SMWHHC2H2UCKFZFG",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹1,099.00.",
+    "price_history": [
+      {
+        "price": 1099,
+        "observed_at": "2026-09-08T09:49:29.129034"
+      },
+      {
+        "price": 1099,
+        "observed_at": "2026-09-10T11:02:47.317597"
+      },
+      {
+        "price": 1099,
+        "observed_at": "2026-09-13T11:33:17.860179"
+      },
+      {
+        "price": 1099,
+        "observed_at": "2026-09-14T08:02:15.742087"
+      },
+      {
+        "price": 1099,
+        "observed_at": "2026-09-20T11:00:58.789699"
+      },
+      {
+        "price": 1099,
+        "observed_at": "2026-09-24T09:40:43.005552"
+      },
+      {
+        "price": 1099,
+        "observed_at": "2026-09-30T15:07:11.283964"
+      },
+      {
+        "price": 1099,
+        "observed_at": "2026-10-06T12:11:59.825289"
+      }
+    ]
+  },
+  {
+    "id": "cuelinks_130157",
+    "title": "Score Big: Unlock Up to 19% Off on Exclusive Branded Watches",
+    "brand": "Brand",
+    "category": "smartwatches",
+    "price": 0,
+    "mrp": 0,
+    "discount_pct": 20.0,
+    "deal_score": 77,
+    "deal_badge": "CODE: CROWN",
+    "deal_type": "coupon",
+    "merchant": "Ajio Gram",
+    "merchant_logo": "/assets/stores/showcase-myntra.png",
+    "rating": 4.5,
+    "ratings_count": 1500,
+    "image_url": "/assets/apple-watch-s9.png",
+    "url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.ajio.com%2F%3Fclickid%3D6ac4c276d063c764d9bb5219%26offer_id%3D1%26pid%3D847%26utm_campaign%3D1%26utm_medium%3Daffiliate%26utm_source%3Dcuelinks%26utm_term%3D",
+    "affiliate_url": null,
+    "tagline": "  Enjoy exclusive savings of up to 19% on select watches.  Select from a variety of trendy, branded styles.  Enhance your accessory game!  Grab this deal before it's gone!  ",
+    "price_history": []
+  },
+  {
+    "id": "deal_amazon_B0CHX6PXX6",
+    "title": "Apple Watch Series 9 (GPS, 45mm) - Midnight Aluminium Case with Midnight Sport Band",
+    "brand": "Apple",
+    "category": "smartwatches",
+    "price": 39900,
+    "mrp": 45900,
+    "discount_pct": 13,
+    "deal_score": 55,
+    "deal_badge": "💳 Verified Deal",
+    "deal_type": "card_stack",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": null,
+    "ratings_count": null,
+    "image_url": "/assets/apple-watch-s9.png",
+    "url": "https://www.amazon.in/dp/B0CHX6PXX6",
+    "affiliate_url": "https://www.amazon.in/dp/B0CHX6PXX6?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹39,900.00.",
+    "price_history": [
+      {
+        "price": 44900,
+        "observed_at": "2026-06-04T13:55:02.827986"
+      },
+      {
+        "price": 42999,
+        "observed_at": "2026-06-13T13:55:02.827986"
+      },
+      {
+        "price": 44900,
+        "observed_at": "2026-06-22T13:55:02.827986"
+      },
+      {
+        "price": 42999,
+        "observed_at": "2026-07-01T13:55:02.827986"
+      },
+      {
+        "price": 41999,
+        "observed_at": "2026-07-10T13:55:02.827986"
+      },
+      {
+        "price": 41999,
+        "observed_at": "2026-07-19T13:55:02.827986"
+      },
+      {
+        "price": 41999,
+        "observed_at": "2026-07-28T13:55:02.827986"
+      },
+      {
+        "price": 40999,
+        "observed_at": "2026-08-06T13:55:02.827986"
+      },
+      {
+        "price": 40999,
+        "observed_at": "2026-08-15T13:55:02.827986"
+      },
+      {
+        "price": 39900,
+        "observed_at": "2026-08-24T13:55:02.827986"
+      },
+      {
+        "price": 39900,
+        "observed_at": "2026-09-02T13:55:02.827986"
+      }
+    ]
+  },
+  {
+    "id": "deal_flipkart_SMWGT3SFPFZFHVGZ",
+    "title": "Apple Watch Series 9 (GPS, 45mm) - Midnight Aluminium Case with Midnight Sport Band",
+    "brand": "Apple",
+    "category": "smartwatches",
+    "price": 41999,
+    "mrp": 45900,
+    "discount_pct": 8,
+    "deal_score": 50,
+    "deal_badge": "💳 Verified Deal",
+    "deal_type": "card_stack",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": null,
+    "ratings_count": null,
+    "image_url": "/assets/apple-watch-s9.png",
+    "url": "https://www.flipkart.com/apple-watch-series-9-gps-45mm/p/itm2848c48a74e95?pid=SMWGT3SFPFZFHVGZ",
+    "affiliate_url": "https://www.flipkart.com/apple-watch-series-9-gps-45mm/p/itm2848c48a74e95?pid=SMWGT3SFPFZFHVGZ",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹41,999.00.",
+    "price_history": [
+      {
+        "price": 41999,
+        "observed_at": "2026-09-02T13:55:02.827986"
+      }
+    ]
+  },
+  {
+    "id": "deal_flipkart_MONHC6KAZGMH84VD",
+    "title": "Acer Nitro XV272K V5 27 Inch UHD (3840x2160) IPS Agile Splendor Gaming Monitor | 160Hz Refresh, Delta E<1, FHD 320Hz Through DFR, G-Sync & FreeSync Compatible, Smart Dial, Eyesafe Certified – Black",
+    "brand": "Acer",
+    "category": "tvs",
+    "price": 31499,
+    "mrp": 39999,
+    "discount_pct": 21,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": 4.4,
+    "ratings_count": "54",
+    "image_url": "https://m.media-amazon.com/images/I/41O10TL+18L._SX300_SY300_QL70_FMwebp_.jpg",
+    "url": "https://www.flipkart.com/product/p/item?pid=MONHC6KAZGMH84VD",
+    "affiliate_url": "https://www.flipkart.com/product/p/item?pid=MONHC6KAZGMH84VD",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹31,499.00.",
+    "price_history": [
+      {
+        "price": 39999,
+        "observed_at": "2026-09-02T20:55:18.863470"
+      },
+      {
+        "price": 31499,
+        "observed_at": "2026-09-10T11:01:30.752834"
+      },
+      {
+        "price": 31499,
+        "observed_at": "2026-09-13T11:36:33.641188"
+      },
+      {
+        "price": 31499,
+        "observed_at": "2026-09-14T08:03:08.451271"
+      },
+      {
+        "price": 31499,
+        "observed_at": "2026-09-20T11:01:50.765351"
+      },
+      {
+        "price": 31499,
+        "observed_at": "2026-09-24T09:41:24.958341"
+      },
+      {
+        "price": 31499,
+        "observed_at": "2026-09-30T15:07:19.127230"
+      },
+      {
+        "price": 31499,
+        "observed_at": "2026-10-06T12:12:10.551322"
+      }
+    ]
+  },
+  {
+    "id": "deal_flipkart_CILHHCYQPPDCQQKY",
+    "title": "LED Ceiling Light 50W 5625LM Warm Light 3000K Acrylic Lamp with Remote for Living Room, Bedroom, with Remote",
+    "brand": "SHRI MAHAL ANTIQUES",
+    "category": "tvs",
+    "price": 3386,
+    "mrp": 12999,
+    "discount_pct": 74,
+    "deal_score": 85,
+    "deal_badge": "⚡ 74% Off",
+    "deal_type": "steep_drop",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": 4.0,
+    "ratings_count": "1",
+    "image_url": "https://m.media-amazon.com/images/I/31A82DKvSGL._SX342_SY445_QL70_FMwebp_.jpg",
+    "url": "https://www.flipkart.com/product/p/item?pid=CILHHCYQPPDCQQKY",
+    "affiliate_url": "https://www.flipkart.com/product/p/item?pid=CILHHCYQPPDCQQKY",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹3,386.00.",
+    "price_history": [
+      {
+        "price": 12999,
+        "observed_at": "2026-09-02T13:28:44.734901"
+      },
+      {
+        "price": 3382,
+        "observed_at": "2026-09-10T11:01:15.974638"
+      },
+      {
+        "price": 3386,
+        "observed_at": "2026-09-13T11:35:24.798706"
+      },
+      {
+        "price": 3386,
+        "observed_at": "2026-09-14T08:02:43.595454"
+      },
+      {
+        "price": 3386,
+        "observed_at": "2026-09-20T11:01:25.192271"
+      },
+      {
+        "price": 3318,
+        "observed_at": "2026-09-24T09:41:03.657006"
+      },
+      {
+        "price": 3318,
+        "observed_at": "2026-09-30T15:11:51.361989"
+      },
+      {
+        "price": 3386,
+        "observed_at": "2026-10-06T12:16:24.843423"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon_B0FXMFQL3W",
+    "title": "LED Ceiling Light 50W 5625LM Warm Light 3000K Acrylic Lamp with Remote for Living Room, Bedroom, with Remote",
+    "brand": "SHRI MAHAL ANTIQUES",
+    "category": "tvs",
+    "price": 3499,
+    "mrp": 12999,
+    "discount_pct": 73,
+    "deal_score": 55,
+    "deal_badge": "⚡ 73% Off",
+    "deal_type": "steep_drop",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": 4.0,
+    "ratings_count": "1",
+    "image_url": "https://m.media-amazon.com/images/I/31A82DKvSGL._SX342_SY445_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B0FXMFQL3W",
+    "affiliate_url": "https://www.amazon.in/dp/B0FXMFQL3W?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹3,499.00.",
+    "price_history": [
+      {
+        "price": 3499,
+        "observed_at": "2026-09-02T13:28:41.610788"
+      },
+      {
+        "price": 3499,
+        "observed_at": "2026-09-10T11:09:45.147451"
+      },
+      {
+        "price": 3499,
+        "observed_at": "2026-09-13T11:47:01.409099"
+      },
+      {
+        "price": 3324,
+        "observed_at": "2026-09-24T15:37:32.634958"
+      },
+      {
+        "price": 3499,
+        "observed_at": "2026-10-06T13:06:05.886545"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon_B0CX8R9Y3M",
+    "title": "Samsung 55-inch Crystal 4K Vivid Pro Ultra HD Smart TV",
+    "brand": "Samsung",
+    "category": "tvs",
+    "price": 38990,
+    "mrp": 38990,
+    "discount_pct": 0,
+    "deal_score": 50,
+    "deal_badge": "💳 Verified Deal",
+    "deal_type": "card_stack",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": null,
+    "ratings_count": null,
+    "image_url": "/assets/deals/dropped/lg-tv.png",
+    "url": "https://www.amazon.in/dp/B0CX8R9Y3M",
+    "affiliate_url": "https://www.amazon.in/dp/B0CX8R9Y3M?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹38,990.00.",
+    "price_history": [
+      {
+        "price": 38990,
+        "observed_at": "2026-09-08T10:25:33.925784"
+      },
+      {
+        "price": 38990,
+        "observed_at": "2026-09-08T10:26:01.254840"
+      },
+      {
+        "price": 38990,
+        "observed_at": "2026-09-08T10:26:10.108038"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon_B0DS5NP2JR",
+    "title": "Acer Nitro XV272K V5 27 Inch UHD (3840x2160) IPS Agile Splendor Gaming Monitor | 160Hz Refresh, Delta E<1, FHD 320Hz Through DFR, G-Sync & FreeSync Compatible, Smart Dial, Eyesafe Certified – Black",
+    "brand": "Acer",
+    "category": "tvs",
+    "price": 31499,
+    "mrp": 39999,
+    "discount_pct": 21,
+    "deal_score": 42,
+    "deal_badge": "⚡ 21% Off MRP",
+    "deal_type": "steep_drop",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": 4.4,
+    "ratings_count": "54",
+    "image_url": "https://m.media-amazon.com/images/I/41O10TL+18L._SX300_SY300_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B0DS5NP2JR",
+    "affiliate_url": "https://www.amazon.in/dp/B0DS5NP2JR?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹31,499.00.",
+    "price_history": [
+      {
+        "price": 25999,
+        "observed_at": "2026-09-02T20:55:15.482577"
+      },
+      {
+        "price": 30999,
+        "observed_at": "2026-09-10T11:11:14.965975"
+      },
+      {
+        "price": 31499,
+        "observed_at": "2026-09-13T12:55:47.270497"
+      },
+      {
+        "price": 31499,
+        "observed_at": "2026-09-13T12:55:49.699892"
+      },
+      {
+        "price": 31499,
+        "observed_at": "2026-09-14T08:49:52.026409"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon india_B0GYRRLP87",
+    "title": "Samsung 55 inches Crystal UHD 4K Samsung Vision AI Smart TV UA55UE85AHULXL",
+    "brand": "Samsung",
+    "category": "tvs",
+    "price": 48990,
+    "mrp": 54900,
+    "discount_pct": 10,
+    "deal_score": 42,
+    "deal_badge": "💳 Verified Deal",
+    "deal_type": "card_stack",
+    "merchant": "Amazon India",
+    "merchant_logo": "/assets/fallback.svg",
+    "rating": 4.3,
+    "ratings_count": "620",
+    "image_url": "https://m.media-amazon.com/images/I/41LwLIydYaL._SX300_SY300_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B0GYRRLP87",
+    "affiliate_url": "https://www.amazon.in/dp/B0GYRRLP87?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹48,990.00.",
+    "price_history": [
+      {
+        "price": 39999,
+        "observed_at": "2026-09-08T09:59:38.874263"
+      },
+      {
+        "price": 45990,
+        "observed_at": "2026-09-10T11:02:47.958306"
+      },
+      {
+        "price": 45990,
+        "observed_at": "2026-09-13T12:54:36.995771"
+      },
+      {
+        "price": 45990,
+        "observed_at": "2026-09-13T12:54:39.281641"
+      },
+      {
+        "price": 48990,
+        "observed_at": "2026-09-14T08:48:39.264613"
+      }
+    ]
+  },
+  {
+    "id": "deal_flipkart_GSTGG7GKGJZKUCUG",
+    "title": "Pigeon Popular Cooktop Glass Manual Gas Stove",
+    "brand": "Pigeon",
+    "category": "appliances",
+    "price": 1799,
+    "mrp": 2999,
+    "discount_pct": 40,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": 4.1,
+    "ratings_count": "248,107",
+    "image_url": "https://rukminim2.flixcart.com/image/832/832/xif0q/gas-stove/e/l/v/-original-imagrzvn9ymmgsvj.jpeg",
+    "url": "https://www.flipkart.com/pigeon-popular-cooktop-glass-manual-gas-stove/p/itm782943770c4fe?pid=GSTGG7GKGJZKUCUG",
+    "affiliate_url": "https://www.flipkart.com/pigeon-popular-cooktop-glass-manual-gas-stove/p/itm782943770c4fe?pid=GSTGG7GKGJZKUCUG",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹1,799.00.",
+    "price_history": [
+      {
+        "price": 1799,
+        "observed_at": "2026-09-02T10:47:54.308988"
+      },
+      {
+        "price": 1799,
+        "observed_at": "2026-09-02T10:48:46.607377"
+      },
+      {
+        "price": 1799,
+        "observed_at": "2026-09-02T10:49:46.844813"
+      },
+      {
+        "price": 1799,
+        "observed_at": "2026-09-02T11:48:28.295912"
+      },
+      {
+        "price": 1799,
+        "observed_at": "2026-09-02T12:59:03.832957"
+      },
+      {
+        "price": 1799,
+        "observed_at": "2026-09-02T21:56:44.786935"
+      },
+      {
+        "price": 1799,
+        "observed_at": "2026-09-10T11:02:13.028324"
+      },
+      {
+        "price": 1799,
+        "observed_at": "2026-09-13T11:33:57.177479"
+      },
+      {
+        "price": 1799,
+        "observed_at": "2026-09-14T08:01:44.396521"
+      },
+      {
+        "price": 1799,
+        "observed_at": "2026-09-20T10:57:03.649148"
+      },
+      {
+        "price": 1799,
+        "observed_at": "2026-09-24T09:37:00.531558"
+      },
+      {
+        "price": 1799,
+        "observed_at": "2026-09-30T15:10:57.733509"
+      },
+      {
+        "price": 1799,
+        "observed_at": "2026-09-30T15:37:01.564710"
+      },
+      {
+        "price": 1799,
+        "observed_at": "2026-10-06T12:16:55.859008"
+      }
+    ]
+  },
+  {
+    "id": "deal_flipkart_MOBHNSAGKCHVH7ST",
+    "title": "LAVA Bold N2 Lite (Kolar Gold, 64 GB)",
+    "brand": "LAVA",
+    "category": "appliances",
+    "price": 9299,
+    "mrp": 11499,
+    "discount_pct": 19,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": 4.0,
+    "ratings_count": "809",
+    "image_url": "https://rukmini1.flixcart.com/image/1500/1500/xif0q/mobile/r/3/g/-original-imahpfzegwqu8rzc.jpeg?q=70",
+    "url": "https://www.flipkart.com/lava-bold-n2-lite-kolar-gold-64-gb/p/itm89829830bc4ff?pid=MOBHNSAGKCHVH7ST",
+    "affiliate_url": "https://www.flipkart.com/lava-bold-n2-lite-kolar-gold-64-gb/p/itm89829830bc4ff?pid=MOBHNSAGKCHVH7ST",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹9,299.00.",
+    "price_history": [
+      {
+        "price": 9299,
+        "observed_at": "2026-09-10T14:46:22.678610"
+      },
+      {
+        "price": 9299,
+        "observed_at": "2026-09-13T11:35:38.908884"
+      },
+      {
+        "price": 9299,
+        "observed_at": "2026-09-14T08:01:59.304289"
+      },
+      {
+        "price": 9299,
+        "observed_at": "2026-09-20T10:57:19.575812"
+      },
+      {
+        "price": 9299,
+        "observed_at": "2026-09-24T09:37:15.012202"
+      },
+      {
+        "price": 9299,
+        "observed_at": "2026-09-30T15:06:57.520467"
+      },
+      {
+        "price": 9299,
+        "observed_at": "2026-10-06T12:11:43.742324"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon_B0D14BB5XY",
+    "title": "PHILIPS Air Fryer NA120/00, 4.2 Litre, Large",
+    "brand": "Philips",
+    "category": "appliances",
+    "price": 4849,
+    "mrp": 5995,
+    "discount_pct": 19,
+    "deal_score": 85,
+    "deal_badge": "⚡ 19% Off MRP",
+    "deal_type": "steep_drop",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": 4.4,
+    "ratings_count": "5,935",
+    "image_url": "https://m.media-amazon.com/images/I/31bes8eD4kL._SY300_SX300_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B0D14BB5XY",
+    "affiliate_url": "https://www.amazon.in/dp/B0D14BB5XY?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹4,849.00.",
+    "price_history": [
+      {
+        "price": 4706,
+        "observed_at": "2026-09-02T10:47:49.568944"
+      },
+      {
+        "price": 4706,
+        "observed_at": "2026-09-02T10:51:58.986010"
+      },
+      {
+        "price": 4706,
+        "observed_at": "2026-09-02T13:12:12.462150"
+      },
+      {
+        "price": 5399,
+        "observed_at": "2026-09-02T16:42:53.137601"
+      },
+      {
+        "price": 5399,
+        "observed_at": "2026-09-02T21:01:15.114281"
+      },
+      {
+        "price": 5399,
+        "observed_at": "2026-09-04T09:03:54.280750"
+      },
+      {
+        "price": 5399,
+        "observed_at": "2026-09-04T09:19:07.412268"
+      },
+      {
+        "price": 5399,
+        "observed_at": "2026-09-04T12:10:08.366558"
+      },
+      {
+        "price": 5399,
+        "observed_at": "2026-09-04T12:18:10.915569"
+      },
+      {
+        "price": 5399,
+        "observed_at": "2026-09-04T19:03:07.702517"
+      },
+      {
+        "price": 4849,
+        "observed_at": "2026-09-10T11:20:05.612300"
+      },
+      {
+        "price": 4849,
+        "observed_at": "2026-09-24T22:05:53.998333"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon india_B0B296NTFV",
+    "title": "Portronics Toad 23 Wireless Optical Mouse with 2.4GHz, USB Nano Dongle, Optical Orientation, Click Wheel, Adjustable DPI(Black)",
+    "brand": "Portronics Store",
+    "category": "appliances",
+    "price": 256,
+    "mrp": 599,
+    "discount_pct": 57,
+    "deal_score": 50,
+    "deal_badge": "⚡ 57% Off",
+    "deal_type": "steep_drop",
+    "merchant": "Amazon India",
+    "merchant_logo": "/assets/fallback.svg",
+    "rating": null,
+    "ratings_count": null,
+    "image_url": "https://m.media-amazon.com/images/I/218fOqSir3L._SY300_SX300_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B0B296NTFV",
+    "affiliate_url": "https://www.amazon.in/dp/B0B296NTFV?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹256.00.",
+    "price_history": [
+      {
+        "price": 259,
+        "observed_at": "2026-09-14T09:17:52.291373"
+      },
+      {
+        "price": 299,
+        "observed_at": "2026-09-24T15:19:49.932789"
+      },
+      {
+        "price": 256,
+        "observed_at": "2026-10-06T12:48:17.967542"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon india_B0CTXG8XNK",
+    "title": "Ant Esports GP400 Wireless Gaming Controller for PC, PS4,Android,iOS, Steam Deck & Switch | Hall Effect Joysticks | Bluetooth & 2.4GHz Wireless | Dual Vibration | Motion Control | RGB Lighting | Black",
+    "brand": "Ant Esports",
+    "category": "appliances",
+    "price": 1888,
+    "mrp": 4999,
+    "discount_pct": 62,
+    "deal_score": 50,
+    "deal_badge": "⚡ 62% Off",
+    "deal_type": "steep_drop",
+    "merchant": "Amazon India",
+    "merchant_logo": "/assets/fallback.svg",
+    "rating": 4.2,
+    "ratings_count": "456",
+    "image_url": "https://m.media-amazon.com/images/I/41C3XXcofpL._SX342_SY445_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B0CTXG8XNK",
+    "affiliate_url": "https://www.amazon.in/dp/B0CTXG8XNK?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹1,888.00.",
+    "price_history": [
+      {
+        "price": 1799,
+        "observed_at": "2026-09-13T11:33:26.816210"
+      },
+      {
+        "price": 1888,
+        "observed_at": "2026-10-06T12:18:07.714035"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon_B07VQYPH5Q",
+    "title": "Pigeon Popular Cooktop Glass Manual Gas Stove",
+    "brand": "Pigeon",
+    "category": "appliances",
+    "price": 2679,
+    "mrp": 5699,
+    "discount_pct": 53,
+    "deal_score": 50,
+    "deal_badge": "⚡ 53% Off",
+    "deal_type": "steep_drop",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": 4.1,
+    "ratings_count": "248,107",
+    "image_url": "https://rukminim2.flixcart.com/image/832/832/xif0q/gas-stove/e/l/v/-original-imagrzvn9ymmgsvj.jpeg",
+    "url": "https://www.amazon.in/dp/B07VQYPH5Q",
+    "affiliate_url": "https://www.amazon.in/dp/B07VQYPH5Q?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹2,679.00.",
+    "price_history": [
+      {
+        "price": 2679,
+        "observed_at": "2026-09-20T10:53:10.103518"
+      },
+      {
+        "price": 2679,
+        "observed_at": "2026-09-24T19:54:08.285883"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon india_B0GXBBD73Q",
+    "title": "boAt 2026 Launch Airdopes Plus 224, Powerful Spatial Audio, 60H Playback, Quad Mics AI-ENx™, 13 mm Drivers, App Support, Multi Connect, Google Fast Pair, Bluetooth v6.0 TWS Earbuds (Off White)",
+    "brand": "boAt",
+    "category": "mobiles",
+    "price": 999,
+    "mrp": 3499,
+    "discount_pct": 71,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon India",
+    "merchant_logo": "/assets/fallback.svg",
+    "rating": 3.8,
+    "ratings_count": "7,572",
+    "image_url": "https://m.media-amazon.com/images/I/313iNq9Q5RL._SY300_SX300_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B0GXBBD73Q",
+    "affiliate_url": "https://www.amazon.in/dp/B0GXBBD73Q?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹999.00.",
+    "price_history": [
+      {
+        "price": 1199,
+        "observed_at": "2026-09-08T10:21:31.965083"
+      },
+      {
+        "price": 1199,
+        "observed_at": "2026-09-10T11:15:26.170298"
+      },
+      {
+        "price": 1199,
+        "observed_at": "2026-09-13T11:48:30.995068"
+      },
+      {
+        "price": 999,
+        "observed_at": "2026-10-06T13:06:45.582152"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon india_B0HDD3GR8T",
+    "title": "Lava Bold N2 5G (Regal Gold, 4GB RAM, 128GB Storage) | 6000 mAh Super Battery | Octacore Ultrafast Processor | Biggest 6.75 (HD+) 120Hz Display | IP64 Dust & Water Resistant | Free Service @ Home",
+    "brand": "Lava",
+    "category": "mobiles",
+    "price": 14498,
+    "mrp": 17499,
+    "discount_pct": 17,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon India",
+    "merchant_logo": "/assets/fallback.svg",
+    "rating": 4.0,
+    "ratings_count": "176",
+    "image_url": "https://m.media-amazon.com/images/I/41chFcjgTFL._SY300_SX300_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B0HDD3GR8T",
+    "affiliate_url": "https://www.amazon.in/dp/B0HDD3GR8T?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹14,498.00.",
+    "price_history": [
+      {
+        "price": 14499,
+        "observed_at": "2026-09-10T14:45:15.122406"
+      },
+      {
+        "price": 14499,
+        "observed_at": "2026-09-13T12:51:15.684888"
+      },
+      {
+        "price": 14499,
+        "observed_at": "2026-09-13T12:51:17.882149"
+      },
+      {
+        "price": 14498,
+        "observed_at": "2026-09-30T19:24:10.694604"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon india_B0H293SFTR",
+    "title": "REDMI Turbo 5 (8GB + 256GB) Turbo White | MediaTek Dimensity 8500 Ultra | Mega 7540mAh Battery | 100W HyperCharge | Compact 16.75cm(6.9) 120Hz Display | 50MP Sony OIS Camera",
+    "brand": "Redmi",
+    "category": "mobiles",
+    "price": 41999,
+    "mrp": 54999,
+    "discount_pct": 23,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon India",
+    "merchant_logo": "/assets/fallback.svg",
+    "rating": 4.2,
+    "ratings_count": "594",
+    "image_url": "https://m.media-amazon.com/images/I/41vBypHYsLL._SY300_SX300_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B0H293SFTR",
+    "affiliate_url": "https://www.amazon.in/dp/B0H293SFTR?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹41,999.00.",
+    "price_history": [
+      {
+        "price": 41999,
+        "observed_at": "2026-09-10T14:45:27.144623"
+      },
+      {
+        "price": 41999,
+        "observed_at": "2026-09-13T12:51:54.078762"
+      },
+      {
+        "price": 41999,
+        "observed_at": "2026-09-13T12:51:54.729579"
+      },
+      {
+        "price": 41999,
+        "observed_at": "2026-09-14T08:46:14.500483"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon india_B0G2B2QVLL",
+    "title": "Redmi 15C 5G Prime Edition Dusk Purple 6GB + 128GB | Massive 6000mAh Battery | Segment's Largest 17.53cm Display Up to 120Hz | MediaTek Dimensity 6300 | 33W Fast Charging | 50MP AI Dual Camera",
+    "brand": "Redmi",
+    "category": "mobiles",
+    "price": 19499,
+    "mrp": 31999,
+    "discount_pct": 39,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon India",
+    "merchant_logo": "/assets/fallback.svg",
+    "rating": 4.1,
+    "ratings_count": "560",
+    "image_url": "https://m.media-amazon.com/images/I/41nRjDaS3+L._SY300_SX300_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B0G2B2QVLL",
+    "affiliate_url": "https://www.amazon.in/dp/B0G2B2QVLL?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹19,499.00.",
+    "price_history": [
+      {
+        "price": 19499,
+        "observed_at": "2026-09-10T14:45:43.543621"
+      },
+      {
+        "price": 19499,
+        "observed_at": "2026-09-13T12:52:21.731623"
+      },
+      {
+        "price": 19499,
+        "observed_at": "2026-09-13T12:52:24.163756"
+      },
+      {
+        "price": 19499,
+        "observed_at": "2026-09-14T08:46:24.100307"
+      }
+    ]
+  },
+  {
+    "id": "deal_flipkart_MOBH4DQFWJVDRSHM",
+    "title": "Apple iPhone 16 (Pink, 128 GB)",
+    "brand": "APPLE",
+    "category": "mobiles",
+    "price": 69900,
+    "mrp": 69900,
+    "discount_pct": 0,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": 4.6,
+    "ratings_count": "198,394",
+    "image_url": "https://rukmini1.flixcart.com/image/1500/1500/xif0q/mobile/c/v/v/-original-imahgfmypevfehpc.jpeg?q=70",
+    "url": "https://www.flipkart.com/apple-iphone-16-pink-128-gb/p/itmc2e910b4d0b1c?pid=MOBH4DQFWJVDRSHM",
+    "affiliate_url": "https://www.flipkart.com/apple-iphone-16-pink-128-gb/p/itmc2e910b4d0b1c?pid=MOBH4DQFWJVDRSHM",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹69,900.00.",
+    "price_history": [
+      {
+        "price": 69900,
+        "observed_at": "2026-09-10T14:46:24.235200"
+      },
+      {
+        "price": 69900,
+        "observed_at": "2026-09-14T11:36:00.869786"
+      },
+      {
+        "price": 69900,
+        "observed_at": "2026-09-30T15:04:37.399310"
+      },
+      {
+        "price": 69900,
+        "observed_at": "2026-10-06T12:09:57.426542"
+      }
+    ]
+  },
+  {
+    "id": "deal_flipkart_MOBHN8CA4A6Z3KMZ",
+    "title": "OnePlus Nord CE6 Lite (Hyper Black, 128 GB)",
+    "brand": "OnePlus",
+    "category": "mobiles",
+    "price": 29540,
+    "mrp": 33999,
+    "discount_pct": 13,
+    "deal_score": 85,
+    "deal_badge": "💳 Verified Deal",
+    "deal_type": "card_stack",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": 4.3,
+    "ratings_count": "939",
+    "image_url": "https://rukmini1.flixcart.com/image/1500/1500/xif0q/mobile/6/n/m/nord-ce6-lite-oneplus-nord-ce6-lite-oneplus-original-imahn8bd7npu6u8p.jpeg?q=70",
+    "url": "https://www.flipkart.com/oneplus-nord-ce6-lite-hyper-black-128-gb/p/itm894a5599b758b?pid=MOBHN8CA4A6Z3KMZ",
+    "affiliate_url": "https://www.flipkart.com/oneplus-nord-ce6-lite-hyper-black-128-gb/p/itm894a5599b758b?pid=MOBHN8CA4A6Z3KMZ",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹29,540.00.",
+    "price_history": [
+      {
+        "price": 28680,
+        "observed_at": "2026-09-10T14:46:23.531691"
+      },
+      {
+        "price": 29178,
+        "observed_at": "2026-09-13T11:35:48.713948"
+      },
+      {
+        "price": 29180,
+        "observed_at": "2026-09-13T18:02:55.002658"
+      },
+      {
+        "price": 29056,
+        "observed_at": "2026-09-14T08:02:50.425840"
+      },
+      {
+        "price": 29047,
+        "observed_at": "2026-09-14T11:32:56.913206"
+      },
+      {
+        "price": 28980,
+        "observed_at": "2026-09-20T11:01:32.011976"
+      },
+      {
+        "price": 29268,
+        "observed_at": "2026-09-24T09:41:10.717735"
+      },
+      {
+        "price": 29267,
+        "observed_at": "2026-09-24T12:41:19.947089"
+      },
+      {
+        "price": 29687,
+        "observed_at": "2026-09-24T15:41:29.038597"
+      },
+      {
+        "price": 29590,
+        "observed_at": "2026-09-24T19:11:36.440825"
+      },
+      {
+        "price": 28710,
+        "observed_at": "2026-09-30T15:11:58.475372"
+      },
+      {
+        "price": 29540,
+        "observed_at": "2026-10-06T12:16:32.043810"
+      }
+    ]
+  },
+  {
+    "id": "deal_flipkart_MOBHMJQCVDFJWJCY",
+    "title": "REDMI A7 Pro 5G (Black, 64 GB)",
+    "brand": "REDMI",
+    "category": "mobiles",
+    "price": 14480,
+    "mrp": 26999,
+    "discount_pct": 46,
+    "deal_score": 85,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": 4.0,
+    "ratings_count": "3,666",
+    "image_url": "https://rukmini1.flixcart.com/image/1500/1500/xif0q/mobile/g/3/l/a7-pro-5g-a7-pro-5g-redmi-original-imahmp4gh9ghf8mj.jpeg?q=70",
+    "url": "https://www.flipkart.com/redmi-a7-pro-5g-black-64-gb/p/itm88c66032a6b5e?pid=MOBHMJQCVDFJWJCY",
+    "affiliate_url": "https://www.flipkart.com/redmi-a7-pro-5g-black-64-gb/p/itm88c66032a6b5e?pid=MOBHMJQCVDFJWJCY",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹14,480.00.",
+    "price_history": [
+      {
+        "price": 14440,
+        "observed_at": "2026-09-10T14:46:25.030702"
+      },
+      {
+        "price": 14510,
+        "observed_at": "2026-09-13T11:36:08.232986"
+      },
+      {
+        "price": 14509,
+        "observed_at": "2026-09-13T20:14:09.805867"
+      },
+      {
+        "price": 14498,
+        "observed_at": "2026-09-14T08:03:39.782506"
+      },
+      {
+        "price": 14494,
+        "observed_at": "2026-09-14T11:33:43.205779"
+      },
+      {
+        "price": 14420,
+        "observed_at": "2026-09-20T11:02:07.438801"
+      },
+      {
+        "price": 14408,
+        "observed_at": "2026-09-24T09:41:40.960198"
+      },
+      {
+        "price": 14420,
+        "observed_at": "2026-09-24T12:41:45.470267"
+      },
+      {
+        "price": 14498,
+        "observed_at": "2026-09-30T15:12:06.627115"
+      },
+      {
+        "price": 14480,
+        "observed_at": "2026-10-06T12:16:48.235321"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon india_B0CJMGTMHS",
+    "title": "Nokia 105 Classic | Single SIM Keypad Phone with Built-in UPI Payments, Long-Lasting Battery, Wireless FM Radio, Without Charger| 1 Year Replacement Guarantee | Charcoal",
+    "brand": "Nokia",
+    "category": "mobiles",
+    "price": 1029,
+    "mrp": 1249,
+    "discount_pct": 17,
+    "deal_score": 85,
+    "deal_badge": "⚡ Price Drop Today",
+    "deal_type": "steep_drop",
+    "merchant": "Amazon India",
+    "merchant_logo": "/assets/fallback.svg",
+    "rating": 3.9,
+    "ratings_count": "7,245",
+    "image_url": "https://m.media-amazon.com/images/I/31-hWNXDxiL._SY300_SX300_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B0CJMGTMHS",
+    "affiliate_url": "https://www.amazon.in/dp/B0CJMGTMHS?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹1,029.00.",
+    "price_history": [
+      {
+        "price": 999,
+        "observed_at": "2026-09-08T13:04:56.061887"
+      },
+      {
+        "price": 999,
+        "observed_at": "2026-09-10T11:17:14.108899"
+      },
+      {
+        "price": 999,
+        "observed_at": "2026-09-13T11:51:48.975630"
+      },
+      {
+        "price": 1029,
+        "observed_at": "2026-10-06T13:08:30.240300"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon india_B0GL1JFK48",
+    "title": "Lava Bold N2 (Siachen White, 4 GB RAM, 64 GB Storage) | 13MP AI Dual Rear Camera | Largest 6.75\" HD+ Display | 5000 mAh Battery & 10W Charging | IP64 Water & Dust Proof | Charger & Phone-Case in Box",
+    "brand": "Lava",
+    "category": "mobiles",
+    "price": 10210,
+    "mrp": 12999,
+    "discount_pct": 21,
+    "deal_score": 85,
+    "deal_badge": "⚡ 21% Off MRP",
+    "deal_type": "steep_drop",
+    "merchant": "Amazon India",
+    "merchant_logo": "/assets/fallback.svg",
+    "rating": 3.7,
+    "ratings_count": "593",
+    "image_url": "https://m.media-amazon.com/images/I/410koOoTRzL._SY300_SX300_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B0GL1JFK48",
+    "affiliate_url": "https://www.amazon.in/dp/B0GL1JFK48?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹10,210.00.",
+    "price_history": [
+      {
+        "price": 9999,
+        "observed_at": "2026-09-10T14:45:52.316748"
+      },
+      {
+        "price": 9999,
+        "observed_at": "2026-09-13T12:52:51.983585"
+      },
+      {
+        "price": 9999,
+        "observed_at": "2026-09-13T12:52:53.954545"
+      },
+      {
+        "price": 10210,
+        "observed_at": "2026-09-24T14:48:48.112526"
+      }
+    ]
+  },
+  {
+    "id": "cuelinks_130190",
+    "title": "Amazing OPPO A6x 5G Smartphones - Priced from Rs. 19,999 + Save Rs. 2,500!",
+    "brand": "Brand",
+    "category": "mobiles",
+    "price": 0,
+    "mrp": 0,
+    "discount_pct": 20.0,
+    "deal_score": 77,
+    "deal_badge": "₹2 OFF",
+    "deal_type": "steep_drop",
+    "merchant": "Oppo India",
+    "merchant_logo": "/assets/dealsense-icon.png",
+    "rating": 4.5,
+    "ratings_count": 1500,
+    "image_url": "/assets/deals/products/iphone-15.png",
+    "url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.oppo.com%2Fin%2Fproduct%2Fa6x-5g.P.P1110110%3Firclickid%3DW350J3Q14xyZWI2yC8zteTGmUkrwLKUJbSFUWU0%26irgwc%3D1%26afsrc%3D1%26utm_source%3Dimpact%26utm_medium%3Daffiliate%26utm_campaign%3DOnline%2520Tracking%2520Link%26utm_content%3DParity%2520Cube%2520Pvt%2520Ltd.%26utm_term%3D1",
+    "affiliate_url": null,
+    "tagline": "Get your hands on the OPPO A6x at fantastic reduced prices!Begin at just Rs. 18,999—limited time offer!This offer is valid for every customer!Monthly plans from Rs. 6666 with no extra charges.",
+    "price_history": []
+  },
+  {
+    "id": "cuelinks_130187",
+    "title": "Snag Up to 30% Off on Eco Aaroyaa Disposable Tableware!",
+    "brand": "Brand",
+    "category": "all",
+    "price": 0,
+    "mrp": 0,
+    "discount_pct": 20.0,
+    "deal_score": 77,
+    "deal_badge": "UP TO 30% OFF",
+    "deal_type": "steep_drop",
+    "merchant": "Moglix",
+    "merchant_logo": "/assets/dealsense-icon.png",
+    "rating": 4.5,
+    "ratings_count": 1500,
+    "image_url": "/assets/fallback.svg",
+    "url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.moglix.com%2Fbrands%2Feco-aaroyaa",
+    "affiliate_url": null,
+    "tagline": " Take advantage of up to 30% savings! Starting from just Rs. 139. Find a variety of disposable items like bowls and plates. Claim your savings and order now! ",
+    "price_history": []
+  },
+  {
+    "id": "cuelinks_130178",
+    "title": "Women's Fashion Bonanza | Up to 70% Off Must-Have Styles",
+    "brand": "Brand",
+    "category": "fashion",
+    "price": 0,
+    "mrp": 0,
+    "discount_pct": 20.0,
+    "deal_score": 77,
+    "deal_badge": "UP TO 70% OFF",
+    "deal_type": "steep_drop",
+    "merchant": "Libas",
+    "merchant_logo": "/assets/dealsense-icon.png",
+    "rating": 4.5,
+    "ratings_count": 1500,
+    "image_url": "/assets/fallback.svg",
+    "url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fwww.libas.in%2F%3Fclick_id%3D6ac4d6840e6f3d7d44a011bc%26utm_campaign%3Dtrackier_2%26utm_source%3D5_301233_20261006clpiro714g7s%26utm_term%3D6ac4d6840e6f3d7d44a011bc",
+    "affiliate_url": null,
+    "tagline": " Unlock fantastic savings of up to 70% on chic women's fashion. Dive into a variety of sarees, kurtis, and suits. Revamp your closet with the latest trends. Claim your savings today! ",
+    "price_history": []
+  },
+  {
+    "id": "cuelinks_130177",
+    "title": "Save Big with 40% Off on Demifine Jewellery at Palmonas Stack Up Fest!",
+    "brand": "Brand",
+    "category": "fashion",
+    "price": 0,
+    "mrp": 0,
+    "discount_pct": 20.0,
+    "deal_score": 77,
+    "deal_badge": "CODE: STACK40",
+    "deal_type": "coupon",
+    "merchant": "Palmonas",
+    "merchant_logo": "/assets/dealsense-icon.png",
+    "rating": 4.5,
+    "ratings_count": 1500,
+    "image_url": "/assets/fallback.svg",
+    "url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fpalmonas.com%2Fcollections%2Fflat-40-off",
+    "affiliate_url": null,
+    "tagline": "Find your dream Demifine jewellery designs and save big.Simply apply the coupon code to unlock 40% off!No minimum order value—treat yourself!Enhance your jewellery collection now, act fast!",
+    "price_history": []
+  },
+  {
+    "id": "cuelinks_130175",
+    "title": "Double the Elegance: Buy Any 2 for Just Rs. 1899!",
+    "brand": "Brand",
+    "category": "fashion",
+    "price": 0,
+    "mrp": 0,
+    "discount_pct": 20.0,
+    "deal_score": 77,
+    "deal_badge": "CODE: STACK2",
+    "deal_type": "coupon",
+    "merchant": "Palmonas",
+    "merchant_logo": "/assets/dealsense-icon.png",
+    "rating": 4.5,
+    "ratings_count": 1500,
+    "image_url": "/assets/fallback.svg",
+    "url": "https://linksredirect.com/?cid=317867&source=api&url=https%3A%2F%2Fpalmonas.com%2F",
+    "affiliate_url": null,
+    "tagline": "Adorn yourself with our stylish, gold-plated pieces.Choose any 2 treasures for only Rs 1899!Apply the discount code at checkout.Claim your must-have accessories while they last!",
+    "price_history": []
   }
 ];
 
@@ -414,6 +2308,55 @@ export async function fetchLiveDeals({ category = "all", dealType = "all", onDea
     }
     renderModernDealsGrid(currentDeals, { onDealClick, onSetupClick });
   }
+}
+
+/**
+ * Draws an interactive SVG sparkline from genuine price observation history.
+ * Returns an honest caption when insufficient history is available (< 3 points).
+ * Falling prices are drawn in emerald (#10B981) and rising prices in amber (#F59E0B).
+ */
+export function renderSparkline(priceHistory) {
+  const points = (priceHistory || [])
+    .map((p) => (typeof p === "number" ? p : (typeof p?.price === "number" ? p.price : null)))
+    .filter((p) => p !== null && p > 0);
+
+  if (points.length < 3) {
+    return `<span class="deal-sparkline-empty">Not enough price history yet</span>`;
+  }
+
+  const width = 120;
+  const height = 24;
+  const min = Math.min(...points);
+  const max = Math.max(...points);
+  const range = max - min;
+
+  const coords = points.map((val, idx) => {
+    const x = (idx / (points.length - 1)) * width;
+    const y = range === 0
+      ? height / 2
+      : height - 4 - ((val - min) / range) * (height - 8);
+    return { x, y };
+  });
+
+  let d = `M ${coords[0].x.toFixed(1)},${coords[0].y.toFixed(1)}`;
+  for (let i = 1; i < coords.length; i++) {
+    const prev = coords[i - 1];
+    const curr = coords[i];
+    const cx = prev.x + (curr.x - prev.x) / 2;
+    d += ` C ${cx.toFixed(1)},${prev.y.toFixed(1)} ${cx.toFixed(1)},${curr.y.toFixed(1)} ${curr.x.toFixed(1)},${curr.y.toFixed(1)}`;
+  }
+
+  const rising = points[points.length - 1] > points[0];
+  const stroke = rising ? "#F59E0B" : "#10B981";
+  const label = `${points.length} recorded prices, ₹${Math.round(min).toLocaleString("en-IN")} to ₹${Math.round(max).toLocaleString("en-IN")}`;
+
+  return `
+    <svg viewBox="0 0 ${width} ${height}" class="deal-sparkline-svg" preserveAspectRatio="none"
+         role="img" aria-label="${escapeHtml(label)}">
+      <title>${escapeHtml(label)}</title>
+      <path d="${d}" fill="none" stroke="${stroke}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  `;
 }
 
 export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {}) {
@@ -515,6 +2458,10 @@ export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {})
             <span class="drop-amount-text">Verified genuine lowest price</span>
           </div>
         `}
+
+        <div class="deal-sparkline-wrap" title="Historical Price Trend">
+          ${renderSparkline(deal.price_history)}
+        </div>
 
         <div class="deal-card-score-row">
           <div class="deal-score-meter" title="DealSense Authenticity Verdict">
@@ -626,6 +2573,9 @@ export function renderAllTimeLowsSection(deals, { onDealClick, onSetupClick } = 
           <span class="deal-card-cur-price" style="color:#059669;">₹${price.toLocaleString("en-IN")}</span>
           ${mrp > price ? `<span class="deal-card-struck-mrp">₹${mrp.toLocaleString("en-IN")}</span>` : ""}
           <span class="deal-card-disc-pill">${discount}% OFF</span>
+        </div>
+        <div class="deal-sparkline-wrap" title="Historical Price Trend">
+          ${renderSparkline(deal.price_history)}
         </div>
         <div class="deal-card-actions-row">
           <button type="button" class="btn-card-chart"><span>📊 View Chart</span></button>
