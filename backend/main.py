@@ -139,8 +139,34 @@ def sync_listing_price(listing_id: int, req: SyncPriceRequest):
 
 
 @app.get("/api/health")
+@app.get("/api/v1/health")
 def health_check():
-    return {"status": "ok", "service": "Deal Intelligence Backend"}
+    """Production health-check endpoint for uptime monitors and load balancers."""
+    from backend.services.merchant_adapters import adapter_registry
+    prod_count = 0
+    obs_count = 0
+    try:
+        with get_session() as session:
+            prod_count = len(session.exec(select(Product.id)).all())
+            obs_count = len(session.exec(select(PriceObservation.id)).all())
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"Database disconnected: {exc}")
+
+    return {
+        "status": "healthy",
+        "service": "Deal Intelligence Backend",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "database": "connected",
+        "catalog": {
+            "products_count": prod_count,
+            "observations_count": obs_count,
+        },
+        "merchants": [a.merchant_slug for a in adapter_registry.adapters],
+        "workers": {
+            "observation_worker": worker.is_running,
+            "alert_worker": alert_worker.is_running,
+        },
+    }
 
 
 @app.get("/api/worker/status")
@@ -1486,6 +1512,54 @@ def get_pipeline_telemetry():
         "adk_coordinator": adk_coordinator.get_telemetry(),
         "observation_worker": worker.get_status(),
         "alert_worker": alert_worker.get_status(),
+    }
+
+
+@app.get("/api/status")
+@app.get("/api/v1/status")
+def system_status():
+    """Multi-merchant engine diagnostics and operational status."""
+    from backend.services.merchant_adapters import adapter_registry
+    return {
+        "status": "online",
+        "service": "DealSense India",
+        "version": "1.0.0",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "adapters": {
+            a.merchant_slug: {
+                "name": a.merchant_name,
+                "supports_stealth": getattr(a, "supports_stealth", True),
+            }
+            for a in adapter_registry.adapters
+        },
+        "observation_worker": worker.get_status(),
+        "alert_worker": alert_worker.get_status(),
+    }
+
+
+@app.api_route("/api/cron/sweep", methods=["GET", "POST"])
+def cron_sweep(request: Request, authorization: Optional[str] = Header(None)):
+    """
+    Automated periodic cron sweep endpoint triggered by Vercel Cron or external schedulers.
+    Executes an observation sweep cycle across due listings and an alert dispatch sweep.
+    """
+    cron_secret = os.environ.get("CRON_SECRET")
+    if cron_secret:
+        auth_header = authorization or ""
+        expected = f"Bearer {cron_secret}"
+        query_token = request.query_params.get("secret", "")
+        if auth_header != expected and query_token != cron_secret:
+            raise HTTPException(status_code=401, detail="Unauthorized: Invalid cron secret")
+
+    obs_result = worker.run_cycle(max_items=15)
+    alert_events = alert_worker.run_cycle()
+
+    return {
+        "success": True,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "observation_summary": obs_result,
+        "alerts_triggered_count": len(alert_events),
+        "dispatched_events": [e.to_dict() for e in alert_events],
     }
 
 

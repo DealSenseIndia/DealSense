@@ -1,5 +1,31 @@
 {
   "cleanUrls": true,
+  "crons": [
+    {
+      "path": "/api/cron/sweep",
+      "schedule": "0 */4 * * *"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/deals/live",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, s-maxage=60, stale-while-revalidate=180"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, immutable"
+        }
+      ]
+    }
+  ],
   "rewrites": [
     { "source": "/deals", "destination": "/frontend/deals.html" },
     { "source": "/deals.html", "destination": "/frontend/deals.html" },

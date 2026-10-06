@@ -4,6 +4,28 @@ All notable changes to the DealSense project are documented in this file.
 
 ---
 
+## [Phase 15] - 2026-10-06
+
+### Objective
+Production Hardening, Vercel Edge Cache Optimization & Automated Ingestion Cron.
+
+### Changes Implemented
+- **Vercel Cron Automation (`vercel.json`, `api/cron/sweep.js`, `frontend/api/cron/sweep.js`)**:
+  - Configured 4-hour periodic cron schedule (`0 */4 * * *`) in `vercel.json` pointing to `/api/cron/sweep`.
+  - Implemented serverless edge handler `api/cron/sweep.js` supporting optional `CRON_SECRET` authorization, proxying to backend workers if configured, and graceful edge heartbeat fallback.
+- **Vercel Edge Caching & Cache-Control Headers (`vercel.json`)**:
+  - Added edge cache headers for `/api/deals/live` with `Cache-Control: public, s-maxage=60, stale-while-revalidate=180`.
+  - Added immutable asset caching headers for static assets (`/assets/(.*)`) with `Cache-Control: public, max-age=86400, immutable`.
+- **Production Health & Multi-Merchant Diagnostics Endpoints (`backend/main.py`)**:
+  - Implemented comprehensive `/api/health` and `/api/v1/health` reporting SQLite connectivity, active catalog products & price observations count, merchant adapters, and worker thread states.
+  - Implemented `/api/status` and `/api/v1/status` exposing merchant adapters and worker diagnostics.
+  - Implemented `/api/cron/sweep` supporting Bearer token / secret query parameter authorization and executing observation & alert dispatch cycles.
+- **Test Integrity & Regression Verification**:
+  - Added 4 unit & integration tests in `tests/test_production_health_and_cron.py`.
+  - Full regression test suite expanded to **259 / 259 passing tests (100% green)** in 42.8s.
+
+---
+
 ## [Phase 14] - 2026-10-06
 
 ### Objective

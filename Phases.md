@@ -71,8 +71,10 @@
 - [x] Task 14.3: Implemented `GET /api/alerts`, `DELETE /api/alerts/{id}`, and `GET /api/alerts/recent` for frontend watchlist drawer and real-time alert bell notification badge. *(Owner: `frontend_engineer`)*
 - [x] Task 14.4: 10 new unit & integration tests covering channels, workers, and APIs, expanding test suite to 255/255 green tests (100%). *(Owner: `qa_sentinel`)*
 
-## Phase 15: Production Hardening, Vercel Edge Cache Optimization & Automated Ingestion Cron [STATUS: PLANNED 🚀]
-- [ ] Task 15.1: Vercel Cron (`vercel.json`) configuration for periodic observation sweeps and alert dispatching on edge deployments. *(Owner: `backend_engineer`)*
-- [ ] Task 15.2: Edge caching headers (`s-maxage`, `stale-while-revalidate`) optimization across live deals and search endpoints. *(Owner: `frontend_engineer`)*
-- [ ] Task 15.3: Production health-check dashboard and multi-merchant status monitoring. *(Owner: `planner_architect`)*
-- [ ] Task 15.4: End-to-end regression audit across full 255+ test baseline. *(Owner: `qa_sentinel`)*
+## Phase 15: Production Hardening, Vercel Edge Cache Optimization & Automated Ingestion Cron [STATUS: COMPLETED ✅]
+- [x] Task 15.1: Vercel Cron (`vercel.json`) configuration (`0 */4 * * *`) and edge handler (`api/cron/sweep.js`) for periodic observation sweeps and alert dispatching on edge deployments. *(Owner: `backend_engineer`)*
+- [x] Task 15.2: Edge caching headers (`Cache-Control: public, s-maxage=60, stale-while-revalidate=180` for live deals; `max-age=86400` for assets) in `vercel.json`. *(Owner: `frontend_engineer`)*
+- [x] Task 15.3: Production health-check (`/api/health`, `/api/v1/health`) and multi-merchant status monitoring (`/api/status`, `/api/v1/status`) diagnostics. *(Owner: `planner_architect`)*
+- [x] Task 15.4: Automated cron sweep route (`/api/cron/sweep`) with optional `CRON_SECRET` authentication and worker execution. *(Owner: `backend_engineer`)*
+- [x] Task 15.5: End-to-end regression audit expanding test suite to 259/259 green tests (100% passing). *(Owner: `qa_sentinel`)*
+

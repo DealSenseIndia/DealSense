@@ -7,10 +7,11 @@
 ## 1. Project Health & Verified Baseline Status
 - **Repository**: `D:\Gursher\Affiliate\Deal Intelligence`
 - **Active Workspace**: Deal Intelligence (Antigravity IDE)
-- **Current Milestone**: Phase 7 (Product-First Homepage & Price Drop Showcase: Buyhatke / PriceHistory Paradigm) [COMPLETED ✅]
-- **Unit Test Health**: **244 / 244 Passing Unit Tests (100% Green, 0 Deprecation Warnings in App Code)**
-- **Test Runner Command**: `.venv\Scripts\pytest.exe -q` (68.4s execution)
+- **Current Milestone**: Phase 15 (Production Hardening, Vercel Edge Cache Optimization & Automated Ingestion Cron) [COMPLETED ✅]
+- **Unit Test Health**: **259 / 259 Passing Unit Tests (100% Green, 0 Deprecation Warnings in App Code)**
+- **Test Runner Command**: `.venv\Scripts\pytest.exe -q` (42.8s execution)
 - **Verified Working Test Suites**:
+  - `test_production_health_and_cron.py` (Pass — 4/4 tests: health check, system status, authenticated cron sweeps)
   - `test_competitor_adapter.py` (Pass — 4/4 tests: date normalization, HTML chart extraction, error resilience, DB bootstrap idempotency)
   - `test_deal_freshness.py` (Pass — 2/2 tests)
   - `test_image_contract.py` (Pass — 1/1 test)
@@ -63,6 +64,7 @@
 - **ADR-016 (Hero Deals Synchronization & SVG Sparklines on Live Feeds)**: Synchronized 48 curated high-ranking deals with genuine price observation histories from SQLite into serverless endpoints (`api/deals/live.js`, `frontend/api/deals/live.js`) and client feed defaults (`frontend/js/live_deals.js`). Implemented `renderSparkline` using mathematical cubic-bezier SVG paths with direction-aware colors (emerald green for falling price, amber for rising price) and strict `< 3` point honest text fallback ("Not enough price history yet"). Added scoped styling in `frontend/css/home_feed.css`. Passing test suite maintained at 244/244 (100% green).
 - **ADR-017 (Catalog-Wide Competitor Backfill & Observation Fallback Resilience)**: Integrated competitor archive fallback into `observe_listing` (`backend/services/observation_service.py`), allowing anti-bot blocks (`ObservationStatus.BLOCKED`) or network failures to gracefully retrieve verified historical price points without synthetic data. Hardened `backend/services/competitor_adapter.py` with URL-slug token filtering, brand/title token overlap checks, and price sanity ratios (0.4x - 2.5x) to eliminate accidental accessory/search-result mismatches. Guarded `bootstrap_listing_history` to strictly protect existing valid `live_extraction` prices from being overwritten. Backfilled 3,463 genuine daily price observations across 205 clean catalog listings via `scripts/backfill_all_catalog_history.py`. Re-verified full test suite at 245/245 passing tests (100% green).
 - **ADR-018 (Multi-Channel Alert Dispatch & Background Observation Scheduler)**: Built production-ready `WhatsAppDispatcher` and `WebhookDispatcher` (for Discord/Slack/custom endpoints) with full audit logging in `AlertDeliveryLog`. Integrated them into `CompositeDispatcher`. Added `run_cycle()` and on-demand trigger endpoints (`/api/observation/worker/status`, `/api/observation/worker/trigger`) to `ObservationWorker`. Added complete alert lifecycle REST APIs (`GET /api/alerts`, `DELETE /api/alerts/{id}`, `GET /api/alerts/recent`) connecting the frontend slide-out drawer and adding real-time alert indicator dot to the header bell button. Full test suite expanded to 255/255 passing tests (100% green).
+- **ADR-019 (Production Hardening, Vercel Edge Cache Optimization & Automated Ingestion Cron)**: Added Vercel Cron configuration (`0 */4 * * *`) in `vercel.json` pointing to `/api/cron/sweep` and implemented edge cron runner `api/cron/sweep.js` (and mirrored in `frontend/api/cron/sweep.js`) supporting optional `CRON_SECRET` authentication and backend proxying. Configured edge caching headers in `vercel.json` (`Cache-Control: public, s-maxage=60, stale-while-revalidate=180` for `/api/deals/live` and `max-age=86400, immutable` for `/assets/(.*)`). Implemented centralized `/api/health` (providing DB connectivity, catalog observation stats, and active worker states) and `/api/status` (multi-merchant adapter diagnostics) in `backend/main.py`. Added 4 new integration tests (`tests/test_production_health_and_cron.py`), expanding the regression test suite to 259/259 passing tests (100% green).
 
 ---
 
