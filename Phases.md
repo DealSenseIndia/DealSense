@@ -86,4 +86,11 @@
 - [x] Task 16.5: Dedicated Deals Page (`frontend/deals.html`, `frontend/css/deals.css`) and Categories Explorer (`frontend/categories.html`, `frontend/css/categories.css`) redesign. *(Owner: `frontend_engineer`)*
 - [x] Task 16.6: HTML Compilation (`scripts/build_html.py`) and full regression test suite verification (259/259 green). *(Owner: `qa_sentinel`)*
 
+## Phase 17: Dual-Theme Architecture (Default Clean White Theme + Switchable Deep Obsidian Dark Mode) [STATUS: COMPLETED ✅]
+- [x] Task 17.1: Dual-Theme token architecture in `frontend/css/base.css` with Light Theme as the default experience (`:root, [data-theme="light"]`) and Deep Obsidian as `[data-theme="dark"]`. *(Owner: `frontend_engineer`)*
+- [x] Task 17.2: CSS variable refactoring across all component stylesheets (`header.css`, `footer.css`, `hero.css`, `home_feed.css`, `pdp.css`, `setup_builder.css`, `categories.css`, `deals.css`, `coupons.css`, `drawer.css`). *(Owner: `frontend_engineer`)*
+- [x] Task 17.3: Anti-FOUC hydration script and theme engine in `frontend/js/theme.js` with `localStorage` persistence (`dealsense_theme`) and system preference fallback. *(Owner: `frontend_engineer`)*
+- [x] Task 17.4: Interactive theme toggle buttons (Sun ☀️ / Moon 🌙) integrated into desktop header and mobile drawer across `/`, `/deals`, and `/categories`. *(Owner: `frontend_engineer`)*
+- [x] Task 17.5: HTML Compilation (`scripts/build_html.py`) and full regression test suite verification (259/259 green). *(Owner: `qa_sentinel`)*
+
 

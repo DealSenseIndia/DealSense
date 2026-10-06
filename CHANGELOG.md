@@ -4,6 +4,31 @@ All notable changes to the DealSense project are documented in this file.
 
 ---
 
+## [Phase 17] - 2026-10-06
+
+### Objective
+Dual-Theme Architecture: Clean White Light Theme as the default platform experience with interactive Sun/Moon switch to Deep Obsidian Dark Theme across all pages.
+
+### Changes Implemented
+- **Dual-Theme Design Token System (`frontend/css/base.css`)**:
+  - Configured Light Theme as the default baseline (`:root` and `[data-theme="light"]`) with crisp white void (`#FFFFFF`), subtle slate canvas (`#F8FAFC`), elevated cards (`#FFFFFF` with subtle slate shadow), deep slate typography (`#0F172A`), and emerald accents (`#10B981`).
+  - Encapsulated Deep Obsidian Dark Theme under `[data-theme="dark"]` (`#080C14` void, `#0B101D` surface, `rgba(15, 23, 42, 0.72)` glass cards, glowing emerald highlights).
+  - Dual-theme scrollbars, skeletons, and merchant badges (`amazon`, `flipkart`, `croma`) customized for crisp contrast in both modes.
+- **Component Stylesheets Token Harmonization**:
+  - Cleared all hardcoded dark backgrounds (`#080C14`, `#0B101D`, `rgba(15, 23, 42, ...)`) from `header.css`, `footer.css`, `hero.css`, `home_feed.css`, `pdp.css`, `setup_builder.css`, `categories.css`, `deals.css`, `coupons.css`, and `drawer.css`.
+  - Replaced hardcoded values with design system CSS custom properties (`var(--bg-pure)`, `var(--bg-card)`, `var(--text-headline)`, `var(--border-card)`).
+- **Theme Switcher Engine & Anti-FOUC Hydration (`frontend/js/theme.js`)**:
+  - Implemented client-side theme engine managing `localStorage` persistence (`dealsense_theme`), defaulting to `light` on first visit.
+  - Added zero-latency inline execution script in `<head>` of `base.html`, `deals.html`, and `categories.html` preventing Flash of Unstyled Content (FOUC).
+  - Dispatches `dealsense:themechange` CustomEvents for reactive chart or third-party component re-rendering.
+- **Interactive Sun/Moon Header Toggle Button**:
+  - Added `#themeToggleBtn` in desktop header and `#mobileThemeToggleBtn` in mobile navigation drawer with rotating Sun ☀️ / Moon 🌙 SVG icons and tooltips.
+- **HTML Compilation & Test Suite Verification**:
+  - Rebuilt `frontend/index.html` via `scripts/build_html.py`.
+  - Ran full test suite: **259 / 259 passing tests (100% green)** in 49.1s.
+
+---
+
 ## [Phase 16] - 2026-10-06
 
 ### Objective

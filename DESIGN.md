@@ -1,15 +1,38 @@
 # DealSense — Visual Identity & Design System (Frontend 2.0)
 
-## 1. Aesthetic Identity
-- **Theme**: Premium Deep Obsidian Glassmorphism (Slate / Midnight Blue / Obsidian base).
+## 1. Aesthetic Identity & Dual-Theme Architecture
+- **Dual-Theme Engine**:
+  - **Default Theme (Light)**: Clean, high-legibility Pure White & Slate aesthetic (`#FFFFFF` void, `#F8FAFC` slate canvas, crisp `#0F172A` headlines, `#E2E8F0` micro-borders).
+  - **Alternative Theme (Dark)**: Premium Deep Obsidian Glassmorphism (`#080C14` dark void, `#0B101D` surface, `rgba(15, 23, 42, 0.72)` glass cards, glowing emerald accents).
+  - **Switching & Persistence**: Seamless Sun/Moon toggle (`#themeToggleBtn`), instant anti-FOUC inline execution, and `localStorage` persistence (`dealsense_theme`).
 - **Inspiration**: High-performance fintech dashboards (Linear / Stripe / Raycast) fused with premier e-commerce intelligence (Buyhatke / PriceBefore / Keepa).
-- **Core Principle**: Zero fake clutter, maximum transparency, high visual impact, instant comprehension of deal quality.
+- **Core Principle**: Zero fake clutter, maximum transparency, high visual impact, instant comprehension of deal quality in both bright sunlight and dark settings.
 
-## 2. Color Tokens
+## 2. Color Tokens (Dual Theme)
+
+### A. Light Theme (Default: `:root`, `[data-theme="light"]`)
+- **Backgrounds**:
+  - Root Canvas: `#FFFFFF` (Pure White)
+  - Subtle Surface: `#F8FAFC` (Slate 50)
+  - Card & Container Surface: `#FFFFFF` (Crisp White Card with `box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05)`)
+  - Elevated / Interactive Surface: `#F1F5F9` (Slate 100)
+  - Modal / Drawer Overlays: `rgba(15, 23, 42, 0.6)` with `backdrop-filter: blur(12px)`
+- **Borders & Strokes**:
+  - Card Border Default: `#E2E8F0` (Slate 200)
+  - Card Border Hover: `rgba(16, 185, 129, 0.45)` (Emerald Highlight)
+  - Hairline Dividers: `#F1F5F9` (Slate 100)
+- **Typography**:
+  - Primary Text: `#0F172A` (Slate 900)
+  - Secondary Text: `#334155` (Slate 700)
+  - Muted Text: `#64748B` (Slate 500)
+  - Accent Green: `#10B981` / `#059669` (Vibrant Emerald)
+  - Accent Blue: `#2563EB` / `#0284C7` (Sky / Royal Blue)
+
+### B. Dark Theme (`[data-theme="dark"]`)
 - **Backgrounds**:
   - Root App: `#080C14` (Deep Obsidian Void)
-  - Secondary Surface: `#0E1524` (Subtle Midnight Surface)
-  - Card & Container Surface: `rgba(15, 23, 42, 0.75)` with `backdrop-filter: blur(16px)`
+  - Secondary Surface: `#0B101D` (Subtle Midnight Surface)
+  - Card & Container Surface: `rgba(15, 23, 42, 0.72)` with `backdrop-filter: blur(16px)`
   - Elevated / Interactive Surface: `rgba(30, 41, 59, 0.85)`
   - Modal / Drawer Overlays: `rgba(4, 7, 13, 0.82)` with `backdrop-filter: blur(12px)`
 - **Borders & Strokes**:
@@ -21,19 +44,19 @@
   - Secondary Text: `#94A3B8` (Slate 400)
   - Muted Text: `#64748B` (Slate 500)
   - Accent Green: `#22C55E` / `#10B981` (Vibrant Emerald)
-  - Accent Cyan: `#06B6D4` / `#38BDF8` (Sky Blue)
-  - Warning Amber: `#F59E0B`
-  - Alert Crimson: `#EF4444`
+  - Accent Blue: `#38BDF8` / `#06B6D4` (Cyan / Sky)
+
+### C. Shared Brand & Semantic Identifiers
 - **Store Identifiers**:
-  - Amazon: Brand Yellow/Orange `#FF9900` on `#1F1A10` pill
-  - Flipkart: Brand Blue `#2874F0` on `#0F1E36` pill
+  - Amazon: Brand Orange `#FF9900`
+  - Flipkart: Brand Blue `#2874F0`
   - Croma: Teal `#00E8BF`
   - Reliance Digital: Crimson `#E42529`
 - **Deal Verdict Badges**:
-  - `BUY_NOW`: `#10B981` (Emerald Glow, background `rgba(16, 185, 129, 0.12)`)
-  - `FAIR_PRICE`: `#38BDF8` (Sky Blue Glow, background `rgba(56, 189, 248, 0.12)`)
-  - `WAIT_FOR_DROP`: `#F59E0B` (Amber Glow, background `rgba(245, 158, 11, 0.12)`)
-  - `AVOID_FAKE_DEAL`: `#EF4444` (Crimson Glow, background `rgba(239, 68, 68, 0.12)`)
+  - `BUY_NOW`: `#10B981` (Emerald)
+  - `FAIR_PRICE`: `#38BDF8` (Sky Blue)
+  - `WAIT_FOR_DROP`: `#F59E0B` (Amber)
+  - `AVOID_FAKE_DEAL`: `#EF4444` (Crimson)
 
 ## 3. Typography & Hierarchy
 - **Headline Font**: `Inter`, `-apple-system`, `BlinkMacSystemFont`, `sans-serif` (weight 700 / 800 / 900).

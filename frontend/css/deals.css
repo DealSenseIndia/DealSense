@@ -7,7 +7,7 @@
 
 /* Page layout container */
 .deals-page-body {
-  background-color: var(--bg-primary, #080C14);
+  background-color: var(--bg-pure);
   color: var(--text-primary, #E2E8F0);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   margin: 0;
@@ -211,7 +211,7 @@
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--bg-subtle);
   border: 1px solid var(--border-card);
   border-radius: 9999px;
   font-size: 13px;
@@ -305,7 +305,7 @@
   justify-content: space-between;
   margin-bottom: 16px;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .deals-filter-head-title {
@@ -475,7 +475,7 @@
 }
 
 .price-val-badge {
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--bg-subtle);
   border: 1px solid var(--border-card);
   border-radius: 6px;
   padding: 4px 10px;
@@ -915,7 +915,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(15, 23, 42, 0.85);
+  background: var(--bg-card-hover);
   backdrop-filter: blur(8px);
   border: 1px solid var(--border-card);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);

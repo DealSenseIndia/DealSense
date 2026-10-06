@@ -26,8 +26,8 @@
   width: 440px;
   max-width: 92vw;
   height: 100vh;
-  background: #0B101D;
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-card-solid);
+  border-left: 1px solid var(--border-card);
   box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
@@ -78,7 +78,7 @@
 
 .drawer-close-btn {
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-card);
   border-radius: var(--radius-sm);
   width: 32px;
   height: 32px;
@@ -115,8 +115,8 @@
 
 /* Individual Tracked Alert Item Card */
 .tracked-alert-card {
-  background: rgba(15, 23, 42, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-card);
   border-radius: var(--radius-card);
   padding: 16px;
   display: flex;

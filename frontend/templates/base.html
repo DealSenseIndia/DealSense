@@ -7,6 +7,22 @@
   <meta name="description" content="Stop falling for fake discounts and price anchoring. DealSense analyzes genuine price history, computes card offers, and calculates effective prices across Amazon, Flipkart, and leading stores.">
   <meta name="cuelinks-verification" content="VERIFY-CL-DLFBWXWB">
 
+  <!-- Instant Anti-FOUC Theme Hydration (Default: Light / White) -->
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('dealsense_theme');
+        if (t === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+
   <!-- Google Fonts: Inter Display + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,6 +68,8 @@
   <!-- Tracked Deals & Alerts Slide-Out Drawer -->
   {% include 'components/tracked_deals_drawer.html' %}
 
+  <!-- Theme Switcher Engine -->
+  <script src="/js/theme.js"></script>
   <!-- Anime.js library for synced micro-interactions -->
   <script src="/assets/anime.min.js"></script>
   <script type="module" src="/app.js"></script>

@@ -1,12 +1,102 @@
 /* ==========================================================================
-   DEALSENSE DESIGN SYSTEM 2.0 — DEEP OBSIDIAN GLASSMORPHISM
+   DEALSENSE DESIGN SYSTEM 2.0 — DUAL THEME ARCHITECTURE
+   Default: Pure White & Slate Modern Theme ([data-theme="light"] / :root)
+   Alternate: Deep Obsidian Glassmorphic Theme ([data-theme="dark"])
    Source of Truth: DESIGN.md + High-Performance Fintech & Deal Intelligence Standards
-   Palette: Deep Obsidian Void (#080C14) + Slate Surfaces + Emerald Glow (#22C55E)
-   Typography: Inter + JetBrains Mono (Tabular Numbers)
    ========================================================================== */
 
-:root {
-  /* Brand Green Palette & Emerald Glow */
+:root,
+[data-theme="light"] {
+  /* Brand Green Palette & Emerald Accents */
+  --dw-green-top: #10B981;
+  --dw-green-mid: #059669;
+  --dw-green-main: #10B981;
+  --dw-green-bot: #047857;
+  --dw-green-deep: #064E3B;
+  --dw-green-pastel: rgba(16, 185, 129, 0.08);
+  --dw-green-surface: rgba(16, 185, 129, 0.12);
+  --dw-green-border: rgba(16, 185, 129, 0.28);
+  --dw-green-shadow: rgba(16, 185, 129, 0.2);
+  --dw-green-glow: 0 0 20px rgba(16, 185, 129, 0.25);
+
+  /* Light Theme (Clean White & Slate) Backgrounds */
+  --bg-pure: #FFFFFF;
+  --bg-subtle: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FFFFFF;
+  --bg-card-solid: #FFFFFF;
+  --bg-elevated: #FFFFFF;
+  --bg-terminal: #0F172A;
+  --bg-terminal-subtle: #F1F5F9;
+  --bg-glass-input: #FFFFFF;
+  --bg-primary: #FFFFFF;
+  --bg-header: rgba(255, 255, 255, 0.92);
+
+  /* Typography Colors (High Contrast & Clean Slate) */
+  --text-headline: #0F172A;
+  --text-body: #334155;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --text-white: #FFFFFF;
+  --text-dim: #CBD5E1;
+
+  /* Borders & Divider Strokes */
+  --border-card: #E2E8F0;
+  --border-subtle: #F1F5F9;
+  --border-strong: #CBD5E1;
+  --border-active: #10B981;
+
+  /* Decision Verdict Colors (BUY / WAIT / AVOID) */
+  --verdict-buy: #059669;
+  --verdict-buy-bg: rgba(16, 185, 129, 0.12);
+  --verdict-buy-border: rgba(16, 185, 129, 0.3);
+  --verdict-fair: #0284C7;
+  --verdict-fair-bg: rgba(56, 189, 248, 0.12);
+  --verdict-fair-border: rgba(56, 189, 248, 0.3);
+  --verdict-wait: #D97706;
+  --verdict-wait-bg: rgba(245, 158, 11, 0.12);
+  --verdict-wait-border: rgba(245, 158, 11, 0.3);
+  --verdict-avoid: #DC2626;
+  --verdict-avoid-bg: rgba(239, 68, 68, 0.12);
+  --verdict-avoid-border: rgba(239, 68, 68, 0.3);
+
+  /* Status Colors */
+  --status-warning: #D97706;
+  --status-warning-bg: rgba(245, 158, 11, 0.12);
+  --status-danger: #DC2626;
+  --status-danger-bg: rgba(239, 68, 68, 0.12);
+  --status-info: #0284C7;
+  --status-info-bg: rgba(56, 189, 248, 0.12);
+
+  /* Radii */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-btn: 12px;
+  --radius-card: 18px;
+  --radius-pill: 9999px;
+  --radius-lg: 24px;
+
+  /* Elevation & Shadows for Light Mode */
+  --glass-blur: blur(16px);
+  --glass-blur-lg: blur(24px);
+  --shadow-subtle: 0 1px 3px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03);
+  --shadow-card: 0 4px 16px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+  --shadow-card-hover: 0 12px 30px -4px rgba(15, 23, 42, 0.12), 0 4px 12px -2px rgba(16, 185, 129, 0.12);
+  --shadow-dropdown: 0 16px 36px -4px rgba(15, 23, 42, 0.15), 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow-toast: 0 16px 36px -4px rgba(15, 23, 42, 0.18);
+
+  /* Fonts */
+  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Deep Obsidian Dark Theme Overrides */
+[data-theme="dark"] {
   --dw-green-top: #4ADE80;
   --dw-green-mid: #22C55E;
   --dw-green-main: #10B981;
@@ -18,7 +108,6 @@
   --dw-green-shadow: rgba(16, 185, 129, 0.25);
   --dw-green-glow: 0 0 24px rgba(34, 197, 94, 0.35);
 
-  /* Deep Obsidian Backgrounds */
   --bg-pure: #080C14;
   --bg-subtle: #0B101D;
   --bg-card: rgba(15, 23, 42, 0.72);
@@ -28,8 +117,9 @@
   --bg-terminal: #030712;
   --bg-terminal-subtle: #0F172A;
   --bg-glass-input: rgba(15, 23, 42, 0.65);
+  --bg-primary: #080C14;
+  --bg-header: rgba(8, 12, 20, 0.85);
 
-  /* Typography Colors (High Contrast & Legibility) */
   --text-headline: #F8FAFC;
   --text-body: #E2E8F0;
   --text-secondary: #94A3B8;
@@ -37,13 +127,11 @@
   --text-white: #FFFFFF;
   --text-dim: #475569;
 
-  /* Borders & Divider Strokes */
   --border-card: rgba(255, 255, 255, 0.08);
   --border-subtle: rgba(255, 255, 255, 0.05);
   --border-strong: rgba(255, 255, 255, 0.16);
   --border-active: rgba(34, 197, 94, 0.5);
 
-  /* Decision Verdict Colors (BUY / WAIT / AVOID) */
   --verdict-buy: #10B981;
   --verdict-buy-bg: rgba(16, 185, 129, 0.12);
   --verdict-buy-border: rgba(16, 185, 129, 0.3);
@@ -57,7 +145,6 @@
   --verdict-avoid-bg: rgba(239, 68, 68, 0.12);
   --verdict-avoid-border: rgba(239, 68, 68, 0.3);
 
-  /* Status Colors */
   --status-warning: #F59E0B;
   --status-warning-bg: rgba(245, 158, 11, 0.14);
   --status-danger: #EF4444;
@@ -65,31 +152,11 @@
   --status-info: #38BDF8;
   --status-info-bg: rgba(56, 189, 248, 0.14);
 
-  /* Radii */
-  --radius-xs: 6px;
-  --radius-sm: 8px;
-  --radius-btn: 12px;
-  --radius-card: 18px;
-  --radius-pill: 9999px;
-  --radius-lg: 24px;
-
-  /* Glassmorphism & Shadows */
-  --glass-blur: blur(16px);
-  --glass-blur-lg: blur(24px);
   --shadow-subtle: 0 2px 10px rgba(0, 0, 0, 0.25);
   --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.4);
   --shadow-card-hover: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(34, 197, 94, 0.15);
   --shadow-dropdown: 0 20px 48px rgba(0, 0, 0, 0.7);
   --shadow-toast: 0 16px 40px rgba(0, 0, 0, 0.65);
-
-  /* Fonts */
-  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-
-  /* Transitions */
-  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 *, *::before, *::after {
@@ -101,15 +168,19 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
   color-scheme: dark;
 }
 
 body {
   background-color: var(--bg-pure);
   background-image: 
-    radial-gradient(circle at 18% 10%, rgba(34, 197, 94, 0.07) 0%, transparent 45%),
-    radial-gradient(circle at 82% 28%, rgba(56, 189, 248, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.04) 0%, transparent 60%);
+    radial-gradient(circle at 18% 10%, rgba(16, 185, 129, 0.05) 0%, transparent 45%),
+    radial-gradient(circle at 82% 28%, rgba(56, 189, 248, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.03) 0%, transparent 60%);
   background-attachment: fixed;
   color: var(--text-body);
   font-family: var(--font-inter);
@@ -119,21 +190,40 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   min-height: 100vh;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Custom Sleek Dark Scrollbar */
+[data-theme="dark"] body {
+  background-color: var(--bg-pure);
+  background-image: 
+    radial-gradient(circle at 18% 10%, rgba(34, 197, 94, 0.07) 0%, transparent 45%),
+    radial-gradient(circle at 82% 28%, rgba(56, 189, 248, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.04) 0%, transparent 60%);
+}
+
+/* Custom Sleek Scrollbar */
 ::-webkit-scrollbar { 
   width: 8px; 
   height: 8px;
 }
 ::-webkit-scrollbar-track { 
-  background: var(--bg-pure); 
+  background: var(--bg-subtle); 
 }
 ::-webkit-scrollbar-thumb { 
-  background: rgba(255, 255, 255, 0.14); 
+  background: rgba(15, 23, 42, 0.16); 
   border-radius: var(--radius-pill);
 }
 ::-webkit-scrollbar-thumb:hover { 
+  background: rgba(16, 185, 129, 0.6); 
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track { 
+  background: var(--bg-pure); 
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb { 
+  background: rgba(255, 255, 255, 0.14); 
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { 
   background: rgba(34, 197, 94, 0.5); 
 }
 
@@ -198,10 +288,14 @@ a {
 }
 
 .skeleton {
-  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
+  background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.8s ease-in-out infinite;
   border-radius: var(--radius-sm);
+}
+
+[data-theme="dark"] .skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
 }
 
 .skeleton-text {
@@ -374,20 +468,28 @@ a {
   border-radius: var(--radius-pill);
   font-size: 12px;
   font-weight: 600;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-subtle);
   border: 1px solid var(--border-card);
   color: var(--text-body);
 }
 
 .merchant-pill.amazon {
-  border-color: rgba(255, 153, 0, 0.3);
+  border-color: rgba(255, 153, 0, 0.35);
   background: rgba(255, 153, 0, 0.08);
+  color: #D97706;
+}
+
+[data-theme="dark"] .merchant-pill.amazon {
   color: #FFA41C;
 }
 
 .merchant-pill.flipkart {
-  border-color: rgba(40, 116, 240, 0.3);
+  border-color: rgba(40, 116, 240, 0.35);
   background: rgba(40, 116, 240, 0.08);
+  color: #1D4ED8;
+}
+
+[data-theme="dark"] .merchant-pill.flipkart {
   color: #5BA2FF;
 }
 
