@@ -45,6 +45,11 @@
 - [x] Task 7.1: Reorganize homepage visual hierarchy to place "🔥 Today's Biggest Price Drops" (`#liveDeals`) immediately under the hero search bar, demoting coupons to bottom utility status. *(Owner: `frontend_engineer`)*
 - [x] Task 7.2: Implement rich product cards with dual CTAs (`📊 Price History` & `🛒 View Deal ↗`), merchant logo pills (Amazon, Flipkart, Croma, Reliance Digital), real price drop delta callouts (`↓ ₹X,XXX saved`), and Deal Score badges. *(Owner: `frontend_engineer`)*
 - [x] Task 7.3: Build "⚡ All-Time Low Hall of Fame" (`#allTimeLowsSection`) highlighting 365-day historic lows across categories. *(Owner: `frontend_engineer`)*
-- [x] Task 7.4: Upgrade category filtering pills (`🔥 All Drops`, `📱 Mobiles & 5G`, `💻 Laptops`, `🎧 Audio`, `⌚ Smartwatches`, `📺 4K Smart TVs`, `🍳 Appliances`, `⚡ Under ₹999`) and deal-type toggles (`Steep Drops`, `All-Time Lows`, `Score 85+`). *(Owner: `frontend_engineer`)*
-- [x] Continuous QA Sentinel Guardian: Enforce Rule #1 (237/237 passing tests, zero regressions). *(Owner: `qa_sentinel`)*
+## Phase 11: Junk Catalog Purge & Curated Hero Ingestion Pipeline [STATUS: COMPLETED ✅]
+- [x] Task 11.1: Safety database snapshot backup (`data/deal_intelligence.backup_pre_purge.db`). *(Owner: `backend_engineer`)*
+- [x] Task 11.2: Cascading catalog purge (`scripts/purge_junk_catalog.py`, `scripts/deep_clean_catalog.py`) deleting 4,500+ out-of-scope non-tech items (carpets, kajal, soap dispensers, pillows) and 399 historical test residues. *(Owner: `backend_engineer`)*
+- [x] Task 11.3: Cleaned catalog seed definitions (`data/catalog_seeds.json` and `data/curated_catalog_seeds.json`) anchoring 7 high-intent tech & appliance categories. *(Owner: `planner_architect`)*
+- [x] Task 11.4: Batch competitor historical bootstrapper (`scripts/bootstrap_curated_catalog.py`) pulling up to 1,000 real daily points from PriceBefore for hero products. *(Owner: `backend_engineer` & `scraper_specialist`)*
+- [x] Task 11.5: SQLite database `VACUUM` and full test suite verification (244/244 passing tests in 38.6s). *(Owner: `qa_sentinel`)*
+
 

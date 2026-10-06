@@ -1,58 +1,51 @@
 [
   {
-    "category": "Kitchen Appliances",
+    "category": "appliances",
     "brand": "Philips",
     "title": "PHILIPS Air Fryer NA120/00, 4.2 Litre, Large",
     "merchant": "Amazon",
     "url": "https://www.amazon.in/dp/B0D14BB5XY"
   },
   {
-    "category": "Smartphones",
+    "category": "mobiles",
     "brand": "Motorola",
     "title": "MOTOROLA g37 power (PANTONE Nautical Blue, 128 GB)",
     "merchant": "Flipkart",
     "url": "https://www.flipkart.com/motorola-g37-power-pantone-nautical-blue-128-gb/p/itm48ade38c32669?pid=MOBHMX5YNNYGMVWH"
   },
   {
-    "category": "Home & Living",
-    "brand": "Wakefit",
-    "title": "Wakefit Standard Sleeping Pillow Set of 2",
-    "merchant": "Amazon",
-    "url": "https://www.amazon.in/dp/B07L6GZYDV"
-  },
-  {
-    "category": "Kitchen Appliances",
-    "brand": "Pigeon",
-    "title": "Pigeon Popular Cooktop Glass Manual Gas Stove",
-    "merchant": "Flipkart",
-    "url": "https://www.flipkart.com/pigeon-popular-cooktop-glass-manual-gas-stove/p/itm782943770c4fe?pid=GSTGG7GKGJZKUCUG"
-  },
-  {
-    "category": "Office Furniture",
-    "brand": "Astride",
-    "title": "Astride Ergofit Ergonomic High-Back Office Chair",
-    "merchant": "Flipkart",
-    "url": "https://www.flipkart.com/astride-ergofit-ergonomic-high-back-synchro-tilt-mechanism-heavy-duty-metal-base-mesh-office-adjustable-arm-chair/p/itm596f97149920c?pid=OSCH29QQWTKJRWXH"
-  },
-  {
-    "category": "Kitchen Organizers",
-    "brand": "iBELL",
-    "title": "iBELL Multifunctional Wall-Mounted Kitchen Organizer",
-    "merchant": "Amazon",
-    "url": "https://www.amazon.in/dp/B0DLL4YVJJ"
-  },
-  {
-    "category": "Accessories",
-    "brand": "LEDO",
-    "title": "LEDO Leather Watch & Sunglass Organizer Box",
-    "merchant": "Amazon",
-    "url": "https://www.amazon.in/dp/B0BTTNR391"
-  },
-  {
-    "category": "Smartphones",
+    "category": "mobiles",
     "brand": "Apple",
-    "title": "Apple iPhone 15 (Black, 512 GB)",
+    "title": "Apple iPhone 15 (Black, 128 GB)",
     "merchant": "Amazon",
     "url": "https://www.amazon.in/dp/B0CHX1W1XY"
+  },
+  {
+    "category": "audio",
+    "brand": "Sony",
+    "title": "Sony WH-1000XM5 Wireless Noise Cancelling Headphones",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B09XS7JWHH"
+  },
+  {
+    "category": "laptops",
+    "brand": "Apple",
+    "title": "Apple MacBook Air Laptop with M1 chip (13.3-inch, 8GB RAM, 256GB SSD)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B08N5W4NNB"
+  },
+  {
+    "category": "smartwatches",
+    "brand": "Apple",
+    "title": "Apple Watch Series 9 (GPS, 45mm) - Midnight Aluminium Case",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CHX6PXX6"
+  },
+  {
+    "category": "mobiles",
+    "brand": "Samsung",
+    "title": "Samsung Galaxy S23 5G (Phantom Black, 128 GB)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CL9YKHD6"
   }
 ]

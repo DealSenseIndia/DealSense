@@ -1,0 +1,261 @@
+[
+  {
+    "category": "mobiles",
+    "brand": "Apple",
+    "title": "Apple iPhone 15 (Black, 128 GB)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CHX1W1XY"
+  },
+  {
+    "category": "mobiles",
+    "brand": "Apple",
+    "title": "Apple iPhone 15 Plus (Blue, 128 GB)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CHWRXH8B"
+  },
+  {
+    "category": "mobiles",
+    "brand": "Apple",
+    "title": "Apple iPhone 13 (Midnight, 128 GB)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B09G9HD6PD"
+  },
+  {
+    "category": "mobiles",
+    "brand": "Samsung",
+    "title": "Samsung Galaxy S23 5G (Phantom Black, 128 GB)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CL9YKHD6"
+  },
+  {
+    "category": "mobiles",
+    "brand": "Samsung",
+    "title": "Samsung Galaxy S24 Ultra 5G (Titanium Gray, 256 GB)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CSB4K8PB"
+  },
+  {
+    "category": "mobiles",
+    "brand": "Samsung",
+    "title": "Samsung Galaxy M35 5G (Daybreak Blue, 128 GB)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0D77WD2G8"
+  },
+  {
+    "category": "mobiles",
+    "brand": "OnePlus",
+    "title": "OnePlus 12R 5G (Cool Blue, 128 GB)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CQPNW8MD"
+  },
+  {
+    "category": "mobiles",
+    "brand": "iQOO",
+    "title": "iQOO Neo 9 Pro 5G (Fiery Red, 128 GB)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B07WGN6QSQ"
+  },
+  {
+    "category": "mobiles",
+    "brand": "Redmi",
+    "title": "Redmi Note 13 Pro 5G (Arctic White, 128 GB)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CQ4K8K59"
+  },
+  {
+    "category": "laptops",
+    "brand": "Apple",
+    "title": "Apple MacBook Air Laptop with M1 chip (13.3-inch, 8GB RAM, 256GB SSD)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B08N5W4NNB"
+  },
+  {
+    "category": "laptops",
+    "brand": "Apple",
+    "title": "Apple MacBook Air Laptop with M2 chip (13.6-inch, 8GB RAM, 256GB SSD)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0B3CQBRB4"
+  },
+  {
+    "category": "laptops",
+    "brand": "Apple",
+    "title": "Apple iPad (10th Generation, 10.9-inch, Wi-Fi, 64GB)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0BJMQCH5B"
+  },
+  {
+    "category": "laptops",
+    "brand": "ASUS",
+    "title": "ASUS TUF Gaming F15 Intel Core i5 11th Gen (15.6-inch FHD 144Hz, 16GB/512GB SSD/RTX 2050)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0C4TW7328"
+  },
+  {
+    "category": "laptops",
+    "brand": "HP",
+    "title": "HP Victus Gaming Laptop Intel Core i5 12th Gen (15.6-inch FHD, 16GB/512GB SSD/RTX 3050)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0C3R8LHGM"
+  },
+  {
+    "category": "laptops",
+    "brand": "Lenovo",
+    "title": "Lenovo IdeaPad Gaming 3 AMD Ryzen 5 (15.6-inch FHD 120Hz, 16GB/512GB SSD/RTX 3050)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0B56CY8DV"
+  },
+  {
+    "category": "audio",
+    "brand": "Sony",
+    "title": "Sony WH-1000XM5 Wireless Noise Cancelling Headphones",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B09XS7JWHH"
+  },
+  {
+    "category": "audio",
+    "brand": "Sony",
+    "title": "Sony WH-1000XM4 Industry Leading Wireless Noise Cancelling Headphones",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0863TXGM3"
+  },
+  {
+    "category": "audio",
+    "brand": "Apple",
+    "title": "Apple AirPods Pro (2nd Generation) with MagSafe Case (USB-C)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CHX3TW6X"
+  },
+  {
+    "category": "audio",
+    "brand": "boAt",
+    "title": "boAt Nirvana Ion True Wireless Earbuds with 120H Playtime, Crystal Bionic Sound",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0BYS72274"
+  },
+  {
+    "category": "audio",
+    "brand": "OnePlus",
+    "title": "OnePlus Buds Pro 2 Bluetooth Truly Wireless in Ear Earbuds with Spatial Audio",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0BS3V649J"
+  },
+  {
+    "category": "audio",
+    "brand": "JBL",
+    "title": "JBL Tune 770NC Wireless Over Ear ANC Headphones with 70H Playtime",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CP97441B"
+  },
+  {
+    "category": "smartwatches",
+    "brand": "Apple",
+    "title": "Apple Watch Series 9 (GPS, 45mm) - Midnight Aluminium Case",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CHX6PXX6"
+  },
+  {
+    "category": "smartwatches",
+    "brand": "Apple",
+    "title": "Apple Watch SE (2nd Gen, GPS, 40mm) - Midnight Aluminium Case",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CHX7V17N"
+  },
+  {
+    "category": "smartwatches",
+    "brand": "Samsung",
+    "title": "Samsung Galaxy Watch 6 Bluetooth (40mm, Graphite) Smartwatch",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CC9H5VTY"
+  },
+  {
+    "category": "smartwatches",
+    "brand": "Samsung",
+    "title": "Samsung Galaxy Watch 4 Bluetooth (44mm, Black)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B09DG8KMT7"
+  },
+  {
+    "category": "smartwatches",
+    "brand": "Amazfit",
+    "title": "Amazfit Active Smartwatch 1.75-inch AMOLED Display, Built-in GPS",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CLDP7H8R"
+  },
+  {
+    "category": "tvs",
+    "brand": "Sony",
+    "title": "Sony Bravia 139 cm (55 inches) 4K Ultra HD Smart LED Google TV",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0C9Q4W2MC"
+  },
+  {
+    "category": "tvs",
+    "brand": "LG",
+    "title": "LG 108 cm (43 inches) 4K Ultra HD Smart LED TV (Dark Iron Gray)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0C8WDC4CP"
+  },
+  {
+    "category": "tvs",
+    "brand": "Samsung",
+    "title": "Samsung 138 cm (55 inches) Crystal 4K Vivid Pro Ultra HD Smart LED TV",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B09YV4733F"
+  },
+  {
+    "category": "tvs",
+    "brand": "Xiaomi",
+    "title": "Xiaomi 125 cm (50 inches) X Series 4K Ultra HD Smart Google TV",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CC4Q4F2M"
+  },
+  {
+    "category": "appliances",
+    "brand": "Philips",
+    "title": "PHILIPS Air Fryer NA120/00, 4.2 Litre, Large with Rapid Air Technology",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0D14BB5XY"
+  },
+  {
+    "category": "appliances",
+    "brand": "Dyson",
+    "title": "Dyson V8 Absolute Cordless Vacuum Cleaner",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B099K1M765"
+  },
+  {
+    "category": "appliances",
+    "brand": "Eureka Forbes",
+    "title": "Eureka Forbes Aquaguard Ritz RO+UV+Taste Adjuster Water Purifier",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0BS3SMLCG"
+  },
+  {
+    "category": "appliances",
+    "brand": "Instant Pot",
+    "title": "Instant Pot Duo 7-in-1 Electric Pressure Cooker, Slow Cooker, Rice Cooker 5.7L",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B00FLYWNYQ"
+  },
+  {
+    "category": "gaming",
+    "brand": "Sony",
+    "title": "PlayStation 5 Slim Console (Disc Edition)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0CY5P23R7"
+  },
+  {
+    "category": "gaming",
+    "brand": "Sony",
+    "title": "Sony DualSense Wireless Controller for PlayStation 5 (White)",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B08FC5L3RG"
+  },
+  {
+    "category": "gaming",
+    "brand": "Meta",
+    "title": "Meta Quest 3 128GB Breakthrough Mixed Reality Headset",
+    "merchant": "Amazon",
+    "url": "https://www.amazon.in/dp/B0C8VKRPV2"
+  }
+]

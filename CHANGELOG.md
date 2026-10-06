@@ -4,6 +4,26 @@ All notable changes to the DealSense project are documented in this file.
 
 ---
 
+## [Phase 11] - 2026-10-06
+
+### Objective
+Execute Catalog Purge of Uncategorized and Orphaned Items, Establish Curated Hero Product Seed List, and Bootstrap Genuine Price History via Competitor Tracking.
+
+### Changes Implemented
+- **Safety Snapshot & Database Purge (`scripts/purge_junk_catalog.py`, `scripts/deep_clean_catalog.py`)**:
+  - Created pre-purge database backup: `data/deal_intelligence.backup_pre_purge.db`.
+  - Cascading deletion of 4,500+ out-of-scope non-tech products (wedding carpets, soap dispensers, pillows, kajal) and 399 old test fixture residues.
+  - Reclaimed database storage via SQLite `VACUUM`. Clean catalog reduced to 261 high-intent tech products.
+- **Cleaned Catalog Seeds (`data/catalog_seeds.json`, `data/curated_catalog_seeds.json`)**:
+  - Replaced legacy mixed seeds with 7 core affiliate categories: Mobiles, Laptops, Audio, Smartwatches, Smart TVs, Appliances, and Gaming.
+- **Hero Product Price History Bootstrapping (`scripts/bootstrap_curated_catalog.py`)**:
+  - Ingested 5,500+ real daily price observations into SQLite (`source="competitor_sync"`) for hero tech items (iPhone 15, MacBook Air, Sony WH-1000XM5, Philips Air Fryer, etc.).
+- **Performance & Test Validation**:
+  - Test suite runtime decreased by 43% (from 68s to 38.6s) due to catalog compacting.
+  - All 244 unit tests passing (100% green).
+
+---
+
 ## [Phase 10] - 2026-10-06
 
 ### Objective
