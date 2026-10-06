@@ -45,7 +45,7 @@ def deep_clean():
             # 1. Test residue identification
             is_test = any(tok in t for tok in [
                 "test ", "worker test", "integrity test", "univ p", "failed scrape",
-                "unique rated", "image-less", "discontinued gizmo", "vintage walkman"
+                "unique rated", "image-less", "discontinued gizmo", "vintage walkman", "searchunique"
             ])
 
             # 2. Out of scope category

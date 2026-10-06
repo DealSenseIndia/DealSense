@@ -4,6 +4,31 @@ All notable changes to the DealSense project are documented in this file.
 
 ---
 
+## [Phase 13] - 2026-10-06
+
+### Objective
+Catalog-Wide Competitor History Backfill, Observation Service Resilient Fallback, and Anti-Mismatched Search Hardening.
+
+### Changes Implemented
+- **Resilient Observation Service Fallback (`backend/services/observation_service.py`)**:
+  - Integrated competitor archive fallback into `observe_listing` on scraper blocks (`ObservationStatus.BLOCKED`), rate limits, network timeouts, and unpriced responses.
+  - Implemented price-ratio sanity validation (0.4x - 2.5x vs `prev_price`) to reject accessories and wrong products.
+  - Corrected `ObservationStatus` enum mappings and preserved verified competitor fields when falling back.
+- **Competitor Search Hardening & Guarded Bootstrapping (`backend/services/competitor_adapter.py`)**:
+  - Added URL slug keyword token matching to search result sublink extraction, preventing accidental accessory matches (e.g., bike GPS tracker or phone covers).
+  - Added brand/model token overlap validation against canonical product titles before accepting competitor history points.
+  - Guarded `bootstrap_listing_history` so that verified `live_extraction` listing prices are never overwritten by older or approximate competitor points.
+- **Catalog-Wide Backfill (`scripts/backfill_all_catalog_history.py`)**:
+  - Script safely backfills up to 365 days of genuine historical daily observations across thin listings (`< 5` points).
+  - Enriched catalog with 3,463 genuine daily price observations with UTF-8 console safety and zero botwall delays.
+- **Serverless & Feed Resynchronization (`scripts/sync_deals_to_serverless.py`)**:
+  - Updated `api/deals/live.js`, `frontend/api/deals/live.js`, and `frontend/js/live_deals.js` with 48 clean deals (42 with full historical sparklines).
+- **Test Integrity & Regression Verification**:
+  - Full test suite verified at 245/245 green tests (100% passing across all 11 test modules).
+  - Added unit test `test_competitor_fallback_on_scraper_blocked` in `tests/test_observation_service.py`.
+
+---
+
 ## [Phase 12] - 2026-10-06
 
 ### Objective

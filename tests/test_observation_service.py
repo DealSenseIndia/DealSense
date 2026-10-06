@@ -281,3 +281,52 @@ def test_variant_mismatch_creates_zero_observations():
     with get_session() as session:
         obs_list = session.exec(select(PriceObservation).where(PriceObservation.listing_id == listing_id)).all()
         assert len(obs_list) == 0
+
+
+def test_competitor_fallback_on_scraper_blocked():
+    """10. When scraper is blocked, observation service falls back to competitor archive."""
+    from backend.services.competitor_adapter import CompetitorHistoryResult, CompetitorPricePoint
+
+    listing_id, _ = _create_test_listing(initial_price=29999.0)
+
+    # Scraper blocked simulation
+    with patch(
+        "backend.services.observation_service._fetch_merchant_data",
+        return_value=(None, ObservationStatus.BLOCKED, "Amazon CAPTCHA Challenge"),
+    ):
+        mock_comp = CompetitorHistoryResult(
+            source="pricebefore",
+            product_title="Test Phone Competitor Title",
+            resolved_url="https://www.amazon.in/dp/TEST",
+            current_price=24990.0,
+            lowest_price=24990.0,
+            highest_price=32990.0,
+            history_points=[
+                CompetitorPricePoint(
+                    observed_date=datetime.now(timezone.utc) - timedelta(days=5),
+                    price=27990.0,
+                    in_stock=True,
+                ),
+                CompetitorPricePoint(
+                    observed_date=datetime.now(timezone.utc),
+                    price=24990.0,
+                    in_stock=True,
+                ),
+            ],
+        )
+        with patch("backend.services.competitor_adapter.fetch_competitor_price_history", return_value=mock_comp):
+            res = observe_listing(listing_id)
+
+    assert res.status == ObservationStatus.SUCCESS
+    assert res.price == 24990.0
+
+    with get_session() as session:
+        obs_list = session.exec(select(PriceObservation).where(PriceObservation.listing_id == listing_id)).all()
+        assert len(obs_list) >= 1
+        latest_obs = obs_list[-1]
+        assert latest_obs.price == 24990.0
+        assert latest_obs.source == "competitor_sync"
+
+        listing = session.get(MerchantListing, listing_id)
+        assert listing.current_price == 24990.0
+

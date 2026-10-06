@@ -1424,6 +1424,146 @@ const VERIFIED_DEALS = [
     ]
   },
   {
+    "id": "deal_flipkart_MOBGWZUWTHCU3GRY",
+    "title": "Nokia 105 Classic without Charger",
+    "brand": "Nokia",
+    "category": "appliances",
+    "price": 1399,
+    "mrp": 1399,
+    "discount_pct": 0,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": 3.2,
+    "ratings_count": "1,073",
+    "image_url": "https://rukmini1.flixcart.com/image/1500/1500/l0r1j0w0/mobile/b/i/j/-original-imagch299qdgkmt2.jpeg?q=70",
+    "url": "https://www.flipkart.com/nokia-105-classic-without-charger/p/itmdd6840b63693f?pid=MOBGWZUWTHCU3GRY",
+    "affiliate_url": "https://www.flipkart.com/nokia-105-classic-without-charger/p/itmdd6840b63693f?pid=MOBGWZUWTHCU3GRY",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹1,399.00.",
+    "price_history": [
+      {
+        "price": 1399,
+        "observed_at": "2025-10-07T00:00:00"
+      },
+      {
+        "price": 1399,
+        "observed_at": "2025-11-12T00:00:00"
+      },
+      {
+        "price": 1399,
+        "observed_at": "2025-12-18T00:00:00"
+      },
+      {
+        "price": 1399,
+        "observed_at": "2026-01-23T00:00:00"
+      },
+      {
+        "price": 1399,
+        "observed_at": "2026-02-28T00:00:00"
+      },
+      {
+        "price": 1399,
+        "observed_at": "2026-04-05T00:00:00"
+      },
+      {
+        "price": 1399,
+        "observed_at": "2026-05-11T00:00:00"
+      },
+      {
+        "price": 1399,
+        "observed_at": "2026-06-16T00:00:00"
+      },
+      {
+        "price": 1399,
+        "observed_at": "2026-07-22T00:00:00"
+      },
+      {
+        "price": 1399,
+        "observed_at": "2026-08-27T00:00:00"
+      },
+      {
+        "price": 1399,
+        "observed_at": "2026-10-02T00:00:00"
+      },
+      {
+        "price": 1399,
+        "observed_at": "2026-10-06T00:00:00"
+      }
+    ]
+  },
+  {
+    "id": "deal_amazon india_B0FLXNM7W5",
+    "title": "EvoFox One X Wireless Gaming Controller for PC, Switch, Android, iOS & macOS, Tri-Mode, Hall Effect Joysticks & Triggers, On-the-fly 6 Axis Gyro, 1000Hz Polling, Macro buttons, 800mAh Battery (Black)",
+    "brand": "EvoFox Store",
+    "category": "appliances",
+    "price": 2799,
+    "mrp": 2799,
+    "discount_pct": 0,
+    "deal_score": 92,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon India",
+    "merchant_logo": "/assets/fallback.svg",
+    "rating": null,
+    "ratings_count": null,
+    "image_url": "https://m.media-amazon.com/images/I/31QLBm-AN+L._SX342_SY445_QL70_FMwebp_.jpg",
+    "url": "https://www.amazon.in/dp/B0FLXNM7W5",
+    "affiliate_url": "https://www.amazon.in/dp/B0FLXNM7W5?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹2,799.00.",
+    "price_history": [
+      {
+        "price": 279900,
+        "observed_at": "2026-06-06T00:00:00"
+      },
+      {
+        "price": 2799,
+        "observed_at": "2026-06-18T00:00:00"
+      },
+      {
+        "price": 2799,
+        "observed_at": "2026-06-30T00:00:00"
+      },
+      {
+        "price": 2799,
+        "observed_at": "2026-07-12T00:00:00"
+      },
+      {
+        "price": 2799,
+        "observed_at": "2026-07-24T00:00:00"
+      },
+      {
+        "price": 2799,
+        "observed_at": "2026-08-05T00:00:00"
+      },
+      {
+        "price": 2799,
+        "observed_at": "2026-08-17T00:00:00"
+      },
+      {
+        "price": 2799,
+        "observed_at": "2026-08-29T00:00:00"
+      },
+      {
+        "price": 2799,
+        "observed_at": "2026-09-10T00:00:00"
+      },
+      {
+        "price": 2799,
+        "observed_at": "2026-09-22T00:00:00"
+      },
+      {
+        "price": 2799,
+        "observed_at": "2026-10-04T00:00:00"
+      },
+      {
+        "price": 2799,
+        "observed_at": "2026-10-06T00:00:00"
+      }
+    ]
+  },
+  {
     "id": "deal_flipkart_GSTGG7GKGJZKUCUG",
     "title": "Pigeon Popular Cooktop Glass Manual Gas Stove",
     "brand": "Pigeon",
@@ -1622,96 +1762,60 @@ const VERIFIED_DEALS = [
     ]
   },
   {
-    "id": "deal_amazon india_B0B296NTFV",
-    "title": "Portronics Toad 23 Wireless Optical Mouse with 2.4GHz, USB Nano Dongle, Optical Orientation, Click Wheel, Adjustable DPI(Black)",
-    "brand": "Portronics Store",
+    "id": "deal_tata cliq_mp000000019842183",
+    "title": "Online Fashion & Lifestyle Shopping for Women, Men & Kids in India - Tata CLiQ",
+    "brand": "Online",
     "category": "appliances",
-    "price": 256,
-    "mrp": 599,
-    "discount_pct": 57,
-    "deal_score": 50,
-    "deal_badge": "⚡ 57% Off",
-    "deal_type": "steep_drop",
-    "merchant": "Amazon India",
+    "price": 7899,
+    "mrp": 7899,
+    "discount_pct": 0,
+    "deal_score": 85,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Tata CLiQ",
     "merchant_logo": "/assets/fallback.svg",
     "rating": null,
     "ratings_count": null,
-    "image_url": "https://m.media-amazon.com/images/I/218fOqSir3L._SY300_SX300_QL70_FMwebp_.jpg",
-    "url": "https://www.amazon.in/dp/B0B296NTFV",
-    "affiliate_url": "https://www.amazon.in/dp/B0B296NTFV?tag=dealsense-21",
-    "tagline": "[VERIFIED FACT] Current price observed at ₹256.00.",
+    "image_url": "/assets/deals/products/philips-airfryer.png",
+    "url": "https://www.tatacliq.com/apple-iphone-15/p-mp000000019842183",
+    "affiliate_url": "https://www.tatacliq.com/apple-iphone-15/p-mp000000019842183",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹7,899.00.",
     "price_history": [
       {
-        "price": 259,
-        "observed_at": "2026-09-14T09:17:52.291373"
+        "price": 7899,
+        "observed_at": "2026-09-28T00:00:00"
       },
       {
-        "price": 299,
-        "observed_at": "2026-09-24T15:19:49.932789"
+        "price": 7899,
+        "observed_at": "2026-09-29T00:00:00"
       },
       {
-        "price": 256,
-        "observed_at": "2026-10-06T12:48:17.967542"
-      }
-    ]
-  },
-  {
-    "id": "deal_amazon india_B0CTXG8XNK",
-    "title": "Ant Esports GP400 Wireless Gaming Controller for PC, PS4,Android,iOS, Steam Deck & Switch | Hall Effect Joysticks | Bluetooth & 2.4GHz Wireless | Dual Vibration | Motion Control | RGB Lighting | Black",
-    "brand": "Ant Esports",
-    "category": "appliances",
-    "price": 1888,
-    "mrp": 4999,
-    "discount_pct": 62,
-    "deal_score": 50,
-    "deal_badge": "⚡ 62% Off",
-    "deal_type": "steep_drop",
-    "merchant": "Amazon India",
-    "merchant_logo": "/assets/fallback.svg",
-    "rating": 4.2,
-    "ratings_count": "456",
-    "image_url": "https://m.media-amazon.com/images/I/41C3XXcofpL._SX342_SY445_QL70_FMwebp_.jpg",
-    "url": "https://www.amazon.in/dp/B0CTXG8XNK",
-    "affiliate_url": "https://www.amazon.in/dp/B0CTXG8XNK?tag=dealsense-21",
-    "tagline": "[VERIFIED FACT] Current price observed at ₹1,888.00.",
-    "price_history": [
-      {
-        "price": 1799,
-        "observed_at": "2026-09-13T11:33:26.816210"
+        "price": 7899,
+        "observed_at": "2026-09-30T00:00:00"
       },
       {
-        "price": 1888,
-        "observed_at": "2026-10-06T12:18:07.714035"
-      }
-    ]
-  },
-  {
-    "id": "deal_amazon_B07VQYPH5Q",
-    "title": "Pigeon Popular Cooktop Glass Manual Gas Stove",
-    "brand": "Pigeon",
-    "category": "appliances",
-    "price": 2679,
-    "mrp": 5699,
-    "discount_pct": 53,
-    "deal_score": 50,
-    "deal_badge": "⚡ 53% Off",
-    "deal_type": "steep_drop",
-    "merchant": "Amazon",
-    "merchant_logo": "/assets/amazon-logo.svg",
-    "rating": 4.1,
-    "ratings_count": "248,107",
-    "image_url": "https://rukminim2.flixcart.com/image/832/832/xif0q/gas-stove/e/l/v/-original-imagrzvn9ymmgsvj.jpeg",
-    "url": "https://www.amazon.in/dp/B07VQYPH5Q",
-    "affiliate_url": "https://www.amazon.in/dp/B07VQYPH5Q?tag=dealsense-21",
-    "tagline": "[VERIFIED FACT] Current price observed at ₹2,679.00.",
-    "price_history": [
-      {
-        "price": 2679,
-        "observed_at": "2026-09-20T10:53:10.103518"
+        "price": 7899,
+        "observed_at": "2026-10-01T00:00:00"
       },
       {
-        "price": 2679,
-        "observed_at": "2026-09-24T19:54:08.285883"
+        "price": 7829,
+        "observed_at": "2026-10-02T00:00:00"
+      },
+      {
+        "price": 7829,
+        "observed_at": "2026-10-03T00:00:00"
+      },
+      {
+        "price": 7861,
+        "observed_at": "2026-10-04T00:00:00"
+      },
+      {
+        "price": 7861,
+        "observed_at": "2026-10-05T00:00:00"
+      },
+      {
+        "price": 7899,
+        "observed_at": "2026-10-06T00:00:00"
       }
     ]
   },

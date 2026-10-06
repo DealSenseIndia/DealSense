@@ -295,9 +295,41 @@ def observe_listing(
     extracted, err_status, err_msg = _fetch_merchant_data(target_url, merchant_name)
 
     # -------------------------------------------------------------------------
-    # Step 3: HANDLE NETWORK / EXTRACTION FAILURES
+    # Step 3: HANDLE NETWORK / EXTRACTION FAILURES (With Competitor Archive Fallback)
     # -------------------------------------------------------------------------
+    competitor_fallback_used = False
     if err_status is not None or not extracted:
+        # Check competitor archive fallback before declaring complete failure
+        if err_status in (
+            ObservationStatus.BLOCKED,
+            ObservationStatus.RATE_LIMITED,
+            ObservationStatus.NETWORK_ERROR,
+            ObservationStatus.MERCHANT_ERROR,
+            ObservationStatus.EXTRACTION_FAILED_UNPRICED,
+        ):
+            try:
+                from backend.services.competitor_adapter import fetch_competitor_price_history
+                comp_res = fetch_competitor_price_history(target_url, timeout_seconds=8.0)
+                if comp_res and comp_res.current_price and comp_res.current_price > 0:
+                    price_ok = True
+                    if prev_price and prev_price > 0:
+                        ratio = comp_res.current_price / prev_price
+                        if ratio < 0.4 or ratio > 2.5:
+                            price_ok = False
+                    if price_ok:
+                        extracted_price = comp_res.current_price
+                        extracted_mrp = comp_res.highest_price if (comp_res.highest_price and comp_res.highest_price > extracted_price) else None
+                        is_in_stock = True
+                        seller_name = None
+                        delivery_fee = 0.0
+                        title = comp_res.product_title or listing_info["merchant_product_id"]
+                        competitor_fallback_used = True
+                        err_status = None
+                        err_msg = None
+            except Exception as comp_err:
+                logger.debug("Competitor fallback attempt failed for listing #%d: %s", listing_id, comp_err)
+
+    if err_status is not None or (not extracted and not competitor_fallback_used):
         # Write failure telemetry without altering price observations
         with get_session() as write_session:
             db_listing = write_session.get(MerchantListing, listing_id)
@@ -324,12 +356,13 @@ def observe_listing(
     # -------------------------------------------------------------------------
     # Step 4: VALIDATE EXTRACTION CONTENT & STOCK STATUS
     # -------------------------------------------------------------------------
-    extracted_price = getattr(extracted, "price", None)
-    extracted_mrp = getattr(extracted, "mrp", None)
-    is_in_stock = bool(getattr(extracted, "in_stock", True))
-    seller_name = getattr(extracted, "seller_name", None)
-    delivery_fee = float(getattr(extracted, "delivery_fee", 0.0) or 0.0)
-    title = getattr(extracted, "title", "") or ""
+    if not competitor_fallback_used:
+        extracted_price = getattr(extracted, "price", None)
+        extracted_mrp = getattr(extracted, "mrp", None)
+        is_in_stock = bool(getattr(extracted, "in_stock", True))
+        seller_name = getattr(extracted, "seller_name", None)
+        delivery_fee = float(getattr(extracted, "delivery_fee", 0.0) or 0.0)
+        title = getattr(extracted, "title", "") or ""
 
     # Check for Bot Check string leakage in title or price
     if any(w in title.lower() for w in ("robot check", "captcha", "security challenge")):
@@ -491,7 +524,12 @@ def observe_listing(
             obs_id = latest_obs_info["id"] if latest_obs_info else None
         else:
             # Policy: Append immutable observation
-            observation_source = "live_heartbeat" if is_heartbeat else "live_extraction"
+            if competitor_fallback_used:
+                observation_source = "competitor_sync"
+            elif is_heartbeat:
+                observation_source = "live_heartbeat"
+            else:
+                observation_source = "live_extraction"
             obs = record_price_observation(
                 session=write_session,
                 listing_id=listing_id,

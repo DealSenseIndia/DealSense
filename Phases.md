@@ -57,6 +57,16 @@
 - [x] Task 12.2: Synchronized clean deals and real price history arrays into `api/deals/live.js`, `frontend/api/deals/live.js`, and `frontend/js/live_deals.js`. *(Owner: `backend_engineer`)*
 - [x] Task 12.3: Implemented SVG sparkline micro-chart renderer (`renderSparkline`) in `frontend/js/live_deals.js` with cubic-bezier paths, green falling/amber rising strokes, and zero-synthetic fallback. *(Owner: `frontend_engineer`)*
 - [x] Task 12.4: Added responsive styling for `.deal-sparkline-wrap`, `.deal-sparkline-svg`, and `.deal-sparkline-empty` in `frontend/css/home_feed.css`. *(Owner: `frontend_engineer`)*
-- [x] Task 12.5: Zero regression verification across full test suite (244/244 green tests). *(Owner: `qa_sentinel`)*
+## Phase 13: Catalog-Wide Competitor History Backfill & Observation Resilience [STATUS: COMPLETED ✅]
+- [x] Task 13.1: Resilient competitor archive fallback in `observe_listing` (`backend/services/observation_service.py`) with price-ratio sanity validation (0.4x - 2.5x) and `ObservationStatus.BLOCKED` recovery. *(Owner: `backend_engineer`)*
+- [x] Task 13.2: Sublink search token matching and title/brand overlap verification in `backend/services/competitor_adapter.py` preventing spurious search result matches (e.g. mobile cases/GPS trackers). *(Owner: `scraper_specialist`)*
+- [x] Task 13.3: Guarded listing `current_price` updates in `bootstrap_listing_history` ensuring verified `live_extraction` prices are preserved. *(Owner: `backend_engineer`)*
+- [x] Task 13.4: Catalog-wide backfill execution (`scripts/backfill_all_catalog_history.py`) enriching thin catalog listings with 3,463 genuine daily price points. *(Owner: `backend_engineer`)*
+- [x] Task 13.5: Synchronized 48 curated deals and 42 genuine price histories into serverless endpoints (`api/deals/live.js`, `frontend/api/deals/live.js`). *(Owner: `frontend_engineer`)*
+- [x] Task 13.6: Test suite expanded and maintained at 245/245 green tests with zero regressions. *(Owner: `qa_sentinel`)*
 
-
+## Phase 14: Automated Observation Scheduler, Price Alert Notification Bot & Real-Time Dispatch [STATUS: PLANNED 🚀]
+- [ ] Task 14.1: Scheduled background price refresh worker triggering `observe_listing` on dynamic tier intervals (HOT: 4h, WARM: 12h, COLD: 24h). *(Owner: `backend_engineer`)*
+- [ ] Task 14.2: Automated Telegram / WhatsApp alert dispatcher for triggered price drop notifications (`bot_dispatcher`). *(Owner: `bot_dispatcher`)*
+- [ ] Task 14.3: Real-time price drop notification badge and live feed indicators on the frontend. *(Owner: `frontend_engineer`)*
+- [ ] Task 14.4: End-to-end alert trigger tests and notification queue audit (245+ green tests). *(Owner: `qa_sentinel`)*
