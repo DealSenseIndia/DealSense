@@ -28,7 +28,7 @@
   font-weight: 600;
 }
 
-/* 3-Column Product Hero Card */
+/* 2-Column Product Hero Card (Showcase Left, Intelligence Right) */
 .pdp-hero-container-card {
   background: var(--bg-card);
   backdrop-filter: blur(16px);
@@ -38,26 +38,48 @@
   padding: 32px;
   box-shadow: var(--shadow-card);
   display: grid;
-  grid-template-columns: 380px 1fr 340px;
+  grid-template-columns: minmax(340px, 420px) 1fr;
   gap: 36px;
   margin-bottom: 32px;
+  align-items: start;
 }
 
-/* Gallery */
+@media (max-width: 992px) {
+  .pdp-hero-container-card {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 20px;
+  }
+}
+
+/* Gallery & Left Action Column */
 .gallery-column {
   display: flex;
-  gap: 14px;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.gallery-showcase-box {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  width: 100%;
 }
 
 .gallery-thumbs-stack {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  flex-shrink: 0;
+}
+
+.gallery-thumbs-stack:empty {
+  display: none !important;
 }
 
 .gallery-thumb-item {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border: 1px solid var(--border-card);
   border-radius: var(--radius-sm);
   background: var(--bg-subtle);
@@ -79,21 +101,36 @@
 
 .gallery-main-container {
   flex: 1;
-  height: 300px;
+  width: 100%;
+  min-width: 280px;
+  height: 380px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   border: 1px solid var(--border-card);
-  border-radius: 12px;
-  padding: 16px;
-  background: var(--bg-subtle);
+  border-radius: 16px;
+  padding: 20px;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  cursor: zoom-in;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery-main-container:hover {
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-md);
 }
 
 .gallery-main-photo {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-main-container:hover .gallery-main-photo {
+  transform: scale(1.03);
 }
 
 .deal-status-chip {
@@ -1793,16 +1830,16 @@
 }
 
 .bank-pill.active {
-  background: rgba(16, 185, 129, 0.18);
-  color: #34D399;
-  border-color: rgba(16, 185, 129, 0.5);
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+  background: var(--primary, #16A34A);
+  color: #FFFFFF;
+  border-color: var(--primary, #16A34A);
+  box-shadow: 0 2px 10px rgba(22, 163, 74, 0.28);
 }
 
 .bank-logo-tag {
   font-size: 9px;
   font-weight: 800;
-  padding: 1px 4px;
+  padding: 1px 5px;
   border-radius: 3px;
 }
 
@@ -1811,37 +1848,116 @@
 .icici-tag { background: #F97316; color: white; }
 .bank-pill.active .bank-logo-tag { background: rgba(255,255,255,0.25); color: white; }
 
-/* Itemized Receipt Slip */
-.receipt-slip-table {
-  background: rgba(8, 12, 20, 0.7);
-  border: 1px dashed rgba(255, 255, 255, 0.12);
-  border-radius: 10px;
-  padding: 14px 16px;
+/* ── PDP Glance 4-Metric Strip (PriceBefore & Keepa Standard) ── */
+.pdp-glance-metrics-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 6px 0 16px 0;
+}
+
+@media (max-width: 640px) {
+  .pdp-glance-metrics-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.glance-metric-card-tile {
+  background: var(--bg-subtle, rgba(248, 250, 252, 0.7));
+  border: 1px solid var(--border-card, #E2E8F0);
+  border-radius: 12px;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.glance-metric-card-tile:hover {
+  border-color: var(--border-active, #10B981);
+  transform: translateY(-2px);
+}
+
+.glance-tile-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary, #64748B);
+}
+
+.glance-tile-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-headline, #0F172A);
+  letter-spacing: -0.4px;
+}
+
+.glance-tile-val.val-green {
+  color: #16A34A;
+}
+
+.glance-tile-val.val-blue {
+  color: #2563EB;
+}
+
+.glance-tile-val.val-emerald {
+  color: #059669;
+}
+
+.glance-tile-sub {
+  font-size: 11px;
+  color: var(--text-secondary, #64748B);
+}
+
+.glance-tile-sub.glance-savings-pill {
+  color: #16A34A;
+  font-weight: 700;
+}
+
+/* Itemized Receipt Slip (Buyhatke Transparent Landed Total) */
+.receipt-slip-table {
+  background: var(--bg-subtle, rgba(248, 250, 252, 0.7));
+  border: 1.5px dashed var(--border-card, rgba(0, 0, 0, 0.12));
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+[data-theme="dark"] .receipt-slip-table {
+  background: rgba(8, 12, 20, 0.7);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .receipt-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--text-secondary);
+  gap: 12px;
 }
 
 .receipt-label {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  flex-wrap: wrap;
+  line-height: 1.4;
 }
 
 .receipt-code-pill,
 .receipt-bank-pill {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 750;
-  padding: 1px 6px;
-  border-radius: 4px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
 }
 
 .receipt-code-pill {
@@ -1858,19 +1974,28 @@
 
 .receipt-val {
   font-weight: 700;
-  color: #F8FAFC;
+  color: var(--text-headline);
   font-family: 'JetBrains Mono', monospace;
   font-variant-numeric: tabular-nums;
-  font-size: 13px;
+  font-size: 13.5px;
+  flex-shrink: 0;
 }
 
 .receipt-val.green-val {
+  color: #16A34A;
+}
+
+[data-theme="dark"] .receipt-val.green-val {
   color: #34D399;
 }
 
 .receipt-divider-dashed {
-  border-top: 1.5px dashed rgba(255, 255, 255, 0.12);
+  border-top: 1.5px dashed var(--border-card, rgba(0, 0, 0, 0.12));
   margin: 4px 0;
+}
+
+[data-theme="dark"] .receipt-divider-dashed {
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .receipt-total-row {
@@ -1886,13 +2011,13 @@
 }
 
 .receipt-total-lbl {
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 800;
   color: var(--text-headline);
 }
 
 .receipt-disclaimer-txt {
-  font-size: 10.5px;
+  font-size: 11px;
   color: var(--text-muted);
 }
 
@@ -1903,18 +2028,26 @@
 }
 
 .receipt-total-val {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 900;
-  color: #34D399;
+  color: #16A34A;
   font-family: 'JetBrains Mono', monospace;
   font-variant-numeric: tabular-nums;
   line-height: 1.1;
+}
+
+[data-theme="dark"] .receipt-total-val {
+  color: #34D399;
   text-shadow: 0 0 16px rgba(52, 211, 153, 0.4);
 }
 
 .receipt-savings-callout {
   font-size: 11px;
   font-weight: 750;
+  color: #16A34A;
+}
+
+[data-theme="dark"] .receipt-savings-callout {
   color: #34D399;
 }
 
@@ -3720,7 +3853,11 @@ input[type="email"].alert-text-input:focus {
   }
 
   .gallery-column {
-    flex-direction: column-reverse;
+    flex-direction: column;
+  }
+
+  .gallery-showcase-box {
+    flex-direction: column;
   }
 
   .gallery-thumbs-stack {
@@ -3728,11 +3865,13 @@ input[type="email"].alert-text-input:focus {
     max-height: none;
     overflow-x: auto;
     width: 100%;
+    order: 2;
   }
 
   .gallery-main-container {
-    height: 300px;
+    height: 320px;
     width: 100%;
+    order: 1;
   }
 
   .pdp-deep-intelligence-grid {

@@ -74,20 +74,15 @@
 - 1-Click Action Button: Direct store affiliate redirect with store icon and external link arrow.
 
 ### B. Interactive Product Detail & Intelligence (PDP)
-- **Price at a Glance Strip (PriceBefore style)**: 4 clean metric tiles: Current Price, All-Time Low (with date badge), All-Time High, and 90D Average Benchmark.
+- **2-Column Responsive Layout**:
+  - **Left Showcase & Merchant Action Column**: High-resolution 380px gallery with smooth zoom hover, conditional thumbnail carousel (hidden for single photos), primary store CTA button with store-adaptive branding, watchlist bookmark button, and fast delivery/trust badges strip.
+  - **Right Intelligence & Pricing Column**: High-legibility title, ratings & social proof, pricing row, 90-day baseline auditor banner, 4-metric Price at a Glance strip (PriceBefore style), Best Time to Buy verdict with one-click alert trigger, True Landed Price Calculator Card (Buyhatke style) with Indian bank cards and itemized receipt, and secondary action links.
 - **Dual-Curve SVG Price History Chart**:
   - Native `<svg>` bezier curves for Amazon (amber) vs Flipkart (blue).
   - Timeframe toggles: `1M`, `3M`, `6M`, `1Y`, `All`.
   - Glassmorphic hover crosshair tooltip showing exact date, store prices, and delta.
-- **True Landed Price Calculator Card (Buyhatke style)**:
-  - Interactive Indian bank card pills: SBI Card (10%), HDFC (10%), ICICI (5%), Axis, and No Offer.
-  - Step-down accounting receipt showing Base Price, Eligible Coupon deduction, Instant Card discount, and final Landed Total.
-- **Live Multi-Store Comparison Matrix**:
-  - Direct side-by-side table comparing price, delivery, return policy, and stock across Amazon & Flipkart.
-  - Callout banner showing exact price differential.
-- **Deal Score & Evidence Card**:
-  - Radial score meter, AI verdict explanation, and seller trust audit badge.
-  - One-click WhatsApp & email Price Drop Alert modal.
+- **Mobile Responsive Hierarchy**:
+  - Mobile column ordering prioritizes product photo first (320px), followed by thumbnail horizontal scroller, primary affiliate deal CTA, delivery/trust badges, product title, price row, and deep intelligence metrics. Zero horizontal clipping or overflowing tables.
 
 ### C. Hero Omni-Search Section
 - Glassmorphic search card with neon-glow focus ring.

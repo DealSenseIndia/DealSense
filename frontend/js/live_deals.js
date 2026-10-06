@@ -2484,148 +2484,177 @@ export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {})
   const visibleCountEl = document.getElementById("visibleDealsCount");
   if (visibleCountEl) visibleCountEl.textContent = deals.length;
 
-  deals.forEach((deal) => {
-    const card = document.createElement("div");
-    card.className = "deal-modern-card";
-    card.setAttribute("data-deal-id", deal.id || "");
-    card.setAttribute("data-url", deal.url || "");
+  const INITIAL_LIMIT = 12;
+  const loadMoreWrap = document.getElementById("dealsLoadMoreWrap");
+  const loadMoreBtn = document.getElementById("loadMoreDealsBtn");
+  const loadMoreText = document.getElementById("loadMoreDealsText");
 
-    // Deal badge styling
-    let badgeClass = "badge-all-time-low";
-    let badgeText = deal.deal_badge || "Price Drop";
-    if (deal.deal_type === "all_time_low" || (deal.deal_badge && deal.deal_badge.toLowerCase().includes("all-time"))) {
-      badgeClass = "badge-all-time-low";
-      badgeText = "🔥 All-Time Low";
-    } else if (deal.deal_type === "steep_drop" || (deal.price_drop_amount && deal.price_drop_amount > 1000)) {
-      badgeClass = "badge-steep-drop";
-      if (!deal.deal_badge || deal.deal_badge === "Verified Deal") {
-        badgeText = `↓ ₹${deal.price_drop_amount.toLocaleString("en-IN")} Drop`;
+  let isExpanded = false;
+  const renderCards = (items) => {
+    container.innerHTML = "";
+    items.forEach((deal) => {
+      const card = document.createElement("div");
+      card.className = "deal-modern-card";
+      card.setAttribute("data-deal-id", deal.id || "");
+      card.setAttribute("data-url", deal.url || "");
+
+      // Deal badge styling
+      let badgeClass = "badge-all-time-low";
+      let badgeText = deal.deal_badge || "Price Drop";
+      if (deal.deal_type === "all_time_low" || (deal.deal_badge && deal.deal_badge.toLowerCase().includes("all-time"))) {
+        badgeClass = "badge-all-time-low";
+        badgeText = "🔥 All-Time Low";
+      } else if (deal.deal_type === "steep_drop" || (deal.price_drop_amount && deal.price_drop_amount > 1000)) {
+        badgeClass = "badge-steep-drop";
+        if (!deal.deal_badge || deal.deal_badge === "Verified Deal") {
+          badgeText = `↓ ₹${deal.price_drop_amount.toLocaleString("en-IN")} Drop`;
+        }
+      } else if (deal.deal_type === "card_stack") {
+        badgeClass = "badge-card-stack";
       }
-    } else if (deal.deal_type === "card_stack") {
-      badgeClass = "badge-card-stack";
-    }
 
-    const merchantName = escapeHtml(deal.merchant || "Amazon");
-    let merchantLogo = deal.merchant_logo;
-    if (!merchantLogo) {
-      const mLow = merchantName.toLowerCase();
-      if (mLow.includes("flipkart")) merchantLogo = "/assets/flipkart-icon.svg";
-      else if (mLow.includes("croma")) merchantLogo = "/assets/croma-logo.svg";
-      else if (mLow.includes("reliance")) merchantLogo = "/assets/reliance-digital-logo.svg";
-      else merchantLogo = "/assets/amazon-logo.svg";
-    }
+      const merchantName = escapeHtml(deal.merchant || "Amazon");
+      let merchantLogo = deal.merchant_logo;
+      if (!merchantLogo) {
+        const mLow = merchantName.toLowerCase();
+        if (mLow.includes("flipkart")) merchantLogo = "/assets/flipkart-icon.svg";
+        else if (mLow.includes("croma")) merchantLogo = "/assets/croma-logo.svg";
+        else if (mLow.includes("reliance")) merchantLogo = "/assets/reliance-digital-logo.svg";
+        else merchantLogo = "/assets/amazon-logo.svg";
+      }
 
-    const price = Math.round(deal.price || 0);
-    const mrp = Math.round(deal.mrp || price);
-    const discount = deal.discount_pct || (mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0);
-    const dropAmount = deal.price_drop_amount || Math.max(0, mrp - price);
-    const dealScore = deal.deal_score || 85;
-    const scoreText = dealScore >= 88 ? "BUY NOW" : (dealScore >= 75 ? "GOOD DEAL" : "FAIR");
-    const scoreColor = dealScore >= 85 ? "#16A34A" : "#2563EB";
-    const freshnessStatus = ["fresh", "aging", "stale"].includes(deal.freshness_status)
-      ? deal.freshness_status
-      : "unknown";
-    const freshnessLabel = deal.freshness_label || "Freshness unavailable";
+      const price = Math.round(deal.price || 0);
+      const mrp = Math.round(deal.mrp || price);
+      const discount = deal.discount_pct || (mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0);
+      const dropAmount = deal.price_drop_amount || Math.max(0, mrp - price);
+      const dealScore = deal.deal_score || 85;
+      const scoreText = dealScore >= 88 ? "BUY NOW" : (dealScore >= 75 ? "GOOD DEAL" : "FAIR");
+      const scoreColor = dealScore >= 85 ? "#16A34A" : "#2563EB";
+      const freshnessStatus = ["fresh", "aging", "stale"].includes(deal.freshness_status)
+        ? deal.freshness_status
+        : "unknown";
+      const freshnessLabel = deal.freshness_label || "Freshness unavailable";
 
-    card.innerHTML = `
-      <div class="deal-card-media-wrap">
-        <span class="deal-card-type-badge ${badgeClass}">${escapeHtml(badgeText)}</span>
-        <div class="deal-card-store-pill" title="Available on ${merchantName}">
-          <img src="${merchantLogo}" alt="${merchantName}" class="store-pill-img" onerror="this.src='/assets/dealsense-icon.png'">
-          <span class="store-pill-name">${merchantName}</span>
-        </div>
-        <img src="${deal.image_url || '/assets/fallback.svg'}" alt="${escapeHtml(deal.title)}" class="deal-card-thumb-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/fallback.svg'">
-      </div>
-
-      <div class="deal-card-body">
-        <div class="deal-card-cat-brand">
-          <span class="card-brand-tag">${escapeHtml(deal.brand || deal.category || "Electronics")}</span>
-          ${deal.rating ? `<span class="card-rating-tag">★ ${deal.rating}</span>` : ""}
-        </div>
-
-        <h3 class="deal-card-title-text" title="${escapeHtml(deal.title)}">${escapeHtml(deal.title)}</h3>
-
-        <div class="deal-card-pricing-row">
-          <span class="deal-card-cur-price">₹${price.toLocaleString("en-IN")}</span>
-          ${mrp > price ? `<span class="deal-card-struck-mrp">₹${mrp.toLocaleString("en-IN")}</span>` : ""}
-          ${discount > 0 ? `<span class="deal-card-disc-pill">${discount}% OFF</span>` : ""}
-        </div>
-
-        ${dropAmount > 0 ? `
-          <div class="deal-card-drop-row">
-            <span class="drop-arrow">📉</span>
-            <span class="drop-amount-text">Price dropped by <strong>₹${dropAmount.toLocaleString("en-IN")}</strong></span>
+      card.innerHTML = `
+        <div class="deal-card-media-wrap">
+          <span class="deal-card-type-badge ${badgeClass}">${escapeHtml(badgeText)}</span>
+          <div class="deal-card-store-pill" title="Available on ${merchantName}">
+            <img src="${merchantLogo}" alt="${merchantName}" class="store-pill-img" onerror="this.src='/assets/dealsense-icon.png'">
+            <span class="store-pill-name">${merchantName}</span>
           </div>
-        ` : `
-          <div class="deal-card-drop-row">
-            <span class="drop-arrow">⚡</span>
-            <span class="drop-amount-text">Verified genuine lowest price</span>
+          <img src="${deal.image_url || '/assets/fallback.svg'}" alt="${escapeHtml(deal.title)}" class="deal-card-thumb-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/fallback.svg'">
+        </div>
+
+        <div class="deal-card-body">
+          <div class="deal-card-cat-brand">
+            <span class="card-brand-tag">${escapeHtml(deal.brand || deal.category || "Electronics")}</span>
+            ${deal.rating ? `<span class="card-rating-tag">★ ${deal.rating}</span>` : ""}
           </div>
-        `}
 
-        <div class="deal-sparkline-wrap" title="Historical Price Trend">
-          ${renderSparkline(deal.price_history)}
-        </div>
+          <h3 class="deal-card-title-text" title="${escapeHtml(deal.title)}">${escapeHtml(deal.title)}</h3>
 
-        <div class="deal-card-score-row">
-          <div class="deal-score-meter" title="DealSense Authenticity Verdict">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="${scoreColor}" stroke-width="2.5">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            </svg>
-            <span style="color:${scoreColor}; font-weight:750;">Score: ${dealScore}/100</span>
-            <span class="score-verdict-tag" style="background:${dealScore >= 85 ? '#DCFCE7' : '#EFF6FF'}; color:${scoreColor};">${scoreText}</span>
+          <div class="deal-card-pricing-row">
+            <span class="deal-card-cur-price">₹${price.toLocaleString("en-IN")}</span>
+            ${mrp > price ? `<span class="deal-card-struck-mrp">₹${mrp.toLocaleString("en-IN")}</span>` : ""}
+            ${discount > 0 ? `<span class="deal-card-disc-pill">${discount}% OFF</span>` : ""}
+          </div>
+
+          ${dropAmount > 0 ? `
+            <div class="deal-card-drop-row">
+              <span class="drop-arrow">📉</span>
+              <span class="drop-amount-text">Price dropped by <strong>₹${dropAmount.toLocaleString("en-IN")}</strong></span>
+            </div>
+          ` : `
+            <div class="deal-card-drop-row">
+              <span class="drop-arrow">⚡</span>
+              <span class="drop-amount-text">Verified genuine lowest price</span>
+            </div>
+          `}
+
+          <div class="deal-sparkline-wrap" title="Historical Price Trend">
+            ${renderSparkline(deal.price_history)}
+          </div>
+
+          <div class="deal-card-score-row">
+            <div class="deal-score-meter" title="DealSense Authenticity Verdict">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="${scoreColor}" stroke-width="2.5">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              <span style="color:${scoreColor}; font-weight:750;">Score: ${dealScore}/100</span>
+              <span class="score-verdict-tag" style="background:${dealScore >= 85 ? '#DCFCE7' : '#EFF6FF'}; color:${scoreColor};">${scoreText}</span>
+            </div>
+          </div>
+          <div class="deal-freshness deal-freshness-${freshnessStatus}" title="${escapeHtml(freshnessLabel)}">
+            <span class="deal-freshness-dot" aria-hidden="true"></span>
+            ${escapeHtml(freshnessLabel)}
+          </div>
+
+          <div class="deal-card-actions-row">
+            <button type="button" class="btn-card-chart" title="View interactive price history graph and store comparison">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
+              </svg>
+              <span>Price History</span>
+            </button>
+            <a href="${deal.affiliate_url || deal.url}" target="_blank" rel="noopener sponsored" class="btn-card-deal" title="Buy on ${merchantName}">
+              <span>View Deal ↗</span>
+            </a>
           </div>
         </div>
-        <div class="deal-freshness deal-freshness-${freshnessStatus}" title="${escapeHtml(freshnessLabel)}">
-          <span class="deal-freshness-dot" aria-hidden="true"></span>
-          ${escapeHtml(freshnessLabel)}
-        </div>
+      `;
 
-        <div class="deal-card-actions-row">
-          <button type="button" class="btn-card-chart" title="View interactive price history graph and store comparison">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-              <path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
-            </svg>
-            <span>Price History</span>
-          </button>
-          <a href="${deal.affiliate_url || deal.url}" target="_blank" rel="noopener sponsored" class="btn-card-deal" title="Buy on ${merchantName}">
-            <span>View Deal ↗</span>
-          </a>
-        </div>
-      </div>
-    `;
+      // Button interactions
+      const chartBtn = card.querySelector(".btn-card-chart");
+      if (chartBtn) {
+        chartBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (deal.is_setup && onSetupClick) {
+            onSetupClick(deal.setup_space || "bedroom");
+          } else if (deal.url && onDealClick) {
+            onDealClick(deal.url);
+          }
+        });
+      }
 
-    // Button interactions
-    const chartBtn = card.querySelector(".btn-card-chart");
-    if (chartBtn) {
-      chartBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
+      const dealLink = card.querySelector(".btn-card-deal");
+      if (dealLink) {
+        dealLink.addEventListener("click", (e) => {
+          e.stopPropagation();
+        });
+      }
+
+      // Clicking anywhere on card triggers the price history analysis
+      card.addEventListener("click", () => {
         if (deal.is_setup && onSetupClick) {
           onSetupClick(deal.setup_space || "bedroom");
         } else if (deal.url && onDealClick) {
           onDealClick(deal.url);
         }
       });
-    }
 
-    const dealLink = card.querySelector(".btn-card-deal");
-    if (dealLink) {
-      dealLink.addEventListener("click", (e) => {
-        e.stopPropagation();
-      });
-    }
-
-    // Clicking anywhere on card triggers the price history analysis
-    card.addEventListener("click", () => {
-      if (deal.is_setup && onSetupClick) {
-        onSetupClick(deal.setup_space || "bedroom");
-      } else if (deal.url && onDealClick) {
-        onDealClick(deal.url);
-      }
+      container.appendChild(card);
     });
+  };
 
-    container.appendChild(card);
-  });
+  if (deals.length > INITIAL_LIMIT) {
+    renderCards(deals.slice(0, INITIAL_LIMIT));
+    if (loadMoreWrap && loadMoreBtn) {
+      loadMoreWrap.style.display = "block";
+      if (loadMoreText) {
+        loadMoreText.textContent = `Show More Deals (${deals.length - INITIAL_LIMIT} more)`;
+      }
+      loadMoreBtn.onclick = () => {
+        if (!isExpanded) {
+          renderCards(deals);
+          isExpanded = true;
+          loadMoreWrap.style.display = "none";
+        }
+      };
+    }
+  } else {
+    renderCards(deals);
+    if (loadMoreWrap) loadMoreWrap.style.display = "none";
+  }
 
   // Render All-Time Low Hall of Fame if section exists on page
   renderAllTimeLowsSection(deals, { onDealClick, onSetupClick });

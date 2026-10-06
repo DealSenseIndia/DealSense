@@ -93,4 +93,13 @@
 - [x] Task 17.4: Interactive theme toggle buttons (Sun ☀️ / Moon 🌙) integrated into desktop header and mobile drawer across `/`, `/deals`, and `/categories`. *(Owner: `frontend_engineer`)*
 - [x] Task 17.5: HTML Compilation (`scripts/build_html.py`) and full regression test suite verification (259/259 green). *(Owner: `qa_sentinel`)*
 
+## Phase 18: Frontend Optimization, 2-Column High-Converting PDP & Feed Refactor [STATUS: COMPLETED ✅]
+- [x] Task 18.1: Preserved 100% of Homepage Hero search bar and 3D relaxing girl artwork as explicitly mandated. *(Owner: `frontend_engineer`)*
+- [x] Task 18.2: Refactored Product Detail Page (PDP) from fragile 3-column grid into a modern, responsive 2-column layout in `frontend/css/pdp.css` and `frontend/templates/views/detail_view.html` (Showcase & verified action buttons left, deep intelligence & landed price breakdown right). *(Owner: `frontend_engineer`)*
+- [x] Task 18.3: Optimized PDP Gallery with 380px primary container, smooth hover zoom, conditional thumbnail stack (hidden for single images), and corrected mobile flex order (image on top, buy button, trust strip, and product specs). *(Owner: `frontend_engineer`)*
+- [x] Task 18.4: Upgraded homepage deals feed with 12-item initial pagination and interactive "Show More Deals (X more) ▾" button (`#loadMoreDealsBtn`) in `frontend/js/live_deals.js` to eliminate scroll clutter. *(Owner: `frontend_engineer`)*
+- [x] Task 18.5: Modernized Deals Explorer (`frontend/deals.html`, `deals.css`) and Categories Explorer (`frontend/categories.html`, `categories.css`) with responsive search input padding and light/dark theme harmony. *(Owner: `frontend_engineer`)*
+- [x] Task 18.6: Jinja2 compilation (`scripts/build_html.py`) and full regression test suite verification (259/259 green tests). *(Owner: `qa_sentinel`)*
+
+
 

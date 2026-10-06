@@ -2,6 +2,28 @@
 
 All notable changes to the DealSense project are documented in this file.
 
+## [Phase 18] - 2026-10-07
+
+### Objective
+Frontend Optimization across all pages: 2-Column high-converting PDP refactor, homepage below-the-fold deal pagination, Deals/Categories explorer refinement, and strict preservation of Hero search bar & 3D relaxing girl artwork.
+
+### Changes Implemented
+- **Homepage Hero Preservation & Feed Pagination**:
+  - Maintained 100% of Homepage Hero search bar and 3D relaxing girl artwork untouched per user specification.
+  - Implemented clean 12-item initial pagination in `frontend/js/live_deals.js` with an interactive centered "Show More Deals (X more) ▾" button (`#loadMoreDealsBtn`), preventing excessive DOM scrolling clutter while retaining full catalog access.
+  - Aligned All-Time Low Hall of Fame cards with live SVG sparklines and instant deal modals.
+- **2-Column Product Detail Page (PDP) Refactor (`frontend/templates/views/detail_view.html`, `frontend/css/pdp.css`)**:
+  - Replaced rigid 3-column layout with a responsive 2-column architecture (`minmax(340px, 420px) 1fr` on desktop, stacking gracefully on mobile).
+  - Left Column: 380px gallery showcase container with smooth zoom hover (`.gallery-main-photo`), conditional thumbnail stack (hidden when product has <= 1 photo), primary merchant CTA (`#pdpMainBuyBtn`), wishlist button, and delivery & seller trust badges strip.
+  - Right Column: Product title, ratings, pricing headline, 90-day baseline auditor banner, 4-metric Price at a Glance strip (`#glanceLow`, `#glanceAvg`, `#glanceHigh`, `#glanceDrop`), Best Time to Buy card, True Landed Checkout Price calculator (with live bank card discounts and flex-wrapping coupon badges), and dual-curve price comparison chart.
+- **Mobile Responsive Hierarchy Optimization**:
+  - Removed legacy `column-reverse` hack on `.gallery-column`, establishing correct visual ordering on mobile screens: Product image on top (320px), followed by thumbnail horizontal scroller, primary affiliate deal CTA, delivery badges, and intelligence breakdown. Zero horizontal overflow.
+- **Deals & Categories Explorers Refinement**:
+  - Fixed search input padding in `frontend/deals.html` (`padding-right: 92px`) to eliminate text overlap with the "Analyze" button.
+  - Replaced harsh radial dark heroes in `frontend/categories.html` with soft, adaptive mint-to-white gradients in light mode with dark mode preservation.
+- **Test Integrity**:
+  - Verified 100% green test baseline (**259 / 259 passing tests**) with zero regressions.
+
 ---
 
 ## [Phase 17] - 2026-10-06

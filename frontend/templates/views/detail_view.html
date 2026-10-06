@@ -10,6 +10,7 @@
             <div class="skeleton-shimmer skeleton-thumb"></div>
           </div>
           <div class="gallery-main-container skeleton-shimmer skeleton-main-img"></div>
+          <div class="skeleton-shimmer skeleton-btn skeleton-buy-btn" style="width:100%; height:48px; margin-top:16px;"></div>
         </div>
         <div class="product-center-column">
           <div class="skeleton-shimmer skeleton-line skeleton-title-1"></div>
@@ -17,12 +18,8 @@
           <div class="skeleton-shimmer skeleton-line skeleton-rating"></div>
           <div class="skeleton-shimmer skeleton-line skeleton-price"></div>
           <div class="skeleton-shimmer skeleton-box skeleton-auditor"></div>
-          <div class="skeleton-shimmer skeleton-btn skeleton-buy-btn"></div>
+          <div class="skeleton-shimmer skeleton-box skeleton-glance" style="height:80px;"></div>
           <div class="skeleton-shimmer skeleton-box skeleton-receipt"></div>
-        </div>
-        <div class="pdp-intelligence-glance-col">
-          <div class="skeleton-shimmer skeleton-box skeleton-glance"></div>
-          <div class="skeleton-shimmer skeleton-box skeleton-ttb"></div>
         </div>
       </div>
       <div class="skeleton-shimmer skeleton-tabs-bar"></div>
@@ -83,82 +80,29 @@
         <span id="breadcrumbTitle" class="breadcrumb-active-item">Product</span>
       </nav>
 
-      <!-- 3-Column Product Hero Card -->
+      <!-- 2-Column Product Hero Card (Left: Showcase & Merchant Action; Right: Intelligence & Pricing) -->
       <div class="pdp-hero-container-card" id="pdpHeroContainer">
         
-        <!-- Col 1: Product Photo Gallery -->
+        <!-- Left Column: Gallery & Verified Merchant CTAs -->
         <div class="gallery-column">
-          <div class="gallery-thumbs-stack" id="galleryThumbsStack">
-            <!-- Dynamic thumbnails rendered by JS -->
-          </div>
-
-          <div class="gallery-main-container" id="galleryMainContainer" title="Click to view high-resolution image">
-            <span id="pdpVerdictPill" class="deal-status-chip">✓ Good Deal</span>
-            <img id="pdpMainImg" src="/assets/fallback.svg" class="gallery-main-photo" alt="Product Photo">
-            <div class="gallery-zoom-badge" id="galleryZoomBadge">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                <line x1="11" y1="8" x2="11" y2="14"></line>
-                <line x1="8" y1="11" x2="14" y2="11"></line>
-              </svg>
-              <span>Click to Zoom</span>
+          <div class="gallery-showcase-box">
+            <div class="gallery-thumbs-stack" id="galleryThumbsStack">
+              <!-- Dynamic thumbnails rendered by JS -->
             </div>
-          </div>
-        </div>
 
-        <!-- Col 2: Title, Price, Ratings & Primary CTAs -->
-        <div class="product-center-column">
-          <h2 id="pdpTitle" class="product-full-title">Product Title</h2>
-          
-          <div class="ratings-social-row">
-            <span id="pdpStarsDisplay" class="stars-gold">4.4 ★★★★☆</span>
-            <span id="pdpRatingsCount">(8,230)</span>
-            <span>|</span>
-            <span id="pdpBoughtCount">12K+ bought in past month</span>
-          </div>
-
-          <div style="display: flex; gap: 8px; align-items:center;">
-            <span id="pdpStoreBadge" class="badge-amazon-choice">Amazon's Choice</span>
-            <span id="pdpSpecTag" class="badge-tag-spec">Verified Quality</span>
-          </div>
-
-          <!-- Price Row -->
-          <div class="pdp-pricing-headline-row">
-            <span class="currency" style="font-size:24px; font-weight:800; color:#0F172A;">₹</span>
-            <span id="pdpCurrentPrice" class="pdp-bold-price">0</span>
-            <span id="pdpMrpPrice" class="pdp-struck-mrp">₹0</span>
-            <span id="pdpDiscountBadge" class="pdp-pct-badge-green">0% OFF</span>
-          </div>
-          <span class="pdp-taxes-note">Inclusive of all taxes</span>
-
-          <!-- Deal Authenticity & Fake Discount Auditor Card -->
-          <div id="pdpInflationCard" class="inflation-auditor-card">
-            <div class="inflation-header-row">
-              <div class="inflation-badge-pill" id="pdpInflationBadge">
-                <span class="inflation-shield-ico">🛡️</span>
-                <span id="pdpInflationVerdictText">Verified Genuine Discount</span>
-              </div>
-              <span class="inflation-tested-tag">90-Day Baseline Audit</span>
-            </div>
-            <div class="inflation-metrics-strip">
-              <div class="inflation-metric-col">
-                <span class="metric-label">Advertised Discount</span>
-                <strong id="pdpAdvertisedDiscount">0% OFF</strong>
-              </div>
-              <div class="inflation-arrow">→</div>
-              <div class="inflation-metric-col">
-                <span class="metric-label">Real Baseline Saving</span>
-                <strong id="pdpRealDiscount" class="real-saving-green">0% OFF</strong>
-              </div>
-              <div class="inflation-metric-col">
-                <span class="metric-label">Typical 90D Price</span>
-                <strong id="pdpTypicalBaseline">₹0</strong>
+            <div class="gallery-main-container" id="galleryMainContainer" title="Click to view high-resolution image">
+              <span id="pdpVerdictPill" class="deal-status-chip">✓ Good Deal</span>
+              <img id="pdpMainImg" src="/assets/fallback.svg" class="gallery-main-photo" alt="Product Photo">
+              <div class="gallery-zoom-badge" id="galleryZoomBadge">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  <line x1="11" y1="8" x2="11" y2="14"></line>
+                  <line x1="8" y1="11" x2="14" y2="11"></line>
+                </svg>
+                <span>Click to Zoom</span>
               </div>
             </div>
-            <p id="pdpInflationNote" class="inflation-note-desc">
-              Selling price is genuinely below the 90-day typical baseline with no artificial price spike.
-            </p>
           </div>
 
           <!-- Primary Affiliate CTA Button -->
@@ -195,6 +139,125 @@
               <span id="pdpSellerTrustText" class="delivery-trust-text">100% Genuine Guaranteed</span>
             </div>
           </div>
+        </div>
+
+        <!-- Right Column: Title, Ratings, Pricing, Baseline Audit, Glance Stats & True Price -->
+        <div class="product-center-column">
+          <div class="pdp-header-meta-group">
+            <h2 id="pdpTitle" class="product-full-title">Product Title</h2>
+            
+            <div class="ratings-social-row">
+              <span id="pdpStarsDisplay" class="stars-gold">4.4 ★★★★☆</span>
+              <span id="pdpRatingsCount">(8,230)</span>
+              <span>|</span>
+              <span id="pdpBoughtCount">12K+ bought in past month</span>
+              <span id="pdpStoreBadge" class="badge-amazon-choice">Amazon's Choice</span>
+              <span id="pdpSpecTag" class="badge-tag-spec">Verified Quality</span>
+            </div>
+          </div>
+
+          <!-- Price Row -->
+          <div class="pdp-pricing-headline-row">
+            <span class="currency" style="font-size:24px; font-weight:800; color:var(--text-headline);">₹</span>
+            <span id="pdpCurrentPrice" class="pdp-bold-price">0</span>
+            <span id="pdpMrpPrice" class="pdp-struck-mrp">₹0</span>
+            <span id="pdpDiscountBadge" class="pdp-pct-badge-green">0% OFF</span>
+            <span class="pdp-taxes-note">Inclusive of all taxes</span>
+          </div>
+
+          <!-- Deal Authenticity & Fake Discount Auditor Card -->
+          <div id="pdpInflationCard" class="inflation-auditor-card">
+            <div class="inflation-header-row">
+              <div class="inflation-badge-pill" id="pdpInflationBadge">
+                <span class="inflation-shield-ico">🛡️</span>
+                <span id="pdpInflationVerdictText">Verified Genuine Discount</span>
+              </div>
+              <span class="inflation-tested-tag">90-Day Baseline Audit</span>
+            </div>
+            <div class="inflation-metrics-strip">
+              <div class="inflation-metric-col">
+                <span class="metric-label">Advertised Discount</span>
+                <strong id="pdpAdvertisedDiscount">0% OFF</strong>
+              </div>
+              <div class="inflation-arrow">→</div>
+              <div class="inflation-metric-col">
+                <span class="metric-label">Real Baseline Saving</span>
+                <strong id="pdpRealDiscount" class="real-saving-green">0% OFF</strong>
+              </div>
+              <div class="inflation-metric-col">
+                <span class="metric-label">Typical 90D Price</span>
+                <strong id="pdpTypicalBaseline">₹0</strong>
+              </div>
+            </div>
+            <p id="pdpInflationNote" class="inflation-note-desc">
+              Selling price is genuinely below the 90-day typical baseline with no artificial price spike.
+            </p>
+          </div>
+
+          <!-- Price at a Glance 4-Metric Grid Strip (PriceBefore & Keepa Standard) -->
+          <div class="pdp-glance-metrics-strip" id="pdpGlanceMetricsStrip">
+            <div class="glance-metric-card-tile">
+              <span class="glance-tile-label">Lowest (90D)</span>
+              <strong id="glanceLow" class="glance-tile-val val-green">₹0</strong>
+              <span class="glance-tile-sub">All-Time Low</span>
+            </div>
+            <div class="glance-metric-card-tile">
+              <span class="glance-tile-label">Average Price</span>
+              <strong id="glanceAvg" class="glance-tile-val val-blue">₹0</strong>
+              <span class="glance-tile-sub">90D Benchmark</span>
+            </div>
+            <div class="glance-metric-card-tile">
+              <span class="glance-tile-label">Highest (90D)</span>
+              <strong id="glanceHigh" class="glance-tile-val">₹0</strong>
+              <span class="glance-tile-sub">Market Peak</span>
+            </div>
+            <div class="glance-metric-card-tile">
+              <span class="glance-tile-label">Price Drop</span>
+              <strong id="glanceDrop" class="glance-tile-val val-emerald">0%</strong>
+              <span id="glanceSaving" class="glance-tile-sub glance-savings-pill">You save ₹0</span>
+            </div>
+          </div>
+
+          <!-- Best Time to Buy Intelligence Card -->
+          <div class="time-to-buy-card">
+            <div class="ttb-lead-row">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>Best Time to Buy</span>
+            </div>
+            <div class="ttb-sub-instruction">Based on price history, the best time to buy is:</div>
+            <div class="ttb-content-flex">
+              <div class="ttb-text-block">
+                <div id="ttbHeadline" class="ttb-days-callout">Buy Today</div>
+                <p id="ttbDescription" class="ttb-explanation">Our AI prediction indicates price is verified near the 90-day low.</p>
+              </div>
+              <div class="ttb-calendar-box">
+                <div class="cal-top-accent"></div>
+                <div class="cal-dots-matrix">
+                  <span></span><span></span><span></span>
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="cal-clock-sub">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="3">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="ttb-actions-row">
+              <button class="btn-ttb-how-it-works">ⓘ How it works</button>
+              <button class="btn-ttb-set-alert" id="ttbSetAlertBtn">
+                <span class="bell-ring-ico">🔔</span>
+                <span>Get WhatsApp Alert When Price Drops</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Active Price Alert Intelligence Card -->
+          <div id="pdpActiveAlertCard" class="pdp-active-alert-card" style="display:none;" aria-live="polite"></div>
 
           <!-- True Landed Checkout Price Engine (Transparent Slip) -->
           <div class="true-price-card" id="truePriceCard">
@@ -204,7 +267,7 @@
                 <span class="true-price-title">True Landed Checkout Price</span>
                 <span class="true-price-live-badge">Live Computation</span>
               </div>
-              <span class="true-price-sub">Transparent checkout total after eligible store coupons & card discounts</span>
+              <span class="true-price-sub">Transparent checkout total after eligible store coupons &amp; card discounts</span>
             </div>
 
             <!-- Bank Selector Pills -->
@@ -241,7 +304,7 @@
                 <span class="receipt-val green-val" id="receiptBankDiscount">-₹540</span>
               </div>
               <div class="receipt-row">
-                <span class="receipt-label">Delivery & Handling</span>
+                <span class="receipt-label">Delivery &amp; Handling</span>
                 <span class="receipt-val green-val">FREE Prime Delivery</span>
               </div>
 
@@ -267,72 +330,6 @@
             <button class="pdp-action-btn" id="pdpShareBtn">🔗 Share</button>
             <button class="pdp-action-btn highlight-alert-btn" id="openPriceAlertBtn">🔔 Track Price</button>
             <button class="pdp-action-btn">⚖️ Add to Compare</button>
-          </div>
-        </div>
-
-        <!-- Col 3: Price at a Glance & Best Time to Buy -->
-        <div class="pdp-intelligence-glance-col">
-          <div class="glance-stat-card">
-            <div class="glance-card-header">Price at a Glance</div>
-            <div class="glance-data-row">
-              <span>Lowest Price (90 Days)</span>
-              <strong id="glanceLow">₹0</strong>
-            </div>
-            <div class="glance-data-row">
-              <span>Average Price</span>
-              <strong id="glanceAvg">₹0</strong>
-            </div>
-            <div class="glance-data-row">
-              <span>Highest Price (90 Days)</span>
-              <strong id="glanceHigh">₹0</strong>
-            </div>
-            <div class="glance-data-row">
-              <span>Price Drop</span>
-              <strong id="glanceDrop" style="color:var(--dw-green-primary);">0%</strong>
-            </div>
-            <div id="glanceSaving" class="glance-savings-pill">
-              You save ₹0
-            </div>
-          </div>
-
-          <!-- Best Time to Buy Intelligence Card (Image 1 Exact Match) -->
-          <div class="time-to-buy-card">
-            <div class="ttb-lead-row">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-              <span>Best Time to Buy</span>
-            </div>
-            <div class="ttb-sub-instruction">Based on price history, the best time to buy is</div>
-            <div class="ttb-content-flex">
-              <div class="ttb-text-block">
-                <div id="ttbHeadline" class="ttb-days-callout">Buy Today</div>
-                <p id="ttbDescription" class="ttb-explanation">Our AI prediction indicates price is verified near the 90-day low.</p>
-              </div>
-              <div class="ttb-calendar-box">
-                <div class="cal-top-accent"></div>
-                <div class="cal-dots-matrix">
-                  <span></span><span></span><span></span>
-                  <span></span><span></span><span></span>
-                </div>
-                <div class="cal-clock-sub">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="3">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <button class="btn-ttb-how-it-works">ⓘ How it works</button>
-            <button class="btn-ttb-set-alert" id="ttbSetAlertBtn">
-              <span class="bell-ring-ico">🔔</span>
-              <span>Get WhatsApp Alert When Price Drops</span>
-            </button>
-          </div>
-
-          <!-- Active Price Alert Intelligence Card -->
-          <div id="pdpActiveAlertCard" class="pdp-active-alert-card" style="display:none;" aria-live="polite">
           </div>
         </div>
 

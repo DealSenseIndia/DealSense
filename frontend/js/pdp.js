@@ -304,6 +304,11 @@ function renderImageGallery(images, fallbackUrl, title, category = "") {
 
   if (thumbsContainer) {
     thumbsContainer.innerHTML = "";
+    if (imgList.length <= 1) {
+      thumbsContainer.style.display = "none";
+    } else {
+      thumbsContainer.style.display = "";
+    }
     imgList.slice(0, 7).forEach((url, idx) => {
       const btn = document.createElement("button");
       btn.type = "button";
