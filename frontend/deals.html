@@ -58,6 +58,7 @@
   <!-- Deals Page Scoped Stylesheet -->
   <link rel="stylesheet" href="/css/deals.css">
   <link rel="stylesheet" href="/css/coupons.css">
+  <link rel="stylesheet" href="/css/drawer.css">
 
   <!-- Structured Data (Breadcrumbs & OfferCatalog) -->
   <script type="application/ld+json">
@@ -153,9 +154,67 @@
 
         <button class="btn-header-login">Login</button>
         <button class="btn-header-signup">Sign Up</button>
+
+        <button class="btn-icon-ghost mobile-menu-btn" id="mobileMenuBtn" aria-label="Open Navigation Menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
       </div>
     </div>
   </header>
+
+  <!-- Mobile Navigation Drawer & Overlay -->
+  <div id="mobileDrawerOverlay" class="mobile-drawer-overlay" style="display: none;"></div>
+  <aside id="mobileDrawer" class="mobile-drawer" style="display: none;" aria-label="Mobile Navigation">
+    <div class="mobile-drawer-header">
+      <div class="brand-logo-wrap">
+        <img src="/assets/dealsense-icon.png" alt="DealSense" class="brand-d-logo" width="28" height="28">
+        <span class="brand-title-text" style="font-size:18px;">DealSense</span>
+      </div>
+      <button type="button" id="mobileDrawerClose" class="mobile-drawer-close" aria-label="Close Menu">&times;</button>
+    </div>
+    <nav class="mobile-drawer-nav">
+      <a href="/" class="mobile-nav-link">
+        <span class="mobile-nav-icon">🏠</span> Home
+      </a>
+      <a href="/#setup" class="mobile-nav-link mobile-nav-highlight">
+        <span class="mobile-nav-icon">✨</span> Smart Setups
+      </a>
+      <a href="/deals" class="mobile-nav-link active">
+        <span class="mobile-nav-icon">🔥</span> Handpicked Deals
+      </a>
+      <a href="/categories" class="mobile-nav-link">
+        <span class="mobile-nav-icon">📂</span> Browse Categories
+      </a>
+      <a href="/#track" class="mobile-nav-link">
+        <span class="mobile-nav-icon">🔔</span> Tracked Deals & Alerts
+      </a>
+    </nav>
+    <div class="mobile-drawer-footer">
+      <div class="mobile-drawer-trust">
+        <span>🛡️ Tracking Amazon.in & Flipkart</span>
+      </div>
+      <button class="btn-icon-ghost theme-toggle-btn" id="mobileThemeToggleBtn" title="Toggle Theme" aria-label="Toggle theme">
+        <svg class="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+    </div>
+  </aside>
 
   <!-- =========================================================================
        MAIN DEALS VIEW
@@ -251,8 +310,17 @@
     <!-- Two-Column Layout: Sidebar + Deals Feed -->
     <div class="deals-content-layout">
 
+      <!-- Mobile Filter Toggle Trigger -->
+      <button type="button" class="deals-mobile-filter-toggle" id="dealsMobileFilterToggle" aria-expanded="false" aria-controls="dealsSidebar">
+        <span class="filter-toggle-left">
+          <span class="filter-ico">⚡</span>
+          <span>Filter &amp; Refine Deals</span>
+        </span>
+        <span class="filter-toggle-arrow" id="filterToggleArrow">▾</span>
+      </button>
+
       <!-- LEFT SIDEBAR -->
-      <aside class="deals-sidebar" aria-label="Deals Filters">
+      <aside class="deals-sidebar" id="dealsSidebar" aria-label="Deals Filters">
         <div class="deals-filter-header">
           <h2 class="deals-filter-head-title">Filters</h2>
           <button type="button" id="dealsClearAllBtn" class="deals-clear-all-btn">Clear All</button>
@@ -709,6 +777,6 @@
   <!-- Theme Switcher Engine -->
   <script src="/js/theme.js"></script>
   <!-- Page Interactive Script -->
-  <script src="/js/deals.js"></script>
+  <script src="/js/deals.js?v=20261007"></script>
 </body>
 </html>

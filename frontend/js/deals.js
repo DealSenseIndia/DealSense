@@ -72,6 +72,7 @@
     minPrice: 0,
     maxPrice: PRICE_FILTER_MAX,
     sortBy: 'popular',
+    searchQuery: '',
     wishlist: loadWishlist(),
     loadError: null,
   };
@@ -281,6 +282,44 @@
     }
 
     setupEventListeners();
+
+    // Parse URL search parameters for deep linking
+    const urlParams = new URLSearchParams(window.location.search);
+    const catParam = urlParams.get('c') || urlParams.get('category');
+    const pillParam = urlParams.get('pill') || urlParams.get('filter');
+    const qParam = urlParams.get('q') || urlParams.get('search');
+
+    if (pillParam) {
+      state.activePill = pillParam;
+      document.querySelectorAll('.deals-pill-btn').forEach((p) => {
+        const isMatch = p.dataset.pill === pillParam;
+        p.classList.toggle('active', isMatch);
+        p.setAttribute('aria-selected', String(isMatch));
+      });
+    } else if (catParam) {
+      const cLower = catParam.toLowerCase();
+      const matchingPill = document.querySelector(`.deals-pill-btn[data-pill="${cLower}"]`);
+      if (matchingPill) {
+        state.activePill = cLower;
+        document.querySelectorAll('.deals-pill-btn').forEach((p) => {
+          p.classList.remove('active');
+          p.setAttribute('aria-selected', 'false');
+        });
+        matchingPill.classList.add('active');
+        matchingPill.setAttribute('aria-selected', 'true');
+      } else {
+        state.categoryFilters.add(cLower);
+        const cb = document.querySelector(`input[data-filter="category"][value="${cLower}"]`);
+        if (cb) cb.checked = true;
+      }
+    }
+
+    if (qParam) {
+      state.searchQuery = qParam.trim();
+      const searchBox = document.getElementById('headerSearch');
+      if (searchBox) searchBox.value = qParam;
+    }
+
     renderDeals();
     renderPricesJustDropped();
   }
@@ -394,6 +433,12 @@
       if (state.activePill === 'electronics' && !['mobiles', 'laptops', 'audio', 'tv', 'tvs', 'electronics', 'smartwatches'].includes(deal.category)) return false;
       if (state.activePill === 'home' && !['home', 'kitchen', 'appliances', 'home-living'].includes(deal.category)) return false;
       if (state.activePill === 'fashion' && !['fashion', 'clothing', 'shoes'].includes(deal.category)) return false;
+
+      if (state.searchQuery) {
+        const q = state.searchQuery.toLowerCase();
+        const match = (deal.title || '').toLowerCase().includes(q) || (deal.brand || '').toLowerCase().includes(q) || (deal.category || '').toLowerCase().includes(q);
+        if (!match) return false;
+      }
 
       if (state.qualityFilters.size > 0 && !state.qualityFilters.has(deal.deal_quality)) return false;
 
@@ -518,8 +563,9 @@
       ? `<span class="deal-badge badge-${escapeHtml(deal.badge_type)}">${escapeHtml(deal.badge_text)}</span>`
       : `<span class="deal-badge badge-neutral">Tracked</span>`;
 
+    const chartUrl = deal.url ? `/?url=${encodeURIComponent(deal.url)}` : '#';
     const media = deal.image
-      ? `<img src="${escapeHtml(deal.image)}" alt="${escapeHtml(deal.title)}" class="deal-product-img" loading="lazy">`
+      ? `<a href="${chartUrl}" class="deal-media-link" title="View Price History & Verdict"><img src="${escapeHtml(deal.image)}" alt="${escapeHtml(deal.title)}" class="deal-product-img" loading="lazy"></a>`
       : `<div class="deal-product-img deal-product-img-empty" role="img" aria-label="No product image available">No image</div>`;
 
     const mrpHtml = deal.mrp
@@ -547,8 +593,12 @@
       ? ''
       : `<div class="deal-history-caveat">Based on ${deal.observation_count} recorded price${deal.observation_count === 1 ? '' : 's'} — verdict is provisional</div>`;
 
+    const chartHtml = deal.url
+      ? `<a href="${chartUrl}" class="deal-chart-btn" title="View price history chart & analysis">📊 Price History</a>`
+      : '';
+
     const buyHtml = deal.url
-      ? `<a href="${escapeHtml(deal.url)}" target="_blank" rel="noopener sponsored" class="deal-view-btn">View Deal</a>`
+      ? `<a href="${escapeHtml(deal.url)}" target="_blank" rel="noopener sponsored" class="deal-view-btn">View Deal ↗</a>`
       : `<span class="deal-view-btn deal-view-btn-disabled" aria-disabled="true">Link unavailable</span>`;
 
     return `
@@ -567,7 +617,9 @@
 
         <div class="deal-product-media">${media}</div>
 
-        <h3 class="deal-product-title" title="${escapeHtml(deal.title)}">${escapeHtml(deal.title)}</h3>
+        <h3 class="deal-product-title" title="${escapeHtml(deal.title)}">
+          <a href="${chartUrl}" class="deal-title-link">${escapeHtml(deal.title)}</a>
+        </h3>
 
         <div class="deal-price-row">
           <div class="deal-price-left">
@@ -584,10 +636,15 @@
         <div class="deal-sparkline-wrap">${renderSparkline(deal.price_history)}</div>
 
         <div class="deal-card-footer">
-          <img src="${escapeHtml(deal.store_logo)}" alt="${escapeHtml(deal.store)}" class="deal-store-logo" loading="lazy">
-          <span class="deal-observed-at">${observedLabel ? `Checked ${escapeHtml(observedLabel)}` : 'Check time unavailable'}</span>
+          <div class="deal-footer-store-info">
+            <img src="${escapeHtml(deal.store_logo)}" alt="${escapeHtml(deal.store)}" class="deal-store-logo" loading="lazy">
+            <span class="deal-observed-at">${observedLabel ? `Checked ${escapeHtml(observedLabel)}` : 'Check time unavailable'}</span>
+          </div>
           ${freshnessHtml}
-          ${buyHtml}
+          <div class="deal-card-actions-group">
+            ${chartHtml}
+            ${buyHtml}
+          </div>
         </div>
       </article>
     `;
@@ -852,6 +909,15 @@
     if (droppedNextBtn && droppedRow) {
       droppedNextBtn.addEventListener('click', () => {
         droppedRow.scrollBy({ left: 300, behavior: 'smooth' });
+      });
+    }
+
+    const mobileToggle = document.getElementById('dealsMobileFilterToggle');
+    const sidebar = document.getElementById('dealsSidebar');
+    if (mobileToggle && sidebar) {
+      mobileToggle.addEventListener('click', () => {
+        const isOpen = sidebar.classList.toggle('mobile-open');
+        mobileToggle.setAttribute('aria-expanded', String(isOpen));
       });
     }
   }

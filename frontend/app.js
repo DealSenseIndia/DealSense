@@ -8,7 +8,7 @@ import { checkDeal } from "./js/api.js";
 import { startAnalyzingAnimation, finishAnalyzingAnimation } from "./js/animations.js";
 import { initRecentProduct, saveRecentProduct } from "./js/recent.js";
 import { initOmniSearch } from "./js/search.js";
-import { renderDetailPage, initPdpListeners, showPdpSkeleton, hidePdpSkeleton } from "./js/pdp.js";
+import { renderDetailPage, initPdpListeners, showPdpSkeleton, hidePdpSkeleton } from "./js/pdp.js?v=2.6";
 import { ensureSetupBuilder, selectSpace } from "./js/setup_builder.js";
 import { initLiveDeals } from "./js/live_deals.js";
 import { initTrackedDealsDrawer } from "./js/tracked_deals.js";
@@ -32,9 +32,8 @@ function initApp() {
   const hash = window.location.hash || "#/";
   const urlParams = new URLSearchParams(window.location.search);
 
-  // Legacy deep links from query params (e.g. ?space=living_room&budget=25000)
-  if (urlParams.has("space") || urlParams.get("view") === "setup") {
-    window.location.hash = "#/setup";
+  // Legacy deep links from query params or direct #setup hash
+  if (urlParams.has("space") || urlParams.get("view") === "setup" || hash === "#setup" || hash.startsWith("#/setup") || hash.startsWith("#setup")) {
     nav.showSetup();
     const deepSpace = urlParams.get("space");
     if (deepSpace) {
@@ -90,9 +89,15 @@ function initApp() {
 
         // Update URL query parameters and document title for instant shareability
         const asin = data.listing?.merchant_product_id;
+        const merchant = (data.listing?.merchant || "").toLowerCase();
         const title = data.product?.title || data.product?.canonical_title || "Product";
         if (updateUrl) {
-          const shareQuery = asin ? `?p=${encodeURIComponent(asin)}` : `?url=${encodeURIComponent(url)}`;
+          let shareQuery = `?url=${encodeURIComponent(url)}`;
+          if (asin) {
+            shareQuery = merchant.includes("flipkart")
+              ? `?p=${encodeURIComponent(asin)}&m=fk`
+              : `?p=${encodeURIComponent(asin)}`;
+          }
           window.history.pushState({ p: asin, url, isPdp: true }, "", shareQuery);
         }
         document.title = `${title} — Real Price & Deal Intelligence | DealSense`;
@@ -124,10 +129,18 @@ function initApp() {
 
   if (currentParams.has("p") || currentParams.has("asin")) {
     const pId = (currentParams.get("p") || currentParams.get("asin")).trim();
-    if (/^[A-Z0-9]{10}$/i.test(pId)) {
+    const merchantParam = (currentParams.get("m") || currentParams.get("merchant") || "").toLowerCase();
+    const isFlipkart =
+      merchantParam === "fk" ||
+      merchantParam === "flipkart" ||
+      /^itm/i.test(pId) ||
+      pId.length >= 14 ||
+      /^[A-Z]{3,4}[0-9A-Z]{12,14}$/i.test(pId);
+
+    if (isFlipkart) {
+      initialDeepUrl = `https://www.flipkart.com/product/p/item?pid=${pId}`;
+    } else if (/^[A-Z0-9]{10}$/i.test(pId)) {
       initialDeepUrl = `https://www.amazon.in/dp/${pId}`;
-    } else if (/^itm/i.test(pId)) {
-      initialDeepUrl = `https://www.flipkart.com/product/p/${pId}`;
     } else {
       initialDeepUrl = `https://www.amazon.in/dp/${pId}`;
     }

@@ -244,13 +244,13 @@ export function initNavigation({ onShowSetup, onShowTrack } = {}) {
   // ── Hash-based routing ──
   function handleHashRoute() {
     const hash = window.location.hash || "#/";
-    if (hash.startsWith("#/product")) {
+    if (hash.startsWith("#/product") || hash.startsWith("#product")) {
       showDetail(false);
-    } else if (hash.startsWith("#/setup")) {
+    } else if (hash.startsWith("#/setup") || hash === "#setup" || hash.startsWith("#setup")) {
       showSetup(false);
-    } else if (hash.startsWith("#/track")) {
+    } else if (hash.startsWith("#/track") || hash === "#track" || hash.startsWith("#track")) {
       showTrack(false);
-    } else if (hash === "#liveDeals" || hash === "#deals" || hash === "#/deals") {
+    } else if (hash === "#liveDeals" || hash === "#deals" || hash === "#/deals" || hash.startsWith("#/deals")) {
       showDeals(false);
     } else {
       showHome(false);

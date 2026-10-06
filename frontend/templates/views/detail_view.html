@@ -194,6 +194,39 @@
             </p>
           </div>
 
+          <!-- Price Spectrum Range Bar (PriceHistory.app Benchmark) -->
+          <div class="pdp-spectrum-gauge" id="pdpSpectrumGauge">
+            <div class="spectrum-gauge-header">
+              <div class="spectrum-header-left">
+                <span class="spectrum-gauge-icon">📊</span>
+                <span class="spectrum-gauge-title">Price Range Spectrum</span>
+              </div>
+              <span class="spectrum-gauge-verdict verdict-lowest" id="spectrumVerdictBadge">🔥 Lowest Price Recorded!</span>
+            </div>
+            <div class="spectrum-track-wrap">
+              <div class="spectrum-track-bar">
+                <div class="spectrum-marker-pin" id="spectrumMarkerPin" style="left: 0%;">
+                  <span class="marker-bubble" id="spectrumMarkerVal">Current: ₹0</span>
+                  <div class="marker-pin-head"></div>
+                </div>
+              </div>
+            </div>
+            <div class="spectrum-labels-row">
+              <div class="spectrum-label-col low">
+                <span class="spec-lbl">Lowest Ever</span>
+                <strong id="spectrumLowVal">₹0</strong>
+              </div>
+              <div class="spectrum-label-col avg">
+                <span class="spec-lbl">90D Average</span>
+                <strong id="spectrumAvgVal">₹0</strong>
+              </div>
+              <div class="spectrum-label-col high">
+                <span class="spec-lbl">Highest Ever</span>
+                <strong id="spectrumHighVal">₹0</strong>
+              </div>
+            </div>
+          </div>
+
           <!-- Price at a Glance 4-Metric Grid Strip (PriceBefore & Keepa Standard) -->
           <div class="pdp-glance-metrics-strip" id="pdpGlanceMetricsStrip">
             <div class="glance-metric-card-tile">
@@ -208,8 +241,8 @@
             </div>
             <div class="glance-metric-card-tile">
               <span class="glance-tile-label">Highest (90D)</span>
-              <strong id="glanceHigh" class="glance-tile-val">₹0</strong>
-              <span class="glance-tile-sub">Market Peak</span>
+              <strong id="glanceHigh" class="glance-tile-val val-rose">₹0</strong>
+              <span class="glance-tile-sub" id="glanceHighSub">Market Peak</span>
             </div>
             <div class="glance-metric-card-tile">
               <span class="glance-tile-label">Price Drop</span>

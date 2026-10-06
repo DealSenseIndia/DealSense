@@ -740,8 +740,58 @@ export function renderDetailPage(data, { onAnalyzeUrl } = {}) {
 
   if (gLow) gLow.textContent = glanceMoney(d.historical_low);
   if (gAvg) gAvg.textContent = glanceMoney(d.historical_avg_90d);
-  // "High" is the published MRP. Without one there is no high to show.
-  if (gHigh) gHigh.textContent = glanceMoney(pr.mrp);
+  
+  const highObserved = pr.highest_observed_price || d.historical_high || pr.mrp || (pr.current_price > d.historical_avg_90d ? pr.current_price : null);
+  if (gHigh) gHigh.textContent = glanceMoney(highObserved);
+  const gHighSub = document.getElementById("glanceHighSub");
+  if (gHighSub) {
+    gHighSub.textContent = (pr.mrp && Number(highObserved) === Number(pr.mrp)) ? "Published MRP" : "Peak Observed";
+  }
+
+  // ─── Price Range Spectrum Gauge (PriceHistory.app Benchmark) ─────────────
+  const spectrumGauge = document.getElementById("pdpSpectrumGauge");
+  if (spectrumGauge) {
+    const sLowVal = document.getElementById("spectrumLowVal");
+    const sAvgVal = document.getElementById("spectrumAvgVal");
+    const sHighVal = document.getElementById("spectrumHighVal");
+    const sMarkerVal = document.getElementById("spectrumMarkerVal");
+    const sMarkerPin = document.getElementById("spectrumMarkerPin");
+    const sVerdictBadge = document.getElementById("spectrumVerdictBadge");
+
+    const currPrice = Number(pr.current_price) || 0;
+    const lowPrice = Number(d.historical_low) || Number(pr.lowest_observed_price) || currPrice;
+    const avgPrice = Number(d.historical_avg_90d) || (lowPrice > 0 ? Math.round(lowPrice * 1.08) : currPrice);
+    const highestVal = Number(highObserved) || (currPrice > 0 ? Math.round(currPrice * 1.25) : currPrice);
+
+    if (sLowVal) sLowVal.textContent = glanceMoney(lowPrice);
+    if (sAvgVal) sAvgVal.textContent = glanceMoney(avgPrice);
+    if (sHighVal) sHighVal.textContent = glanceMoney(highestVal);
+    if (sMarkerVal) sMarkerVal.textContent = `Current: ${glanceMoney(currPrice)}`;
+
+    let positionPct = 50;
+    if (highestVal > lowPrice) {
+      positionPct = Math.max(4, Math.min(96, Math.round(((currPrice - lowPrice) / (highestVal - lowPrice)) * 100)));
+    } else if (currPrice <= lowPrice) {
+      positionPct = 4;
+    }
+    if (sMarkerPin) sMarkerPin.style.left = `${positionPct}%`;
+
+    if (sVerdictBadge) {
+      if (positionPct <= 10 || currPrice <= lowPrice) {
+        sVerdictBadge.className = "spectrum-gauge-verdict verdict-lowest";
+        sVerdictBadge.textContent = "🔥 Lowest Price Recorded!";
+      } else if (positionPct <= 35) {
+        sVerdictBadge.className = "spectrum-gauge-verdict verdict-good";
+        sVerdictBadge.textContent = "✓ Near Historical Low";
+      } else if (positionPct <= 70) {
+        sVerdictBadge.className = "spectrum-gauge-verdict verdict-fair";
+        sVerdictBadge.textContent = "⚖️ Fair Average Price";
+      } else {
+        sVerdictBadge.className = "spectrum-gauge-verdict verdict-wait";
+        sVerdictBadge.textContent = "⏳ Near Peak Price (Wait for drop)";
+      }
+    }
+  }
 
   const realDiscount = Number(pr.discount_pct);
   if (gDrop) {
@@ -1919,6 +1969,16 @@ function renderSimilarProducts(products, onAnalyzeUrl) {
   grid.innerHTML = "";
 
   const items = (products && products.length > 0) ? products : [];
+
+  if (!items.length) {
+    grid.innerHTML = `
+      <div class="sim-empty-state" style="grid-column: 1 / -1; padding: 28px 16px; text-align: center; background: var(--bg-subtle, rgba(248,250,252,0.6)); border-radius: 12px; border: 1px dashed var(--border-card, #E2E8F0);">
+        <p style="margin: 0 0 6px; font-weight: 600; color: var(--text-headline); font-size: 14px;">No direct alternatives detected for this specific tier.</p>
+        <span style="font-size: 12px; color: var(--text-muted, #64748B);">Explore verified price drops and category deals on the main feed.</span>
+      </div>
+    `;
+    return;
+  }
 
   items.forEach((item) => {
     const card = document.createElement("div");

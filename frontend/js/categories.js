@@ -372,7 +372,7 @@ function renderCategoryCards(taxonomy) {
       .slice(0, 8)
       .map(
         (sub) =>
-          `<li><a href="/categories/${cat.slug}/${sub.slug}">${escHtml(sub.name)}</a></li>`
+          `<li><a href="/deals.html?c=${encodeURIComponent(sub.slug)}">${escHtml(sub.name)}</a></li>`
       )
       .join("");
 
@@ -394,11 +394,11 @@ function renderCategoryCards(taxonomy) {
       </div>
     `;
 
-    // Click card navigates to category
+    // Click card navigates to deals explorer filtered by this category
     card.addEventListener("click", (e) => {
       if (e.target.closest("a")) return; // Let subcategory links work normally
       trackEvent("category_click", { category_slug: cat.slug, category_name: cat.name });
-      window.location.href = `/categories/${cat.slug}`;
+      window.location.href = `/deals.html?c=${encodeURIComponent(cat.slug)}`;
     });
 
     grid.appendChild(card);
@@ -631,6 +631,48 @@ function initSearch(idx) {
   });
 }
 
+/* ─── Mobile Drawer Menu ─────────────────────────────────────────────────── */
+function initMobileMenu() {
+  const hamburger = document.getElementById("mobileMenuBtn");
+  const drawer = document.getElementById("mobileDrawer");
+  const overlay = document.getElementById("mobileDrawerOverlay");
+  const closeBtn = document.getElementById("mobileDrawerClose");
+
+  if (!hamburger || !drawer) return;
+
+  function openDrawer() {
+    drawer.style.display = "flex";
+    if (overlay) overlay.style.display = "block";
+    requestAnimationFrame(() => {
+      drawer.classList.add("open");
+      if (overlay) overlay.classList.add("open");
+    });
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeDrawer() {
+    drawer.classList.remove("open");
+    if (overlay) overlay.classList.remove("open");
+    document.body.style.overflow = "";
+    setTimeout(() => {
+      if (!drawer.classList.contains("open")) {
+        drawer.style.display = "none";
+        if (overlay) overlay.style.display = "none";
+      }
+    }, 280);
+  }
+
+  hamburger.addEventListener("click", openDrawer);
+  if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
+  if (overlay) overlay.addEventListener("click", closeDrawer);
+
+  drawer.querySelectorAll("a, button").forEach((el) => {
+    el.addEventListener("click", () => {
+      setTimeout(closeDrawer, 150);
+    });
+  });
+}
+
 /* ─── API Fetchers ───────────────────────────────────────────────────────── */
 async function fetchCategories() {
   try {
@@ -643,7 +685,7 @@ async function fetchCategories() {
         return {
           name: apiCat.name || fallback?.name || "",
           slug: apiCat.slug || fallback?.slug || "",
-          deal_count: apiCat.deal_count || fallback?.deal_count || 0,
+          deal_count: Number.isFinite(apiCat.deal_count) ? apiCat.deal_count : (fallback?.deal_count ?? 0),
           image: apiCat.image || fallback?.image || `/assets/categories/${apiCat.slug}.png`,
           subcategories: (apiCat.subcategories || fallback?.subcategories || []).map((s) => ({
             name: s.name,
@@ -676,8 +718,11 @@ async function fetchPopularSearches() {
 }
 
 /* ─── Main Initialization ───────────────────────────────────────────────── */
-document.addEventListener("DOMContentLoaded", async () => {
+async function initCategoriesPage() {
   trackEvent("categories_page_load");
+
+  // Mobile menu support
+  initMobileMenu();
 
   // 1. Fetch categories and popular chips from backend APIs
   const [taxonomy, popularChips] = await Promise.all([
@@ -721,4 +766,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       selectCategory(catParam);
     }, 150);
   }
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initCategoriesPage);
+} else {
+  initCategoriesPage();
+}

@@ -483,8 +483,16 @@
   align-items: start;
 }
 
+.pdp-deep-intelligence-grid > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
 /* Unified Price History & Store Comparison Card */
 .unified-history-compare-card {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
   padding: 24px;
   border-radius: var(--radius-card);
   background: var(--bg-card);
@@ -890,23 +898,47 @@
 .cs-val {
   font-size: 17px;
   font-weight: 900;
-  color: #F8FAFC;
+  color: var(--text-headline, #0F172A);
   font-family: 'JetBrains Mono', monospace;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
 }
 
+[data-theme="dark"] .cs-val {
+  color: #F8FAFC;
+}
+
 .cs-val.green {
+  color: #059669;
+}
+
+[data-theme="dark"] .cs-val.green {
   color: #34D399;
   text-shadow: 0 0 12px rgba(52, 211, 153, 0.35);
 }
 
 .cs-val.blue {
+  color: #0284C7;
+}
+
+[data-theme="dark"] .cs-val.blue {
   color: #38BDF8;
 }
 
 .cs-val.amber {
+  color: #D97706;
+}
+
+[data-theme="dark"] .cs-val.amber {
   color: #FBBF24;
+}
+
+.cs-val.red, .cs-val.rose {
+  color: #DC2626;
+}
+
+[data-theme="dark"] .cs-val.red, [data-theme="dark"] .cs-val.rose {
+  color: #F87171;
 }
 
 .cs-sub {
@@ -1848,6 +1880,234 @@
 .icici-tag { background: #F97316; color: white; }
 .bank-pill.active .bank-logo-tag { background: rgba(255,255,255,0.25); color: white; }
 
+/* ── PDP Price Range Spectrum Gauge (PriceHistory.app Benchmark) ── */
+.pdp-spectrum-gauge {
+  background: var(--bg-card, #FFFFFF);
+  border: 1px solid var(--border-card, #E2E8F0);
+  border-radius: 12px;
+  padding: 16px 20px 14px;
+  margin: 12px 0 14px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.2s ease;
+}
+
+[data-theme="dark"] .pdp-spectrum-gauge {
+  background: #0F172A;
+  border-color: #1E293B;
+}
+
+.spectrum-gauge-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.spectrum-header-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.spectrum-gauge-icon {
+  font-size: 15px;
+}
+
+.spectrum-gauge-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-headline, #0F172A);
+  letter-spacing: -0.01em;
+}
+
+.spectrum-gauge-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  letter-spacing: -0.01em;
+}
+
+.spectrum-gauge-verdict.verdict-lowest {
+  background: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
+}
+
+.spectrum-gauge-verdict.verdict-good {
+  background: #ECFDF5;
+  color: #047857;
+  border: 1px solid #A7F3D0;
+}
+
+.spectrum-gauge-verdict.verdict-fair {
+  background: #FEF3C7;
+  color: #B45309;
+  border: 1px solid #FDE68A;
+}
+
+.spectrum-gauge-verdict.verdict-wait {
+  background: #FEE2E2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+}
+
+[data-theme="dark"] .spectrum-gauge-verdict.verdict-lowest {
+  background: rgba(34, 197, 94, 0.16);
+  color: #4ADE80;
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+[data-theme="dark"] .spectrum-gauge-verdict.verdict-good {
+  background: rgba(16, 185, 129, 0.16);
+  color: #34D399;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+[data-theme="dark"] .spectrum-gauge-verdict.verdict-fair {
+  background: rgba(245, 158, 11, 0.16);
+  color: #FBBF24;
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+[data-theme="dark"] .spectrum-gauge-verdict.verdict-wait {
+  background: rgba(239, 68, 68, 0.16);
+  color: #F87171;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.spectrum-track-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 18px;
+  padding-bottom: 8px;
+}
+
+.spectrum-track-bar {
+  position: relative;
+  width: 100%;
+  height: 9px;
+  border-radius: 999px;
+  background: linear-gradient(to right, #10B981 0%, #34D399 25%, #FBBF24 55%, #F87171 80%, #EF4444 100%);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.spectrum-marker-pin {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.marker-bubble {
+  position: absolute;
+  bottom: 14px;
+  background: #0F172A;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+  letter-spacing: -0.01em;
+}
+
+.marker-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 4px;
+  border-style: solid;
+  border-color: #0F172A transparent transparent transparent;
+}
+
+[data-theme="dark"] .marker-bubble {
+  background: #FFFFFF;
+  color: #0F172A;
+}
+
+[data-theme="dark"] .marker-bubble::after {
+  border-color: #FFFFFF transparent transparent transparent;
+}
+
+.marker-pin-head {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 3.5px solid #0F172A;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25), 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .marker-pin-head {
+  background: #0F172A;
+  border-color: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35), 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.spectrum-labels-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.spectrum-label-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.spectrum-label-col.low {
+  align-items: flex-start;
+}
+
+.spectrum-label-col.avg {
+  align-items: center;
+}
+
+.spectrum-label-col.high {
+  align-items: flex-end;
+}
+
+.spectrum-label-col .spec-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary, #64748B);
+  margin-bottom: 2px;
+}
+
+.spectrum-label-col strong {
+  font-size: 13px;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.spectrum-label-col.low strong {
+  color: #10B981;
+}
+
+.spectrum-label-col.avg strong {
+  color: #0284C7;
+}
+
+.spectrum-label-col.high strong {
+  color: #EF4444;
+}
+
 /* ── PDP Glance 4-Metric Strip (PriceBefore & Keepa Standard) ── */
 .pdp-glance-metrics-strip {
   display: grid;
@@ -1904,6 +2164,14 @@
 
 .glance-tile-val.val-emerald {
   color: #059669;
+}
+
+.glance-tile-val.val-rose {
+  color: #DC2626;
+}
+
+[data-theme="dark"] .glance-tile-val.val-rose {
+  color: #F87171;
 }
 
 .glance-tile-sub {
@@ -4166,10 +4434,22 @@ input[type="email"].alert-text-input:focus {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .chart-card-stats-2x2 {
-    grid-template-columns: 1fr;
-    gap: 6px;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .chart-card-stat-tile {
+    padding: 8px 10px;
+  }
+  .chart-card-stat-tile .cs-label {
+    font-size: 10px;
+  }
+  .chart-card-stat-tile .cs-val {
+    font-size: 15px;
+  }
+  .chart-card-stat-tile .cs-sub {
+    font-size: 10px;
   }
 }
 
