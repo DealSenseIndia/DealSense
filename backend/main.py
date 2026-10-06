@@ -1306,6 +1306,48 @@ def create_price_alert(req: PriceAlertRequest):
     }
 
 
+@app.get("/api/alerts")
+@app.get("/api/v1/alerts")
+def list_active_alerts(contact: Optional[str] = None):
+    """Lists active ARMED price alerts, optionally filtered by user contact."""
+    with get_session() as session:
+        query = select(PriceAlert).where(PriceAlert.is_active == True)
+        if contact:
+            query = query.where(PriceAlert.contact == contact)
+        query = query.order_by(PriceAlert.created_at.desc())
+        alerts = session.exec(query).all()
+        return [
+            {
+                "id": a.id,
+                "product_id": a.product_id,
+                "listing_id": a.listing_id,
+                "product_title": a.product_title,
+                "channel": a.channel,
+                "contact": a.contact,
+                "target_price": a.target_price,
+                "current_price": a.current_price,
+                "status": a.status,
+                "created_at": a.created_at.isoformat() if a.created_at else None,
+            }
+            for a in alerts
+        ]
+
+
+@app.delete("/api/alerts/{alert_id}")
+@app.delete("/api/v1/alerts/{alert_id}")
+def delete_price_alert(alert_id: int):
+    """Deactivates and removes an active price alert."""
+    with get_session() as session:
+        alert = session.get(PriceAlert, alert_id)
+        if not alert:
+            raise HTTPException(status_code=404, detail="Alert not found")
+        alert.is_active = False
+        alert.status = "DISABLED"
+        session.add(alert)
+        session.commit()
+        return {"success": True, "message": f"Alert #{alert_id} deactivated."}
+
+
 @app.post("/api/alerts/telegram/bind-request")
 def create_telegram_bind_request(req: TelegramBindRequest):
     """
@@ -1372,6 +1414,61 @@ def trigger_alert_worker_cycle():
         "success": True,
         "events_triggered": len(events),
         "dispatched_events": [e.to_dict() for e in events],
+    }
+
+
+@app.get("/api/observation/worker/status")
+@app.get("/api/v1/observation/worker/status")
+def get_observation_worker_status():
+    """Returns runtime telemetry for the background price ObservationWorker."""
+    return worker.get_status()
+
+
+@app.post("/api/observation/worker/trigger")
+@app.post("/api/v1/observation/worker/trigger")
+def trigger_observation_worker_cycle(max_items: int = 10):
+    """Manually triggers an immediate observation sweep across due catalog listings."""
+    res = worker.run_cycle(max_items=max_items)
+    return {
+        "success": True,
+        "summary": res,
+    }
+
+
+@app.get("/api/alerts/recent")
+@app.get("/api/v1/alerts/recent")
+def get_recent_alerts(limit: int = 15):
+    """
+    Returns recently triggered price alerts and delivery logs for live frontend feeds.
+    """
+    from backend.models import AlertDeliveryLog, PriceAlert
+    results = []
+    with get_session() as session:
+        logs = session.exec(
+            select(AlertDeliveryLog)
+            .order_by(AlertDeliveryLog.created_at.desc())
+            .limit(limit)
+        ).all()
+        for log in logs:
+            alert = session.get(PriceAlert, log.alert_id)
+            prod_title = alert.product_title if (alert and alert.product_title) else "Verified Product"
+            target_p = alert.target_price if alert else None
+            curr_p = (alert.last_trigger_price or alert.current_price) if alert else None
+            results.append({
+                "id": log.id,
+                "alert_id": log.alert_id,
+                "product_title": prod_title,
+                "channel": log.channel,
+                "status": log.status,
+                "recipient": log.recipient[:6] + "***" if len(log.recipient) > 6 else log.recipient,
+                "target_price": target_p,
+                "current_price": curr_p,
+                "created_at": log.created_at.isoformat() if log.created_at else None,
+            })
+    return {
+        "success": True,
+        "count": len(results),
+        "recent_alerts": results,
     }
 
 

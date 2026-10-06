@@ -125,6 +125,20 @@ class CompositeDispatcher:
             except Exception as exc:
                 logger.error(f"[COMPOSITE DISPATCHER] Failed to load TelegramDispatcher: {exc}")
 
+        if channel == "whatsapp" and "whatsapp" not in self._dispatchers:
+            try:
+                from backend.services.whatsapp_dispatcher import WhatsAppDispatcher
+                self._dispatchers["whatsapp"] = WhatsAppDispatcher()
+            except Exception as exc:
+                logger.error(f"[COMPOSITE DISPATCHER] Failed to load WhatsAppDispatcher: {exc}")
+
+        if channel in ("webhook", "discord", "slack") and channel not in self._dispatchers:
+            try:
+                from backend.services.webhook_dispatcher import WebhookDispatcher
+                self._dispatchers[channel] = WebhookDispatcher()
+            except Exception as exc:
+                logger.error(f"[COMPOSITE DISPATCHER] Failed to load WebhookDispatcher: {exc}")
+
         target = self._dispatchers.get(channel, self.fallback)
         try:
             return target.dispatch(event)

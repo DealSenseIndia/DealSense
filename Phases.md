@@ -65,8 +65,14 @@
 - [x] Task 13.5: Synchronized 48 curated deals and 42 genuine price histories into serverless endpoints (`api/deals/live.js`, `frontend/api/deals/live.js`). *(Owner: `frontend_engineer`)*
 - [x] Task 13.6: Test suite expanded and maintained at 245/245 green tests with zero regressions. *(Owner: `qa_sentinel`)*
 
-## Phase 14: Automated Observation Scheduler, Price Alert Notification Bot & Real-Time Dispatch [STATUS: PLANNED 🚀]
-- [ ] Task 14.1: Scheduled background price refresh worker triggering `observe_listing` on dynamic tier intervals (HOT: 4h, WARM: 12h, COLD: 24h). *(Owner: `backend_engineer`)*
-- [ ] Task 14.2: Automated Telegram / WhatsApp alert dispatcher for triggered price drop notifications (`bot_dispatcher`). *(Owner: `bot_dispatcher`)*
-- [ ] Task 14.3: Real-time price drop notification badge and live feed indicators on the frontend. *(Owner: `frontend_engineer`)*
-- [ ] Task 14.4: End-to-end alert trigger tests and notification queue audit (245+ green tests). *(Owner: `qa_sentinel`)*
+## Phase 14: Automated Observation Scheduler, Price Alert Notification Bot & Real-Time Dispatch [STATUS: COMPLETED ✅]
+- [x] Task 14.1: Scheduled background price refresh worker with `ObservationWorker.run_cycle()` and `/api/observation/worker/status` & `/api/observation/worker/trigger` endpoints. *(Owner: `backend_engineer`)*
+- [x] Task 14.2: Built `WhatsAppDispatcher` and `WebhookDispatcher` with persistent `AlertDeliveryLog` auditing and integrated into `CompositeDispatcher`. *(Owner: `bot_dispatcher`)*
+- [x] Task 14.3: Implemented `GET /api/alerts`, `DELETE /api/alerts/{id}`, and `GET /api/alerts/recent` for frontend watchlist drawer and real-time alert bell notification badge. *(Owner: `frontend_engineer`)*
+- [x] Task 14.4: 10 new unit & integration tests covering channels, workers, and APIs, expanding test suite to 255/255 green tests (100%). *(Owner: `qa_sentinel`)*
+
+## Phase 15: Production Hardening, Vercel Edge Cache Optimization & Automated Ingestion Cron [STATUS: PLANNED 🚀]
+- [ ] Task 15.1: Vercel Cron (`vercel.json`) configuration for periodic observation sweeps and alert dispatching on edge deployments. *(Owner: `backend_engineer`)*
+- [ ] Task 15.2: Edge caching headers (`s-maxage`, `stale-while-revalidate`) optimization across live deals and search endpoints. *(Owner: `frontend_engineer`)*
+- [ ] Task 15.3: Production health-check dashboard and multi-merchant status monitoring. *(Owner: `planner_architect`)*
+- [ ] Task 15.4: End-to-end regression audit across full 255+ test baseline. *(Owner: `qa_sentinel`)*

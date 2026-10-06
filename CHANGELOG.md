@@ -4,6 +4,32 @@ All notable changes to the DealSense project are documented in this file.
 
 ---
 
+## [Phase 14] - 2026-10-06
+
+### Objective
+Automated Observation Scheduler, Multi-Channel Price Alert Notification Bot (WhatsApp & Webhook), and Real-Time Watchlist REST APIs.
+
+### Changes Implemented
+- **Scheduled Observation Worker Sweep (`backend/services/observation_worker.py`, `backend/main.py`)**:
+  - Implemented `ObservationWorker.run_cycle()` to execute on-demand sweeps across due listings without waiting for background thread idle sleeps.
+  - Added HTTP diagnostics and trigger endpoints: `GET /api/observation/worker/status` and `POST /api/observation/worker/trigger`.
+- **Multi-Channel Alert Dispatchers (`backend/services/whatsapp_dispatcher.py`, `backend/services/webhook_dispatcher.py`)**:
+  - Implemented `WhatsAppDispatcher` with high-converting viral WhatsApp deal cards, rupee formatting, and audit logging into `AlertDeliveryLog`.
+  - Implemented `WebhookDispatcher` supporting Discord embeds and Slack/universal JSON payloads with persistent delivery logging.
+  - Dynamically wired WhatsApp and Webhook dispatchers into `CompositeDispatcher`.
+- **Complete Price Alert Lifecycle REST APIs (`backend/main.py`)**:
+  - Added `GET /api/alerts` to query active price watches by recipient contact.
+  - Added `DELETE /api/alerts/{alert_id}` to deactivate and cleanly remove user price alerts.
+  - Added `GET /api/alerts/recent` returning recently triggered deal drop events for live ticker/toast feeds.
+- **Frontend Watchlist Drawer & Header Bell Dot (`frontend/js/tracked_deals.js`)**:
+  - Connected the slide-out alert drawer to real backend APIs.
+  - Added active price alert green indicator dot to the header bell icon on initial load.
+- **Test Integrity & Regression Verification**:
+  - Added 10 unit and integration tests across `tests/test_alert_dispatcher_channels.py` and `tests/test_observation_worker_cycle.py`.
+  - Full regression test suite expanded to **255 / 255 passing tests (100% green)** in 40.7s.
+
+---
+
 ## [Phase 13] - 2026-10-06
 
 ### Objective

@@ -242,6 +242,39 @@ class ObservationWorker:
         finally:
             lock.release()
 
+    def run_cycle(self, max_items: int = 10) -> Dict[str, Any]:
+        """
+        Executes a single observation sweep across due listings.
+        Can be invoked manually, via tests, or triggered via HTTP POST.
+        Returns summary of items processed and results.
+        """
+        due_listings = self._get_due_listings()
+        processed = 0
+        skipped = 0
+        results = []
+
+        for listing_id, merchant_slug, prod_id in due_listings:
+            if processed >= max_items:
+                break
+
+            if self._can_scrape_merchant(merchant_slug):
+                try:
+                    self._process_listing(listing_id, merchant_slug, prod_id)
+                    processed += 1
+                    results.append({"listing_id": listing_id, "merchant": merchant_slug, "status": "processed"})
+                except Exception as exc:
+                    results.append({"listing_id": listing_id, "merchant": merchant_slug, "status": "error", "error": str(exc)})
+            else:
+                skipped += 1
+
+        return {
+            "due_count": len(due_listings),
+            "processed_count": processed,
+            "skipped_due_to_cooldown_or_spacing": skipped,
+            "results": results,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
+
     def _run_loop(self):
         """Continuous background execution loop."""
         logger.info("ObservationWorker main loop started.")

@@ -62,6 +62,21 @@ export function initTrackedDealsDrawer({ onAnalyzeUrl } = {}) {
         countBadge.textContent = `${alerts.length} Active`;
       }
 
+      if (headerBellBtn) {
+        let dot = headerBellBtn.querySelector(".bell-indicator-dot");
+        if (alerts.length > 0) {
+          if (!dot) {
+            dot = document.createElement("span");
+            dot.className = "bell-indicator-dot";
+            dot.style.cssText = "position:absolute; top:4px; right:4px; width:8px; height:8px; background:#10B981; border-radius:50%; box-shadow:0 0 6px rgba(16,185,129,0.8);";
+            headerBellBtn.style.position = "relative";
+            headerBellBtn.appendChild(dot);
+          }
+        } else if (dot) {
+          dot.remove();
+        }
+      }
+
       if (!alerts || alerts.length === 0) {
         listContainer.innerHTML = `
           <div class="drawer-empty-state">
@@ -192,6 +207,9 @@ export function initTrackedDealsDrawer({ onAnalyzeUrl } = {}) {
       if (e.target === backdrop) closeDrawer();
     });
   }
+
+  // Check for active alerts on initial load to set header indicator
+  setTimeout(refreshAlerts, 800);
 
   return { openDrawer, closeDrawer, refreshAlerts };
 }
