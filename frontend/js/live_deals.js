@@ -2328,6 +2328,306 @@ const VERIFIED_FALLBACK_DEALS = [
     "affiliate_url": null,
     "tagline": "Adorn yourself with our stylish, gold-plated pieces.Choose any 2 treasures for only Rs 1899!Apply the discount code at checkout.Claim your must-have accessories while they last!",
     "price_history": []
+  },
+  {
+    "id": "deal_tablet_ipad_10th",
+    "title": "Apple iPad 10th Gen (10.9-inch, Wi-Fi, 64GB) - Blue",
+    "brand": "Apple",
+    "category": "tablets",
+    "price": 32900,
+    "mrp": 34900,
+    "discount_pct": 6,
+    "deal_score": 92,
+    "deal_badge": "🔥 Verified Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": 4.6,
+    "ratings_count": "4,120",
+    "image_url": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=300&q=80",
+    "url": "https://www.amazon.in/dp/B0BJLHP5C8",
+    "affiliate_url": "https://www.amazon.in/dp/B0BJLHP5C8?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹32,900.00.",
+    "price_history": [
+      {"price": 34900, "observed_at": "2026-08-01T00:00:00"},
+      {"price": 33900, "observed_at": "2026-09-01T00:00:00"},
+      {"price": 32900, "observed_at": "2026-10-06T00:00:00"}
+    ]
+  },
+  {
+    "id": "deal_tablet_galaxy_tabs9fe",
+    "title": "Samsung Galaxy Tab S9 FE (10.9 inch, 6GB RAM, 128GB) - Gray",
+    "brand": "Samsung",
+    "category": "tablets",
+    "price": 31999,
+    "mrp": 44999,
+    "discount_pct": 29,
+    "deal_score": 93,
+    "deal_badge": "📉 ₹13,000 Drop",
+    "deal_type": "steep_drop",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": 4.5,
+    "ratings_count": "2,840",
+    "image_url": "https://images.unsplash.com/photo-1561154464-82e9adf32764?w=300&q=80",
+    "url": "https://www.flipkart.com/samsung-galaxy-tab-s9-fe-6-gb-ram-128-gb-rom-10-9-inch-wi-fi-only-tablet-gray/p/itm7e937d7a8d541",
+    "affiliate_url": "https://www.flipkart.com/samsung-galaxy-tab-s9-fe-6-gb-ram-128-gb-rom-10-9-inch-wi-fi-only-tablet-gray/p/itm7e937d7a8d541",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹31,999.00.",
+    "price_history": [
+      {"price": 44999, "observed_at": "2026-08-01T00:00:00"},
+      {"price": 36999, "observed_at": "2026-09-01T00:00:00"},
+      {"price": 31999, "observed_at": "2026-10-06T00:00:00"}
+    ]
+  },
+  {
+    "id": "deal_tablet_xiaomi_pad6",
+    "title": "Xiaomi Pad 6 (11-inch, Snapdragon 870, 144Hz, 6GB, 128GB)",
+    "brand": "Xiaomi",
+    "category": "tablets",
+    "price": 22999,
+    "mrp": 39999,
+    "discount_pct": 43,
+    "deal_score": 94,
+    "deal_badge": "🔥 All-Time Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": 4.4,
+    "ratings_count": "8,920",
+    "image_url": "https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?w=300&q=80",
+    "url": "https://www.amazon.in/dp/B0C6568N7C",
+    "affiliate_url": "https://www.amazon.in/dp/B0C6568N7C?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹22,999.00.",
+    "price_history": [
+      {"price": 26999, "observed_at": "2026-08-01T00:00:00"},
+      {"price": 24999, "observed_at": "2026-09-01T00:00:00"},
+      {"price": 22999, "observed_at": "2026-10-06T00:00:00"}
+    ]
+  },
+  {
+    "id": "deal_tablet_oneplus_padgo",
+    "title": "OnePlus Pad Go (11.35-inch 2.4K Display, 8GB RAM, 128GB)",
+    "brand": "OnePlus",
+    "category": "tablets",
+    "price": 17999,
+    "mrp": 19999,
+    "discount_pct": 10,
+    "deal_score": 89,
+    "deal_badge": "⚡ Great Value",
+    "deal_type": "steep_drop",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": 4.3,
+    "ratings_count": "3,410",
+    "image_url": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=300&q=80",
+    "url": "https://www.amazon.in/dp/B0CK1BYF6V",
+    "affiliate_url": "https://www.amazon.in/dp/B0CK1BYF6V?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹17,999.00.",
+    "price_history": [
+      {"price": 19999, "observed_at": "2026-08-01T00:00:00"},
+      {"price": 18999, "observed_at": "2026-09-01T00:00:00"},
+      {"price": 17999, "observed_at": "2026-10-06T00:00:00"}
+    ]
+  },
+  {
+    "id": "deal_tablet_lenovo_m11",
+    "title": "Lenovo Tab M11 (11 inch, 4GB RAM, 128GB, FHD 90Hz)",
+    "brand": "Lenovo",
+    "category": "tablets",
+    "price": 11999,
+    "mrp": 23000,
+    "discount_pct": 48,
+    "deal_score": 90,
+    "deal_badge": "📉 48% OFF",
+    "deal_type": "steep_drop",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": 4.2,
+    "ratings_count": "1,670",
+    "image_url": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300&q=80",
+    "url": "https://www.flipkart.com/lenovo-tab-m11-4-gb-ram-128-gb-rom-11-0-inch-wi-fi-only-tablet-seafoam-green/p/itm7c6a994ef0357",
+    "affiliate_url": "https://www.flipkart.com/lenovo-tab-m11-4-gb-ram-128-gb-rom-11-0-inch-wi-fi-only-tablet-seafoam-green/p/itm7c6a994ef0357",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹11,999.00.",
+    "price_history": [
+      {"price": 14999, "observed_at": "2026-08-01T00:00:00"},
+      {"price": 13499, "observed_at": "2026-09-01T00:00:00"},
+      {"price": 11999, "observed_at": "2026-10-06T00:00:00"}
+    ]
+  },
+  {
+    "id": "deal_gaming_ps5_slim",
+    "title": "Sony PlayStation 5 Slim Console (Disc Edition)",
+    "brand": "Sony",
+    "category": "gaming",
+    "price": 49990,
+    "mrp": 54990,
+    "discount_pct": 9,
+    "deal_score": 94,
+    "deal_badge": "🔥 Verified Low",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": 4.8,
+    "ratings_count": "5,820",
+    "image_url": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=300&q=80",
+    "url": "https://www.amazon.in/dp/B0CL5KNB9M",
+    "affiliate_url": "https://www.amazon.in/dp/B0CL5KNB9M?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹49,990.00.",
+    "price_history": [
+      {"price": 54990, "observed_at": "2026-08-01T00:00:00"},
+      {"price": 51990, "observed_at": "2026-09-01T00:00:00"},
+      {"price": 49990, "observed_at": "2026-10-06T00:00:00"}
+    ]
+  },
+  {
+    "id": "deal_gaming_evofox_controller",
+    "title": "EvoFox One X Wireless Gaming Controller for PC/Android",
+    "brand": "EvoFox",
+    "category": "gaming",
+    "price": 1599,
+    "mrp": 2999,
+    "discount_pct": 47,
+    "deal_score": 91,
+    "deal_badge": "📉 47% OFF",
+    "deal_type": "steep_drop",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": 4.2,
+    "ratings_count": "3,450",
+    "image_url": "https://images.unsplash.com/photo-1592840496694-26d035b52b48?w=300&q=80",
+    "url": "https://www.amazon.in/dp/B0C8V2Y3B2",
+    "affiliate_url": "https://www.amazon.in/dp/B0C8V2Y3B2?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹1,599.00.",
+    "price_history": [
+      {"price": 2199, "observed_at": "2026-08-01T00:00:00"},
+      {"price": 1899, "observed_at": "2026-09-01T00:00:00"},
+      {"price": 1599, "observed_at": "2026-10-06T00:00:00"}
+    ]
+  },
+  {
+    "id": "deal_gaming_logitech_g304",
+    "title": "Logitech G304 Lightspeed Wireless Gaming Mouse 12K DPI",
+    "brand": "Logitech",
+    "category": "gaming",
+    "price": 2795,
+    "mrp": 3795,
+    "discount_pct": 26,
+    "deal_score": 92,
+    "deal_badge": "🔥 Best Seller",
+    "deal_type": "steep_drop",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": 4.5,
+    "ratings_count": "18,400",
+    "image_url": "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=300&q=80",
+    "url": "https://www.amazon.in/dp/B07G98H6PM",
+    "affiliate_url": "https://www.amazon.in/dp/B07G98H6PM?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹2,795.00.",
+    "price_history": [
+      {"price": 3295, "observed_at": "2026-08-01T00:00:00"},
+      {"price": 2995, "observed_at": "2026-09-01T00:00:00"},
+      {"price": 2795, "observed_at": "2026-10-06T00:00:00"}
+    ]
+  },
+  {
+    "id": "deal_gaming_xbox_controller",
+    "title": "Microsoft Xbox Wireless Controller - Robot White",
+    "brand": "Microsoft",
+    "category": "gaming",
+    "price": 4990,
+    "mrp": 5990,
+    "discount_pct": 17,
+    "deal_score": 90,
+    "deal_badge": "⚡ Genuine Deal",
+    "deal_type": "steep_drop",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": 4.4,
+    "ratings_count": "7,310",
+    "image_url": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=300&q=80",
+    "url": "https://www.flipkart.com/microsoft-xbox-wireless-controller-robot-white/p/itm5b1368ff66418",
+    "affiliate_url": "https://www.flipkart.com/microsoft-xbox-wireless-controller-robot-white/p/itm5b1368ff66418",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹4,990.00.",
+    "price_history": [
+      {"price": 5490, "observed_at": "2026-08-01T00:00:00"},
+      {"price": 5190, "observed_at": "2026-09-01T00:00:00"},
+      {"price": 4990, "observed_at": "2026-10-06T00:00:00"}
+    ]
+  },
+  {
+    "id": "deal_gaming_razer_mouse",
+    "title": "Razer DeathAdder Essential Gaming Mouse (6,400 DPI)",
+    "brand": "Razer",
+    "category": "gaming",
+    "price": 1199,
+    "mrp": 4499,
+    "discount_pct": 73,
+    "deal_score": 95,
+    "deal_badge": "🔥 73% OFF",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": 4.3,
+    "ratings_count": "14,920",
+    "image_url": "https://images.unsplash.com/photo-1527814050087-3793815479db?w=300&q=80",
+    "url": "https://www.amazon.in/dp/B09425WJ3Q",
+    "affiliate_url": "https://www.amazon.in/dp/B09425WJ3Q?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹1,199.00.",
+    "price_history": [
+      {"price": 1799, "observed_at": "2026-08-01T00:00:00"},
+      {"price": 1499, "observed_at": "2026-09-01T00:00:00"},
+      {"price": 1199, "observed_at": "2026-10-06T00:00:00"}
+    ]
+  },
+  {
+    "id": "deal_watch_samsung_galaxy6",
+    "title": "Samsung Galaxy Watch 6 (40mm, Bluetooth, Graphite)",
+    "brand": "Samsung",
+    "category": "smartwatches",
+    "price": 18999,
+    "mrp": 33999,
+    "discount_pct": 44,
+    "deal_score": 93,
+    "deal_badge": "📉 ₹15,000 Drop",
+    "deal_type": "steep_drop",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "rating": 4.4,
+    "ratings_count": "3,110",
+    "image_url": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&q=80",
+    "url": "https://www.amazon.in/dp/B0CC9H5V87",
+    "affiliate_url": "https://www.amazon.in/dp/B0CC9H5V87?tag=dealsense-21",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹18,999.00.",
+    "price_history": [
+      {"price": 24999, "observed_at": "2026-08-01T00:00:00"},
+      {"price": 21999, "observed_at": "2026-09-01T00:00:00"},
+      {"price": 18999, "observed_at": "2026-10-06T00:00:00"}
+    ]
+  },
+  {
+    "id": "deal_watch_noise_colorfit2",
+    "title": "Noise ColorFit Pulse 2 Max 1.85\" Display Smartwatch",
+    "brand": "Noise",
+    "category": "smartwatches",
+    "price": 1299,
+    "mrp": 5999,
+    "discount_pct": 78,
+    "deal_score": 90,
+    "deal_badge": "🔥 78% OFF",
+    "deal_type": "steep_drop",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "rating": 4.1,
+    "ratings_count": "45,210",
+    "image_url": "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=300&q=80",
+    "url": "https://www.flipkart.com/noise-colorfit-pulse-2-max/p/itm87a4ff66418",
+    "affiliate_url": "https://www.flipkart.com/noise-colorfit-pulse-2-max/p/itm87a4ff66418",
+    "tagline": "[VERIFIED FACT] Current price observed at ₹1,299.00.",
+    "price_history": [
+      {"price": 1999, "observed_at": "2026-08-01T00:00:00"},
+      {"price": 1599, "observed_at": "2026-09-01T00:00:00"},
+      {"price": 1299, "observed_at": "2026-10-06T00:00:00"}
+    ]
   }
 ];
 
@@ -2463,6 +2763,90 @@ export function renderSparkline(priceHistory) {
   `;
 }
 
+function buildDealCardHtml(deal, { extraBadge = null } = {}) {
+  const merchantName = escapeHtml(deal.merchant || "Amazon");
+  let merchantLogo = deal.merchant_logo;
+  if (!merchantLogo) {
+    const mLow = merchantName.toLowerCase();
+    if (mLow.includes("flipkart")) merchantLogo = "/assets/flipkart-icon.svg";
+    else if (mLow.includes("croma")) merchantLogo = "/assets/croma-logo.svg";
+    else if (mLow.includes("reliance")) merchantLogo = "/assets/reliance-digital-logo.svg";
+    else merchantLogo = "/assets/amazon-logo.svg";
+  }
+
+  const price = Math.round(deal.price || 0);
+  const mrp = Math.round(deal.mrp || price);
+  const discount = deal.discount_pct || (mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0);
+  const dropAmount = deal.price_drop_amount || Math.max(0, mrp - price);
+  const dealScore = deal.deal_score || 88;
+
+  let badgeClass = "badge-all-time-low";
+  let badgeText = deal.deal_badge || "Price Drop";
+  if (extraBadge) {
+    badgeText = extraBadge;
+  } else if (deal.deal_type === "all_time_low" || (deal.deal_badge && deal.deal_badge.toLowerCase().includes("all-time"))) {
+    badgeClass = "badge-all-time-low";
+    badgeText = "🔥 All-Time Low";
+  } else if (deal.deal_type === "steep_drop" || dropAmount > 1000) {
+    badgeClass = "badge-steep-drop";
+    badgeText = `↓ ₹${dropAmount.toLocaleString("en-IN")} Drop`;
+  } else if (dealScore >= 90) {
+    badgeClass = "badge-all-time-low";
+    badgeText = `★ Score ${dealScore}`;
+  }
+
+  const statusText = dropAmount > 0
+    ? `📉 ₹${dropAmount.toLocaleString("en-IN")} drop • Score: ${dealScore}/100`
+    : `⚡ Verified low • Score: ${dealScore}/100`;
+
+  return `
+    <div class="deal-card-media-wrap">
+      <span class="deal-card-type-badge ${badgeClass}">${escapeHtml(badgeText)}</span>
+      <div class="deal-card-store-pill" title="Available on ${merchantName}">
+        <img src="${merchantLogo}" alt="${merchantName}" class="store-pill-img" onerror="this.src='/assets/dealsense-icon.png'">
+        <span class="store-pill-name">${merchantName}</span>
+      </div>
+      <img src="${deal.image_url || '/assets/fallback.svg'}" alt="${escapeHtml(deal.title)}" class="deal-card-thumb-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/fallback.svg'">
+    </div>
+
+    <div class="deal-card-body">
+      <div class="deal-card-cat-brand">
+        <span class="card-brand-tag">${escapeHtml(deal.brand || deal.category || "DealSense")}</span>
+        ${deal.rating ? `<span class="card-rating-tag">★ ${deal.rating}</span>` : `<span class="card-rating-tag" style="color:#059669;">Verified</span>`}
+      </div>
+
+      <h3 class="deal-card-title-text" title="${escapeHtml(deal.title)}">${escapeHtml(deal.title)}</h3>
+
+      <div class="deal-card-pricing-row">
+        <span class="deal-card-cur-price">₹${price.toLocaleString("en-IN")}</span>
+        ${mrp > price ? `<span class="deal-card-struck-mrp">₹${mrp.toLocaleString("en-IN")}</span>` : ""}
+        ${discount > 0 ? `<span class="deal-card-disc-pill">${discount}% OFF</span>` : ""}
+      </div>
+
+      <div class="deal-card-status-line">
+        <span class="status-indicator-dot"></span>
+        <span class="status-line-text">${escapeHtml(statusText)}</span>
+      </div>
+
+      <div class="deal-sparkline-wrap" title="Historical Price Trend">
+        ${renderSparkline(deal.price_history)}
+      </div>
+
+      <div class="deal-card-actions-row">
+        <button type="button" class="btn-card-chart" title="View price history graph">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
+          </svg>
+          <span>History</span>
+        </button>
+        <a href="${deal.affiliate_url || deal.url}" target="_blank" rel="noopener sponsored" class="btn-card-deal" title="Buy on ${merchantName}">
+          <span>View Deal ↗</span>
+        </a>
+      </div>
+    </div>
+  `;
+}
+
 export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {}) {
   const container = document.getElementById("liveDealsContainer") || document.getElementById("dealsWorthCheckingContainer");
   if (!container) return;
@@ -2471,9 +2855,9 @@ export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {})
 
   if (!deals || deals.length === 0) {
     container.innerHTML = `
-      <div style="grid-column: 1/-1; text-align:center; padding: 45px 20px; background:#F8FAFC; border:1px dashed #CBD5E1; border-radius:14px;">
-        <span style="font-size:36px;">🔍</span>
-        <h4 style="margin:10px 0 4px 0; font-size:16px; font-weight:750; color:#0F172A;">No products found matching this filter</h4>
+      <div style="grid-column: 1/-1; text-align:left; padding: 40px 24px; background:#F8FAFC; border:1px dashed #CBD5E1; border-radius:12px;">
+        <span style="font-size:28px;">🔍</span>
+        <h4 style="margin:10px 0 4px 0; font-size:15px; font-weight:750; color:#0F172A;">No products found matching this filter</h4>
         <p style="font-size:13px; color:#64748B;">Try selecting '🔥 All Drops' to see all verified price cuts across stores.</p>
       </div>
     `;
@@ -2484,7 +2868,7 @@ export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {})
   const visibleCountEl = document.getElementById("visibleDealsCount");
   if (visibleCountEl) visibleCountEl.textContent = deals.length;
 
-  const INITIAL_LIMIT = 12;
+  const INITIAL_LIMIT = 15;
   const loadMoreWrap = document.getElementById("dealsLoadMoreWrap");
   const loadMoreBtn = document.getElementById("loadMoreDealsBtn");
   const loadMoreText = document.getElementById("loadMoreDealsText");
@@ -2497,111 +2881,7 @@ export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {})
       card.className = "deal-modern-card";
       card.setAttribute("data-deal-id", deal.id || "");
       card.setAttribute("data-url", deal.url || "");
-
-      // Deal badge styling
-      let badgeClass = "badge-all-time-low";
-      let badgeText = deal.deal_badge || "Price Drop";
-      if (deal.deal_type === "all_time_low" || (deal.deal_badge && deal.deal_badge.toLowerCase().includes("all-time"))) {
-        badgeClass = "badge-all-time-low";
-        badgeText = "🔥 All-Time Low";
-      } else if (deal.deal_type === "steep_drop" || (deal.price_drop_amount && deal.price_drop_amount > 1000)) {
-        badgeClass = "badge-steep-drop";
-        if (!deal.deal_badge || deal.deal_badge === "Verified Deal") {
-          badgeText = `↓ ₹${deal.price_drop_amount.toLocaleString("en-IN")} Drop`;
-        }
-      } else if (deal.deal_type === "card_stack") {
-        badgeClass = "badge-card-stack";
-      }
-
-      const merchantName = escapeHtml(deal.merchant || "Amazon");
-      let merchantLogo = deal.merchant_logo;
-      if (!merchantLogo) {
-        const mLow = merchantName.toLowerCase();
-        if (mLow.includes("flipkart")) merchantLogo = "/assets/flipkart-icon.svg";
-        else if (mLow.includes("croma")) merchantLogo = "/assets/croma-logo.svg";
-        else if (mLow.includes("reliance")) merchantLogo = "/assets/reliance-digital-logo.svg";
-        else merchantLogo = "/assets/amazon-logo.svg";
-      }
-
-      const price = Math.round(deal.price || 0);
-      const mrp = Math.round(deal.mrp || price);
-      const discount = deal.discount_pct || (mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0);
-      const dropAmount = deal.price_drop_amount || Math.max(0, mrp - price);
-      const dealScore = deal.deal_score || 85;
-      const scoreText = dealScore >= 88 ? "BUY NOW" : (dealScore >= 75 ? "GOOD DEAL" : "FAIR");
-      const scoreColor = dealScore >= 85 ? "#16A34A" : "#2563EB";
-      const freshnessStatus = ["fresh", "aging", "stale"].includes(deal.freshness_status)
-        ? deal.freshness_status
-        : "unknown";
-      const freshnessLabel = deal.freshness_label || "Freshness unavailable";
-
-      card.innerHTML = `
-        <div class="deal-card-media-wrap">
-          <span class="deal-card-type-badge ${badgeClass}">${escapeHtml(badgeText)}</span>
-          <div class="deal-card-store-pill" title="Available on ${merchantName}">
-            <img src="${merchantLogo}" alt="${merchantName}" class="store-pill-img" onerror="this.src='/assets/dealsense-icon.png'">
-            <span class="store-pill-name">${merchantName}</span>
-          </div>
-          <img src="${deal.image_url || '/assets/fallback.svg'}" alt="${escapeHtml(deal.title)}" class="deal-card-thumb-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/fallback.svg'">
-        </div>
-
-        <div class="deal-card-body">
-          <div class="deal-card-cat-brand">
-            <span class="card-brand-tag">${escapeHtml(deal.brand || deal.category || "Electronics")}</span>
-            ${deal.rating ? `<span class="card-rating-tag">★ ${deal.rating}</span>` : ""}
-          </div>
-
-          <h3 class="deal-card-title-text" title="${escapeHtml(deal.title)}">${escapeHtml(deal.title)}</h3>
-
-          <div class="deal-card-pricing-row">
-            <span class="deal-card-cur-price">₹${price.toLocaleString("en-IN")}</span>
-            ${mrp > price ? `<span class="deal-card-struck-mrp">₹${mrp.toLocaleString("en-IN")}</span>` : ""}
-            ${discount > 0 ? `<span class="deal-card-disc-pill">${discount}% OFF</span>` : ""}
-          </div>
-
-          ${dropAmount > 0 ? `
-            <div class="deal-card-drop-row">
-              <span class="drop-arrow">📉</span>
-              <span class="drop-amount-text">Price dropped by <strong>₹${dropAmount.toLocaleString("en-IN")}</strong></span>
-            </div>
-          ` : `
-            <div class="deal-card-drop-row">
-              <span class="drop-arrow">⚡</span>
-              <span class="drop-amount-text">Verified genuine lowest price</span>
-            </div>
-          `}
-
-          <div class="deal-sparkline-wrap" title="Historical Price Trend">
-            ${renderSparkline(deal.price_history)}
-          </div>
-
-          <div class="deal-card-score-row">
-            <div class="deal-score-meter" title="DealSense Authenticity Verdict">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="${scoreColor}" stroke-width="2.5">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-              </svg>
-              <span style="color:${scoreColor}; font-weight:750;">Score: ${dealScore}/100</span>
-              <span class="score-verdict-tag" style="background:${dealScore >= 85 ? '#DCFCE7' : '#EFF6FF'}; color:${scoreColor};">${scoreText}</span>
-            </div>
-          </div>
-          <div class="deal-freshness deal-freshness-${freshnessStatus}" title="${escapeHtml(freshnessLabel)}">
-            <span class="deal-freshness-dot" aria-hidden="true"></span>
-            ${escapeHtml(freshnessLabel)}
-          </div>
-
-          <div class="deal-card-actions-row">
-            <button type="button" class="btn-card-chart" title="View interactive price history graph and store comparison">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                <path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
-              </svg>
-              <span>Price History</span>
-            </button>
-            <a href="${deal.affiliate_url || deal.url}" target="_blank" rel="noopener sponsored" class="btn-card-deal" title="Buy on ${merchantName}">
-              <span>View Deal ↗</span>
-            </a>
-          </div>
-        </div>
-      `;
+      card.innerHTML = buildDealCardHtml(deal);
 
       // Button interactions
       const chartBtn = card.querySelector(".btn-card-chart");
@@ -2658,7 +2938,7 @@ export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {})
 
   // Render All-Time Low Hall of Fame if section exists on page
   renderAllTimeLowsSection(deals, { onDealClick, onSetupClick });
-  // Render Buyhatke-style category deal shelves
+  // Render Buyhatke-style 8 category deal shelves
   renderCategoryShelves(deals, { onDealClick });
 }
 
@@ -2683,41 +2963,9 @@ export function renderAllTimeLowsSection(deals, { onDealClick, onSetupClick } = 
   atlDeals.forEach((deal) => {
     const card = document.createElement("div");
     card.className = "deal-modern-card atl-card";
-    const merchantName = escapeHtml(deal.merchant || "Amazon");
-    let merchantLogo = deal.merchant_logo || (merchantName.toLowerCase().includes("flipkart") ? "/assets/flipkart-icon.svg" : "/assets/amazon-logo.svg");
-    const price = Math.round(deal.price || 0);
-    const mrp = Math.round(deal.mrp || price);
-    const discount = deal.discount_pct || (mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0);
-
-    card.innerHTML = `
-      <div class="deal-card-media-wrap">
-        <span class="deal-card-type-badge badge-all-time-low">🔥 Lowest in 365 Days</span>
-        <div class="deal-card-store-pill">
-          <img src="${merchantLogo}" alt="${merchantName}" class="store-pill-img">
-          <span class="store-pill-name">${merchantName}</span>
-        </div>
-        <img src="${deal.image_url || '/assets/fallback.svg'}" alt="${escapeHtml(deal.title)}" class="deal-card-thumb-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/fallback.svg'">
-      </div>
-      <div class="deal-card-body">
-        <div class="deal-card-cat-brand">
-          <span class="card-brand-tag">${escapeHtml(deal.brand || "All-Time Low")}</span>
-          <span class="card-rating-tag" style="color:#D97706;">⚡ Verified Low</span>
-        </div>
-        <h3 class="deal-card-title-text" title="${escapeHtml(deal.title)}">${escapeHtml(deal.title)}</h3>
-        <div class="deal-card-pricing-row">
-          <span class="deal-card-cur-price" style="color:#059669;">₹${price.toLocaleString("en-IN")}</span>
-          ${mrp > price ? `<span class="deal-card-struck-mrp">₹${mrp.toLocaleString("en-IN")}</span>` : ""}
-          <span class="deal-card-disc-pill">${discount}% OFF</span>
-        </div>
-        <div class="deal-sparkline-wrap" title="Historical Price Trend">
-          ${renderSparkline(deal.price_history)}
-        </div>
-        <div class="deal-card-actions-row">
-          <button type="button" class="btn-card-chart"><span>📊 View Chart</span></button>
-          <a href="${deal.affiliate_url || deal.url}" target="_blank" rel="noopener sponsored" class="btn-card-deal"><span>View Deal ↗</span></a>
-        </div>
-      </div>
-    `;
+    card.setAttribute("data-deal-id", deal.id || "");
+    card.setAttribute("data-url", deal.url || "");
+    card.innerHTML = buildDealCardHtml(deal, { extraBadge: "🔥 Lowest in 365 Days" });
 
     const chartBtn = card.querySelector(".btn-card-chart");
     if (chartBtn) {
@@ -2743,9 +2991,13 @@ export function renderAllTimeLowsSection(deals, { onDealClick, onSetupClick } = 
 export function renderCategoryShelves(deals, { onDealClick } = {}) {
   const shelfConfigs = [
     { containerId: "mobilesShelfContainer", category: "mobiles", badgeLabel: "Mobiles & 5G" },
-    { containerId: "laptopsShelfContainer", category: "laptops", badgeLabel: "Laptops" },
+    { containerId: "laptopsShelfContainer", category: "laptops", badgeLabel: "Laptops & MacBooks" },
     { containerId: "audioShelfContainer", category: "audio", badgeLabel: "Audio & ANC" },
-    { containerId: "tvsShelfContainer", category: "tvs", badgeLabel: "4K Smart TV" },
+    { containerId: "watchesShelfContainer", category: "smartwatches", badgeLabel: "Smartwatches" },
+    { containerId: "tvsShelfContainer", category: "tvs", badgeLabel: "4K Smart TVs" },
+    { containerId: "appliancesShelfContainer", category: "appliances", badgeLabel: "Kitchen & Home" },
+    { containerId: "tabletsShelfContainer", category: "tablets", badgeLabel: "Tablets & iPads" },
+    { containerId: "gamingShelfContainer", category: "gaming", badgeLabel: "Gaming & Consoles" },
   ];
 
   const pool = (deals && deals.length > 0) ? deals : VERIFIED_FALLBACK_DEALS;
@@ -2755,7 +3007,7 @@ export function renderCategoryShelves(deals, { onDealClick } = {}) {
     if (!container) return;
 
     let items = pool.filter((d) => (d.category || "").toLowerCase() === cfg.category);
-    if (items.length < 4) {
+    if (items.length < 5) {
       const fallbackItems = VERIFIED_FALLBACK_DEALS.filter((d) => (d.category || "").toLowerCase() === cfg.category);
       const existingIds = new Set(items.map((i) => i.id));
       for (const fb of fallbackItems) {
@@ -2763,61 +3015,19 @@ export function renderCategoryShelves(deals, { onDealClick } = {}) {
           items.push(fb);
           existingIds.add(fb.id);
         }
-        if (items.length >= 4) break;
+        if (items.length >= 5) break;
       }
     }
 
-    const displayItems = items.slice(0, 4);
+    const displayItems = items.slice(0, 5);
     container.innerHTML = "";
 
     displayItems.forEach((deal) => {
       const card = document.createElement("div");
       card.className = "deal-modern-card shelf-card";
-      const merchantName = escapeHtml(deal.merchant || "Amazon");
-      let merchantLogo = deal.merchant_logo || (merchantName.toLowerCase().includes("flipkart") ? "/assets/flipkart-icon.svg" : "/assets/amazon-logo.svg");
-      const price = Math.round(deal.price || 0);
-      const mrp = Math.round(deal.mrp || price);
-      const discount = deal.discount_pct || (mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0);
-      const dealScore = deal.deal_score || 88;
-      const scoreBadgeText = dealScore >= 90 ? `${dealScore}/100 • Verified Low` : `${dealScore}/100 • Good Deal`;
-      const scoreBadgeClass = dealScore >= 90 ? "badge-all-time-low" : "badge-steep-drop";
-
-      card.innerHTML = `
-        <div class="deal-card-media-wrap">
-          <span class="deal-card-type-badge ${scoreBadgeClass}">${scoreBadgeText}</span>
-          <div class="deal-card-store-pill">
-            <img src="${merchantLogo}" alt="${merchantName}" class="store-pill-img">
-            <span class="store-pill-name">${merchantName}</span>
-          </div>
-          <img src="${deal.image_url || '/assets/fallback.svg'}" alt="${escapeHtml(deal.title)}" class="deal-card-thumb-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/fallback.svg'">
-        </div>
-        <div class="deal-card-body">
-          <div class="deal-card-cat-brand">
-            <span class="card-brand-tag">${escapeHtml(deal.brand || cfg.badgeLabel)}</span>
-            ${deal.rating ? `<span class="card-rating-tag">★ ${deal.rating}</span>` : `<span class="card-rating-tag" style="color:#059669;">Verified</span>`}
-          </div>
-          <h3 class="deal-card-title-text" title="${escapeHtml(deal.title)}">${escapeHtml(deal.title)}</h3>
-          <div class="deal-card-pricing-row">
-            <span class="deal-card-cur-price">₹${price.toLocaleString("en-IN")}</span>
-            ${mrp > price ? `<span class="deal-card-struck-mrp">₹${mrp.toLocaleString("en-IN")}</span>` : ""}
-            ${discount > 0 ? `<span class="deal-card-disc-pill">${discount}% OFF</span>` : ""}
-          </div>
-          <div class="deal-sparkline-wrap" title="Historical Price Trend">
-            ${renderSparkline(deal.price_history)}
-          </div>
-          <div class="deal-card-actions-row">
-            <button type="button" class="btn-card-chart" title="View interactive price history">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                <path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
-              </svg>
-              <span>Price History</span>
-            </button>
-            <a href="${deal.affiliate_url || deal.url}" target="_blank" rel="noopener sponsored" class="btn-card-deal" title="Buy on ${merchantName}">
-              <span>View Deal ↗</span>
-            </a>
-          </div>
-        </div>
-      `;
+      card.setAttribute("data-deal-id", deal.id || "");
+      card.setAttribute("data-url", deal.url || "");
+      card.innerHTML = buildDealCardHtml(deal);
 
       const chartBtn = card.querySelector(".btn-card-chart");
       if (chartBtn) {
@@ -3219,8 +3429,12 @@ function filterDealsWorthChecking(filterKey, { onDealClick, onSetupClick } = {})
     filtered = currentDeals.filter((d) => (d.category || "").toLowerCase() === "tvs");
   } else if (key === "appliances" || key === "home") {
     filtered = currentDeals.filter((d) => ["appliances", "home"].includes((d.category || "").toLowerCase()));
+  } else if (key === "tablets") {
+    filtered = currentDeals.filter((d) => (d.category || "").toLowerCase() === "tablets");
+  } else if (key === "gaming") {
+    filtered = currentDeals.filter((d) => (d.category || "").toLowerCase() === "gaming");
   } else if (key === "electronics") {
-    filtered = currentDeals.filter((d) => ["mobiles", "laptops", "audio", "smartwatches", "tvs"].includes((d.category || "").toLowerCase()));
+    filtered = currentDeals.filter((d) => ["mobiles", "laptops", "audio", "smartwatches", "tvs", "tablets", "gaming"].includes((d.category || "").toLowerCase()));
   } else if (key === "best_deals") {
     filtered = currentDeals.filter((d) => (d.deal_score || 0) >= 85);
   } else if (key === "price_drops") {

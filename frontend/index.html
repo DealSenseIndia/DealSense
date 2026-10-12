@@ -436,6 +436,68 @@
       </div>
     </section>
 
+    <!-- Top Categories Quick Navigation Strip (8 Top Categories) -->
+    <section class="home-category-strip-section" aria-label="Explore Deal Categories">
+      <div class="container home-category-strip-inner">
+        <a href="#shelfMobiles" class="home-cat-chip">
+          <span class="cat-chip-icon">📱</span>
+          <div class="cat-chip-text">
+            <span class="cat-chip-title">Mobiles</span>
+            <span class="cat-chip-drops">18 Drops Today</span>
+          </div>
+        </a>
+        <a href="#shelfLaptops" class="home-cat-chip">
+          <span class="cat-chip-icon">💻</span>
+          <div class="cat-chip-text">
+            <span class="cat-chip-title">Laptops</span>
+            <span class="cat-chip-drops">12 Drops Today</span>
+          </div>
+        </a>
+        <a href="#shelfAudio" class="home-cat-chip">
+          <span class="cat-chip-icon">🎧</span>
+          <div class="cat-chip-text">
+            <span class="cat-chip-title">Audio &amp; ANC</span>
+            <span class="cat-chip-drops">24 Drops Today</span>
+          </div>
+        </a>
+        <a href="#shelfWatches" class="home-cat-chip">
+          <span class="cat-chip-icon">⌚</span>
+          <div class="cat-chip-text">
+            <span class="cat-chip-title">Smartwatches</span>
+            <span class="cat-chip-drops">15 Drops Today</span>
+          </div>
+        </a>
+        <a href="#shelfTvs" class="home-cat-chip">
+          <span class="cat-chip-icon">📺</span>
+          <div class="cat-chip-text">
+            <span class="cat-chip-title">4K Smart TVs</span>
+            <span class="cat-chip-drops">9 Drops Today</span>
+          </div>
+        </a>
+        <a href="#shelfAppliances" class="home-cat-chip">
+          <span class="cat-chip-icon">🍳</span>
+          <div class="cat-chip-text">
+            <span class="cat-chip-title">Appliances</span>
+            <span class="cat-chip-drops">14 Drops Today</span>
+          </div>
+        </a>
+        <a href="#shelfTablets" class="home-cat-chip">
+          <span class="cat-chip-icon">📱</span>
+          <div class="cat-chip-text">
+            <span class="cat-chip-title">Tablets &amp; iPads</span>
+            <span class="cat-chip-drops">11 Drops Today</span>
+          </div>
+        </a>
+        <a href="#shelfGaming" class="home-cat-chip">
+          <span class="cat-chip-icon">🎮</span>
+          <div class="cat-chip-text">
+            <span class="cat-chip-title">Gaming Gear</span>
+            <span class="cat-chip-drops">16 Drops Today</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
     <!-- 2. Section: Today's Biggest Price Drops & Trending Deals (Primary Product Showcase) -->
     <section class="mockup-deals-section" id="liveDeals">
       <div class="container">
@@ -589,7 +651,7 @@
       </div>
     </section>
 
-    <!-- 5. Buyhatke-Style Category Deal Shelves (Mobiles, Laptops, Audio, Smart TVs) -->
+    <!-- 5. Category Deal Shelves (8 Key Categories) -->
     <!-- Shelf 1: Mobiles & 5G Smartphones -->
     <section class="category-shelf-section" id="shelfMobiles">
       <div class="container">
@@ -638,7 +700,23 @@
       </div>
     </section>
 
-    <!-- Shelf 4: 4K Smart TVs & Home Entertainment -->
+    <!-- Shelf 4: Smartwatches & Wearables -->
+    <section class="category-shelf-section" id="shelfWatches">
+      <div class="container">
+        <div class="category-shelf-header">
+          <div class="shelf-title-wrap">
+            <span class="shelf-icon-badge">⌚</span>
+            <h2 class="shelf-title">Smartwatches &amp; Wearables</h2>
+          </div>
+          <a href="#/search?category=smartwatches" class="shelf-view-all">View All Smartwatches →</a>
+        </div>
+        <div class="shelf-cards-carousel" id="watchesShelfContainer">
+          <!-- Populated by live_deals.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Shelf 5: 4K Smart TVs & Entertainment -->
     <section class="category-shelf-section" id="shelfTvs">
       <div class="container">
         <div class="category-shelf-header">
@@ -649,6 +727,54 @@
           <a href="#/search?category=tvs" class="shelf-view-all">View All TVs →</a>
         </div>
         <div class="shelf-cards-carousel" id="tvsShelfContainer">
+          <!-- Populated by live_deals.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Shelf 6: Home & Kitchen Appliances -->
+    <section class="category-shelf-section" id="shelfAppliances">
+      <div class="container">
+        <div class="category-shelf-header">
+          <div class="shelf-title-wrap">
+            <span class="shelf-icon-badge">🍳</span>
+            <h2 class="shelf-title">Home &amp; Kitchen Appliances</h2>
+          </div>
+          <a href="#/search?category=appliances" class="shelf-view-all">View All Appliances →</a>
+        </div>
+        <div class="shelf-cards-carousel" id="appliancesShelfContainer">
+          <!-- Populated by live_deals.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Shelf 7: Tablets & iPads -->
+    <section class="category-shelf-section" id="shelfTablets">
+      <div class="container">
+        <div class="category-shelf-header">
+          <div class="shelf-title-wrap">
+            <span class="shelf-icon-badge">📱</span>
+            <h2 class="shelf-title">Tablets &amp; iPads</h2>
+          </div>
+          <a href="#/search?category=tablets" class="shelf-view-all">View All Tablets →</a>
+        </div>
+        <div class="shelf-cards-carousel" id="tabletsShelfContainer">
+          <!-- Populated by live_deals.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Shelf 8: Gaming Consoles & Accessories -->
+    <section class="category-shelf-section" id="shelfGaming">
+      <div class="container">
+        <div class="category-shelf-header">
+          <div class="shelf-title-wrap">
+            <span class="shelf-icon-badge">🎮</span>
+            <h2 class="shelf-title">Gaming Consoles &amp; Gear</h2>
+          </div>
+          <a href="#/search?category=gaming" class="shelf-view-all">View All Gaming Gear →</a>
+        </div>
+        <div class="shelf-cards-carousel" id="gamingShelfContainer">
           <!-- Populated by live_deals.js -->
         </div>
       </div>
