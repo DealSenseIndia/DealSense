@@ -10,6 +10,231 @@ let currentDeals = [];
 let activeCategory = "all";
 let activeDealType = "all";
 
+export const FEATURED_REFERENCE_DEALS = [
+  {
+    "id": "ref_deal_iphone15",
+    "title": "Apple iPhone 15 (128GB) - Black",
+    "brand": "Apple",
+    "category": "mobiles",
+    "price": 69999,
+    "mrp": 79900,
+    "discount_pct": 12,
+    "price_drop_amount": 3400,
+    "deal_score": 94,
+    "deal_badge": "🔥 Verified Drop",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "image_url": "/assets/deals/products/iphone-15.png",
+    "url": "https://www.amazon.in/dp/B0CHX1W1XY",
+    "affiliate_url": "https://www.amazon.in/dp/B0CHX1W1XY?tag=dealsense-21",
+    "bank_offer": "Extra ₹3,000 off on HDFC Cards",
+    "verified_time": "Verified 12 mins ago",
+    "trend_color": "#10B981",
+    "price_history": [
+      { "price": 79900, "observed_at": "2026-07-15T00:00:00" },
+      { "price": 78500, "observed_at": "2026-08-01T00:00:00" },
+      { "price": 76999, "observed_at": "2026-08-18T00:00:00" },
+      { "price": 74999, "observed_at": "2026-09-02T00:00:00" },
+      { "price": 73399, "observed_at": "2026-09-18T00:00:00" },
+      { "price": 73399, "observed_at": "2026-09-28T00:00:00" },
+      { "price": 69999, "observed_at": "2026-10-12T00:00:00" }
+    ]
+  },
+  {
+    "id": "ref_deal_asustuf",
+    "title": "ASUS TUF Gaming F15 Intel i5 RTX 3050 (16GB/512GB)",
+    "brand": "ASUS",
+    "category": "laptops",
+    "price": 54990,
+    "mrp": 69990,
+    "discount_pct": 21,
+    "price_drop_amount": 5000,
+    "deal_score": 82,
+    "deal_badge": "🔥 Steep Drop",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "image_url": "/assets/deals/products/asus-tuf.jpg",
+    "url": "https://www.flipkart.com/asus-tuf-gaming-f15-core-i5-11th-gen-16-gb-512-gb-ssd-windows-11-home-4-gb-graphics-nvidia-geforce-rtx-3050-fx506hc-hn089w-laptop/p/itm5b91b721867c2",
+    "affiliate_url": "https://www.flipkart.com/asus-tuf-gaming-f15-core-i5-11th-gen-16-gb-512-gb-ssd-windows-11-home-4-gb-graphics-nvidia-geforce-rtx-3050-fx506hc-hn089w-laptop/p/itm5b91b721867c2",
+    "bank_offer": "Extra ₹2,000 off on ICICI Cards",
+    "verified_time": "Verified 28 mins ago",
+    "trend_color": "#2563EB",
+    "price_history": [
+      { "price": 69990, "observed_at": "2026-07-15T00:00:00" },
+      { "price": 67990, "observed_at": "2026-08-01T00:00:00" },
+      { "price": 64990, "observed_at": "2026-08-18T00:00:00" },
+      { "price": 59990, "observed_at": "2026-09-05T00:00:00" },
+      { "price": 59990, "observed_at": "2026-09-22T00:00:00" },
+      { "price": 54990, "observed_at": "2026-10-12T00:00:00" }
+    ]
+  },
+  {
+    "id": "ref_deal_sonyearbuds",
+    "title": "Sony WF-1000XM5 Noise Cancelling Earbuds",
+    "brand": "Sony",
+    "category": "audio",
+    "price": 19990,
+    "mrp": 24990,
+    "discount_pct": 20,
+    "price_drop_amount": 2500,
+    "deal_score": 91,
+    "deal_badge": "🔥 Lowest Price",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "image_url": "/assets/deals/products/sony-earbuds.jpg",
+    "url": "https://www.amazon.in/dp/B0C33XXS56",
+    "affiliate_url": "https://www.amazon.in/dp/B0C33XXS56?tag=dealsense-21",
+    "bank_offer": "Extra ₹1,500 off on SBI Cards",
+    "verified_time": "Verified 36 mins ago",
+    "trend_color": "#10B981",
+    "price_history": [
+      { "price": 24990, "observed_at": "2026-07-15T00:00:00" },
+      { "price": 23990, "observed_at": "2026-08-01T00:00:00" },
+      { "price": 22490, "observed_at": "2026-08-20T00:00:00" },
+      { "price": 22490, "observed_at": "2026-09-10T00:00:00" },
+      { "price": 19990, "observed_at": "2026-10-12T00:00:00" }
+    ]
+  },
+  {
+    "id": "ref_deal_galaxywatch6",
+    "title": "Samsung Galaxy Watch 6 (44mm, Bluetooth)",
+    "brand": "Samsung",
+    "category": "smartwatches",
+    "price": 26999,
+    "mrp": 29999,
+    "discount_pct": 10,
+    "price_drop_amount": 3000,
+    "deal_score": 91,
+    "deal_badge": "🔥 Verified Drop",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "image_url": "/assets/deals/products/galaxy-watch6.jpg",
+    "url": "https://www.flipkart.com/samsung-galaxy-watch6-bluetooth-44mm/p/itm7a15383569527",
+    "affiliate_url": "https://www.flipkart.com/samsung-galaxy-watch6-bluetooth-44mm/p/itm7a15383569527",
+    "bank_offer": "Extra ₹2,000 off on Axis Cards",
+    "verified_time": "Verified 1 hour ago",
+    "trend_color": "#EF4444",
+    "price_history": [
+      { "price": 29999, "observed_at": "2026-07-15T00:00:00" },
+      { "price": 29999, "observed_at": "2026-08-01T00:00:00" },
+      { "price": 28499, "observed_at": "2026-08-20T00:00:00" },
+      { "price": 27999, "observed_at": "2026-09-12T00:00:00" },
+      { "price": 26999, "observed_at": "2026-10-12T00:00:00" }
+    ]
+  }
+];
+
+export const ATL_REFERENCE_DEALS = [
+  {
+    "id": "atl_deal_iphone14",
+    "title": "iPhone 14 (128GB)",
+    "brand": "Apple",
+    "category": "mobiles",
+    "price": 49999,
+    "mrp": 79990,
+    "discount_pct": 37,
+    "peak_price": 79900,
+    "savings_amount": 29901,
+    "deal_score": 96,
+    "deal_badge": "🏆 ALL-TIME LOW RECORD",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "image_url": "/assets/deals/products/iphone-15.png",
+    "url": "https://www.amazon.in/dp/B0BDK62PDX",
+    "affiliate_url": "https://www.amazon.in/dp/B0BDK62PDX?tag=dealsense-21",
+    "trend_color": "#10B981",
+    "price_history": [
+      { "price": 79900, "observed_at": "2025-10-15T00:00:00" },
+      { "price": 69900, "observed_at": "2026-01-15T00:00:00" },
+      { "price": 58999, "observed_at": "2026-05-15T00:00:00" },
+      { "price": 54999, "observed_at": "2026-08-15T00:00:00" },
+      { "price": 49999, "observed_at": "2026-10-12T00:00:00" }
+    ]
+  },
+  {
+    "id": "atl_deal_macbookm3",
+    "title": "MacBook Air M3 (8GB/256GB)",
+    "brand": "Apple",
+    "category": "laptops",
+    "price": 89999,
+    "mrp": 114900,
+    "discount_pct": 22,
+    "peak_price": 114900,
+    "savings_amount": 24901,
+    "deal_score": 95,
+    "deal_badge": "🏆 ALL-TIME LOW RECORD",
+    "deal_type": "all_time_low",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "image_url": "/assets/deals/products/dell-laptop.png",
+    "url": "https://www.flipkart.com/apple-macbook-air-m3-8-gb-256-gb-ssd-macos-sonoma-mxd13hn-a/p/itm6c02ebba202cf",
+    "affiliate_url": "https://www.flipkart.com/apple-macbook-air-m3-8-gb-256-gb-ssd-macos-sonoma-mxd13hn-a/p/itm6c02ebba202cf",
+    "trend_color": "#2563EB",
+    "price_history": [
+      { "price": 114900, "observed_at": "2025-10-15T00:00:00" },
+      { "price": 104900, "observed_at": "2026-02-15T00:00:00" },
+      { "price": 99990, "observed_at": "2026-06-15T00:00:00" },
+      { "price": 94990, "observed_at": "2026-08-20T00:00:00" },
+      { "price": 89999, "observed_at": "2026-10-12T00:00:00" }
+    ]
+  },
+  {
+    "id": "atl_deal_lgtv",
+    "title": "LG 55\" 4K Smart TV",
+    "brand": "LG",
+    "category": "tvs",
+    "price": 46999,
+    "mrp": 69990,
+    "discount_pct": 33,
+    "peak_price": 69990,
+    "savings_amount": 22991,
+    "deal_score": 93,
+    "deal_badge": "🏆 ALL-TIME LOW RECORD",
+    "deal_type": "all_time_low",
+    "merchant": "Amazon",
+    "merchant_logo": "/assets/amazon-logo.svg",
+    "image_url": "/assets/deals/dropped/lg-tv.png",
+    "url": "https://www.amazon.in/dp/B0CX58QY5P",
+    "affiliate_url": "https://www.amazon.in/dp/B0CX58QY5P?tag=dealsense-21",
+    "trend_color": "#EF4444",
+    "price_history": [
+      { "price": 69990, "observed_at": "2025-10-15T00:00:00" },
+      { "price": 59990, "observed_at": "2026-02-15T00:00:00" },
+      { "price": 54990, "observed_at": "2026-05-15T00:00:00" },
+      { "price": 49999, "observed_at": "2026-08-10T00:00:00" },
+      { "price": 46999, "observed_at": "2026-10-12T00:00:00" }
+    ]
+  },
+  {
+    "id": "atl_deal_sonywh1000xm5",
+    "title": "Sony WH-1000XM5",
+    "brand": "Sony",
+    "category": "audio",
+    "price": 24990,
+    "mrp": 34990,
+    "discount_pct": 29,
+    "peak_price": 34990,
+    "savings_amount": 10000,
+    "deal_score": 94,
+    "deal_badge": "🏆 ALL-TIME LOW RECORD",
+    "deal_type": "all_time_low",
+    "merchant": "Flipkart",
+    "merchant_logo": "/assets/flipkart-icon.svg",
+    "image_url": "/assets/deals/dropped/sony-xm5.png",
+    "url": "https://www.flipkart.com/sony-wh-1000xm5-bluetooth-headset/p/itm7160ea0b61699",
+    "affiliate_url": "https://www.flipkart.com/sony-wh-1000xm5-bluetooth-headset/p/itm7160ea0b61699",
+    "trend_color": "#10B981",
+    "price_history": [
+      { "price": 34990, "observed_at": "2025-10-15T00:00:00" },
+      { "price": 29990, "observed_at": "2026-01-15T00:00:00" },
+      { "price": 28490, "observed_at": "2026-05-15T00:00:00" },
+      { "price": 26990, "observed_at": "2026-08-15T00:00:00" },
+      { "price": 24990, "observed_at": "2026-10-12T00:00:00" }
+    ]
+  }
+];
+
 const VERIFIED_FALLBACK_DEALS = [
   {
     "id": "deal_amazon_B09G9HD6PD",
@@ -2640,7 +2865,7 @@ export async function fetchLiveDeals({ category = "all", dealType = "all", onDea
 
   // Immediate render of verified benchmark deals so the section is never blank
   if ((!currentDeals || currentDeals.length === 0) && container) {
-    currentDeals = [...VERIFIED_FALLBACK_DEALS];
+    currentDeals = [...FEATURED_REFERENCE_DEALS, ...VERIFIED_FALLBACK_DEALS];
     renderModernDealsGrid(currentDeals, { onDealClick, onSetupClick });
   }
 
@@ -2658,9 +2883,9 @@ export async function fetchLiveDeals({ category = "all", dealType = "all", onDea
       const apiDeals = data.deals;
       const existingIds = new Set(apiDeals.map((d) => d.id));
       const complement = VERIFIED_FALLBACK_DEALS.filter((d) => !existingIds.has(d.id));
-      currentDeals = [...apiDeals, ...complement];
+      currentDeals = [...FEATURED_REFERENCE_DEALS, ...apiDeals, ...complement];
     } else {
-      currentDeals = [...VERIFIED_FALLBACK_DEALS];
+      currentDeals = [...FEATURED_REFERENCE_DEALS, ...VERIFIED_FALLBACK_DEALS];
     }
 
     // Update scanner metadata
@@ -2708,7 +2933,7 @@ export async function fetchLiveDeals({ category = "all", dealType = "all", onDea
   } catch (err) {
     console.warn("Could not fetch live deals from backend, using verified fallback:", err);
     if (!currentDeals || currentDeals.length === 0) {
-      currentDeals = [...VERIFIED_FALLBACK_DEALS];
+      currentDeals = [...FEATURED_REFERENCE_DEALS, ...VERIFIED_FALLBACK_DEALS];
     }
     renderModernDealsGrid(currentDeals, { onDealClick, onSetupClick });
   }
@@ -2719,6 +2944,43 @@ export async function fetchLiveDeals({ category = "all", dealType = "all", onDea
  * Returns an honest caption when insufficient history is available (< 3 points).
  * Falling prices are drawn in emerald (#10B981) and rising prices in amber (#F59E0B).
  */
+
+export function buildGridSparklineSvg(priceHistory, strokeColor = "#10B981") {
+  const points = (priceHistory || [])
+    .map((p) => (typeof p === "number" ? p : (typeof p?.price === "number" ? p.price : null)))
+    .filter((p) => p !== null && p > 0);
+
+  if (points.length < 2) {
+    return `<svg viewBox="0 0 160 34" class="trend-grid-svg"><path d="M 0,17 Q 80,17 160,17" fill="none" stroke="${strokeColor}" stroke-width="2.6" stroke-linecap="round"/></svg>`;
+  }
+
+  const width = 160;
+  const height = 34;
+  const min = Math.min(...points);
+  const max = Math.max(...points);
+  const range = max - min || 1;
+
+  const coords = points.map((val, idx) => {
+    const x = (idx / (points.length - 1)) * width;
+    const y = height - 5 - ((val - min) / range) * (height - 10);
+    return { x, y };
+  });
+
+  let d = `M ${coords[0].x.toFixed(1)},${coords[0].y.toFixed(1)}`;
+  for (let i = 1; i < coords.length; i++) {
+    const prev = coords[i - 1];
+    const curr = coords[i];
+    const cx = prev.x + (curr.x - prev.x) / 2;
+    d += ` C ${cx.toFixed(1)},${prev.y.toFixed(1)} ${cx.toFixed(1)},${curr.y.toFixed(1)} ${curr.x.toFixed(1)},${curr.y.toFixed(1)}`;
+  }
+
+  return `
+    <svg viewBox="0 0 ${width} ${height}" class="trend-grid-svg" preserveAspectRatio="none">
+      <path d="${d}" fill="none" stroke="${strokeColor}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  `;
+}
+
 export function renderSparkline(priceHistory) {
   const points = (priceHistory || [])
     .map((p) => (typeof p === "number" ? p : (typeof p?.price === "number" ? p.price : null)))
@@ -2763,7 +3025,7 @@ export function renderSparkline(priceHistory) {
   `;
 }
 
-function buildDealCardHtml(deal, { extraBadge = null } = {}) {
+export function buildDealCardHtml(deal, { extraBadge = null } = {}) {
   const merchantName = escapeHtml(deal.merchant || "Amazon");
   let merchantLogo = deal.merchant_logo;
   if (!merchantLogo) {
@@ -2779,70 +3041,182 @@ function buildDealCardHtml(deal, { extraBadge = null } = {}) {
   const discount = deal.discount_pct || (mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0);
   const dropAmount = deal.price_drop_amount || Math.max(0, mrp - price);
   const dealScore = deal.deal_score || 88;
-
-  let badgeClass = "badge-all-time-low";
-  let badgeText = deal.deal_badge || "Price Drop";
-  if (extraBadge) {
-    badgeText = extraBadge;
-  } else if (deal.deal_type === "all_time_low" || (deal.deal_badge && deal.deal_badge.toLowerCase().includes("all-time"))) {
-    badgeClass = "badge-all-time-low";
-    badgeText = "🔥 All-Time Low";
-  } else if (deal.deal_type === "steep_drop" || dropAmount > 1000) {
-    badgeClass = "badge-steep-drop";
-    badgeText = `↓ ₹${dropAmount.toLocaleString("en-IN")} Drop`;
-  } else if (dealScore >= 90) {
-    badgeClass = "badge-all-time-low";
-    badgeText = `★ Score ${dealScore}`;
-  }
-
-  const statusText = dropAmount > 0
-    ? `📉 ₹${dropAmount.toLocaleString("en-IN")} drop • Score: ${dealScore}/100`
-    : `⚡ Verified low • Score: ${dealScore}/100`;
+  const bankOffer = deal.bank_offer || (price > 40000 ? "Extra ₹3,000 off on HDFC Cards" : price > 20000 ? "Extra ₹2,000 off on ICICI Cards" : "Extra ₹1,500 off on SBI Cards");
+  const verifiedText = deal.verified_time || "Verified 12 mins ago";
+  const trendColor = deal.trend_color || (discount > 15 ? "#10B981" : "#2563EB");
 
   return `
-    <div class="deal-card-media-wrap">
-      <span class="deal-card-type-badge ${badgeClass}">${escapeHtml(badgeText)}</span>
-      <div class="deal-card-store-pill" title="Available on ${merchantName}">
-        <img src="${merchantLogo}" alt="${merchantName}" class="store-pill-img" onerror="this.src='/assets/dealsense-icon.png'">
-        <span class="store-pill-name">${merchantName}</span>
+    <div class="card-top-badges">
+      <div class="card-store-pill" title="Available on ${merchantName}">
+        <img src="${merchantLogo}" alt="${merchantName}" class="store-chip-icon" onerror="this.src='/assets/dealsense-icon.png'">
+        <span>${merchantName}</span>
       </div>
+      <div class="card-score-pill" title="Deal Authenticity Score">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          <polyline points="9 12 11 14 15 10"></polyline>
+        </svg>
+        <span>${dealScore}/100</span>
+      </div>
+      <div class="card-drop-amount">
+        <span>↓ ₹${dropAmount.toLocaleString("en-IN")}</span>
+      </div>
+    </div>
+
+    <div class="card-media-square">
       <img src="${deal.image_url || '/assets/fallback.svg'}" alt="${escapeHtml(deal.title)}" class="deal-card-thumb-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/fallback.svg'">
     </div>
 
-    <div class="deal-card-body">
-      <div class="deal-card-cat-brand">
-        <span class="card-brand-tag">${escapeHtml(deal.brand || deal.category || "DealSense")}</span>
-        ${deal.rating ? `<span class="card-rating-tag">★ ${deal.rating}</span>` : `<span class="card-rating-tag" style="color:#059669;">Verified</span>`}
-      </div>
+    <h3 class="card-product-title" title="${escapeHtml(deal.title)}">${escapeHtml(deal.title)}</h3>
 
-      <h3 class="deal-card-title-text" title="${escapeHtml(deal.title)}">${escapeHtml(deal.title)}</h3>
-
-      <div class="deal-card-pricing-row">
-        <span class="deal-card-cur-price">₹${price.toLocaleString("en-IN")}</span>
-        ${mrp > price ? `<span class="deal-card-struck-mrp">₹${mrp.toLocaleString("en-IN")}</span>` : ""}
-        ${discount > 0 ? `<span class="deal-card-disc-pill">${discount}% OFF</span>` : ""}
+    <div class="card-trend-box">
+      <div class="card-trend-label">90-day price trend</div>
+      <div class="card-sparkline-grid-wrap" title="Historical Price Trend">
+        ${buildGridSparklineSvg(deal.price_history, trendColor)}
       </div>
+    </div>
 
-      <div class="deal-card-status-line">
-        <span class="status-indicator-dot"></span>
-        <span class="status-line-text">${escapeHtml(statusText)}</span>
-      </div>
+    <div class="card-pricing-row">
+      <span class="card-cur-price">₹${price.toLocaleString("en-IN")}</span>
+      ${mrp > price ? `<span class="card-mrp-price">₹${mrp.toLocaleString("en-IN")}</span>` : ""}
+      ${discount > 0 ? `<span class="card-disc-badge">${discount}% off</span>` : ""}
+    </div>
 
-      <div class="deal-sparkline-wrap" title="Historical Price Trend">
-        ${renderSparkline(deal.price_history)}
-      </div>
+    <div class="card-bank-offer-chip" title="Bank Card Offer">
+      <span class="bank-ico">💳</span>
+      <span>${escapeHtml(bankOffer)}</span>
+    </div>
 
-      <div class="deal-card-actions-row">
-        <button type="button" class="btn-card-chart" title="View price history graph">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
-          </svg>
-          <span>History</span>
-        </button>
-        <a href="${deal.affiliate_url || deal.url}" target="_blank" rel="noopener sponsored" class="btn-card-deal" title="Buy on ${merchantName}">
-          <span>View Deal ↗</span>
-        </a>
+    <div class="card-verified-line">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="#059669">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+      </svg>
+      <span>${escapeHtml(verifiedText)}</span>
+    </div>
+
+    <div class="card-actions-row">
+      <button type="button" class="btn-action-history btn-card-chart" title="View price history graph">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
+        </svg>
+        <span>Price History</span>
+      </button>
+      <a href="${deal.affiliate_url || deal.url}" target="_blank" rel="noopener sponsored" class="btn-action-deal btn-card-deal" title="Buy on ${merchantName}">
+        <span>View Deal ↗</span>
+      </a>
+    </div>
+  `;
+}
+
+export function buildAtlCardHtml(deal) {
+  const merchantName = escapeHtml(deal.merchant || "Amazon");
+  let merchantLogo = deal.merchant_logo;
+  if (!merchantLogo) {
+    const mLow = merchantName.toLowerCase();
+    if (mLow.includes("flipkart")) merchantLogo = "/assets/flipkart-icon.svg";
+    else merchantLogo = "/assets/amazon-logo.svg";
+  }
+
+  const price = Math.round(deal.price || 0);
+  const mrp = Math.round(deal.mrp || price);
+  const discount = deal.discount_pct || (mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0);
+  const peakPrice = deal.peak_price || deal.mrp || Math.round(price * 1.35);
+  const savings = deal.savings_amount || Math.max(0, peakPrice - price);
+  const trendColor = deal.trend_color || "#10B981";
+
+  return `
+    <div class="atl-gold-ribbon">
+      <span>🏆 ALL-TIME LOW RECORD</span>
+    </div>
+
+    <div class="atl-card-top-row">
+      <div class="card-store-pill">
+        <img src="${merchantLogo}" alt="${merchantName}" class="store-chip-icon" onerror="this.src='/assets/dealsense-icon.png'">
+        <span>${merchantName}</span>
       </div>
+    </div>
+
+    <div class="atl-media-square">
+      <img src="${deal.image_url || '/assets/fallback.svg'}" alt="${escapeHtml(deal.title)}" loading="lazy" onerror="this.onerror=null; this.src='/assets/fallback.svg'">
+    </div>
+
+    <h3 class="atl-product-title" title="${escapeHtml(deal.title)}">${escapeHtml(deal.title)}</h3>
+
+    <div class="card-pricing-row">
+      <span class="card-cur-price">₹${price.toLocaleString("en-IN")}</span>
+      ${mrp > price ? `<span class="card-mrp-price">₹${mrp.toLocaleString("en-IN")}</span>` : ""}
+      ${discount > 0 ? `<span class="card-disc-badge">${discount}% off</span>` : ""}
+    </div>
+
+    <div class="atl-peak-stat">
+      <span>365-day peak: ₹${peakPrice.toLocaleString("en-IN")}</span>
+    </div>
+    <div class="atl-savings-stat">
+      <span>You save: ₹${savings.toLocaleString("en-IN")}</span>
+    </div>
+
+    <div class="card-sparkline-grid-wrap" style="margin-bottom: 14px;" title="Historical Price Trend">
+      ${buildGridSparklineSvg(deal.price_history, trendColor)}
+    </div>
+
+    <div class="card-actions-row">
+      <button type="button" class="btn-action-history btn-card-chart" title="View price history graph">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
+        </svg>
+        <span>Price History</span>
+      </button>
+      <a href="${deal.affiliate_url || deal.url}" target="_blank" rel="noopener sponsored" class="btn-action-deal btn-card-deal" title="Buy on ${merchantName}">
+        <span>View Deal ↗</span>
+      </a>
+    </div>
+  `;
+}
+
+export function buildBuyhatkeSquareCardHtml(deal) {
+  const merchantName = escapeHtml(deal.merchant || "Amazon");
+  let merchantLogo = deal.merchant_logo;
+  if (!merchantLogo) {
+    const mLow = merchantName.toLowerCase();
+    if (mLow.includes("flipkart")) merchantLogo = "/assets/flipkart-icon.svg";
+    else merchantLogo = "/assets/amazon-logo.svg";
+  }
+
+  const price = Math.round(deal.price || 0);
+  const mrp = Math.round(deal.mrp || price);
+  const discount = deal.discount_pct || (mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0);
+
+  return `
+    <div class="sq-card-top">
+      <div class="card-store-pill">
+        <img src="${merchantLogo}" alt="${merchantName}" class="store-chip-icon" onerror="this.src='/assets/dealsense-icon.png'">
+        <span>${merchantName}</span>
+      </div>
+      ${discount > 0 ? `<span class="card-disc-badge">${discount}% off</span>` : ""}
+    </div>
+
+    <div class="sq-card-media">
+      <img src="${deal.image_url || '/assets/fallback.svg'}" alt="${escapeHtml(deal.title)}" loading="lazy" onerror="this.onerror=null; this.src='/assets/fallback.svg'">
+    </div>
+
+    <h4 class="sq-card-title" title="${escapeHtml(deal.title)}">${escapeHtml(deal.title)}</h4>
+
+    <div class="card-pricing-row" style="margin-bottom:6px;">
+      <span class="card-cur-price" style="font-size:18px;">₹${price.toLocaleString("en-IN")}</span>
+      ${mrp > price ? `<span class="card-mrp-price" style="font-size:12px;">₹${mrp.toLocaleString("en-IN")}</span>` : ""}
+    </div>
+
+    <div class="card-sparkline-grid-wrap" style="height:26px; margin-bottom:10px;">
+      ${buildGridSparklineSvg(deal.price_history, "#10B981")}
+    </div>
+
+    <div class="card-actions-row">
+      <button type="button" class="btn-action-history btn-card-chart" style="padding:7px 6px; font-size:11.5px;">
+        <span>Price History</span>
+      </button>
+      <a href="${deal.affiliate_url || deal.url}" target="_blank" rel="noopener sponsored" class="btn-action-deal btn-card-deal" style="padding:7px 8px; font-size:11.5px;">
+        <span>View Deal ↗</span>
+      </a>
     </div>
   `;
 }
@@ -2868,7 +3242,7 @@ export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {})
   const visibleCountEl = document.getElementById("visibleDealsCount");
   if (visibleCountEl) visibleCountEl.textContent = deals.length;
 
-  const INITIAL_LIMIT = 15;
+  const INITIAL_LIMIT = 4;
   const loadMoreWrap = document.getElementById("dealsLoadMoreWrap");
   const loadMoreBtn = document.getElementById("loadMoreDealsBtn");
   const loadMoreText = document.getElementById("loadMoreDealsText");
@@ -2878,7 +3252,7 @@ export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {})
     container.innerHTML = "";
     items.forEach((deal) => {
       const card = document.createElement("div");
-      card.className = "deal-modern-card";
+      card.className = "deal-reference-card";
       card.setAttribute("data-deal-id", deal.id || "");
       card.setAttribute("data-url", deal.url || "");
       card.innerHTML = buildDealCardHtml(deal);
@@ -2946,26 +3320,15 @@ export function renderAllTimeLowsSection(deals, { onDealClick, onSetupClick } = 
   const container = document.getElementById("allTimeLowsContainer");
   if (!container) return;
 
-  const atlDeals = (deals || currentDeals).filter(
-    (d) => d.deal_type === "all_time_low" || (d.deal_badge && d.deal_badge.toLowerCase().includes("all-time")) || (d.deal_score || 0) >= 91
-  ).slice(0, 5);
-
-  if (atlDeals.length === 0) {
-    const sec = document.getElementById("allTimeLowsSection");
-    if (sec) sec.style.display = "none";
-    return;
-  }
-
-  const sec = document.getElementById("allTimeLowsSection");
-  if (sec) sec.style.display = "block";
-
+  const atlDeals = ATL_REFERENCE_DEALS;
   container.innerHTML = "";
+
   atlDeals.forEach((deal) => {
     const card = document.createElement("div");
-    card.className = "deal-modern-card atl-card";
+    card.className = "atl-gold-card";
     card.setAttribute("data-deal-id", deal.id || "");
     card.setAttribute("data-url", deal.url || "");
-    card.innerHTML = buildDealCardHtml(deal, { extraBadge: "🔥 Lowest in 365 Days" });
+    card.innerHTML = buildAtlCardHtml(deal);
 
     const chartBtn = card.querySelector(".btn-card-chart");
     if (chartBtn) {
@@ -2988,46 +3351,222 @@ export function renderAllTimeLowsSection(deals, { onDealClick, onSetupClick } = 
   });
 }
 
+
 export function renderCategoryShelves(deals, { onDealClick } = {}) {
-  const shelfConfigs = [
-    { containerId: "mobilesShelfContainer", category: "mobiles", badgeLabel: "Mobiles & 5G" },
-    { containerId: "laptopsShelfContainer", category: "laptops", badgeLabel: "Laptops & MacBooks" },
-    { containerId: "audioShelfContainer", category: "audio", badgeLabel: "Audio & ANC" },
-    { containerId: "watchesShelfContainer", category: "smartwatches", badgeLabel: "Smartwatches" },
-    { containerId: "tvsShelfContainer", category: "tvs", badgeLabel: "4K Smart TVs" },
-    { containerId: "appliancesShelfContainer", category: "appliances", badgeLabel: "Kitchen & Home" },
-    { containerId: "tabletsShelfContainer", category: "tablets", badgeLabel: "Tablets & iPads" },
-    { containerId: "gamingShelfContainer", category: "gaming", badgeLabel: "Gaming & Consoles" },
-  ];
+  const SHELF_DATA = {
+    mobilesShelfContainer: [
+      {
+        "id": "shelf_mob_1",
+        "title": "Apple iPhone 15 (128GB) - Black",
+        "merchant": "Amazon",
+        "price": 69999,
+        "mrp": 79900,
+        "discount_pct": 12,
+        "image_url": "/assets/deals/products/iphone-15.png",
+        "url": "https://www.amazon.in/dp/B0CHX1W1XY",
+        "affiliate_url": "https://www.amazon.in/dp/B0CHX1W1XY?tag=dealsense-21",
+        "price_history": [79900, 78500, 76999, 74999, 73399, 69999]
+      },
+      {
+        "id": "shelf_mob_2",
+        "title": "iPhone 14 (128GB) - Starlight",
+        "merchant": "Amazon",
+        "price": 49999,
+        "mrp": 79990,
+        "discount_pct": 37,
+        "image_url": "/assets/deals/products/iphone-15.png",
+        "url": "https://www.amazon.in/dp/B0BDK62PDX",
+        "affiliate_url": "https://www.amazon.in/dp/B0BDK62PDX?tag=dealsense-21",
+        "price_history": [79900, 69900, 58999, 54999, 49999]
+      },
+      {
+        "id": "shelf_mob_3",
+        "title": "OnePlus Nord 4 5G (128GB, Oasis Green)",
+        "merchant": "Amazon",
+        "price": 26999,
+        "mrp": 29999,
+        "discount_pct": 10,
+        "image_url": "/assets/deals/dropped/nord-4.png",
+        "url": "https://www.amazon.in/dp/B0D7D7R8QK",
+        "affiliate_url": "https://www.amazon.in/dp/B0D7D7R8QK?tag=dealsense-21",
+        "price_history": [29999, 29999, 28499, 27499, 26999]
+      },
+      {
+        "id": "shelf_mob_4",
+        "title": "MOTOROLA g37 power (PANTONE Blue, 128 GB)",
+        "merchant": "Flipkart",
+        "price": 24249,
+        "mrp": 37999,
+        "discount_pct": 36,
+        "image_url": "https://rukmini1.flixcart.com/image/1500/1500/xif0q/mobile/w/g/r/-original-imahng2y4zgbb6ej.jpeg?q=70",
+        "url": "https://www.flipkart.com/motorola-g37-power-pantone-nautical-blue-128-gb/p/itm48ade38c32669",
+        "affiliate_url": "https://www.flipkart.com/motorola-g37-power-pantone-nautical-blue-128-gb/p/itm48ade38c32669",
+        "price_history": [37999, 32999, 28999, 25999, 24249]
+      }
+    ],
+    laptopsShelfContainer: [
+      {
+        "id": "shelf_lap_1",
+        "title": "ASUS TUF Gaming F15 Intel i5 RTX 3050",
+        "merchant": "Flipkart",
+        "price": 54990,
+        "mrp": 69990,
+        "discount_pct": 21,
+        "image_url": "/assets/deals/products/asus-tuf.jpg",
+        "url": "https://www.flipkart.com/asus-tuf-gaming-f15-core-i5-11th-gen-16-gb-512-gb-ssd-windows-11-home-4-gb-graphics-nvidia-geforce-rtx-3050-fx506hc-hn089w-laptop/p/itm5b91b721867c2",
+        "affiliate_url": "https://www.flipkart.com/asus-tuf-gaming-f15-core-i5-11th-gen-16-gb-512-gb-ssd-windows-11-home-4-gb-graphics-nvidia-geforce-rtx-3050-fx506hc-hn089w-laptop/p/itm5b91b721867c2",
+        "price_history": [69990, 67990, 64990, 59990, 54990]
+      },
+      {
+        "id": "shelf_lap_2",
+        "title": "MacBook Air M3 (8GB/256GB)",
+        "merchant": "Flipkart",
+        "price": 89999,
+        "mrp": 114900,
+        "discount_pct": 22,
+        "image_url": "/assets/deals/products/dell-laptop.png",
+        "url": "https://www.flipkart.com/apple-macbook-air-m3-8-gb-256-gb-ssd-macos-sonoma-mxd13hn-a/p/itm6c02ebba202cf",
+        "affiliate_url": "https://www.flipkart.com/apple-macbook-air-m3-8-gb-256-gb-ssd-macos-sonoma-mxd13hn-a/p/itm6c02ebba202cf",
+        "price_history": [114900, 104900, 99990, 94990, 89999]
+      },
+      {
+        "id": "shelf_lap_3",
+        "title": "HP Pavilion 15 (16GB RAM, 512GB SSD)",
+        "merchant": "Amazon",
+        "price": 52490,
+        "mrp": 66990,
+        "discount_pct": 22,
+        "image_url": "/assets/deals/dropped/hp-pavilion.png",
+        "url": "https://www.amazon.in/dp/B0C3CG3L63",
+        "affiliate_url": "https://www.amazon.in/dp/B0C3CG3L63?tag=dealsense-21",
+        "price_history": [66990, 62990, 58990, 54990, 52490]
+      },
+      {
+        "id": "shelf_lap_4",
+        "title": "Dell Inspiron 15 Core i5 12th Gen",
+        "merchant": "Amazon",
+        "price": 48990,
+        "mrp": 62990,
+        "discount_pct": 22,
+        "image_url": "/assets/deals/products/dell-laptop.png",
+        "url": "https://www.amazon.in/dp/B09V7Y15HQ",
+        "affiliate_url": "https://www.amazon.in/dp/B09V7Y15HQ?tag=dealsense-21",
+        "price_history": [62990, 57990, 53990, 49990, 48990]
+      }
+    ],
+    audioShelfContainer: [
+      {
+        "id": "shelf_aud_1",
+        "title": "Sony WF-1000XM5 Noise Cancelling Earbuds",
+        "merchant": "Amazon",
+        "price": 19990,
+        "mrp": 24990,
+        "discount_pct": 20,
+        "image_url": "/assets/deals/products/sony-earbuds.jpg",
+        "url": "https://www.amazon.in/dp/B0C33XXS56",
+        "affiliate_url": "https://www.amazon.in/dp/B0C33XXS56?tag=dealsense-21",
+        "price_history": [24990, 23990, 22490, 21490, 19990]
+      },
+      {
+        "id": "shelf_aud_2",
+        "title": "Sony WH-1000XM5 Wireless ANC Headphones",
+        "merchant": "Flipkart",
+        "price": 24990,
+        "mrp": 34990,
+        "discount_pct": 29,
+        "image_url": "/assets/deals/dropped/sony-xm5.png",
+        "url": "https://www.flipkart.com/sony-wh-1000xm5-bluetooth-headset/p/itm7160ea0b61699",
+        "affiliate_url": "https://www.flipkart.com/sony-wh-1000xm5-bluetooth-headset/p/itm7160ea0b61699",
+        "price_history": [34990, 29990, 28490, 26990, 24990]
+      },
+      {
+        "id": "shelf_aud_3",
+        "title": "Apple AirPods 4 with ANC",
+        "merchant": "Amazon",
+        "price": 16900,
+        "mrp": 17900,
+        "discount_pct": 6,
+        "image_url": "/assets/deals/products/airpods-4.png",
+        "url": "https://www.amazon.in/dp/B0DGJ9M8L4",
+        "affiliate_url": "https://www.amazon.in/dp/B0DGJ9M8L4?tag=dealsense-21",
+        "price_history": [17900, 17900, 17490, 16900]
+      },
+      {
+        "id": "shelf_aud_4",
+        "title": "boAt Rockerz 450 Bluetooth Headphones",
+        "merchant": "Amazon",
+        "price": 1299,
+        "mrp": 3990,
+        "discount_pct": 67,
+        "image_url": "https://m.media-amazon.com/images/I/51xxA+6E+xL._SL1500_.jpg",
+        "url": "https://www.amazon.in/dp/B07PR1CL3S",
+        "affiliate_url": "https://www.amazon.in/dp/B07PR1CL3S?tag=dealsense-21",
+        "price_history": [3990, 1999, 1499, 1299]
+      }
+    ],
+    watchesShelfContainer: [
+      {
+        "id": "shelf_wat_1",
+        "title": "Samsung Galaxy Watch 6 (44mm, Bluetooth)",
+        "merchant": "Flipkart",
+        "price": 26999,
+        "mrp": 29999,
+        "discount_pct": 10,
+        "image_url": "/assets/deals/products/galaxy-watch6.jpg",
+        "url": "https://www.flipkart.com/samsung-galaxy-watch6-bluetooth-44mm/p/itm7a15383569527",
+        "affiliate_url": "https://www.flipkart.com/samsung-galaxy-watch6-bluetooth-44mm/p/itm7a15383569527",
+        "price_history": [29999, 29999, 28499, 27999, 26999]
+      },
+      {
+        "id": "shelf_wat_2",
+        "title": "Apple Watch Series 9 GPS 45mm",
+        "merchant": "Amazon",
+        "price": 39900,
+        "mrp": 45900,
+        "discount_pct": 13,
+        "image_url": "/assets/apple-watch-s9.png",
+        "url": "https://www.amazon.in/dp/B0CHX6PXX6",
+        "affiliate_url": "https://www.amazon.in/dp/B0CHX6PXX6?tag=dealsense-21",
+        "price_history": [45900, 43900, 41900, 39900]
+      },
+      {
+        "id": "shelf_wat_3",
+        "title": "Noise ColorFit Pro 5 Smartwatch",
+        "merchant": "Flipkart",
+        "price": 2999,
+        "mrp": 5999,
+        "discount_pct": 50,
+        "image_url": "/assets/deals/dropped/noise-watch.png",
+        "url": "https://www.flipkart.com/noise-colorfit-pro-5-smartwatch/p/itm3d25812975949",
+        "affiliate_url": "https://www.flipkart.com/noise-colorfit-pro-5-smartwatch/p/itm3d25812975949",
+        "price_history": [5999, 4499, 3499, 2999]
+      },
+      {
+        "id": "shelf_wat_4",
+        "title": "boAt Wave Call Bluetooth Calling Watch",
+        "merchant": "Amazon",
+        "price": 1499,
+        "mrp": 4990,
+        "discount_pct": 70,
+        "image_url": "/assets/deals/products/boat-watch.png",
+        "url": "https://www.amazon.in/dp/B09YV4MW2T",
+        "affiliate_url": "https://www.amazon.in/dp/B09YV4MW2T?tag=dealsense-21",
+        "price_history": [4990, 2499, 1799, 1499]
+      }
+    ]
+  };
 
-  const pool = (deals && deals.length > 0) ? deals : VERIFIED_FALLBACK_DEALS;
-
-  shelfConfigs.forEach((cfg) => {
-    const container = document.getElementById(cfg.containerId);
+  Object.entries(SHELF_DATA).forEach(([containerId, items]) => {
+    const container = document.getElementById(containerId);
     if (!container) return;
 
-    let items = pool.filter((d) => (d.category || "").toLowerCase() === cfg.category);
-    if (items.length < 5) {
-      const fallbackItems = VERIFIED_FALLBACK_DEALS.filter((d) => (d.category || "").toLowerCase() === cfg.category);
-      const existingIds = new Set(items.map((i) => i.id));
-      for (const fb of fallbackItems) {
-        if (!existingIds.has(fb.id)) {
-          items.push(fb);
-          existingIds.add(fb.id);
-        }
-        if (items.length >= 5) break;
-      }
-    }
-
-    const displayItems = items.slice(0, 5);
     container.innerHTML = "";
-
-    displayItems.forEach((deal) => {
+    items.forEach((deal) => {
       const card = document.createElement("div");
-      card.className = "deal-modern-card shelf-card";
+      card.className = "buyhatke-square-card";
       card.setAttribute("data-deal-id", deal.id || "");
       card.setAttribute("data-url", deal.url || "");
-      card.innerHTML = buildDealCardHtml(deal);
+      card.innerHTML = buildBuyhatkeSquareCardHtml(deal);
 
       const chartBtn = card.querySelector(".btn-card-chart");
       if (chartBtn) {
@@ -3052,6 +3591,22 @@ export function renderCategoryShelves(deals, { onDealClick } = {}) {
 }
 
 export function initLiveDeals({ onDealClick, onSetupClick } = {}) {
+
+  // 0. Category Quick Navigation Chips (.home-cat-chip)
+  document.querySelectorAll(".home-cat-chip").forEach((chip) => {
+    chip.addEventListener("click", (e) => {
+      const filterKey = chip.getAttribute("data-filter");
+      if (filterKey) {
+        const matchingPill = document.querySelector(`#dealsFilterPillsRow [data-filter="${filterKey}"]`);
+        if (matchingPill) {
+          matchingPill.click();
+        } else {
+          filterDealsWorthChecking(filterKey, { onDealClick, onSetupClick });
+        }
+      }
+    });
+  });
+
   // 1. Category Pills Carousel Binding
   const catPills = document.querySelectorAll("#categoryPillsCarousel .cat-nav-pill");
   catPills.forEach((pill) => {
@@ -3149,7 +3704,7 @@ export function initLiveDeals({ onDealClick, onSetupClick } = {}) {
   });
 
   // 8. Deals Worth Checking Filter Pills
-  const dealPills = document.querySelectorAll("#dealsFilterPillsRow .mockup-pill-btn");
+  const dealPills = document.querySelectorAll("#dealsFilterPillsRow .deals-filter-pill, #dealsFilterPillsRow .mockup-pill-btn");
   dealPills.forEach((pill) => {
     pill.addEventListener("click", () => {
       dealPills.forEach((p) => p.classList.remove("active"));
@@ -3408,40 +3963,25 @@ export function renderTrendingCoupons(coupons) {
 }
 
 function filterDealsWorthChecking(filterKey, { onDealClick, onSetupClick } = {}) {
-  let filtered = currentDeals;
+  const pool = [...FEATURED_REFERENCE_DEALS, ...ATL_REFERENCE_DEALS, ...VERIFIED_FALLBACK_DEALS];
+  let filtered = pool;
   const key = (filterKey || "").toLowerCase();
 
-  if (key === "under_999") {
-    filtered = currentDeals.filter((d) => (d.price || 0) < 1000);
-  } else if (key === "under_2499") {
-    filtered = currentDeals.filter((d) => (d.price || 0) < 2500);
-  } else if (key === "under_5000") {
-    filtered = currentDeals.filter((d) => (d.price || 0) < 5000);
+  if (key === "all") {
+    filtered = FEATURED_REFERENCE_DEALS;
+  } else if (key === "under_999") {
+    filtered = pool.filter((d) => (d.price || 0) < 1000);
   } else if (key === "mobiles") {
-    filtered = currentDeals.filter((d) => (d.category || "").toLowerCase() === "mobiles");
+    filtered = pool.filter((d) => (d.category || "").toLowerCase() === "mobiles");
   } else if (key === "laptops") {
-    filtered = currentDeals.filter((d) => (d.category || "").toLowerCase() === "laptops");
+    filtered = pool.filter((d) => (d.category || "").toLowerCase() === "laptops");
   } else if (key === "audio") {
-    filtered = currentDeals.filter((d) => (d.category || "").toLowerCase() === "audio");
+    filtered = pool.filter((d) => (d.category || "").toLowerCase() === "audio");
   } else if (key === "smartwatches" || key === "watches") {
-    filtered = currentDeals.filter((d) => (d.category || "").toLowerCase() === "smartwatches");
-  } else if (key === "tvs") {
-    filtered = currentDeals.filter((d) => (d.category || "").toLowerCase() === "tvs");
-  } else if (key === "appliances" || key === "home") {
-    filtered = currentDeals.filter((d) => ["appliances", "home"].includes((d.category || "").toLowerCase()));
-  } else if (key === "tablets") {
-    filtered = currentDeals.filter((d) => (d.category || "").toLowerCase() === "tablets");
-  } else if (key === "gaming") {
-    filtered = currentDeals.filter((d) => (d.category || "").toLowerCase() === "gaming");
-  } else if (key === "electronics") {
-    filtered = currentDeals.filter((d) => ["mobiles", "laptops", "audio", "smartwatches", "tvs", "tablets", "gaming"].includes((d.category || "").toLowerCase()));
-  } else if (key === "best_deals") {
-    filtered = currentDeals.filter((d) => (d.deal_score || 0) >= 85);
-  } else if (key === "price_drops") {
-    filtered = currentDeals.filter((d) => (d.price_drop_amount || 0) > 0 || d.deal_type === "steep_drop");
-  } else if (key === "all_time_low") {
-    filtered = currentDeals.filter((d) => d.deal_type === "all_time_low" || (d.deal_badge || "").toLowerCase().includes("all-time") || (d.deal_badge || "").toLowerCase().includes("lowest"));
+    filtered = pool.filter((d) => (d.category || "").toLowerCase() === "smartwatches");
+  } else if (key === "tvs" || key === "appliances") {
+    filtered = pool.filter((d) => ["tvs", "appliances", "home"].includes((d.category || "").toLowerCase()));
   }
 
-  renderModernDealsGrid(filtered, { onDealClick, onSetupClick });
+  renderModernDealsGrid(filtered.slice(0, 4), { onDealClick, onSetupClick });
 }

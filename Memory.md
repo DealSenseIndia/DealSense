@@ -7,7 +7,7 @@
 ## 1. Project Health & Verified Baseline Status
 - **Repository**: `D:\Gursher\Affiliate\Deal Intelligence`
 - **Active Workspace**: Deal Intelligence (Antigravity IDE)
-- **Current Milestone**: Phase 17 (Dual-Theme Architecture & Light-Default Theme Switcher) [COMPLETED ✅]
+- **Current Milestone**: Phase 18 (Homepage Redesign: Reference Replica & Buyhatke Square Cards) [COMPLETED ✅]
 - **Unit Test Health**: **259 / 259 Passing Unit Tests (100% Green, 0 Deprecation Warnings in App Code)**
 - **Test Runner Command**: `.venv\Scripts\pytest.exe -q` (49.1s execution)
 - **Verified Working Test Suites**:
@@ -96,6 +96,25 @@
     - Seeded genuine verified deals for all 8 categories with 5 items each in `frontend/js/live_deals.js` with fallback catalogs.
   - **Responsive 5-Column Grid Breakpoints**: Configured smooth progressive degradation for `.deals-cards-5-grid`, `.live-deals-modern-grid`, `.all-time-lows-grid`, and `.shelf-cards-carousel`: 5 cols (>1280px), 4 cols (1025-1280px), 3 cols (769-1024px), 2 cols (501-768px), and 1 col (<=500px).
   - **Zero Regressions**: 259/259 test suite passing (100% green). Compiled `frontend/index.html` via `scripts/build_html.py`.
+- **ADR-027 (Homepage Redesign: Reference Replica & Buyhatke Square Cards)**:
+  - **Stripped Middle Clutter**: Removed the legacy multi-store comparison table, room setups, coupons carousel, extension CTA banner, how-it-works guide, customer reviews, and FAQ accordion. Preserved 100% of the top design (Header, Hero Search with 3D illustration, Floating Cards, Trust Stats bar) and bottom design (Deep Forest Emerald Footer).
+  - **Reference Image 1 Replica — Today's Biggest Price Drops (`#liveDeals`)**:
+    - Left-aligned header, subtitle ("Real price drops, checked against historical prices — not just the discount printed on the product page."), "View all deals →" link, category filter pills (`All Deals`, `📱 Mobiles`, `💻 Laptops`, `🎧 Audio`, `⌚ Smartwatches`, `📺 TVs & Appliances`, `⚡ Under ₹999`).
+    - 4 Flagship reference cards: Apple iPhone 15, ASUS TUF Gaming F15, Sony WF-1000XM5 Earbuds, Samsung Galaxy Watch 6.
+    - Features: Top badges row (Store pill left, Deal score center, Drop amount in bold red right), square 1:1 media container, 90-day price trend with faint grid-line pattern background (`linear-gradient` 10px grid) & cubic-bezier SVG curve, price row with struck MRP and discount badge, mint-green bank card offer chip (`#ECFDF5`), verification timestamp with green check, and side-by-side action buttons (`Price History` + `View Deal ↗`).
+  - **Reference Image 1 Replica — All-Time Low Hall of Fame (`#allTimeLowsSection`)**:
+    - Golden container with `border: 1.5px solid #FCD34D`, background `linear-gradient(180deg, #FFFDF5 0%, #FFFFFF 100%)`, eyebrow `👑 365-DAY PRICE RECORDS`, title `⚡ All-Time Low Hall of Fame`, subtitle, and "View all all-time lows →".
+    - 4 Golden cards with top centered ribbon `🏆 ALL-TIME LOW RECORD`: iPhone 14 (128GB), MacBook Air M3 (8GB/256GB), LG 55" 4K Smart TV, Sony WH-1000XM5.
+    - Features: Peak 365-day price, red bold savings ("You save: ₹X,XXX"), SVG sparkline, side-by-side buttons.
+  - **Reference Image 2 Inspiration — Buyhatke Square Cards & Category Shelves (`#categoryShelvesSection`)**:
+    - Top Category Quick Navigation Strip (`.home-category-strip-section`) with 8 rounded-square icon tiles.
+    - 4 Dedicated category shelves for Mobiles (`#shelfMobiles`), Laptops (`#shelfLaptops`), Audio (`#shelfAudio`), and Smartwatches (`#shelfWatches`).
+    - Implemented Buyhatke square card layout: `aspect-ratio: 1/1` square photo container, store pill, discount badge, clean title, price, mini 90-day sparkline, and action buttons.
+  - **Zero Regressions & Asset Integrity**:
+    - Generated photorealistic 1:1 product assets (`asus-tuf.jpg`, `sony-earbuds.jpg`, `galaxy-watch6.jpg`).
+    - Compiled `frontend/index.html` via `scripts/build_html.py`.
+    - Executed full test suite: **259 / 259 passing tests (100% green)**.
+
 
 
 1. **The Planner / Architect Agent**: `planner_architect` (`dealsense_planner`)

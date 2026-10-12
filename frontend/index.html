@@ -436,776 +436,194 @@
       </div>
     </section>
 
-    <!-- Top Categories Quick Navigation Strip (8 Top Categories) -->
+    <!-- 1. Category Quick Navigation Strip (Buyhatke Square Inspiration) -->
     <section class="home-category-strip-section" aria-label="Explore Deal Categories">
       <div class="container home-category-strip-inner">
-        <a href="#shelfMobiles" class="home-cat-chip">
+        <a href="#shelfMobiles" class="home-cat-chip" data-filter="mobiles">
           <span class="cat-chip-icon">📱</span>
           <div class="cat-chip-text">
             <span class="cat-chip-title">Mobiles</span>
             <span class="cat-chip-drops">18 Drops Today</span>
           </div>
         </a>
-        <a href="#shelfLaptops" class="home-cat-chip">
+        <a href="#shelfLaptops" class="home-cat-chip" data-filter="laptops">
           <span class="cat-chip-icon">💻</span>
           <div class="cat-chip-text">
             <span class="cat-chip-title">Laptops</span>
             <span class="cat-chip-drops">12 Drops Today</span>
           </div>
         </a>
-        <a href="#shelfAudio" class="home-cat-chip">
+        <a href="#shelfAudio" class="home-cat-chip" data-filter="audio">
           <span class="cat-chip-icon">🎧</span>
           <div class="cat-chip-text">
             <span class="cat-chip-title">Audio &amp; ANC</span>
             <span class="cat-chip-drops">24 Drops Today</span>
           </div>
         </a>
-        <a href="#shelfWatches" class="home-cat-chip">
+        <a href="#shelfWatches" class="home-cat-chip" data-filter="smartwatches">
           <span class="cat-chip-icon">⌚</span>
           <div class="cat-chip-text">
             <span class="cat-chip-title">Smartwatches</span>
             <span class="cat-chip-drops">15 Drops Today</span>
           </div>
         </a>
-        <a href="#shelfTvs" class="home-cat-chip">
+        <a href="#shelfTvs" class="home-cat-chip" data-filter="tvs">
           <span class="cat-chip-icon">📺</span>
           <div class="cat-chip-text">
             <span class="cat-chip-title">4K Smart TVs</span>
             <span class="cat-chip-drops">9 Drops Today</span>
           </div>
         </a>
-        <a href="#shelfAppliances" class="home-cat-chip">
+        <a href="#shelfAppliances" class="home-cat-chip" data-filter="appliances">
           <span class="cat-chip-icon">🍳</span>
           <div class="cat-chip-text">
             <span class="cat-chip-title">Appliances</span>
             <span class="cat-chip-drops">14 Drops Today</span>
           </div>
         </a>
-        <a href="#shelfTablets" class="home-cat-chip">
-          <span class="cat-chip-icon">📱</span>
-          <div class="cat-chip-text">
-            <span class="cat-chip-title">Tablets &amp; iPads</span>
-            <span class="cat-chip-drops">11 Drops Today</span>
-          </div>
-        </a>
-        <a href="#shelfGaming" class="home-cat-chip">
+        <a href="#shelfGaming" class="home-cat-chip" data-filter="gaming">
           <span class="cat-chip-icon">🎮</span>
           <div class="cat-chip-text">
             <span class="cat-chip-title">Gaming Gear</span>
             <span class="cat-chip-drops">16 Drops Today</span>
           </div>
         </a>
+        <a href="#shelfUnder999" class="home-cat-chip" data-filter="under_999">
+          <span class="cat-chip-icon">⚡</span>
+          <div class="cat-chip-text">
+            <span class="cat-chip-title">Under ₹999</span>
+            <span class="cat-chip-drops">30+ Drops</span>
+          </div>
+        </a>
       </div>
     </section>
 
-    <!-- 2. Section: Today's Biggest Price Drops & Trending Deals (Primary Product Showcase) -->
-    <section class="mockup-deals-section" id="liveDeals">
+    <!-- 2. Section: Today's Biggest Price Drops (Reference Mockup Card Type 1 Replica) -->
+    <section class="mockup-deals-section" id="liveDeals" aria-label="Today's Biggest Price Drops">
       <div class="container">
         <div class="deals-header-row">
           <div class="deals-header-left">
-            <div class="live-tracker-badge">
-              <span class="live-pulse-dot"></span>
-              <span>Live Price Tracker • Updated Hourly</span>
-            </div>
             <h2 class="deals-section-title">🔥 Today's Biggest Price Drops</h2>
-            <p class="deals-section-sub">Real, verified price drops across Amazon, Flipkart, Croma & Reliance Digital. Track genuine price history and spot fake discounts.</p>
+            <p class="deals-section-sub">Real price drops, checked against historical prices — not just the discount printed on the product page.</p>
           </div>
           <div class="deals-header-right">
-            <div class="deals-meta-info" style="display:flex; align-items:center; gap:10px;">
-              <span class="active-deals-count-tag"><strong id="visibleDealsCount">16</strong> Products Found</span>
-              <button type="button" class="btn-refresh-scanner" id="manualRefreshDealsBtn" title="Check for fresh price drops">
-                <svg id="refreshIconSpin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
-                </svg>
-                <span>Refresh Live Prices</span>
-              </button>
-            </div>
+            <a href="#dealsWorthCheckingContainer" class="view-all-deals-link" id="viewAllDealsLink">View all deals →</a>
           </div>
         </div>
 
-        <!-- Filter Pills Bar: Categories & Quick Filters -->
-        <div class="deals-filter-pills-bar" id="dealsFilterPillsRow">
-          <button type="button" class="mockup-pill-btn active" data-filter="trending">🔥 All Drops</button>
-          <button type="button" class="mockup-pill-btn" data-filter="price_drops">📉 Steep Drops</button>
-          <button type="button" class="mockup-pill-btn" data-filter="all_time_low">🏆 All-Time Lows</button>
-          <button type="button" class="mockup-pill-btn" data-filter="mobiles">📱 Mobiles & 5G</button>
-          <button type="button" class="mockup-pill-btn" data-filter="laptops">💻 Laptops</button>
-          <button type="button" class="mockup-pill-btn" data-filter="audio">🎧 Audio & ANC</button>
-          <button type="button" class="mockup-pill-btn" data-filter="smartwatches">⌚ Smartwatches</button>
-          <button type="button" class="mockup-pill-btn" data-filter="tvs">📺 4K Smart TVs</button>
-          <button type="button" class="mockup-pill-btn" data-filter="appliances">🍳 Appliances</button>
-          <button type="button" class="mockup-pill-btn" data-filter="under_999">⚡ Under ₹999</button>
-          <button type="button" class="mockup-pill-btn" data-filter="best_deals">⭐ Score 85+</button>
+        <!-- Category Filter Pills (Exact Match to Reference Mockup) -->
+        <div class="deals-filter-pills-wrap" id="dealsFilterPillsRow">
+          <button type="button" class="deals-filter-pill active" data-filter="all">All Deals</button>
+          <button type="button" class="deals-filter-pill" data-filter="mobiles"><span class="pill-ico">📱</span> Mobiles</button>
+          <button type="button" class="deals-filter-pill" data-filter="laptops"><span class="pill-ico">💻</span> Laptops</button>
+          <button type="button" class="deals-filter-pill" data-filter="audio"><span class="pill-ico">🎧</span> Audio</button>
+          <button type="button" class="deals-filter-pill" data-filter="smartwatches"><span class="pill-ico">⌚</span> Smartwatches</button>
+          <button type="button" class="deals-filter-pill" data-filter="tvs"><span class="pill-ico">📺</span> TVs &amp; Appliances</button>
+          <button type="button" class="deals-filter-pill" data-filter="under_999"><span class="pill-ico">⚡</span> Under ₹999</button>
         </div>
 
-        <!-- Deals Grid — Rich Buyhatke / PriceHistory Cards -->
-        <div class="deals-cards-5-grid" id="dealsWorthCheckingContainer" data-live="true">
-          <!-- Populated live from verified database feed by live_deals.js -->
-        </div>
-
-        <!-- Load More Pagination Action -->
-        <div class="deals-load-more-wrap" id="dealsLoadMoreWrap" style="display: none; text-align: center; margin-top: 28px;">
-          <button type="button" class="btn-load-more-deals" id="loadMoreDealsBtn">
-            <span id="loadMoreDealsText">Show More Deals</span>
-            <span class="load-more-arrow">▾</span>
-          </button>
+        <!-- 4-Column Responsive Deals Grid -->
+        <div class="deals-reference-grid" id="dealsWorthCheckingContainer">
+          <!-- Populated by live_deals.js with Card Type 1 layout -->
         </div>
       </div>
     </section>
 
-    <!-- 3. Section: All-Time Low Hall of Fame (Lowest Price in 365 Days) -->
-    <section class="mockup-all-time-lows-section" id="allTimeLowsSection">
+    <!-- 3. Section: All-Time Low Hall of Fame (Reference Mockup Golden Cards Container) -->
+    <section class="atl-hall-of-fame-section" id="allTimeLowsSection" aria-label="All-Time Low Hall of Fame">
       <div class="container">
-        <div class="all-time-low-header">
-          <div class="all-time-badge">
-            <span>🏆</span>
-            <span>Historical Record Breakers</span>
-          </div>
-          <h2 class="all-time-title">⚡ All-Time Low Hall of Fame</h2>
-          <p class="all-time-sub">Every product below is currently at its absolute lowest price ever recorded in DealSense history. Verified against genuine store pricing.</p>
-        </div>
-        <div class="all-time-lows-grid" id="allTimeLowsContainer">
-          <!-- Populated live by live_deals.js with All-Time Low products -->
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. Section: Multi-Store Price Battle (ChatGPT Section 5 Benchmark) -->
-    <section class="multi-store-battle-section" id="multiStorePriceBattle">
-      <div class="container">
-        <div class="battle-section-header">
-          <span class="battle-eyebrow-tag">COMPARE BEFORE YOU BUY</span>
-          <h2 class="battle-main-title">⚔️ One Product. Four Stores. One Smarter Choice.</h2>
-          <p class="battle-sub-desc">
-            Real-time like-for-like price comparison across India's top 4 electronics retailers. Always buy from the true lowest price store.
-          </p>
-        </div>
-
-        <div class="battle-showcase-card">
-          <div class="battle-product-col">
-            <div class="battle-thumb-wrap">
-              <img src="/assets/deals/products/samsung-s24.png" alt="Samsung Galaxy S24 5G" class="battle-product-img" onerror="this.src='https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300&q=80'">
-            </div>
-            <div class="battle-product-meta">
-              <span class="battle-spec-pill">Flagship 5G Smartphone</span>
-              <h3 class="battle-product-title">Samsung Galaxy S24 5G (Onyx Black, 128 GB)</h3>
-              <p class="battle-product-specs">8 GB RAM • Snapdragon 8 Gen 3 / Exynos 2400 • Dynamic AMOLED 2X 120Hz</p>
-              <div class="battle-winner-callout">
-                <span class="winner-trophy-ico">🏆</span>
-                <span>Cheapest by <strong>₹2,000</strong> on Amazon right now</span>
+        <div class="atl-gold-container">
+          <div class="atl-header-row">
+            <div class="atl-header-left">
+              <div class="atl-eyebrow-tag">
+                <span class="atl-crown-ico">👑</span>
+                <span>365-DAY PRICE RECORDS</span>
               </div>
+              <div class="atl-title-line">
+                <h2 class="atl-section-title">⚡ All-Time Low Hall of Fame</h2>
+                <span class="atl-section-sub">These products are at their lowest observed price in the last 365 days.</span>
+              </div>
+            </div>
+            <div class="atl-header-right">
+              <a href="#allTimeLowsContainer" class="view-all-atl-link" id="viewAllAtlLink">View all all-time lows →</a>
             </div>
           </div>
 
-          <div class="battle-stores-grid">
-            <!-- Amazon (Winner) -->
-            <div class="battle-store-box is-winner">
-              <span class="battle-winner-crown">Lowest Price</span>
-              <div class="battle-store-header">
-                <img src="/assets/amazon-logo.svg" alt="Amazon" class="battle-store-logo">
-              </div>
-              <div class="battle-store-price">₹69,999</div>
-              <div class="battle-store-delta delta-lowest">✓ Best Price Available</div>
-              <a href="https://www.amazon.in/dp/B0CQYG5H38" target="_blank" rel="noopener sponsored" class="battle-store-cta">
-                View on Amazon →
-              </a>
-            </div>
-
-            <!-- Flipkart -->
-            <div class="battle-store-box">
-              <div class="battle-store-header">
-                <img src="/assets/flipkart-icon.svg" alt="Flipkart" class="battle-store-logo">
-              </div>
-              <div class="battle-store-price">₹71,999</div>
-              <div class="battle-store-delta">₹2,000 higher</div>
-              <a href="https://www.flipkart.com/search?q=samsung+galaxy+s24" target="_blank" rel="noopener sponsored" class="battle-store-cta">
-                View on Flipkart →
-              </a>
-            </div>
-
-            <!-- Croma -->
-            <div class="battle-store-box">
-              <div class="battle-store-header">
-                <img src="/assets/croma-logo.svg" alt="Croma" class="battle-store-logo">
-              </div>
-              <div class="battle-store-price">₹73,990</div>
-              <div class="battle-store-delta">₹3,991 higher</div>
-              <a href="https://www.croma.com/search/?text=samsung%20galaxy%20s24" target="_blank" rel="noopener sponsored" class="battle-store-cta">
-                View on Croma →
-              </a>
-            </div>
-
-            <!-- Reliance Digital -->
-            <div class="battle-store-box">
-              <div class="battle-store-header">
-                <img src="/assets/reliance-digital-logo.svg" alt="Reliance Digital" class="battle-store-logo">
-              </div>
-              <div class="battle-store-price">₹73,990</div>
-              <div class="battle-store-delta">₹3,991 higher</div>
-              <a href="https://www.reliancedigital.in/search?q=samsung%20galaxy%20s24" target="_blank" rel="noopener sponsored" class="battle-store-cta">
-                View on Reliance →
-              </a>
-            </div>
+          <!-- 4-Column Golden Cards Grid -->
+          <div class="atl-cards-grid" id="allTimeLowsContainer">
+            <!-- Populated by live_deals.js with Card Type 2 Golden layout -->
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 5. Category Deal Shelves (8 Key Categories) -->
-    <!-- Shelf 1: Mobiles & 5G Smartphones -->
-    <section class="category-shelf-section" id="shelfMobiles">
+    <!-- 4. Section: Buyhatke-style Category Rails with Square Cards -->
+    <section class="category-shelves-section" id="categoryShelvesSection" aria-label="Category Product Showcases">
       <div class="container">
-        <div class="category-shelf-header">
-          <div class="shelf-title-wrap">
-            <span class="shelf-icon-badge">📱</span>
-            <h2 class="shelf-title">Mobiles &amp; 5G Smartphones</h2>
-          </div>
-          <a href="#/search?category=mobiles" class="shelf-view-all">View All Mobiles →</a>
-        </div>
-        <div class="shelf-cards-carousel" id="mobilesShelfContainer">
-          <!-- Populated by live_deals.js -->
-        </div>
-      </div>
-    </section>
 
-    <!-- Shelf 2: Laptops & Computing -->
-    <section class="category-shelf-section" id="shelfLaptops">
-      <div class="container">
-        <div class="category-shelf-header">
-          <div class="shelf-title-wrap">
-            <span class="shelf-icon-badge">💻</span>
-            <h2 class="shelf-title">Laptops &amp; Computing</h2>
-          </div>
-          <a href="#/search?category=laptops" class="shelf-view-all">View All Laptops →</a>
-        </div>
-        <div class="shelf-cards-carousel" id="laptopsShelfContainer">
-          <!-- Populated by live_deals.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Shelf 3: Audio & ANC Headphones -->
-    <section class="category-shelf-section" id="shelfAudio">
-      <div class="container">
-        <div class="category-shelf-header">
-          <div class="shelf-title-wrap">
-            <span class="shelf-icon-badge">🎧</span>
-            <h2 class="shelf-title">Audio &amp; ANC Headphones</h2>
-          </div>
-          <a href="#/search?category=audio" class="shelf-view-all">View All Audio →</a>
-        </div>
-        <div class="shelf-cards-carousel" id="audioShelfContainer">
-          <!-- Populated by live_deals.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Shelf 4: Smartwatches & Wearables -->
-    <section class="category-shelf-section" id="shelfWatches">
-      <div class="container">
-        <div class="category-shelf-header">
-          <div class="shelf-title-wrap">
-            <span class="shelf-icon-badge">⌚</span>
-            <h2 class="shelf-title">Smartwatches &amp; Wearables</h2>
-          </div>
-          <a href="#/search?category=smartwatches" class="shelf-view-all">View All Smartwatches →</a>
-        </div>
-        <div class="shelf-cards-carousel" id="watchesShelfContainer">
-          <!-- Populated by live_deals.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Shelf 5: 4K Smart TVs & Entertainment -->
-    <section class="category-shelf-section" id="shelfTvs">
-      <div class="container">
-        <div class="category-shelf-header">
-          <div class="shelf-title-wrap">
-            <span class="shelf-icon-badge">📺</span>
-            <h2 class="shelf-title">4K Smart TVs &amp; Entertainment</h2>
-          </div>
-          <a href="#/search?category=tvs" class="shelf-view-all">View All TVs →</a>
-        </div>
-        <div class="shelf-cards-carousel" id="tvsShelfContainer">
-          <!-- Populated by live_deals.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Shelf 6: Home & Kitchen Appliances -->
-    <section class="category-shelf-section" id="shelfAppliances">
-      <div class="container">
-        <div class="category-shelf-header">
-          <div class="shelf-title-wrap">
-            <span class="shelf-icon-badge">🍳</span>
-            <h2 class="shelf-title">Home &amp; Kitchen Appliances</h2>
-          </div>
-          <a href="#/search?category=appliances" class="shelf-view-all">View All Appliances →</a>
-        </div>
-        <div class="shelf-cards-carousel" id="appliancesShelfContainer">
-          <!-- Populated by live_deals.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Shelf 7: Tablets & iPads -->
-    <section class="category-shelf-section" id="shelfTablets">
-      <div class="container">
-        <div class="category-shelf-header">
-          <div class="shelf-title-wrap">
-            <span class="shelf-icon-badge">📱</span>
-            <h2 class="shelf-title">Tablets &amp; iPads</h2>
-          </div>
-          <a href="#/search?category=tablets" class="shelf-view-all">View All Tablets →</a>
-        </div>
-        <div class="shelf-cards-carousel" id="tabletsShelfContainer">
-          <!-- Populated by live_deals.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Shelf 8: Gaming Consoles & Accessories -->
-    <section class="category-shelf-section" id="shelfGaming">
-      <div class="container">
-        <div class="category-shelf-header">
-          <div class="shelf-title-wrap">
-            <span class="shelf-icon-badge">🎮</span>
-            <h2 class="shelf-title">Gaming Consoles &amp; Gear</h2>
-          </div>
-          <a href="#/search?category=gaming" class="shelf-view-all">View All Gaming Gear →</a>
-        </div>
-        <div class="shelf-cards-carousel" id="gamingShelfContainer">
-          <!-- Populated by live_deals.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- 6. Section: Top Brands Showcase (Buyhatke Benchmark) -->
-    <section class="top-brands-section" aria-label="Popular Brands">
-      <div class="container">
-        <div class="brands-header-text">Popular Brands Monitored by DealSense</div>
-        <div class="brands-logo-row">
-          <a href="#/search?q=Apple" class="brand-chip-item" data-brand="Apple"><span>🍎</span> Apple</a>
-          <a href="#/search?q=Samsung" class="brand-chip-item" data-brand="Samsung"><span>📱</span> Samsung</a>
-          <a href="#/search?q=Sony" class="brand-chip-item" data-brand="Sony"><span>🎧</span> Sony</a>
-          <a href="#/search?q=OnePlus" class="brand-chip-item" data-brand="OnePlus"><span>🔴</span> OnePlus</a>
-          <a href="#/search?q=Asus" class="brand-chip-item" data-brand="Asus"><span>💻</span> Asus ROG</a>
-          <a href="#/search?q=boAt" class="brand-chip-item" data-brand="boAt"><span>⚓</span> boAt</a>
-          <a href="#/search?q=HP" class="brand-chip-item" data-brand="HP"><span>🖥️</span> HP</a>
-          <a href="#/search?q=LG" class="brand-chip-item" data-brand="LG"><span>📺</span> LG OLED</a>
-          <a href="#/search?q=Dell" class="brand-chip-item" data-brand="Dell"><span>⌨️</span> Dell</a>
-          <a href="#/search?q=Xiaomi" class="brand-chip-item" data-brand="Xiaomi"><span>⚡</span> Xiaomi</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. Section: Smart Setups (Pathways & Room Categories) -->
-    <div id="smartSetupsSection">
-      <!-- Pathway Split: I found a product / I want to build something -->
-      <section class="mockup-shopping-pathways">
-        <div class="container">
-          <h2 class="pathways-main-title">What are you shopping for?</h2>
-          <div class="pathways-grid">
-            <div class="pathway-card pathway-product" id="pathwayProductCard" role="button" tabindex="0" aria-label="I found a product. Check if it's a good deal">
-              <div class="pathway-icon-circle icon-circle-green">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.4">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-              </div>
-              <div class="pathway-card-info">
-                <h3 class="pathway-title">I found a product</h3>
-                <p class="pathway-desc">Check if it's a good deal</p>
-                <button type="button" class="pathway-cta-link" id="pathwayProductBtn">Check Product →</button>
-              </div>
+        <!-- Shelf 1: Mobiles & 5G -->
+        <div class="category-shelf-block" id="shelfMobiles">
+          <div class="shelf-header-row">
+            <div class="shelf-header-left">
+              <span class="shelf-badge-icon">📱</span>
+              <h3 class="shelf-title">Mobiles &amp; 5G Smartphones</h3>
+              <span class="shelf-drop-count-tag">18 Drops Today</span>
             </div>
-
-            <div class="pathway-card pathway-setup" id="pathwaySetupCard" role="button" tabindex="0" aria-label="I want to build something. Get a complete shopping setup">
-              <div class="pathway-icon-circle icon-circle-blue">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.4">
-                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                  <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                </svg>
-              </div>
-              <div class="pathway-card-info">
-                <h3 class="pathway-title">I want to build something</h3>
-                <p class="pathway-desc">Get a complete shopping setup</p>
-                <button type="button" class="pathway-cta-link" id="pathwaySetupBtn">Build My Setup →</button>
-              </div>
-            </div>
+            <a href="#shelfMobiles" class="shelf-see-all-link" data-cat="mobiles">Explore Mobile Deals →</a>
           </div>
-        </div>
-      </section>
-
-      <!-- 6 Setup Category Cards -->
-      <section class="mockup-setup-categories">
-        <div class="container">
-          <div class="setup-section-header">
-            <div class="setup-title-line">
-              <h2 class="setup-main-title">Build it. We'll find it.</h2>
-              <span class="setup-popular-pill">Popular</span>
-            </div>
-            <p class="setup-main-desc">
-              Tell us what you want to create and your budget. We'll build the perfect setup for you.
-            </p>
-          </div>
-
-          <div class="setup-categories-carousel-wrap">
-            <div class="setup-categories-grid">
-              <div class="setup-room-card" data-space="bedroom" data-budget="25000">
-                <div class="setup-room-thumb-wrap">
-                  <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=400&q=80" alt="Bedroom" class="setup-room-img" loading="lazy">
-                </div>
-                <div class="setup-room-info">
-                  <h4 class="setup-room-title">Bedroom</h4>
-                  <span class="setup-room-sub">from ₹12,000</span>
-                  <a href="#" class="setup-room-cta">Build Now →</a>
-                </div>
-              </div>
-
-              <div class="setup-room-card" data-space="gaming" data-budget="75000">
-                <div class="setup-room-thumb-wrap">
-                  <img src="https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=400&q=80" alt="Gaming Setup" class="setup-room-img" loading="lazy">
-                </div>
-                <div class="setup-room-info">
-                  <h4 class="setup-room-title">Gaming Setup</h4>
-                  <span class="setup-room-sub">from ₹25,000</span>
-                  <a href="#" class="setup-room-cta">Build Now →</a>
-                </div>
-              </div>
-
-              <div class="setup-room-card" data-space="wfh_desk" data-budget="30000">
-                <div class="setup-room-thumb-wrap">
-                  <img src="https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=400&q=80" alt="Home Office" class="setup-room-img" loading="lazy">
-                </div>
-                <div class="setup-room-info">
-                  <h4 class="setup-room-title">Home Office</h4>
-                  <span class="setup-room-sub">from ₹10,000</span>
-                  <a href="#" class="setup-room-cta">Build Now →</a>
-                </div>
-              </div>
-
-              <div class="setup-room-card" data-space="living_room" data-budget="40000">
-                <div class="setup-room-thumb-wrap">
-                  <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80" alt="Living Room" class="setup-room-img" loading="lazy">
-                </div>
-                <div class="setup-room-info">
-                  <h4 class="setup-room-title">Living Room</h4>
-                  <span class="setup-room-sub">from ₹15,000</span>
-                  <a href="#" class="setup-room-cta">Build Now →</a>
-                </div>
-              </div>
-
-              <div class="setup-room-card" data-space="kitchen" data-budget="25000">
-                <div class="setup-room-thumb-wrap">
-                  <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=400&q=80" alt="Kitchen" class="setup-room-img" loading="lazy">
-                </div>
-                <div class="setup-room-info">
-                  <h4 class="setup-room-title">Kitchen</h4>
-                  <span class="setup-room-sub">from ₹8,000</span>
-                  <a href="#" class="setup-room-cta">Build Now →</a>
-                </div>
-              </div>
-
-              <div class="setup-room-card" data-space="student" data-budget="15000">
-                <div class="setup-room-thumb-wrap">
-                  <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=400&q=80" alt="Student Study Setup" class="setup-room-img" loading="lazy">
-                </div>
-                <div class="setup-room-info">
-                  <h4 class="setup-room-title">Student Desk</h4>
-                  <span class="setup-room-sub">from ₹6,000</span>
-                  <a href="#" class="setup-room-cta">Build Now →</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <!-- 6. Section: Verified Promo Codes & Store Discounts (Secondary Discovery) -->
-    <section class="trending-coupons-section" id="trendingCouponsSection">
-      <div class="container">
-        <div class="coupons-header-row">
-          <div class="coupons-title-group">
-            <div class="coupons-live-badge">
-              <span class="live-pulse-dot"></span>
-              <span>Checkout Discounts</span>
-            </div>
-            <h2 class="coupons-section-title">Verified Promo Codes & Store Coupons</h2>
-            <p class="coupons-section-sub">Planning to checkout? Copy active, verified promo codes for Amazon, Flipkart, Myntra, Ajio & leading stores.</p>
-          </div>
-          <div class="coupons-nav-actions">
-            <button type="button" class="coupon-carousel-nav prev" id="couponPrevBtn" aria-label="Previous coupons">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            </button>
-            <button type="button" class="coupon-carousel-nav next" id="couponNextBtn" aria-label="Next coupons">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </button>
+          <div class="buyhatke-square-grid" id="mobilesShelfContainer">
+            <!-- Populated by live_deals.js -->
           </div>
         </div>
 
-        <div class="coupons-carousel-track" id="trendingCouponsContainer">
-          <!-- Dynamically populated by live_deals.js via /api/coupons/trending -->
-        </div>
-      </div>
-    </section>
-
-    <!-- 8. Section: Free Browser Extension & Instant Price-Drop Alerts (ChatGPT Section 6) -->
-    <section class="mockup-bottom-cta-section" id="extensionAndAlertsSection">
-      <div class="container">
-        <div class="bottom-cta-banner bottom-alert-banner">
-          <div class="bottom-alert-content">
-            <div class="bottom-alert-tag">
-              <span class="pulse-dot"></span> FREE BROWSER EXTENSION • MANIFEST V3
+        <!-- Shelf 2: Laptops & Computing -->
+        <div class="category-shelf-block" id="shelfLaptops">
+          <div class="shelf-header-row">
+            <div class="shelf-header-left">
+              <span class="shelf-badge-icon">💻</span>
+              <h3 class="shelf-title">Laptops &amp; MacBooks</h3>
+              <span class="shelf-drop-count-tag">12 Drops Today</span>
             </div>
-            <h3 class="bottom-alert-heading">Your smartest shopping companion. Right in your browser.</h3>
-            <p class="bottom-alert-sub">
-              Spot real price drops, inspect 90-day historical prices, and check whether a sale is genuine—without repeatedly switching tabs.
-            </p>
-
-            <div class="extension-cta-actions" style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
-              <a href="https://chromewebstore.google.com" target="_blank" rel="noopener" class="btn-cta-analyze" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px; padding:12px 24px; border-radius:12px; background:#10B981; color:#FFFFFF; font-weight:750; font-size:14px; box-shadow:0 4px 14px rgba(16,185,129,0.35);">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <circle cx="12" cy="12" r="4"></circle>
-                  <line x1="21.17" y1="8" x2="12" y2="8"></line>
-                  <line x1="3.95" y1="6.06" x2="8.54" y2="14"></line>
-                  <line x1="10.88" y1="21.94" x2="15.46" y2="14"></line>
-                </svg>
-                <span>Add to Chrome — Free</span>
-              </a>
-              <a href="#howItWorks" class="btn-secondary-link" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; padding:12px 20px; border-radius:12px; border:1px solid var(--border-card); background:var(--bg-card); color:var(--text-headline); font-weight:700; font-size:14px;">
-                <span>See How It Works →</span>
-              </a>
-            </div>
-
-            <div class="bottom-alert-channel-prompt" style="font-size:13px; font-weight:700; color:var(--text-secondary); margin-bottom:10px;">
-              Want instant price-drop alerts on your phone?
-            </div>
-
-            <div class="bottom-alert-actions">
-              <button type="button" class="btn-alert-channel btn-whatsapp-channel" id="bottomWhatsAppAlertBtn">
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                </svg>
-                <span>WhatsApp Alerts</span>
-              </button>
-              <button type="button" class="btn-alert-channel btn-telegram-channel" id="bottomTelegramAlertBtn">
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-                </svg>
-                <span>Telegram Radar</span>
-              </button>
-            </div>
-            <div class="bottom-alert-trust-row">
-              <span class="trust-pill-tag">✓ 100% Free Forever</span>
-              <span class="trust-pill-tag">✓ Zero Spam • Only Real All-Time Lows</span>
-              <span class="trust-pill-tag">✓ In-Page Verification Pill</span>
-            </div>
+            <a href="#shelfLaptops" class="shelf-see-all-link" data-cat="laptops">Explore Laptop Deals →</a>
           </div>
-
-          <!-- Browser Extension In-Page Verification Mockup Card -->
-          <div class="bottom-alert-card-preview">
-            <div class="phone-mockup-outer" style="border-radius:16px;">
-              <div class="phone-notification-card" style="border-radius:14px; padding:18px;">
-                <div class="notif-card-header" style="margin-bottom:14px;">
-                  <div class="notif-app-info">
-                    <img src="/assets/dealsense-icon.png" alt="DealSense" class="notif-dw-icon">
-                    <span class="notif-app-name">DealSense • In-Page Analyzer</span>
-                  </div>
-                  <span class="notif-time-ago" style="background:#DCFCE7; color:#047857; font-weight:700; padding:2px 8px; border-radius:9999px;">94/100 Deal Score</span>
-                </div>
-                <div class="notif-card-body">
-                  <div class="notif-product-thumb">
-                    <img src="/assets/deals/products/iphone-15.png" alt="Apple iPhone 15" onerror="this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=120&q=80'">
-                  </div>
-                  <div class="notif-product-info">
-                    <h5 class="notif-prod-title">Apple iPhone 15 (128GB)</h5>
-                    <div class="notif-price-row">
-                      <strong class="notif-cur-price">₹66,499</strong>
-                      <span class="notif-was-price">₹79,900</span>
-                      <span class="notif-drop-pill">↓ 17% OFF</span>
-                    </div>
-                    <span class="notif-history-benchmark">⚡ Verified All-Time Low • ₹3,400 below typical</span>
-                  </div>
-                </div>
-                <div class="notif-card-footer" style="margin-top:14px;">
-                  <span class="notif-card-cta">Active on Amazon.in &amp; Flipkart ✓</span>
-                </div>
-              </div>
-            </div>
+          <div class="buyhatke-square-grid" id="laptopsShelfContainer">
+            <!-- Populated by live_deals.js -->
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- 9. Section: How DealSense Works (3-Step Evidence-Led Buying Guide) -->
-    <section class="how-it-works-section" id="howItWorks">
-      <div class="container">
-        <div class="how-it-works-header">
-          <span class="how-step-eyebrow">HOW DEALSENSE WORKS</span>
-          <h2 class="how-step-main-title">Smart Shopping in 3 Simple Steps</h2>
-          <p class="how-step-sub-desc">
-            We strip away fake countdown timers, inflated MRPs, and artificial sales so you always make evidence-backed purchases.
-          </p>
-        </div>
-        <div class="how-steps-grid">
-          <div class="how-step-card">
-            <div class="how-step-num-bubble">1</div>
-            <h3 class="how-step-heading">Search or Paste Link</h3>
-            <p class="how-step-explanation">
-              Paste any Amazon, Flipkart, Croma or Reliance Digital product link, or search by name. Our engine identifies the exact product variant and cleans referral tags instantly.
-            </p>
+        <!-- Shelf 3: Audio & Noise Cancelling -->
+        <div class="category-shelf-block" id="shelfAudio">
+          <div class="shelf-header-row">
+            <div class="shelf-header-left">
+              <span class="shelf-badge-icon">🎧</span>
+              <h3 class="shelf-title">Audio &amp; Noise Cancelling</h3>
+              <span class="shelf-drop-count-tag">24 Drops Today</span>
+            </div>
+            <a href="#shelfAudio" class="shelf-see-all-link" data-cat="audio">Explore Audio Deals →</a>
           </div>
-          <div class="how-step-card">
-            <div class="how-step-num-bubble">2</div>
-            <h3 class="how-step-heading">Inspect 90-Day Real Curve</h3>
-            <p class="how-step-explanation">
-              Review verified daily price observations, check the Deal Authenticity Score (0-100), and see if the current discount is genuine or an inflated MRP trick.
-            </p>
-          </div>
-          <div class="how-step-card">
-            <div class="how-step-num-bubble">3</div>
-            <h3 class="how-step-heading">Buy at the True Low</h3>
-            <p class="how-step-explanation">
-              Compare live prices across 4 major stores, apply eligible bank card offers, and buy from the verified lowest merchant—or set a WhatsApp alert if it's better to wait.
-            </p>
+          <div class="buyhatke-square-grid" id="audioShelfContainer">
+            <!-- Populated by live_deals.js -->
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- 10. Section: Shopper Reviews & Social Proof (Buyhatke Benchmark) -->
-    <section class="shopper-reviews-section" aria-label="Customer Reviews">
-      <div class="container">
-        <div class="reviews-header">
-          <span class="how-step-eyebrow">TRUSTED BY 250,000+ INDIAN SHOPPERS</span>
-          <h2 class="how-step-main-title">Real Savings from Smart Shoppers</h2>
-          <p class="how-step-sub-desc">See how Indian shoppers avoid fake sales and buy at genuine all-time low prices.</p>
-        </div>
-        <div class="reviews-grid">
-          <div class="review-testimonial-card">
-            <div>
-              <div class="review-stars-row">★★★★★</div>
-              <p class="review-quote-text">
-                "I was about to buy the iPhone 15 during a 'Lightning Deal' on Amazon for ₹72,999. DealSense showed me it was ₹66,999 just 3 weeks earlier! Waited 5 days and got it for ₹66,499 with HDFC card offer."
-              </p>
+        <!-- Shelf 4: Smartwatches & Wearables -->
+        <div class="category-shelf-block" id="shelfWatches">
+          <div class="shelf-header-row">
+            <div class="shelf-header-left">
+              <span class="shelf-badge-icon">⌚</span>
+              <h3 class="shelf-title">Smartwatches &amp; Wearables</h3>
+              <span class="shelf-drop-count-tag">15 Drops Today</span>
             </div>
-            <div class="review-author-row">
-              <div class="review-avatar">AS</div>
-              <div>
-                <div class="review-author-name">Aarav Sharma</div>
-                <div class="review-author-city">Bengaluru, Karnataka</div>
-              </div>
-              <span class="review-saving-tag">Saved ₹6,500</span>
-            </div>
+            <a href="#shelfWatches" class="shelf-see-all-link" data-cat="smartwatches">Explore Smartwatch Deals →</a>
           </div>
-
-          <div class="review-testimonial-card">
-            <div>
-              <div class="review-stars-row">★★★★★</div>
-              <p class="review-quote-text">
-                "The multi-store comparison saved me big time on Sony WH-1000XM5 headphones. Flipkart had it for ₹28,990, but DealSense found it on Amazon for ₹24,990. 1-click comparison is a game changer."
-              </p>
-            </div>
-            <div class="review-author-row">
-              <div class="review-avatar">PM</div>
-              <div>
-                <div class="review-author-name">Priya Mukherjee</div>
-                <div class="review-author-city">Mumbai, Maharashtra</div>
-              </div>
-              <span class="review-saving-tag">Saved ₹4,000</span>
-            </div>
-          </div>
-
-          <div class="review-testimonial-card">
-            <div>
-              <div class="review-stars-row">★★★★★</div>
-              <p class="review-quote-text">
-                "The Chrome Extension is indispensable. It sits quietly on Amazon and pops up the 90-day curve right on the product page. No more guessing whether a discount is real or fake."
-              </p>
-            </div>
-            <div class="review-author-row">
-              <div class="review-avatar">RK</div>
-              <div>
-                <div class="review-author-name">Rohan Kapoor</div>
-                <div class="review-author-city">New Delhi, Delhi</div>
-              </div>
-              <span class="review-saving-tag">Saved ₹8,200</span>
-            </div>
+          <div class="buyhatke-square-grid" id="watchesShelfContainer">
+            <!-- Populated by live_deals.js -->
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- 11. Section: Frequently Asked Questions (FAQ) Accordion -->
-    <section class="faq-accordion-section" id="faq">
-      <div class="container">
-        <div class="faq-header">
-          <span class="how-step-eyebrow">FREQUENTLY ASKED QUESTIONS</span>
-          <h2 class="how-step-main-title">Everything You Need to Know</h2>
-          <p class="how-step-sub-desc">Clear answers on how DealSense tracks prices, detects fake discounts, and keeps your shopping unbiased.</p>
-        </div>
-        <div class="faq-container-narrow">
-          <div class="faq-item active">
-            <button type="button" class="faq-question-btn">
-              <span>How does DealSense detect fake discounts and inflated MRPs?</span>
-              <span class="faq-toggle-ico">−</span>
-            </button>
-            <div class="faq-answer-body">
-              Retailers often raise the reference MRP right before festive sales like Great Indian Festival or Big Billion Days to advertise a misleading "60% OFF". DealSense logs actual selling prices hourly over 365 days. Our Deal Score benchmarks current prices against verified historical medians, exposing artificial discounts instantly.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button type="button" class="faq-question-btn">
-              <span>How is DealSense different from Buyhatke or PriceHistory?</span>
-              <span class="faq-toggle-ico">+</span>
-            </button>
-            <div class="faq-answer-body">
-              While Buyhatke and PriceHistory display price charts, DealSense gives you an actionable Buying Verdict (Buy Now / Good Deal / Wait / Fake Sale) backed by an objective 0-100 Deal Score. We also integrate real-time 4-store price arbitrage (Amazon vs Flipkart vs Croma vs Reliance Digital) and calculate genuine effective prices with eligible Indian bank cards.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button type="button" class="faq-question-btn">
-              <span>Are bank card discounts and instant offers calculated accurately?</span>
-              <span class="faq-toggle-ico">+</span>
-            </button>
-            <div class="faq-answer-body">
-              Yes. DealSense models exact card terms—including maximum cap per transaction (e.g. ₹1,500 on HDFC or 10% on SBI Credit Cards) and minimum cart values. The landed price calculator displays the exact final payment amount so you never have surprises at checkout.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button type="button" class="faq-question-btn">
-              <span>Does DealSense earn money from affiliate links, and does that bias ratings?</span>
-              <span class="faq-toggle-ico">+</span>
-            </button>
-            <div class="faq-answer-body">
-              DealSense earns a small affiliate commission if you purchase through our links, at zero additional cost to you. However, our deal ranking algorithm is 100% mathematically driven by verified price drops and historical lows. Retailers cannot pay for higher scores or sponsored placements.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button type="button" class="faq-question-btn">
-              <span>How does the DealSense Chrome Extension work?</span>
-              <span class="faq-toggle-ico">+</span>
-            </button>
-            <div class="faq-answer-body">
-              Built on Google Chrome's Manifest V3 standard, the DealSense extension embeds a lightweight, unobtrusive price pill directly on Amazon.in and Flipkart product pages. Click it to view the 90-day curve, deal authenticity rating, and like-for-like store comparisons without leaving the page.
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   </div>
-
-  <!-- ==========================================================================
-       VIEW 2: PRODUCT DETAIL & DEAL INTELLIGENCE (Reference Image 2 Exact Replica)
-       ========================================================================== -->
 
     <!-- View 2: Product Detail & Deal Intelligence -->
       <!-- Skeleton Loading State for Product Detail Page -->
