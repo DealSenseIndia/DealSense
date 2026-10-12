@@ -3,13 +3,13 @@
    Clean modular architecture importing scoped component stylesheets.
    ========================================================================== */
 
-@import url("./css/base.css");
-@import url("./css/buttons.css");
-@import url("./css/header.css");
-@import url("./css/hero.css");
-@import url("./css/pdp.css");
-@import url("./css/setup_builder.css");
-@import url("./css/drawer.css");
-@import url("./css/home_feed.css");
-@import url("./css/coupons.css");
-@import url("./css/footer.css");
+@import url("./css/base.css?v=3.0");
+@import url("./css/buttons.css?v=3.0");
+@import url("./css/header.css?v=3.0");
+@import url("./css/hero.css?v=3.0");
+@import url("./css/pdp.css?v=3.0");
+@import url("./css/setup_builder.css?v=3.0");
+@import url("./css/drawer.css?v=3.0");
+@import url("./css/home_feed.css?v=3.0");
+@import url("./css/coupons.css?v=3.0");
+@import url("./css/footer.css?v=3.0");
