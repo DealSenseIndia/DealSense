@@ -5,11 +5,16 @@
    ========================================================================== */
 
 .home-hero-section {
-  background: transparent;
-  padding: 32px 0 36px;
+  background: linear-gradient(180deg, #F0FDF4 0%, #F7FEE7 40%, #FFFFFF 100%);
+  padding: 36px 0 42px;
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid var(--border-card);
+}
+
+[data-theme="dark"] .home-hero-section {
+  background: linear-gradient(180deg, rgba(6, 78, 59, 0.16) 0%, rgba(11, 16, 29, 0.95) 100%);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
 .hero-layout-grid {

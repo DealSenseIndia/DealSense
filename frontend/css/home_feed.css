@@ -1328,3 +1328,691 @@
 .btn-load-more-deals:hover .load-more-arrow {
   transform: translateY(2px);
 }
+
+/* ==========================================================================
+   5. MULTI-STORE PRICE BATTLE SECTION (Amazon vs Flipkart vs Croma vs Reliance)
+   ========================================================================== */
+.multi-store-battle-section {
+  padding: 48px 0;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-card);
+  border-bottom: 1px solid var(--border-card);
+}
+
+[data-theme="dark"] .multi-store-battle-section {
+  background: #0B1120;
+}
+
+.battle-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 28px;
+  gap: 16px;
+}
+
+.battle-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--primary, #059669);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.battle-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-headline);
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+}
+
+.battle-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 600px;
+}
+
+.battle-view-all {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--dw-green-main, #10B981);
+  text-decoration: none;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: gap 0.2s ease;
+}
+
+.battle-view-all:hover {
+  gap: 8px;
+  color: var(--dw-green-bot, #047857);
+}
+
+.battle-showcase-card {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 28px;
+  background: var(--bg-subtle, #F8FAFC);
+  border: 1.5px solid var(--border-card);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
+  transition: all 0.25s ease;
+}
+
+[data-theme="dark"] .battle-showcase-card {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.battle-product-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.battle-product-media {
+  width: 100%;
+  height: 220px;
+  background: #FFFFFF;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  border: 1px solid var(--border-card);
+}
+
+[data-theme="dark"] .battle-product-media {
+  background: #0B101D;
+}
+
+.battle-product-img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.battle-showcase-card:hover .battle-product-img {
+  transform: scale(1.04);
+}
+
+.battle-prod-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.battle-winner-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ECFDF5;
+  color: #047857;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 9999px;
+}
+
+[data-theme="dark"] .battle-winner-pill {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+}
+
+.battle-prod-title {
+  font-size: 16.5px;
+  font-weight: 800;
+  color: var(--text-headline);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.battle-prod-spec {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.battle-stores-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.battle-store-box {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-card);
+  border-radius: 14px;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.battle-store-box.is-winner {
+  border-color: #10B981;
+  background: linear-gradient(180deg, #F0FDF4 0%, var(--bg-card) 60%);
+  box-shadow: 0 4px 16px -2px rgba(16, 185, 129, 0.18);
+}
+
+[data-theme="dark"] .battle-store-box.is-winner {
+  background: linear-gradient(180deg, rgba(6, 78, 59, 0.25) 0%, rgba(15, 23, 42, 0.8) 100%);
+}
+
+.battle-store-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.battle-store-logo {
+  height: 18px;
+  max-width: 60px;
+  object-fit: contain;
+}
+
+.battle-winner-crown {
+  position: absolute;
+  top: -10px;
+  right: 12px;
+  background: #10B981;
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+}
+
+.battle-store-price {
+  font-size: 22px;
+  font-weight: 900;
+  font-family: "JetBrains Mono", monospace;
+  color: var(--text-headline);
+  margin-bottom: 4px;
+}
+
+.battle-store-box.is-winner .battle-store-price {
+  color: #059669;
+}
+
+[data-theme="dark"] .battle-store-box.is-winner .battle-store-price {
+  color: #34D399;
+}
+
+.battle-store-delta {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.battle-store-delta.delta-lowest {
+  color: #059669;
+}
+
+.battle-store-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.battle-store-box.is-winner .battle-store-cta {
+  background: #10B981;
+  color: #FFFFFF;
+}
+
+.battle-store-box.is-winner .battle-store-cta:hover {
+  background: #059669;
+}
+
+.battle-store-box:not(.is-winner) .battle-store-cta {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-card);
+  color: var(--text-headline);
+}
+
+.battle-store-box:not(.is-winner) .battle-store-cta:hover {
+  background: var(--bg-card-hover);
+  border-color: #10B981;
+}
+
+/* ==========================================================================
+   6. BUYHATKE-STYLE CATEGORY DEAL SHELVES (Horizontal Carousel Rails)
+   ========================================================================== */
+.category-shelf-section {
+  padding: 40px 0;
+  border-bottom: 1px solid var(--border-card);
+}
+
+.category-shelf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.shelf-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.shelf-icon-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  background: #DCFCE7;
+  color: #059669;
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .shelf-icon-badge {
+  background: rgba(16, 185, 129, 0.15);
+}
+
+.shelf-title {
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--text-headline);
+  margin: 0;
+  letter-spacing: -0.015em;
+}
+
+.shelf-view-all {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--dw-green-main, #10B981);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.shelf-view-all:hover {
+  color: var(--dw-green-bot, #047857);
+  gap: 8px;
+}
+
+.shelf-cards-carousel {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+/* ==========================================================================
+   7. TOP BRANDS SHOWCASE (Apple, Samsung, Sony, OnePlus, Asus, Boat, HP, LG)
+   ========================================================================== */
+.top-brands-section {
+  padding: 36px 0;
+  background: var(--bg-subtle, #F8FAFC);
+  border-bottom: 1px solid var(--border-card);
+}
+
+[data-theme="dark"] .top-brands-section {
+  background: #080D18;
+}
+
+.brands-header-text {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 20px;
+}
+
+.brands-logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px 36px;
+}
+
+.brand-chip-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-headline);
+  box-shadow: 0 2px 8px -2px rgba(15, 23, 42, 0.04);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.brand-chip-item:hover {
+  transform: translateY(-2px);
+  border-color: #10B981;
+  color: #059669;
+  box-shadow: 0 4px 12px -2px rgba(16, 185, 129, 0.15);
+}
+
+/* ==========================================================================
+   8. HOW DEALSENSE WORKS (3-Step Evidence-Led Buying Guide)
+   ========================================================================== */
+.how-it-works-section {
+  padding: 56px 0;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-card);
+}
+
+.how-it-works-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.how-step-eyebrow {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #059669;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.how-step-main-title {
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--text-headline);
+  letter-spacing: -0.025em;
+  margin: 0 0 10px;
+}
+
+.how-step-sub-desc {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.how-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.how-step-card {
+  background: var(--bg-subtle, #F8FAFC);
+  border: 1.5px solid var(--border-card);
+  border-radius: 18px;
+  padding: 30px 24px;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+[data-theme="dark"] .how-step-card {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.how-step-card:hover {
+  transform: translateY(-4px);
+  border-color: #10B981;
+  box-shadow: 0 10px 30px -4px rgba(16, 185, 129, 0.12);
+}
+
+.how-step-num-bubble {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #10B981;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.how-step-heading {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-headline);
+  margin: 0 0 8px;
+}
+
+.how-step-explanation {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ==========================================================================
+   9. SHOPPER REVIEWS & TESTIMONIALS (Social Proof)
+   ========================================================================== */
+.shopper-reviews-section {
+  padding: 56px 0;
+  background: var(--bg-subtle, #F8FAFC);
+  border-bottom: 1px solid var(--border-card);
+}
+
+[data-theme="dark"] .shopper-reviews-section {
+  background: #080D18;
+}
+
+.reviews-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.review-testimonial-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.review-stars-row {
+  color: #F59E0B;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.review-quote-text {
+  font-size: 14px;
+  color: var(--text-body);
+  line-height: 1.6;
+  font-style: italic;
+  margin: 0 0 16px;
+}
+
+.review-author-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.review-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #DCFCE7;
+  color: #047857;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.review-author-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-headline);
+}
+
+.review-author-city {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.review-saving-tag {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 800;
+  color: #047857;
+  background: #ECFDF5;
+  padding: 3px 8px;
+  border-radius: 9999px;
+}
+
+[data-theme="dark"] .review-saving-tag {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+}
+
+/* ==========================================================================
+   10. FAQ ACCORDION
+   ========================================================================== */
+.faq-accordion-section {
+  padding: 56px 0;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-card);
+}
+
+.faq-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.faq-container-narrow {
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq-item {
+  border: 1.5px solid var(--border-card);
+  border-radius: 14px;
+  background: var(--bg-subtle, #F8FAFC);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+[data-theme="dark"] .faq-item {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.faq-question-btn {
+  width: 100%;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border: none;
+  font-size: 15px;
+  font-weight: 750;
+  color: var(--text-headline);
+  text-align: left;
+  cursor: pointer;
+}
+
+.faq-toggle-ico {
+  font-size: 18px;
+  color: #10B981;
+  transition: transform 0.2s ease;
+  font-weight: 800;
+}
+
+.faq-item.active .faq-toggle-ico {
+  transform: rotate(45deg);
+}
+
+.faq-answer-body {
+  padding: 0 20px 18px;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  display: none;
+}
+
+.faq-item.active .faq-answer-body {
+  display: block;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .battle-showcase-card {
+    grid-template-columns: 1fr;
+  }
+  .battle-stores-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .shelf-cards-carousel {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .how-steps-grid,
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .battle-stores-grid {
+    grid-template-columns: 1fr;
+  }
+  .shelf-cards-carousel {
+    grid-template-columns: 1fr;
+  }
+}

@@ -2658,6 +2658,8 @@ export function renderModernDealsGrid(deals, { onDealClick, onSetupClick } = {})
 
   // Render All-Time Low Hall of Fame if section exists on page
   renderAllTimeLowsSection(deals, { onDealClick, onSetupClick });
+  // Render Buyhatke-style category deal shelves
+  renderCategoryShelves(deals, { onDealClick });
 }
 
 export function renderAllTimeLowsSection(deals, { onDealClick, onSetupClick } = {}) {
@@ -2735,6 +2737,107 @@ export function renderAllTimeLowsSection(deals, { onDealClick, onSetupClick } = 
     });
 
     container.appendChild(card);
+  });
+}
+
+export function renderCategoryShelves(deals, { onDealClick } = {}) {
+  const shelfConfigs = [
+    { containerId: "mobilesShelfContainer", category: "mobiles", badgeLabel: "Mobiles & 5G" },
+    { containerId: "laptopsShelfContainer", category: "laptops", badgeLabel: "Laptops" },
+    { containerId: "audioShelfContainer", category: "audio", badgeLabel: "Audio & ANC" },
+    { containerId: "tvsShelfContainer", category: "tvs", badgeLabel: "4K Smart TV" },
+  ];
+
+  const pool = (deals && deals.length > 0) ? deals : VERIFIED_FALLBACK_DEALS;
+
+  shelfConfigs.forEach((cfg) => {
+    const container = document.getElementById(cfg.containerId);
+    if (!container) return;
+
+    let items = pool.filter((d) => (d.category || "").toLowerCase() === cfg.category);
+    if (items.length < 4) {
+      const fallbackItems = VERIFIED_FALLBACK_DEALS.filter((d) => (d.category || "").toLowerCase() === cfg.category);
+      const existingIds = new Set(items.map((i) => i.id));
+      for (const fb of fallbackItems) {
+        if (!existingIds.has(fb.id)) {
+          items.push(fb);
+          existingIds.add(fb.id);
+        }
+        if (items.length >= 4) break;
+      }
+    }
+
+    const displayItems = items.slice(0, 4);
+    container.innerHTML = "";
+
+    displayItems.forEach((deal) => {
+      const card = document.createElement("div");
+      card.className = "deal-modern-card shelf-card";
+      const merchantName = escapeHtml(deal.merchant || "Amazon");
+      let merchantLogo = deal.merchant_logo || (merchantName.toLowerCase().includes("flipkart") ? "/assets/flipkart-icon.svg" : "/assets/amazon-logo.svg");
+      const price = Math.round(deal.price || 0);
+      const mrp = Math.round(deal.mrp || price);
+      const discount = deal.discount_pct || (mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0);
+      const dealScore = deal.deal_score || 88;
+      const scoreBadgeText = dealScore >= 90 ? `${dealScore}/100 • Verified Low` : `${dealScore}/100 • Good Deal`;
+      const scoreBadgeClass = dealScore >= 90 ? "badge-all-time-low" : "badge-steep-drop";
+
+      card.innerHTML = `
+        <div class="deal-card-media-wrap">
+          <span class="deal-card-type-badge ${scoreBadgeClass}">${scoreBadgeText}</span>
+          <div class="deal-card-store-pill">
+            <img src="${merchantLogo}" alt="${merchantName}" class="store-pill-img">
+            <span class="store-pill-name">${merchantName}</span>
+          </div>
+          <img src="${deal.image_url || '/assets/fallback.svg'}" alt="${escapeHtml(deal.title)}" class="deal-card-thumb-img" loading="lazy" onerror="this.onerror=null; this.src='/assets/fallback.svg'">
+        </div>
+        <div class="deal-card-body">
+          <div class="deal-card-cat-brand">
+            <span class="card-brand-tag">${escapeHtml(deal.brand || cfg.badgeLabel)}</span>
+            ${deal.rating ? `<span class="card-rating-tag">★ ${deal.rating}</span>` : `<span class="card-rating-tag" style="color:#059669;">Verified</span>`}
+          </div>
+          <h3 class="deal-card-title-text" title="${escapeHtml(deal.title)}">${escapeHtml(deal.title)}</h3>
+          <div class="deal-card-pricing-row">
+            <span class="deal-card-cur-price">₹${price.toLocaleString("en-IN")}</span>
+            ${mrp > price ? `<span class="deal-card-struck-mrp">₹${mrp.toLocaleString("en-IN")}</span>` : ""}
+            ${discount > 0 ? `<span class="deal-card-disc-pill">${discount}% OFF</span>` : ""}
+          </div>
+          <div class="deal-sparkline-wrap" title="Historical Price Trend">
+            ${renderSparkline(deal.price_history)}
+          </div>
+          <div class="deal-card-actions-row">
+            <button type="button" class="btn-card-chart" title="View interactive price history">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
+              </svg>
+              <span>Price History</span>
+            </button>
+            <a href="${deal.affiliate_url || deal.url}" target="_blank" rel="noopener sponsored" class="btn-card-deal" title="Buy on ${merchantName}">
+              <span>View Deal ↗</span>
+            </a>
+          </div>
+        </div>
+      `;
+
+      const chartBtn = card.querySelector(".btn-card-chart");
+      if (chartBtn) {
+        chartBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (deal.url && onDealClick) onDealClick(deal.url);
+        });
+      }
+
+      const dealLink = card.querySelector(".btn-card-deal");
+      if (dealLink) {
+        dealLink.addEventListener("click", (e) => e.stopPropagation());
+      }
+
+      card.addEventListener("click", () => {
+        if (deal.url && onDealClick) onDealClick(deal.url);
+      });
+
+      container.appendChild(card);
+    });
   });
 }
 
@@ -2901,6 +3004,43 @@ export function initLiveDeals({ onDealClick, onSetupClick } = {}) {
       e.preventDefault();
       const space = link.getAttribute("data-space") || "bedroom";
       if (onSetupClick) onSetupClick(space);
+    });
+  });
+
+  // 12. FAQ Accordion Toggle Handlers
+  document.querySelectorAll(".faq-question-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const item = btn.closest(".faq-item");
+      if (!item) return;
+      const isActive = item.classList.contains("active");
+
+      document.querySelectorAll(".faq-item").forEach((other) => {
+        other.classList.remove("active");
+        const ico = other.querySelector(".faq-toggle-ico");
+        if (ico) ico.textContent = "+";
+      });
+
+      if (!isActive) {
+        item.classList.add("active");
+        const ico = item.querySelector(".faq-toggle-ico");
+        if (ico) ico.textContent = "−";
+      }
+    });
+  });
+
+  // 13. Brand Chips Quick Search
+  document.querySelectorAll(".brand-chip-item").forEach((chip) => {
+    chip.addEventListener("click", (e) => {
+      e.preventDefault();
+      const brand = chip.getAttribute("data-brand");
+      const heroInput = document.getElementById("heroUrlInput");
+      const heroSearchBtn = document.getElementById("heroAnalyzeBtn");
+      if (heroInput && brand) {
+        heroInput.value = brand;
+        heroInput.dispatchEvent(new Event("input", { bubbles: true }));
+        if (heroSearchBtn) heroSearchBtn.click();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     });
   });
 

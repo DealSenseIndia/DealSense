@@ -156,8 +156,10 @@ def test_extract_reliance_digital_html_mock():
     assert extracted.in_stock is True
 
 
-def test_croma_and_reliance_affiliate_campaigns():
+def test_croma_and_reliance_affiliate_campaigns(monkeypatch):
     """Verifies Cuelinks campaign metadata for Croma (1007) and Reliance Digital (1052)."""
+    from backend.config import settings
+    monkeypatch.setattr(settings, "CUELINKS_API_KEY", None)
     croma = CromaAdapter()
     assert croma.cuelinks_campaign_id == 1007
     assert croma.affiliate_type == "cuelinks_v3"
