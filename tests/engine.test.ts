@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { detectMerchant, parseMerchantUrl, stripTracking, affiliateUrl } from "../src/lib/merchants/resolve";
 import { parsePrice, parseCount, parseRating, inferCategory } from "../src/lib/merchants/parse";
 import { parseAmazonAmount, pricesFromText } from "../src/lib/merchants/amazon";
-import { buildIdentityKey, sameVariant, variantTokens } from "../src/lib/engine/identity";
+import { buildIdentityKey, sameVariant, variantTokens, storageOf, ramOf, titleSimilarity, isSameProduct } from "../src/lib/engine/identity";
 import { computeStats } from "../src/lib/engine/stats";
 import { evaluateDeal } from "../src/lib/engine/verdict";
 import { computeLandedPrice } from "../src/lib/engine/landedPrice";
@@ -114,6 +114,34 @@ test("variantTokens extracts capacity and connectivity", () => {
   const t = variantTokens("Redmi Note 13 Pro 5G 8GB RAM 256GB");
   assert.ok(t.includes("256gb"));
   assert.ok(t.includes("5g"));
+});
+
+test("storageOf and ramOf separate capacity from memory", () => {
+  assert.deepEqual(storageOf("vivo T5 Lite 128 GB 6 GB RAM"), ["128gb"]);
+  assert.deepEqual(ramOf("vivo T5 Lite 128 GB 6 GB RAM"), ["6gb"]);
+  assert.deepEqual(ramOf("vivo T5 Lite 128 GB"), []);
+});
+
+test("titleSimilarity scores matching products highly", () => {
+  const a = "vivo T5 Lite 44W 5G (Wave Blue, 128 GB) (6 GB RAM)";
+  const b = "vivo T5 Lite 44W 5G (Wave Blue, 128 GB)";
+  assert.ok(titleSimilarity(a, b) > 0.9);
+  assert.ok(titleSimilarity(a, "Samsung Galaxy S25 Ultra 5G") < 0.3);
+});
+
+test("isSameProduct rejects different brands, capacities and RAM", () => {
+  const fk = "vivo T5 Lite 44W 5G (Wave Blue, 128 GB) (6 GB RAM)";
+  assert.equal(isSameProduct(fk, "vivo T5 Lite 44W 5G (Wave Blue, 128 GB)"), true);
+  assert.equal(isSameProduct(fk, "vivo T5 Lite 44W 5G (Wave Blue, 64 GB)"), false);
+  assert.equal(isSameProduct(fk, "vivo T5 Lite 44W 5G (Twilight Shadow, 64 GB)"), false);
+  assert.equal(isSameProduct(fk, "Samsung Galaxy S25 Ultra 5G"), false);
+});
+
+test("isSameProduct ignores colour differences", () => {
+  assert.equal(
+    isSameProduct("Apple iPhone 17 (White, 256 GB)", "Apple iPhone 17 (Black, 256 GB)"),
+    true,
+  );
 });
 
 /* ---------------------------------- Stats ---------------------------------- */

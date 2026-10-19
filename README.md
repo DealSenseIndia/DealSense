@@ -19,6 +19,24 @@ Most deal sites shout "70% OFF". DealSense does the maths that matters, and it h
 - If a price can't be verified, it says so — it never estimates.
 - If history is thin, it shows exactly how many real observations it has.
 - If a discount is inflated, it calls it out.
+- Every claim on a product page is labelled **[VERIFIED FACT]**, **[CALCULATION]**, **[MARKET CONTEXT]**
+  or **[RECOMMENDATION]** — you always know what you're looking at.
+
+---
+
+## Price history for *any* product
+
+When someone searches for a product DealSense has never tracked, the engine layers four sources of
+truth instead of showing an empty box:
+
+| Layer | Source | Available |
+| --- | --- | --- |
+| 1 | **Our own observations** — immutable, timestamped | always, grows over time |
+| 2 | **External provider** — Keepa / PriceHistory.app official APIs | when a key is set |
+| 3 | **Cross-store proxy** — the same product's history on the other store | when the rival is tracked |
+| 4 | **Market context** — the real typical price band for that category | always, computed from verified listings |
+
+MRP discounts are reported separately as **advertised**, never as verified history.
 
 ---
 
@@ -32,14 +50,16 @@ npm run dev
 Open http://localhost:3000. That's it — the database is a local SQLite file created automatically
 (`./data/dealsense.db`). No signup, no config.
 
+> On Windows you can also just double-click **`START-DealSense.bat`** — it installs dependencies,
+> opens your browser and starts the site.
+
 ### Populate real data
 
 ```bash
-# Analyze specific products (records genuine observations)
-npm run db:seed -- https://www.amazon.in/dp/B0XXXXXXXX
-
-# Or refresh listings that are due
-npm run scrape
+npm run discover      # pull real products from Amazon + Flipkart
+npm run crossstore    # find Amazon equivalents for the Flipkart products
+npm run db:seed -- https://www.amazon.in/dp/B0XXXXXXXX   # analyze specific links
+npm run scrape        # refresh listings that are due
 ```
 
 ---
@@ -68,6 +88,37 @@ A scraping provider is **optional**. If you want extra insurance, set one in `.e
 
 > ⚠️ ScrapingAnt's **free** plan blocks Amazon/Flipkart domains, so it is not useful here.
 
+### Optional: borrow competitors' historical data
+
+Keepa and PriceHistory.app both expose official APIs. Set a key and DealSense merges their series
+into its own, so **any** product gets real history instantly — and your affiliate link rides along
+on the buy button.
+
+```bash
+KEEPA_API_KEY=...                    # keepa.com/#!api  (paid, token-metered)
+PRICEHISTORY_API_KEY=...             # pricehistory.app/page/business (partner key)
+PRICEHISTORY_API_URL=...
+```
+
+Cuelinks has **no** product feeds or price history — it is the monetisation layer, not the data
+layer. Every outbound button already routes through it.
+
+---
+
+## Features
+
+- **Live analyser** — paste any Amazon/Flipkart link, get a verdict with reasons.
+- **Live cross-store search** — search both stores, open any result for its full analysis.
+- **True landed price** — base + delivery − coupon − card offer, with selectable Indian bank offers.
+- **Cross-store comparison** — exact-variant matching (128GB never matches 256GB).
+- **Fake-discount detection** — inflated MRPs called out explicitly.
+- **Price-drop alerts** — target price / % drop / deal score, with an atomic-claim state machine
+  (no double notifications, no spam).
+- **Live deals feed** with filters: All Drops, Steep Drops, All-Time Lows, Score 85+, per-category.
+- **SEO** — server-rendered product pages with Product + Breadcrumb JSON-LD, sitemap, robots.
+- **Categories**, **Price History** explorer and **Track** (your alerts) pages.
+- Telegram delivery for alerts.
+
 ---
 
 ## Deploy free (Vercel + Turso)
@@ -80,7 +131,6 @@ A scraping provider is **optional**. If you want extra insurance, set one in `.e
    | --- | --- |
    | `TURSO_DATABASE_URL` | free serverless database |
    | `TURSO_AUTH_TOKEN` | free serverless database |
-   | `SCRAPINGANT_API_KEY` | reliable live prices (free tier) |
    | `NEXT_PUBLIC_SITE_URL` | your domain |
    | `NEXT_PUBLIC_AMAZON_TAG` | your Amazon Associates tag |
    | `NEXT_PUBLIC_CUELINKS_CHANNEL` | your Cuelinks channel id |
@@ -89,33 +139,24 @@ A scraping provider is **optional**. If you want extra insurance, set one in `.e
 
 4. Deploy. Vercel runs a daily refresh; **GitHub Actions** (`.github/workflows/refresh.yml`) runs it
    hourly for free — add `DEALSENSE_URL` and `CRON_SECRET` as repo secrets.
+5. Run `npm run discover` once (locally, against the Turso DB) so production has real products.
 
 ---
 
-## How it works
-
-```
-URL → Resolve merchant → Fetch live page → Extract real facts
-    → Store an immutable observation → Score the deal → Verdict
-    → (optional) fire a price alert
-```
-
-- **Product identity** matches the *same variant* across stores (128GB ≠ 256GB), so comparisons are honest.
-- **Observations are append-only** and timestamped — the price history is never synthetic.
-- **Alerts** use an atomic state machine (ARMED → TRIGGERED → COOLDOWN → ARMED) so you're never spammed.
-
-### Project layout
+## Project layout
 
 ```
 src/
-  app/            routes (landing, /analyze, /deals, /product/[slug], /api/*)
-  components/     UI, motion primitives, analyzer, deal cards
+  app/            routes (landing, /analyze, /deals, /search, /categories,
+                  /price-history, /track, /product/[slug], /api/*)
+  components/     UI, motion primitives, analyzer, deal cards, search
   lib/
-    db/           schema + queries (Drizzle + libSQL/Turso)
-    merchants/    resolver + Amazon/Flipkart extractors + provider chain
-    engine/       verdict scoring, landed price, bank offers, alerts, worker
+    db/           schema + queries + market context (Drizzle + libSQL/Turso)
+    merchants/    resolver + Amazon/Flipkart extractors + Flipkart API + search
+    engine/       bundle, verdict, landed price, identity, alerts, providers, worker
     notifications/ dispatcher (Telegram / console)
-scripts/          db:seed, scrape (refresh)
+scripts/          discover, crossstore, seed, refresh
+tests/            25 tests (npm test)
 ```
 
 ---
@@ -126,7 +167,10 @@ scripts/          db:seed, scrape (refresh)
 | --- | --- |
 | `npm run dev` | Start the dev server |
 | `npm run build` | Production build |
+| `npm test` | Run the test suite |
 | `npm run typecheck` | TypeScript check |
+| `npm run discover` | Pull real products from Amazon + Flipkart |
+| `npm run crossstore` | Find Amazon equivalents for Flipkart products |
 | `npm run db:seed` | Init DB (+ analyze URLs you pass) |
 | `npm run scrape` | Refresh due listings |
 
@@ -135,7 +179,7 @@ scripts/          db:seed, scrape (refresh)
 ## Docs
 
 - [`PRD.md`](./PRD.md) — what we're building and for whom
-- [`ARCHITECTURE.md`](./ARCHITECTURE.md) — system design and data model
+- [`ARCHITECTURE.md`](./ARCHITECTURE.md) — system design, history resolution, data model
 - [`DESIGN.md`](./DESIGN.md) — visual identity and design tokens
 - [`PHASES.md`](./PHASES.md) — roadmap
 - [`MEMORY.md`](./MEMORY.md) — current state / decisions
