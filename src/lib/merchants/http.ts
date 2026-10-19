@@ -92,11 +92,6 @@ async function providerFetch(url: string): Promise<FetchResult | null> {
   const custom = process.env.SCRAPER_ENDPOINT;
 
   try {
-    if (ant) {
-      const u = `https://api.scrapingant.com/v2/general?url=${encodeURIComponent(url)}&x-api-key=${ant}&browser=true`;
-      const res = await withTimeout(fetch(u, { cache: "no-store" }), 45000);
-      if (res.ok) return { content: await res.text(), format: "html", via: "scrapingant", status: res.status };
-    }
     if (scraper) {
       const u = `https://api.scraperapi.com/?api_key=${scraper}&url=${encodeURIComponent(url)}&country_code=in`;
       const res = await withTimeout(fetch(u, { cache: "no-store" }), 45000);
@@ -118,6 +113,12 @@ async function providerFetch(url: string): Promise<FetchResult | null> {
         : `${custom}${custom.includes("?") ? "&" : "?"}url=${encodeURIComponent(url)}`;
       const res = await withTimeout(fetch(u, { cache: "no-store" }), 45000);
       if (res.ok) return { content: await res.text(), format: "html", via: "custom", status: res.status };
+    }
+    // ScrapingAnt last: its free tier blocks Amazon/Flipkart domains.
+    if (ant) {
+      const u = `https://api.scrapingant.com/v2/general?url=${encodeURIComponent(url)}&x-api-key=${ant}&browser=true`;
+      const res = await withTimeout(fetch(u, { cache: "no-store" }), 45000);
+      if (res.ok) return { content: await res.text(), format: "html", via: "scrapingant", status: res.status };
     }
   } catch {
     /* fall through */
