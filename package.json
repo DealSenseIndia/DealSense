@@ -1,0 +1,42 @@
+{
+  "name": "dealsense",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DealSense — India's shopping decision engine. Paste a product link, know if it is actually a good deal.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:seed": "tsx scripts/seed.ts",
+    "scrape": "tsx scripts/refresh.ts"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.14.0",
+    "cheerio": "^1.0.0",
+    "clsx": "^2.1.1",
+    "drizzle-orm": "^0.38.3",
+    "framer-motion": "^12.4.2",
+    "lucide-react": "^0.474.0",
+    "next": "^15.1.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^2.6.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.10.7",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "drizzle-kit": "^0.30.2",
+    "playwright": "^1.64.1",
+    "tailwindcss": "^4.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}

@@ -1,0 +1,254 @@
+@import "tailwindcss";
+
+/* ==================================================================
+   DealSense Design System
+   "Bloomberg terminal meets a premium Indian shopping app."
+   Dark-first, aurora-lit, glass surfaces, kinetic type.
+   ================================================================== */
+
+@theme {
+  /* Brand */
+  --color-brand-50: #ecfdf5;
+  --color-brand-100: #d1fae5;
+  --color-brand-200: #a7f3d0;
+  --color-brand-300: #6ee7b7;
+  --color-brand-400: #34d399;
+  --color-brand-500: #10b981;
+  --color-brand-600: #059669;
+  --color-brand-700: #047857;
+  --color-brand-800: #065f46;
+  --color-brand-900: #064e3b;
+
+  /* Amber (Amazon / urgency) */
+  --color-amber-glow: #f59e0b;
+
+  /* Flipkart blue */
+  --color-fk: #2874f0;
+
+  /* Verdict semantics */
+  --color-buy: #22c55e;
+  --color-fair: #38bdf8;
+  --color-wait: #f59e0b;
+  --color-avoid: #ef4444;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-mono-jet), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --radius-xs: 0.5rem;
+  --radius-sm: 0.75rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --radius-2xl: 2.25rem;
+
+  --animate-marquee: marquee 42s linear infinite;
+  --animate-marquee-rev: marquee-rev 42s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+  --animate-pulse-glow: pulse-glow 2.6s ease-in-out infinite;
+  --animate-aurora: aurora 18s ease-in-out infinite;
+  --animate-spin-slow: spin 14s linear infinite;
+  --animate-ticker: ticker 30s linear infinite;
+}
+
+/* Semantic tokens mapped to the live CSS variables so utilities switch with the theme. */
+@theme inline {
+  --color-void: var(--void);
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-solid: var(--surface-solid);
+  --color-surface-raised: var(--surface-raised);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-rev {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
+}
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
+  50% { opacity: 0.85; box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+}
+@keyframes aurora {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(6%, -4%) scale(1.12); }
+  66% { transform: translate(-5%, 5%) scale(0.94); }
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ------------------------------------------------------------------ */
+/* Tokens: dark is default (premium), light is opt-in                  */
+/* ------------------------------------------------------------------ */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --void: #05070d;
+  --canvas: #080c16;
+  --surface: rgba(17, 24, 39, 0.62);
+  --surface-solid: #0d1424;
+  --surface-raised: rgba(30, 41, 59, 0.72);
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.14);
+  --ink: #f8fafc;
+  --ink-soft: #cbd5e1;
+  --ink-muted: #7c8aa3;
+  --glow: 0 0 60px -18px rgba(16, 185, 129, 0.55);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --void: #ffffff;
+  --canvas: #f7f9fc;
+  --surface: rgba(255, 255, 255, 0.85);
+  --surface-solid: #ffffff;
+  --surface-raised: #f1f5f9;
+  --line: #e5e9f0;
+  --line-strong: #d3dae6;
+  --ink: #0b1220;
+  --ink-soft: #334155;
+  --ink-muted: #64748b;
+  --glow: 0 0 50px -20px rgba(5, 150, 105, 0.35);
+}
+
+* {
+  border-color: var(--line);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--void);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv02", "cv03", "cv04", "ss01";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(16, 185, 129, 0.28);
+  color: var(--ink);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 99px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(16, 185, 129, 0.5); background-clip: content-box; }
+
+/* ------------------------------------------------------------------ */
+/* Utility layer                                                       */
+/* ------------------------------------------------------------------ */
+@utility glass {
+  background: var(--surface);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--line);
+}
+
+@utility card {
+  background: var(--surface);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+@utility tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+@utility gradient-text {
+  background: linear-gradient(100deg, #34d399 0%, #22d3ee 45%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility gradient-text-warm {
+  background: linear-gradient(100deg, #fbbf24 0%, #f97316 55%, #ef4444 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility hairline {
+  background-image: linear-gradient(90deg, transparent, var(--line-strong), transparent);
+  height: 1px;
+}
+
+@utility ring-glow {
+  box-shadow: var(--glow);
+}
+
+/* Fine grain noise overlay for depth */
+@utility noise {
+  position: relative;
+}
+.noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Shimmer skeleton */
+@utility shimmer {
+  background: linear-gradient(90deg, var(--surface-raised) 25%, var(--line-strong) 50%, var(--surface-raised) 75%);
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+}
+
+/* ------------------------------------------------------------------ */
+/* Prose-ish defaults for legal / docs pages                           */
+/* ------------------------------------------------------------------ */
+.prose-ds h2 { font-size: 1.5rem; font-weight: 700; margin: 2rem 0 0.75rem; }
+.prose-ds h3 { font-size: 1.15rem; font-weight: 650; margin: 1.5rem 0 0.5rem; }
+.prose-ds p { color: var(--ink-soft); line-height: 1.75; margin: 0.75rem 0; }
+.prose-ds ul { color: var(--ink-soft); line-height: 1.75; padding-left: 1.25rem; list-style: disc; margin: 0.75rem 0; }
+.prose-ds a { color: var(--color-brand-400); text-decoration: underline; text-underline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

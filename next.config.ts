@@ -1,0 +1,29 @@
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  reactStrictMode: true,
+  poweredByHeader: false,
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "m.media-amazon.com" },
+      { protocol: "https", hostname: "images-eu.ssl-images-amazon.com" },
+      { protocol: "https", hostname: "rukminim1.flixcart.com" },
+      { protocol: "https", hostname: "rukminim2.flixcart.com" },
+      { protocol: "https", hostname: "**.flixcart.com" },
+      { protocol: "https", hostname: "**.media-amazon.com" },
+    ],
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+        ],
+      },
+    ];
+  },
+};
+
+export default nextConfig;
