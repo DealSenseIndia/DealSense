@@ -1,27 +1,10 @@
 import { affiliate, type Merchant } from "../config";
 import type { AnalysisResult } from "../types";
-import {
-  getListingsByProduct,
-  getObservations,
-  getProductById,
-  getProductBySlug,
-} from "../db/queries";
+import { getListingsByProduct, getObservations, getProductById, getProductBySlug } from "../db/queries";
 import type { ListingRow, ProductRow } from "../db/queries";
 import { affiliateUrl } from "../merchants/resolve";
-import { buildIdentityKey, sameVariant } from "./identity";
-import { computeLandedPrice } from "./landedPrice";
-import { computeStats, priceSeries } from "./stats";
-import { evaluateDeal } from "./verdict";
-
-function parseImages(raw: string | null): string[] {
-  if (!raw) return [];
-  try {
-    const v = JSON.parse(raw);
-    return Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : [];
-  } catch {
-    return [];
-  }
-}
+import { buildBundle, findRivalListing } from "./bundle";
+import { buildIdentityKey } from "./identity";
 
 /** Build a full analysis result from stored data (used by SSR product pages). */
 export async function buildResultForListing(
@@ -29,37 +12,20 @@ export async function buildResultForListing(
   listing: ListingRow,
 ): Promise<AnalysisResult> {
   const merchant = listing.merchant as Merchant;
-  const obs = await getObservations(listing.id);
-  const stats = computeStats(obs);
-  const verdict = listing.price !== null ? evaluateDeal({ current: listing.price, mrp: listing.mrp, stats }) : null;
-  const landed =
-    listing.price !== null
-      ? computeLandedPrice({ base: listing.price, shipping: listing.shipping, merchant })
-      : null;
+  const rivalListing = await findRivalListing(product, listing);
+  const { bundle, verdict, landed, rival, points, rivalPoints } = await buildBundle({
+    product,
+    listing,
+    rivalListing,
+  });
 
-  const siblings = await getListingsByProduct(product.id);
-  const rivalListing = siblings.find(
-    (l) => l.merchant !== merchant && l.title && sameVariant(l.title, listing.title ?? ""),
-  );
-  let rival: AnalysisResult["rival"] = null;
-  let rivalHistory: { t: number; price: number }[] = [];
-  if (rivalListing) {
-    const rObs = await getObservations(rivalListing.id);
-    rivalHistory = priceSeries(rObs);
-    const rStats = computeStats(rObs);
-    rival = {
-      merchant: rivalListing.merchant as Merchant,
-      price: rivalListing.price ?? rStats.median,
-      effectivePrice: rivalListing.price ?? null,
-      url: rivalListing.url,
-      affiliateUrl: affiliateUrl(
-        rivalListing.merchant as Merchant,
-        rivalListing.url,
-        affiliate.amazonTag,
-        affiliate.cuelinksChannel,
-      ),
-      lastCheckedAt: rivalListing.lastCheckedAt,
-    };
+  if (rival) {
+    rival.affiliateUrl = affiliateUrl(
+      rival.merchant,
+      rival.url,
+      affiliate.amazonTag,
+      affiliate.cuelinksChannel,
+    );
   }
 
   return {
@@ -72,7 +38,7 @@ export async function buildResultForListing(
       brand: product.brand,
       category: product.category,
       imageUrl: product.imageUrl,
-      images: parseImages(product.images),
+      images: safeParseArray(product.images),
     },
     listing: {
       id: listing.id,
@@ -92,8 +58,19 @@ export async function buildResultForListing(
     rival,
     landed,
     verdict,
-    history: { primary: priceSeries(obs), rival: rivalHistory },
+    history: { primary: points, rival: rivalPoints },
+    bundle,
   };
+}
+
+function safeParseArray(raw: string | null): string[] {
+  if (!raw) return [];
+  try {
+    const v = JSON.parse(raw);
+    return Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : [];
+  } catch {
+    return [];
+  }
 }
 
 export async function loadAnalysisBySlug(slug: string): Promise<AnalysisResult | null> {
@@ -114,4 +91,4 @@ export async function loadAnalysisByListingId(listingId: string): Promise<Analys
   return buildResultForListing(product, listing);
 }
 
-export { buildIdentityKey };
+export { buildIdentityKey, getObservations };

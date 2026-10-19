@@ -5,22 +5,21 @@ type Variant = "primary" | "secondary" | "ghost" | "outline";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "relative inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/60 disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap";
+  "relative inline-flex items-center justify-center gap-2 rounded-btn font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-accent/50 disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap";
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-brand-500 text-[#04140d] hover:bg-brand-400 shadow-[0_10px_40px_-12px_rgba(16,185,129,0.8)] hover:shadow-[0_16px_50px_-10px_rgba(16,185,129,0.9)] hover:-translate-y-0.5",
-  secondary:
-    "bg-ink text-void hover:opacity-90 hover:-translate-y-0.5",
+    "bg-emerald-accent text-white shadow-[0_8px_22px_-10px_rgba(16,185,129,0.9)] hover:bg-[var(--dw-green-mid)] hover:-translate-y-0.5",
+  secondary: "bg-terminal text-white hover:opacity-90",
   outline:
-    "border border-line-strong text-ink hover:border-brand-400/60 hover:bg-brand-500/5 hover:-translate-y-0.5",
-  ghost: "text-ink-soft hover:text-ink hover:bg-surface-raised",
+    "border border-hairline-strong bg-card text-headline hover:border-emerald-accent/50 hover:-translate-y-0.5",
+  ghost: "text-body hover:bg-elevated hover:text-headline",
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-4 text-[13px]",
-  md: "h-11 px-6 text-sm",
-  lg: "h-13 px-8 text-[15px]",
+  sm: "h-9 px-3.5 text-[12.5px]",
+  md: "h-11 px-6 text-[13.5px]",
+  lg: "h-12 px-7 text-[14px]",
 };
 
 export function Button({

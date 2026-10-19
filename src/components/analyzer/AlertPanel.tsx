@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Bell, BellRing, Check, Loader2, Send } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { formatINR } from "@/lib/utils";
+import { cn, formatINR } from "@/lib/utils";
 
 type AlertType = "TARGET_PRICE" | "PERCENT_DROP" | "DEAL_SCORE";
 
@@ -72,83 +72,87 @@ export function AlertPanel({
   ];
 
   return (
-    <div className="rounded-3xl border border-line bg-surface p-6 backdrop-blur-xl">
-      <div className="flex items-center gap-2">
-        <BellRing className="h-4 w-4 text-brand-400" />
-        <h3 className="text-sm font-bold uppercase tracking-wider text-ink-muted">Track this price</h3>
+    <div className="rounded-2xl border border-hairline bg-card p-4 shadow-card">
+      <div className="flex items-center gap-1.5 text-[12px] font-extrabold uppercase tracking-wider text-secondary">
+        <BellRing className="h-3.5 w-3.5 text-emerald-accent" />
+        Price drop alert
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-3 flex flex-wrap gap-1.5">
         {tabs.map((t) => (
           <button
             key={t.id}
             onClick={() => setType(t.id)}
-            className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
+            className={cn(
+              "rounded-full border px-2.5 py-1 text-[11.5px] font-bold transition-colors",
               type === t.id
-                ? "border-brand-400/60 bg-brand-500/15 text-brand-200"
-                : "border-line text-ink-soft hover:border-line-strong"
-            }`}
+                ? "border-emerald-accent bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]"
+                : "border-hairline text-secondary hover:border-hairline-strong",
+            )}
           >
             {t.label}
           </button>
         ))}
       </div>
 
-      <div className="mt-5 space-y-4">
+      <div className="mt-4 space-y-3.5">
         {type === "TARGET_PRICE" && (
           <Field label="Alert me when the price drops to or below">
-            <div className="flex items-center gap-2 rounded-xl border border-line bg-surface-raised/50 px-3">
-              <span className="text-ink-muted">₹</span>
+            <div className="flex items-center gap-2 rounded-xl border border-hairline bg-subtle px-3">
+              <span className="text-[13px] text-muted">₹</span>
               <input
                 value={target}
                 onChange={(e) => setTarget(e.target.value.replace(/[^\d]/g, ""))}
                 inputMode="numeric"
-                className="tabular h-11 w-full bg-transparent text-lg font-bold text-ink focus:outline-none"
+                className="tabular h-10 w-full bg-transparent text-[16px] font-extrabold text-headline focus:outline-none"
               />
-              {currentPrice && <span className="text-xs text-ink-muted">now {formatINR(currentPrice)}</span>}
+              {currentPrice && (
+                <span className="text-[11px] font-semibold text-muted">now {formatINR(currentPrice)}</span>
+              )}
             </div>
           </Field>
         )}
 
         {type === "PERCENT_DROP" && (
           <Field label="Alert me when it drops by">
-            <div className="flex items-center gap-2 rounded-xl border border-line bg-surface-raised/50 px-3">
+            <div className="flex items-center gap-2 rounded-xl border border-hairline bg-subtle px-3">
               <input
                 value={percent}
                 onChange={(e) => setPercent(e.target.value.replace(/[^\d]/g, ""))}
                 inputMode="numeric"
-                className="tabular h-11 w-full bg-transparent text-lg font-bold text-ink focus:outline-none"
+                className="tabular h-10 w-full bg-transparent text-[16px] font-extrabold text-headline focus:outline-none"
               />
-              <span className="text-ink-muted">%</span>
+              <span className="text-[13px] text-muted">%</span>
             </div>
           </Field>
         )}
 
         {type === "DEAL_SCORE" && (
           <Field label="Alert me when DealSense scores it above">
-            <div className="flex items-center gap-2 rounded-xl border border-line bg-surface-raised/50 px-3">
+            <div className="flex items-center gap-2 rounded-xl border border-hairline bg-subtle px-3">
               <input
                 value={score}
                 onChange={(e) => setScore(e.target.value.replace(/[^\d]/g, ""))}
                 inputMode="numeric"
-                className="tabular h-11 w-full bg-transparent text-lg font-bold text-ink focus:outline-none"
+                className="tabular h-10 w-full bg-transparent text-[16px] font-extrabold text-headline focus:outline-none"
               />
-              <span className="text-ink-muted">/ 100</span>
+              <span className="text-[13px] text-muted">/ 100</span>
             </div>
           </Field>
         )}
 
         <Field label="Notify me on">
-          <div className="flex gap-2">
+          <div className="flex gap-1.5">
             {(["telegram", "email"] as const).map((c) => (
               <button
                 key={c}
                 onClick={() => setChannel(c)}
-                className={`flex-1 rounded-xl border px-3 py-2.5 text-sm font-semibold capitalize transition-colors ${
+                className={cn(
+                  "flex-1 rounded-xl border px-3 py-2 text-[12.5px] font-bold capitalize transition-colors",
                   channel === c
-                    ? "border-brand-400/60 bg-brand-500/15 text-brand-200"
-                    : "border-line text-ink-soft hover:border-line-strong"
-                }`}
+                    ? "border-emerald-accent bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]"
+                    : "border-hairline text-secondary hover:border-hairline-strong",
+                )}
               >
                 {c}
               </button>
@@ -162,38 +166,38 @@ export function AlertPanel({
               value={contact}
               onChange={(e) => setContact(e.target.value)}
               placeholder="you@example.com"
-              className="h-11 w-full rounded-xl border border-line bg-surface-raised/50 px-3 text-sm text-ink focus:border-brand-400/60 focus:outline-none"
+              className="h-10 w-full rounded-xl border border-hairline bg-subtle px-3 text-[13px] text-headline focus:border-emerald-accent/50 focus:outline-none"
             />
           </Field>
         )}
 
         {state === "done" ? (
-          <div className="rounded-2xl border border-emerald-400/30 bg-emerald-500/10 p-4 text-sm text-emerald-200">
-            <div className="flex items-center gap-2 font-semibold">
-              <Check className="h-4 w-4" /> {message}
+          <div className="rounded-xl border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] p-3 text-[12.5px] font-bold text-[var(--dw-green-mid)]">
+            <div className="flex items-center gap-1.5">
+              <Check className="h-3.5 w-3.5" /> {message}
             </div>
             {deepLink && (
               <a
                 href={deepLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-3 inline-flex items-center gap-2 rounded-full bg-brand-500 px-4 py-2 text-xs font-bold text-[#04140d]"
+                className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-emerald-accent px-3.5 py-1.5 text-[11.5px] font-extrabold text-white"
               >
-                <Send className="h-3.5 w-3.5" /> Connect Telegram to activate
+                <Send className="h-3 w-3" /> Connect Telegram to activate
               </a>
             )}
           </div>
         ) : (
-          <Button onClick={submit} disabled={state === "loading"} className="w-full" size="lg">
+          <Button onClick={submit} disabled={state === "loading"} className="w-full">
             {state === "loading" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Bell className="h-4 w-4" />}
             Set alert
           </Button>
         )}
 
-        {state === "error" && <p className="text-sm text-red-300">{message}</p>}
-        <p className="text-[11px] text-ink-muted">
-          Tracking {productTitle.slice(0, 60)}
-          {productTitle.length > 60 ? "…" : ""}
+        {state === "error" && <p className="text-[12.5px] font-semibold text-[var(--verdict-avoid)]">{message}</p>}
+        <p className="text-[10.5px] font-semibold leading-snug text-muted">
+          Tracking {productTitle.slice(0, 70)}
+          {productTitle.length > 70 ? "…" : ""}
         </p>
       </div>
     </div>
@@ -203,7 +207,7 @@ export function AlertPanel({
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <div className="mb-2 text-xs font-medium text-ink-muted">{label}</div>
+      <div className="mb-1.5 text-[11.5px] font-bold text-muted">{label}</div>
       {children}
     </div>
   );

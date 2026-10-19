@@ -4,9 +4,8 @@ import { listings, products } from "../src/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { analyzeUrl } from "../src/lib/engine/analyze";
 import { closePlaywright } from "../src/lib/merchants/http";
-
-const UA =
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+import { searchAmazon } from "../src/lib/merchants/search";
+import { isSameProduct, storageOf, titleSimilarity } from "../src/lib/engine/identity";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -21,54 +20,61 @@ function queryFromTitle(title: string): string {
     .join(" ");
 }
 
-async function amazonSearchAsins(query: string, n = 4): Promise<string[]> {
-  try {
-    const res = await fetch(`https://www.amazon.in/s?k=${encodeURIComponent(query)}`, {
-      headers: { "User-Agent": UA, "Accept-Language": "en-IN,en;q=0.9" },
-    });
-    const html = await res.text();
-    const set = new Set<string>();
-    for (const m of html.matchAll(/\/dp\/([A-Z0-9]{10})/g)) {
-      set.add(m[1]);
-      if (set.size >= n) break;
-    }
-    return [...set];
-  } catch {
-    return [];
-  }
+/** Extra query form including the storage capacity. */
+function queryWithStorage(title: string): string | null {
+  const storage = storageOf(title)[0];
+  if (!storage) return null;
+  return `${queryFromTitle(title)} ${storage.replace(/gb/i, " GB")}`;
 }
 
 async function main() {
   await ensureSchema();
 
-  const fkProducts = await db
-    .select({ id: products.id, title: products.title, slug: products.slug })
+  const fkRows = await db
+    .select({ id: products.id, title: products.title })
     .from(products)
     .innerJoin(listings, eq(listings.productId, products.id))
     .where(eq(listings.merchant, "flipkart"));
 
   const unique = new Map<string, string>();
-  for (const p of fkProducts) unique.set(p.id, p.title);
+  for (const p of fkRows) unique.set(p.id, p.title);
 
   console.log(`Searching Amazon for ${unique.size} Flipkart products…\n`);
   let found = 0;
 
   for (const [, title] of unique) {
-    const q = queryFromTitle(title);
-    const asins = await amazonSearchAsins(q, 4);
+    const queries = [queryFromTitle(title), queryWithStorage(title)].filter(Boolean) as string[];
     let matched = false;
-    for (const asin of asins) {
-      const r = await analyzeUrl(`https://www.amazon.in/dp/${asin}`);
-      if (r.ok) {
-        console.log(`✓ "${q}" → amazon: ${r.product?.title?.slice(0, 52)} (₹${r.listing?.price})`);
-        matched = true;
-        found++;
-        break;
+
+    for (const q of queries) {
+      if (matched) break;
+      // Up to 2 attempts per query form (Amazon occasionally serves a blank page).
+      for (let attempt = 1; attempt <= 2 && !matched; attempt++) {
+        const hits = await searchAmazon(q, 8);
+        if (!hits.length) {
+          await sleep(2000 * attempt);
+          continue;
+        }
+        for (const hit of hits) {
+          // Only accept a genuine match — never pair two different products.
+          if (!isSameProduct(hit.title, title)) continue;
+          const r = await analyzeUrl(hit.url);
+          if (r.ok) {
+            console.log(
+              `✓ "${q}" → ${r.product?.title?.slice(0, 52)} (₹${r.listing?.price}) [match ${(titleSimilarity(hit.title, title) * 100).toFixed(0)}%]`,
+            );
+            matched = true;
+            found++;
+            break;
+          }
+          await sleep(700);
+        }
+        if (!matched) await sleep(1800 * attempt);
       }
-      await sleep(600);
     }
-    if (!matched) console.log(`✗ "${q}" → no Amazon match`);
-    await sleep(900);
+
+    if (!matched) console.log(`✗ "${queryFromTitle(title)}" → no Amazon match`);
+    await sleep(1200);
   }
 
   console.log(`\nAmazon matches added: ${found}`);

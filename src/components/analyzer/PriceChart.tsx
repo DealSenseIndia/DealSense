@@ -4,12 +4,22 @@ import { useMemo, useRef, useState } from "react";
 import type { PricePoint } from "@/lib/types";
 import { formatINR } from "@/lib/utils";
 
-const W = 800;
+const W = 900;
 const H = 300;
-const PAD = { top: 24, right: 18, bottom: 30, left: 8 };
+const PAD = { top: 22, right: 14, bottom: 28, left: 58 };
 
-function smoothPath(pts: { x: number; y: number }[]): string {
-  if (pts.length === 0) return "";
+export type Timeframe = "1M" | "3M" | "6M" | "1Y" | "ALL";
+
+const RANGES: Record<Timeframe, number | null> = {
+  "1M": 30 * 86400000,
+  "3M": 90 * 86400000,
+  "6M": 182 * 86400000,
+  "1Y": 365 * 86400000,
+  ALL: null,
+};
+
+function smooth(pts: { x: number; y: number }[]): string {
+  if (!pts.length) return "";
   if (pts.length === 1) return `M ${pts[0].x} ${pts[0].y}`;
   let d = `M ${pts[0].x} ${pts[0].y}`;
   for (let i = 0; i < pts.length - 1; i++) {
@@ -21,197 +31,236 @@ function smoothPath(pts: { x: number; y: number }[]): string {
   return d;
 }
 
+/**
+ * The price history chart. Dark terminal card (like DealSense 1.0), with
+ * store-coloured series, price rail, date rail and a crosshair readout.
+ */
 export function PriceChart({
   primary,
   rival,
   height = 300,
-  primaryLabel = "Primary",
-  rivalLabel = "Rival",
+  primaryLabel = "Amazon",
+  rivalLabel = "Flipkart",
+  primaryColor = "#F59E0B",
+  rivalColor = "#3B82F6",
 }: {
   primary: PricePoint[];
   rival?: PricePoint[];
   height?: number;
   primaryLabel?: string;
   rivalLabel?: string;
+  primaryColor?: string;
+  rivalColor?: string;
 }) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+  const [tf, setTf] = useState<Timeframe>("ALL");
+  const [hover, setHover] = useState<number | null>(null);
 
-  const all = useMemo(() => [...primary, ...(rival ?? [])], [primary, rival]);
+  const filtered = useMemo(() => {
+    const range = RANGES[tf];
+    const cut = range ? Date.now() - range : 0;
+    const p = primary.filter((x) => x.t >= cut);
+    const r = (rival ?? []).filter((x) => x.t >= cut);
+    return { p: p.length ? p : primary, r };
+  }, [primary, rival, tf]);
 
   const model = useMemo(() => {
-    if (all.length === 0) return null;
-    const ts = all.map((p) => p.t);
-    const prices = all.map((p) => p.price);
+    const all = [...filtered.p, ...filtered.r];
+    if (!all.length) return null;
+    const ts = all.map((x) => x.t);
+    const ps = all.map((x) => x.price);
     let minT = Math.min(...ts);
     let maxT = Math.max(...ts);
     if (minT === maxT) {
       minT -= 86400000;
       maxT += 86400000;
     }
-    let minP = Math.min(...prices);
-    let maxP = Math.max(...prices);
-    const span = maxP - minP || Math.max(maxP * 0.08, 1);
-    minP = Math.max(0, minP - span * 0.18);
-    maxP = maxP + span * 0.18;
-
-    const x = (t: number) =>
-      PAD.left + ((t - minT) / (maxT - minT)) * (W - PAD.left - PAD.right);
-    const y = (p: number) =>
-      PAD.top + (1 - (p - minP) / (maxP - minP)) * (H - PAD.top - PAD.bottom);
-
-    return { minT, maxT, minP, maxP, x, y };
-  }, [all]);
-
-  const points = useMemo(() => {
-    if (!model) return { primary: [], rival: [] };
+    let minP = Math.min(...ps);
+    let maxP = Math.max(...ps);
+    const span = maxP - minP || Math.max(maxP * 0.1, 1);
+    minP = Math.max(0, minP - span * 0.12);
+    maxP = maxP + span * 0.12;
     return {
-      primary: primary.map((p) => ({ x: model.x(p.t), y: model.y(p.price), p })),
-      rival: (rival ?? []).map((p) => ({ x: model.x(p.t), y: model.y(p.price), p })),
+      minT,
+      maxT,
+      minP,
+      maxP,
+      x: (t: number) => PAD.left + ((t - minT) / (maxT - minT)) * (W - PAD.left - PAD.right),
+      y: (p: number) => PAD.top + (1 - (p - minP) / (maxP - minP)) * (H - PAD.top - PAD.bottom),
     };
-  }, [model, primary, rival]);
+  }, [filtered]);
 
-  if (!model || primary.length === 0) {
+  const pts = useMemo(() => {
+    if (!model) return { p: [], r: [] };
+    return {
+      p: filtered.p.map((q) => ({ x: model.x(q.t), y: model.y(q.price), q })),
+      r: filtered.r.map((q) => ({ x: model.x(q.t), y: model.y(q.price), q })),
+    };
+  }, [model, filtered]);
+
+  if (!model || !pts.p.length) {
     return (
       <div
-        className="grid place-items-center rounded-2xl border border-line bg-surface text-sm text-ink-muted"
+        className="grid place-items-center rounded-2xl border border-dashed border-white/15 bg-[var(--bg-terminal)] text-center text-[13px] text-slate-400"
         style={{ height }}
       >
-        Not enough verified observations yet.
+        <div className="px-6">
+          <div className="text-3xl">📈</div>
+          <p className="mt-2 font-semibold text-slate-300">No verified price history yet</p>
+          <p className="mt-1 text-[12px]">
+            DealSense charts only real observations. Track this product and the chart fills in as we
+            record prices.
+          </p>
+        </div>
       </div>
     );
   }
 
-  const primaryPath = smoothPath(points.primary);
-  const rivalPath = smoothPath(points.rival);
-  const areaPath =
-    points.primary.length > 1
-      ? `${primaryPath} L ${points.primary[points.primary.length - 1].x} ${H - PAD.bottom} L ${points.primary[0].x} ${H - PAD.bottom} Z`
-      : "";
-
-  const hovered = hoverIdx !== null ? points.primary[hoverIdx] : null;
+  const hovered = hover !== null ? pts.p[hover] : null;
+  const priceTicks = 4;
 
   function onMove(e: React.MouseEvent) {
     const svg = svgRef.current;
-    if (!svg || points.primary.length === 0) return;
+    if (!svg || !pts.p.length) return;
     const rect = svg.getBoundingClientRect();
     const relX = ((e.clientX - rect.left) / rect.width) * W;
     let best = 0;
     let bestD = Infinity;
-    points.primary.forEach((pt, i) => {
+    pts.p.forEach((pt, i) => {
       const d = Math.abs(pt.x - relX);
       if (d < bestD) {
         bestD = d;
         best = i;
       }
     });
-    setHoverIdx(best);
+    setHover(best);
   }
 
-  const gridLines = 4;
+  const dateTicks = 4;
+  const datePoints = Array.from({ length: dateTicks + 1 }).map((_, i) => {
+    const t = model.minT + ((model.maxT - model.minT) * i) / dateTicks;
+    return { t, x: model.x(t) };
+  });
 
   return (
-    <div className="relative">
-      <svg
-        ref={svgRef}
-        viewBox={`0 0 ${W} ${H}`}
-        preserveAspectRatio="none"
-        className="w-full"
-        style={{ height }}
-        onMouseMove={onMove}
-        onMouseLeave={() => setHoverIdx(null)}
-      >
-        <defs>
-          <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#22c55e" stopOpacity="0.28" />
-            <stop offset="100%" stopColor="#22c55e" stopOpacity="0" />
-          </linearGradient>
-          <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#34d399" />
-            <stop offset="100%" stopColor="#22d3ee" />
-          </linearGradient>
-        </defs>
-
-        {/* horizontal grid */}
-        {Array.from({ length: gridLines + 1 }).map((_, i) => {
-          const y = PAD.top + (i / gridLines) * (H - PAD.top - PAD.bottom);
-          const price = model.maxP - (i / gridLines) * (model.maxP - model.minP);
-          return (
-            <g key={i}>
-              <line x1={PAD.left} y1={y} x2={W - PAD.right} y2={y} stroke="var(--line)" strokeWidth="1" />
-              <text x={W - PAD.right} y={y - 6} textAnchor="end" fontSize="11" fill="var(--ink-muted)">
-                {formatINR(Math.round(price))}
-              </text>
-            </g>
-          );
-        })}
-
-        {areaPath && <path d={areaPath} fill="url(#areaFill)" />}
-
-        {points.rival.length > 1 && (
-          <path d={rivalPath} fill="none" stroke="#2874F0" strokeWidth="2.5" strokeLinecap="round" opacity="0.85" />
-        )}
-
-        <path
-          d={primaryPath}
-          fill="none"
-          stroke="url(#lineGrad)"
-          strokeWidth="3"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-
-        {points.primary.map((pt, i) => (
-          <circle
-            key={i}
-            cx={pt.x}
-            cy={pt.y}
-            r={hoverIdx === i ? 5 : 2.5}
-            fill="#05070d"
-            stroke="#34d399"
-            strokeWidth="2"
-            className="transition-all"
-          />
+    <div>
+      {/* timeframe pills */}
+      <div className="mb-3 flex flex-wrap items-center gap-1.5">
+        {(["1M", "3M", "6M", "1Y", "ALL"] as Timeframe[]).map((f) => (
+          <button
+            key={f}
+            onClick={() => setTf(f)}
+            className={`rounded-lg px-3 py-1.5 text-[11.5px] font-bold transition-colors ${
+              tf === f
+                ? "bg-emerald-accent/15 text-emerald-300 ring-1 ring-emerald-accent/30"
+                : "bg-white/5 text-slate-400 hover:bg-white/10 hover:text-slate-200"
+            }`}
+          >
+            {f}
+          </button>
         ))}
+        <div className="ml-auto flex items-center gap-3 text-[11.5px] font-semibold">
+          <span className="inline-flex items-center gap-1.5 text-slate-300">
+            <span className="h-2 w-2 rounded-full" style={{ background: primaryColor }} />
+            {primaryLabel}
+          </span>
+          {pts.r.length > 1 && (
+            <span className="inline-flex items-center gap-1.5 text-slate-300">
+              <span className="h-2 w-2 rounded-full" style={{ background: rivalColor }} />
+              {rivalLabel}
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="relative overflow-hidden rounded-2xl bg-[var(--bg-terminal)]">
+        <svg
+          ref={svgRef}
+          viewBox={`0 0 ${W} ${H}`}
+          preserveAspectRatio="none"
+          className="w-full"
+          style={{ height }}
+          onMouseMove={onMove}
+          onMouseLeave={() => setHover(null)}
+        >
+          <defs>
+            <linearGradient id="pcArea" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={primaryColor} stopOpacity="0.22" />
+              <stop offset="100%" stopColor={primaryColor} stopOpacity="0" />
+            </linearGradient>
+          </defs>
+
+          {Array.from({ length: priceTicks + 1 }).map((_, i) => {
+            const y = PAD.top + (i / priceTicks) * (H - PAD.top - PAD.bottom);
+            const price = model.maxP - (i / priceTicks) * (model.maxP - model.minP);
+            return (
+              <g key={i}>
+                <line x1={PAD.left} y1={y} x2={W - PAD.right} y2={y} stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
+                <text x={PAD.left - 8} y={y + 3.5} textAnchor="end" fontSize="10.5" fill="#64748B" className="tabular">
+                  {formatINR(Math.round(price))}
+                </text>
+              </g>
+            );
+          })}
+
+          {datePoints.map((d, i) => (
+            <text key={i} x={d.x} y={H - 8} textAnchor="middle" fontSize="10.5" fill="#64748B">
+              {new Date(d.t).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
+            </text>
+          ))}
+
+          {pts.p.length > 1 && (
+            <path
+              d={`${smooth(pts.p)} L ${pts.p[pts.p.length - 1].x} ${H - PAD.bottom} L ${pts.p[0].x} ${H - PAD.bottom} Z`}
+              fill="url(#pcArea)"
+            />
+          )}
+
+          {pts.r.length > 1 && (
+            <path d={smooth(pts.r)} fill="none" stroke={rivalColor} strokeWidth="2" strokeLinecap="round" opacity="0.9" />
+          )}
+
+          {pts.p.length > 1 && (
+            <path d={smooth(pts.p)} fill="none" stroke={primaryColor} strokeWidth="2.5" strokeLinecap="round" />
+          )}
+
+          {pts.p.map((pt, i) => (
+            <circle
+              key={i}
+              cx={pt.x}
+              cy={pt.y}
+              r={hover === i ? 4.5 : 2}
+              fill="#0F172A"
+              stroke={primaryColor}
+              strokeWidth="2"
+            />
+          ))}
+
+          {hovered && (
+            <line
+              x1={hovered.x}
+              y1={PAD.top}
+              x2={hovered.x}
+              y2={H - PAD.bottom}
+              stroke="rgba(255,255,255,0.28)"
+              strokeWidth="1"
+              strokeDasharray="4 4"
+            />
+          )}
+        </svg>
 
         {hovered && (
-          <line
-            x1={hovered.x}
-            y1={PAD.top}
-            x2={hovered.x}
-            y2={H - PAD.bottom}
-            stroke="var(--line-strong)"
-            strokeWidth="1"
-            strokeDasharray="4 4"
-          />
-        )}
-      </svg>
-
-      {hovered && (
-        <div
-          className="pointer-events-none absolute top-3 rounded-xl border border-line bg-surface-solid/95 px-3 py-2 text-xs shadow-xl backdrop-blur"
-          style={{
-            left: `${(hovered.x / W) * 100}%`,
-            transform: `translateX(${hovered.x > W * 0.7 ? "-105%" : "8px"})`,
-          }}
-        >
-          <div className="font-semibold text-ink">{formatINR(hovered.p.price)}</div>
-          <div className="text-ink-muted">
-            {new Date(hovered.p.t).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+          <div className="pointer-events-none absolute left-3 top-3 rounded-xl border border-white/10 bg-black/70 px-3 py-2 backdrop-blur">
+            <div className="tabular text-[13px] font-extrabold text-white">{formatINR(hovered.q.price)}</div>
+            <div className="text-[10.5px] font-semibold text-slate-400">
+              {new Date(hovered.q.t).toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })}
+            </div>
           </div>
-        </div>
-      )}
-
-      <div className="mt-3 flex items-center gap-4 text-xs text-ink-muted">
-        <span className="inline-flex items-center gap-1.5">
-          <span className="h-2 w-2 rounded-full bg-emerald-400" /> {primaryLabel}
-        </span>
-        {rival && rival.length > 1 && (
-          <span className="inline-flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full bg-[#2874F0]" /> {rivalLabel}
-          </span>
         )}
-        <span className="ml-auto tabular">{primary.length} verified observations</span>
       </div>
     </div>
   );

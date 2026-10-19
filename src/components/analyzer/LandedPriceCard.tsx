@@ -5,7 +5,7 @@ import { Receipt, Sparkles } from "lucide-react";
 import type { LandedPrice, Merchant } from "@/lib/types";
 import { offersFor } from "@/lib/engine/bankOffers";
 import { computeLandedPrice } from "@/lib/engine/landedPrice";
-import { formatINR } from "@/lib/utils";
+import { cn, formatINR } from "@/lib/utils";
 
 export function LandedPriceCard({
   base,
@@ -31,34 +31,39 @@ export function LandedPriceCard({
   );
 
   return (
-    <div className="rounded-3xl border border-line bg-surface p-6 backdrop-blur-xl">
-      <div className="flex items-center gap-2">
-        <Receipt className="h-4 w-4 text-brand-400" />
-        <h3 className="text-sm font-bold uppercase tracking-wider text-ink-muted">True landed price</h3>
+    <div className="rounded-2xl border border-hairline bg-card p-5 shadow-card">
+      <div className="flex items-center gap-1.5 text-[12px] font-extrabold uppercase tracking-wider text-secondary">
+        <Receipt className="h-3.5 w-3.5 text-emerald-accent" />
+        True landed price
       </div>
 
-      <div className="mt-5 flex items-end justify-between">
+      <div className="mt-4 flex items-end justify-between">
         <div>
-          <div className="text-xs text-ink-muted">You actually pay</div>
-          <div className="tabular text-4xl font-extrabold tracking-tight text-emerald-300">
+          <div className="text-[11.5px] font-semibold text-muted">You actually pay</div>
+          <div className="tabular text-[32px] font-extrabold leading-none tracking-tight text-[var(--dw-green-mid)]">
             {formatINR(landed.effective)}
           </div>
         </div>
         {landed.savings > 0 && (
-          <div className="rounded-full border border-emerald-400/40 bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-300">
+          <div className="rounded-full border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-2.5 py-1 text-[11.5px] font-extrabold text-[var(--dw-green-mid)]">
             Save {formatINR(landed.savings)}
           </div>
         )}
       </div>
 
-      <div className="mt-5 space-y-2.5 border-t border-line pt-5">
+      <div className="mt-4 space-y-2 border-t border-hairline pt-4">
         {landed.breakdown.map((row, i) => (
-          <div key={i} className="flex items-center justify-between text-sm">
-            <span className="text-ink-soft">
+          <div key={i} className="flex items-center justify-between text-[13px]">
+            <span className="text-body">
               {row.label}
-              {row.note && <span className="ml-2 text-xs text-ink-muted">{row.note}</span>}
+              {row.note && <span className="ml-1.5 text-[11px] text-muted">{row.note}</span>}
             </span>
-            <span className={`tabular font-semibold ${row.amount < 0 ? "text-emerald-300" : "text-ink"}`}>
+            <span
+              className={cn(
+                "tabular font-extrabold",
+                row.amount < 0 ? "text-[var(--dw-green-mid)]" : "text-headline",
+              )}
+            >
               {row.amount < 0 ? "−" : ""}
               {formatINR(Math.abs(row.amount))}
             </span>
@@ -66,18 +71,19 @@ export function LandedPriceCard({
         ))}
       </div>
 
-      <div className="mt-5">
-        <div className="mb-2 flex items-center gap-1.5 text-xs text-ink-muted">
-          <Sparkles className="h-3.5 w-3.5" /> Apply a card offer
+      <div className="mt-4">
+        <div className="mb-2 flex items-center gap-1.5 text-[11.5px] font-bold text-muted">
+          <Sparkles className="h-3 w-3" /> Apply a card offer
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           <button
             onClick={() => setSelected(null)}
-            className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
+            className={cn(
+              "rounded-full border px-2.5 py-1 text-[11.5px] font-bold transition-colors",
               selected === null
-                ? "border-brand-400/60 bg-brand-500/15 text-brand-200"
-                : "border-line text-ink-soft hover:border-line-strong"
-            }`}
+                ? "border-emerald-accent bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]"
+                : "border-hairline text-secondary hover:border-hairline-strong",
+            )}
           >
             Best offer
           </button>
@@ -86,11 +92,12 @@ export function LandedPriceCard({
               key={o.id}
               onClick={() => setSelected(o.id)}
               title={`${o.card} · ${o.label}`}
-              className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
+              className={cn(
+                "rounded-full border px-2.5 py-1 text-[11.5px] font-bold transition-colors",
                 selected === o.id
-                  ? "border-brand-400/60 bg-brand-500/15 text-brand-200"
-                  : "border-line text-ink-soft hover:border-line-strong"
-              }`}
+                  ? "border-emerald-accent bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]"
+                  : "border-hairline text-secondary hover:border-hairline-strong",
+              )}
             >
               {o.bank}
             </button>

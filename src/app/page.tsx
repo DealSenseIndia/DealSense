@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
+import { Container } from "@/components/ui/Container";
 import { Hero } from "@/components/landing/Hero";
-import {
-  CtaBand,
-  Faq,
-  Features,
-  HowItWorks,
-  Integrity,
-  StoreMarquee,
-} from "@/components/landing/Sections";
+import { DealsSection } from "@/components/landing/DealsSection";
+import { HowItWorks, Integrity, Faq, CtaBand } from "@/components/landing/Sections";
+import { getLiveDeals } from "@/lib/engine/deals";
 import { site } from "@/lib/config";
 
 export const metadata: Metadata = {
@@ -16,13 +12,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-export default function HomePage() {
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const deals = await getLiveDeals(48);
+
   return (
     <>
       <Hero />
-      <StoreMarquee />
+      <DealsSection deals={deals} />
       <HowItWorks />
-      <Features />
       <Integrity />
       <Faq />
       <CtaBand />

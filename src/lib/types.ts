@@ -127,5 +127,26 @@ export interface AnalysisResult {
   landed: LandedPrice | null;
   verdict: VerdictResult | null;
   history: { primary: PricePoint[]; rival: PricePoint[] };
+  /** Rich context: market band, evidence, history provenance. */
+  bundle?: {
+    source: "own" | "cross_store" | "external" | "none";
+    sourceLabel: string;
+    observationCount: number;
+    points: PricePoint[];
+    low: number | null;
+    high: number | null;
+    median: number | null;
+    median90: number | null;
+    market: {
+      category: string;
+      low: number;
+      high: number;
+      median: number;
+      sampleSize: number;
+    } | null;
+    advertisedDiscountPct: number | null;
+    evidence: { kind: string; text: string }[];
+    hasSufficientHistory: boolean;
+  };
   message?: string;
 }

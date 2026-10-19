@@ -15,6 +15,7 @@ import {
   upsertProduct,
 } from "../db/queries";
 import { buildIdentityKey, sameVariant } from "./identity";
+import { buildBundle, findRivalListing } from "./bundle";
 import { computeLandedPrice } from "./landedPrice";
 import { computeStats, priceSeries } from "./stats";
 import { evaluateDeal } from "./verdict";
@@ -169,11 +170,8 @@ export async function analyzeUrl(rawUrl: string): Promise<AnalysisResult> {
   });
 
   // 6) Cross-store rival (same product, other merchant, same variant).
-  const siblings = await getListingsByProduct(product.id);
-  const rivalListing = siblings.find(
-    (l) => l.merchant !== merchant && l.title && sameVariant(l.title, p.title),
-  );
-  let rival: AnalysisResult["rival"] = null;
+  const rivalListing = await findRivalListing(product, listing);
+  const { bundle } = await buildBundle({ product, listing, rivalListing });  let rival: AnalysisResult["rival"] = null;
   let rivalHistory: { t: number; price: number }[] = [];
   if (rivalListing) {
     const rObs = await getObservations(rivalListing.id);
@@ -248,6 +246,7 @@ export async function analyzeUrl(rawUrl: string): Promise<AnalysisResult> {
     landed,
     verdict,
     history: { primary: priceSeries(obs), rival: rivalHistory },
+    bundle,
   };
 }
 

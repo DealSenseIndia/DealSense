@@ -52,7 +52,7 @@ export function variantTokens(title: string): string[] {
 }
 
 /** Reduce a marketplace title to its stable model words. */
-function modelWords(title: string): string[] {
+export function modelWords(title: string): string[] {
   const base = title
     .toLowerCase()
     .replace(/\([^)]*\)/g, " ") // drop parentheticals (colour, specs)
@@ -65,6 +65,35 @@ function modelWords(title: string): string[] {
   return base
     .split(/\s+/)
     .filter((w) => w.length > 1 && !STOPWORDS.has(w));
+}
+
+/** The brand is the first meaningful word of the title. */
+export function brandOf(title: string): string | null {
+  const w = modelWords(title)[0];
+  return w ?? null;
+}
+
+/**
+ * 0–1 similarity of two product titles, based on shared model words.
+ * Used to confirm a cross-store match before we claim two listings are
+ * the same product.
+ */
+export function titleSimilarity(a: string, b: string): number {
+  const wa = new Set(modelWords(a));
+  const wb = new Set(modelWords(b));
+  if (!wa.size || !wb.size) return 0;
+  let inter = 0;
+  for (const w of wa) if (wb.has(w)) inter++;
+  return inter / Math.min(wa.size, wb.size);
+}
+
+/** True when two listings are confidently the same product. */
+export function isSameProduct(a: string, b: string): boolean {
+  const ba = brandOf(a);
+  const bb = brandOf(b);
+  if (ba && bb && ba !== bb) return false;
+  if (!sameVariant(a, b)) return false;
+  return titleSimilarity(a, b) >= 0.5;
 }
 
 export function buildIdentityKey(title: string): string {
