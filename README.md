@@ -44,27 +44,29 @@ npm run scrape
 
 ---
 
-## Getting reliable live prices (free)
+## How live prices are fetched (free, no keys needed)
 
-Amazon.in and Flipkart render prices with JavaScript and block plain server requests. DealSense
-tries several free methods in order:
+Both stores work out of the box:
 
-1. **Direct fetch** — fast, free, works for some pages.
-2. **Free reader** (`r.jina.ai`) — renders some JavaScript.
-3. **A free-tier scraping API** — reliable; set **one** key below.
-4. **Local headless browser** — optional (`USE_PLAYWRIGHT=1`).
+| Store | Method | Notes |
+| --- | --- | --- |
+| **Amazon.in** | Direct fetch with browser headers | Prices read from the product page markup. |
+| **Flipkart** | Flipkart's own page API (`/api/4/page/fetch`) | Returns rich JSON — price, MRP, rating, reviews, images. Throttled + cached. |
 
-For a production site you should set **one** free scraping key in `.env.local` (all have free plans,
-ScrapingAnt gives 10,000 requests/month):
+Fallbacks are tried automatically if either is ever blocked:
+
+1. Direct fetch → 2. Flipkart page API → 3. free reader (`r.jina.ai`) →
+4. optional scraping provider → 5. optional local headless browser (`USE_PLAYWRIGHT=1`).
+
+A scraping provider is **optional**. If you want extra insurance, set one in `.env.local`:
 
 ```bash
-SCRAPINGANT_API_KEY=...   # https://scrapingant.com   (10k free / month)  ← recommended
 # SCRAPERAPI_KEY=...      # https://scraperapi.com    (1k free / month)
 # SCRAPINGBEE_API_KEY=... # https://scrapingbee.com   (1k free credits)
 # ZENROWS_API_KEY=...     # https://zenrows.com       (1k free credits)
 ```
 
-Nothing else changes — the provider chain picks it up automatically.
+> ⚠️ ScrapingAnt's **free** plan blocks Amazon/Flipkart domains, so it is not useful here.
 
 ---
 

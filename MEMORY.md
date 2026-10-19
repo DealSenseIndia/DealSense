@@ -14,21 +14,29 @@
 
 ## Verified working (real network)
 
-- Amazon.in: live price, MRP, rating, stock, images extracted successfully for in-stock products
-  (verified against bestseller ASINs). Prices are correct after fixing Amazon's missing decimal.
+- **Amazon.in**: live price, MRP, rating, stock, images extracted successfully for in-stock products.
+  Prices are correct after fixing Amazon's missing-decimal quirk (`₹15,99900` → ₹15,999).
+- **Flipkart**: live price, MRP, rating, review count and images extracted via Flipkart's own page
+  API (`POST /api/4/page/fetch`) — no proxy, no key, no browser. Throttled (2.5s) and cached (10 min).
 - End-to-end: `analyzeUrl` → product + listing + observation persisted → verdict computed.
   With history, produced a correct **BUY 92/100** with human-readable reasons.
+- **Cross-store matching** verified: vivo T5 Lite 44W 5G — Flipkart ₹22,999 vs Amazon ₹27,100.
 - Out-of-stock products correctly return no price (honest behaviour, not a bug).
 
 ## Known limitations
 
-1. **Flipkart blocks server + headless requests** (redirects to homepage / HTTP 500).
-   → Fix: set a free scraping key (`SCRAPINGANT_API_KEY` etc.) in `.env.local`. The provider chain
-   uses it automatically. Cross-store comparison appears once Flipkart data is available.
-2. **Playwright is slow (~2–8s/request)** and heavy for serverless. It is intended for the local
-   refresh worker (`USE_PLAYWRIGHT=1`), not Vercel.
+1. **Amazon search relevance** is imperfect when auto-discovering rivals, so some products get an
+   extra (correctly unmatched) listing. The identity matcher never creates a *wrong* comparison.
+2. **Playwright is slow (~2–8s/request)** and heavy for serverless. It is a last-resort fallback,
+   not the primary path.
 3. Fresh products start at **"not enough data"** (by design). A verdict forms after ~3 real
    observations, which the worker collects within a few hours.
+4. ScrapingAnt's free tier blocks Amazon/Flipkart — do not rely on it.
+
+## Verified dataset (local)
+
+- 22 real products across Amazon.in and Flipkart, with genuine prices, MRPs, ratings and images.
+- **2 genuine cross-store pairs**, e.g. vivo T5 Lite 44W 5G — Flipkart ₹22,999 vs Amazon ₹27,100.
 
 ## Key decisions
 
@@ -49,5 +57,5 @@ See `.env.example`. Minimum for production: `TURSO_DATABASE_URL`, `TURSO_AUTH_TO
 
 Pick one:
 - Add email alerts (Resend) — small, high value.
-- Add a second scraping provider + retry/rotation for Flipkart reliability.
+- Widen cross-store coverage (category-based discovery on both stores).
 - Ship the Chrome extension as a thin client of `/api/analyze`.

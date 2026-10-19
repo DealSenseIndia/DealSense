@@ -1,6 +1,7 @@
 import type { ExtractedProduct } from "../types";
 import { extractAmazon } from "./amazon";
 import { extractFlipkart } from "./flipkart";
+import { extractFlipkartFromApi, fetchFlipkartJson, toPageUri } from "./flipkartApi";
 import { expandUrl, fetchCandidates, looksBlocked } from "./http";
 import { detectMerchant, parseMerchantUrl, stripTracking, type ResolvedUrl } from "./resolve";
 
@@ -54,6 +55,21 @@ export async function fetchProduct(rawUrl: string): Promise<FetchOutcome> {
   let best: ExtractedProduct | null = null;
   let sawContent = false;
   let sawBlocked = false;
+
+  // Flipkart: its own page API is the most reliable free source (no proxy needed).
+  if (resolved.merchant === "flipkart") {
+    const pageUri = toPageUri(url) ?? toPageUri(resolved.canonicalUrl);
+    if (pageUri) {
+      const json = await fetchFlipkartJson(pageUri);
+      if (json) {
+        const product = extractFlipkartFromApi(json, resolved.merchantProductId, resolved.canonicalUrl);
+        if (product.price !== null) {
+          return { ok: true, status: "SUCCESS", resolved, product };
+        }
+        best = product;
+      }
+    }
+  }
 
   for await (const candidate of fetchCandidates(resolved.canonicalUrl)) {
     if (looksBlocked(candidate.content)) {
