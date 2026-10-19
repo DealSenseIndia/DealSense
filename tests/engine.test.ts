@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { detectMerchant, parseMerchantUrl, stripTracking, affiliateUrl } from "../src/lib/merchants/resolve";
 import { parsePrice, parseCount, parseRating, inferCategory } from "../src/lib/merchants/parse";
 import { parseAmazonAmount, pricesFromText } from "../src/lib/merchants/amazon";
-import { buildIdentityKey, sameVariant, variantTokens, storageOf, ramOf, titleSimilarity, isSameProduct } from "../src/lib/engine/identity";
+import { buildIdentityKey, sameVariant, variantTokens, storageOf, ramOf, titleSimilarity, isSameProduct, isAccessory } from "../src/lib/engine/identity";
 import { computeStats } from "../src/lib/engine/stats";
 import { evaluateDeal } from "../src/lib/engine/verdict";
 import { computeLandedPrice } from "../src/lib/engine/landedPrice";
@@ -141,6 +141,30 @@ test("isSameProduct ignores colour differences", () => {
   assert.equal(
     isSameProduct("Apple iPhone 17 (White, 256 GB)", "Apple iPhone 17 (Black, 256 GB)"),
     true,
+  );
+});
+
+test("isSameProduct rejects accessories", () => {
+  assert.equal(isAccessory("Amazon Basics HMD Vibe 2 5G Flip Cover | Card Pocket"), true);
+  assert.equal(isAccessory("vivo T5 Lite 44W 5G (Wave Blue, 128 GB)"), false);
+  assert.equal(
+    isSameProduct(
+      "HMD Vibe2 5G 128 GB",
+      "Amazon Basics HMD Vibe 2 5G Flip Cover | Card Pocket",
+    ),
+    false,
+  );
+});
+
+test("isSameProduct requires a stated capacity on both sides", () => {
+  assert.equal(
+    isSameProduct("vivo T5 Lite 44W 5G 128 GB", "vivo T5 Lite 44W 5G 128 GB"),
+    true,
+  );
+  // one side omits the capacity — we cannot confirm it is the same device
+  assert.equal(
+    isSameProduct("vivo T5 Lite 44W 5G 128 GB", "vivo T5 Lite 44W 5G"),
+    false,
   );
 });
 

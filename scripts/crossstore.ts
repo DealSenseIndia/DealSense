@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import { analyzeUrl } from "../src/lib/engine/analyze";
 import { closePlaywright } from "../src/lib/merchants/http";
 import { searchAmazon } from "../src/lib/merchants/search";
-import { isSameProduct, storageOf, titleSimilarity } from "../src/lib/engine/identity";
+import { isAccessory, isSameProduct, storageOf, titleSimilarity } from "../src/lib/engine/identity";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -56,6 +56,8 @@ async function main() {
           continue;
         }
         for (const hit of hits) {
+          // Skip accessories — they are not the product we are looking for.
+          if (isAccessory(hit.title)) continue;
           // Only accept a genuine match — never pair two different products.
           if (!isSameProduct(hit.title, title)) continue;
           const r = await analyzeUrl(hit.url);

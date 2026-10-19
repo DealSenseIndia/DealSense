@@ -87,13 +87,47 @@ export function titleSimilarity(a: string, b: string): number {
   return inter / Math.min(wa.size, wb.size);
 }
 
-/** True when two listings are confidently the same product. */
+/** Words that indicate an accessory rather than the product itself. */
+const ACCESSORY_WORDS = [
+  "cover", "case", "casing", "sleeve", "pouch", "holder", "stand", "mount",
+  "charger", "cable", "adapter", "protector", "guard", "tempered", "skin",
+  "strap", "band", "sticker", "refill", "spare", "replacement", "compatible",
+  "for", "fits", "screen", "back", "front",
+];
+
+/** True when the title clearly describes an accessory, not the product. */
+export function isAccessory(title: string): boolean {
+  const t = ` ${title.toLowerCase()} `;
+  return ACCESSORY_WORDS.some((w) => t.includes(` ${w} `) || t.includes(`${w} `) || t.includes(` ${w}`));
+}
+
+/**
+ * True when two listings are confidently the same product.
+ *
+ * Deliberately strict: a wrong comparison is worse than no comparison.
+ *  - brands must match
+ *  - a stated storage/RAM spec must be stated on BOTH sides and agree
+ *  - neither side may be an accessory
+ *  - model words must overlap substantially
+ */
 export function isSameProduct(a: string, b: string): boolean {
+  if (isAccessory(a) || isAccessory(b)) return false;
+
   const ba = brandOf(a);
   const bb = brandOf(b);
   if (ba && bb && ba !== bb) return false;
-  if (!sameVariant(a, b)) return false;
-  return titleSimilarity(a, b) >= 0.5;
+
+  // A device spec stated on one side only means we cannot confirm the match.
+  const sa = storageOf(a);
+  const sb = storageOf(b);
+  if (sa.length !== sb.length) return false;
+  if (sa.length && sa.join("|") !== sb.join("|")) return false;
+
+  const ra = ramOf(a);
+  const rb = ramOf(b);
+  if (ra.length && rb.length && ra.join("|") !== rb.join("|")) return false;
+
+  return titleSimilarity(a, b) >= 0.6;
 }
 
 export function buildIdentityKey(title: string): string {
