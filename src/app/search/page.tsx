@@ -18,6 +18,11 @@ export default async function SearchPage({
   return (
     <section className="relative py-10">
       <Container size="wide">
+        <div className="mx-auto mb-8 max-w-2xl text-center">
+          <h1 className="text-[30px] font-extrabold tracking-[-0.025em] text-headline sm:text-[38px]">
+            Search any product
+          </h1>
+        </div>
         <SearchResults initialQuery={q ?? ""} />
       </Container>
     </section>

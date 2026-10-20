@@ -54,6 +54,19 @@ Original DealSense brand assets live in `public/brand/` and are carried over fro
 - **Figures:** JetBrains Mono, `font-variant-numeric: tabular-nums` (`.tabular` utility).
   Every price, score and delta is monospaced so columns line up.
 
+## Cleanliness rules (the site must read as icons + logos, not labels)
+
+- **One search only.** The homepage has the big hero search; inner pages get a compact
+  `PageSearch`. The header never duplicates it.
+- **Header is icon-led.** Logo, 4 short nav labels, then icon buttons (search · alerts · theme) and one
+  gradient CTA with an icon.
+- **Real store logos, never letter tiles.** `public/brand/stores/*.svg` (carried from DealSense 1.0)
+  rendered through `<StoreLogo />`; a coloured initial tile is only the fallback.
+- **No fake affordances.** Filter labels that don't filter are removed.
+- **Headings only where needed.** Data strips are one compact row of chips (`Under ₹999 40`,
+  `50% 39`) with no explanatory paragraph.
+- **Counts as badges**, not sentences.
+
 ## Key components
 
 - **Header (Buyhatke style)** — brand mark + nav, then a **full-width search bar** underneath with

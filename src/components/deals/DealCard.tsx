@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Flame, Heart } from "lucide-react";
 import type { DealRow } from "@/lib/db/deals";
+import { StoreLogo } from "@/components/ui/StoreLogo";
 import { cn, formatINR } from "@/lib/utils";
 
 export function DealCard({ deal }: { deal: DealRow }) {
@@ -37,13 +38,11 @@ export function DealCard({ deal }: { deal: DealRow }) {
           )}
         </div>
 
-        <span
-          className="absolute right-2 top-2 grid h-6 w-6 place-items-center rounded-lg text-[8px] font-black text-white shadow-sm"
-          style={{ background: deal.storeColor }}
-          title={deal.merchant}
-        >
-          {deal.storeShort}
-        </span>
+        <StoreLogo
+          merchant={deal.merchant}
+          size={22}
+          className="absolute right-2 top-2 rounded-md shadow-sm"
+        />
       </Link>
 
       <div className="flex flex-1 flex-col p-3">

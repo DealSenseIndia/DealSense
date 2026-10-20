@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { PageSearch } from "@/components/site/PageSearch";
 import { listCategories, getCatalogueStats } from "@/lib/db/market";
 import { formatINR } from "@/lib/utils";
 
@@ -39,27 +40,25 @@ export default async function CategoriesPage() {
           <h1 className="text-[30px] font-extrabold tracking-tight text-headline sm:text-[36px]">
             Browse by category
           </h1>
-          <p className="mt-2 text-[14.5px] text-body">
-            Every category below is built from real, verified listings — not a hand-made list.
-          </p>
-          {stats && (
-            <div className="mt-5 flex flex-wrap gap-4 text-[13px] font-bold text-secondary">
-              <span>
-                <span className="tabular text-headline">{stats.count}</span> verified listings
-              </span>
-              <span>
-                median{" "}
-                <span className="tabular text-headline">{formatINR(stats.median)}</span>
-              </span>
-              <span>
-                range{" "}
-                <span className="tabular text-headline">
-                  {formatINR(stats.low)}–{formatINR(stats.high)}
-                </span>
-              </span>
-            </div>
-          )}
         </div>
+
+        <PageSearch className="mt-5 max-w-xl" />
+        {stats && (
+          <div className="mt-5 flex flex-wrap gap-4 text-[13px] font-bold text-secondary">
+            <span>
+              <span className="tabular text-headline">{stats.count}</span> listings
+            </span>
+            <span>
+              median <span className="tabular text-headline">{formatINR(stats.median)}</span>
+            </span>
+            <span>
+              range{" "}
+              <span className="tabular text-headline">
+                {formatINR(stats.low)}–{formatINR(stats.high)}
+              </span>
+            </span>
+          </div>
+        )}
 
         {categories.length === 0 ? (
           <div className="mt-10 rounded-2xl border border-dashed border-hairline bg-subtle p-12 text-center">

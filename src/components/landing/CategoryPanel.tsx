@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import type { Shelf } from "@/lib/db/shelves";
-import { STORE_META } from "@/lib/db/shelves";
+import { StoreLogo } from "@/components/ui/StoreLogo";
 import { cn, formatINR } from "@/lib/utils";
 
 /**
@@ -22,35 +22,18 @@ export function CategoryPanel({ shelf }: { shelf: Shelf }) {
 
       <div className="relative">
         {/* badge + title */}
-        <div className="flex flex-wrap items-center gap-4">
-          <span className="rounded-xl bg-gradient-brand px-4 py-2.5 text-[15px] font-extrabold text-white shadow-[0_10px_26px_-12px_rgba(5,150,105,0.9)]">
-            Up to {shelf.maxDiscount}% off
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="rounded-xl bg-gradient-brand px-3.5 py-2 text-[14px] font-extrabold text-white shadow-[0_10px_26px_-12px_rgba(5,150,105,0.9)]">
+            {shelf.maxDiscount}% off
           </span>
-          <h2 className="text-[22px] font-extrabold tracking-tight text-headline sm:text-[26px]">
+          <h2 className="text-[21px] font-extrabold tracking-tight text-headline sm:text-[25px]">
             {shelf.category}
           </h2>
-        </div>
-
-        {/* sub filters */}
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-[12.5px] font-bold text-secondary">
-          {["Top Brands", "Best Deals", "Max Savings"].map((f) => (
-            <span key={f} className="inline-flex items-center gap-1.5">
-              <span className="grid h-4 w-4 place-items-center rounded bg-emerald-600 text-[7px] font-black text-white">
-                d
-              </span>
-              {f}
-            </span>
-          ))}
         </div>
 
         {/* product row */}
         <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {shelf.products.map((p) => {
-            const store = STORE_META[p.merchant] ?? {
-              name: p.merchant,
-              short: p.merchant.slice(0, 2).toUpperCase(),
-              color: "#64748B",
-            };
             return (
               <Link
                 key={p.slug}
@@ -77,13 +60,7 @@ export function CategoryPanel({ shelf }: { shelf: Shelf }) {
                 </div>
 
                 <div className="mt-2 flex items-center gap-1.5">
-                  <span
-                    className="grid h-4 w-4 place-items-center rounded text-[7px] font-black text-white"
-                    style={{ background: store.color }}
-                    title={store.name}
-                  >
-                    {store.short}
-                  </span>
+                  <StoreLogo merchant={p.merchant} size={16} />
                   <span className="tabular text-[13px] font-extrabold text-headline">
                     {formatINR(p.price)}
                   </span>
@@ -91,15 +68,10 @@ export function CategoryPanel({ shelf }: { shelf: Shelf }) {
 
                 {p.discountPct > 0 && (
                   <div className="mt-1 flex items-center gap-1.5 text-[11px] font-bold text-[var(--dw-green-mid)]">
-                    <span className="inline-flex items-center gap-0.5">
-                      <span className="grid h-3.5 w-3.5 place-items-center rounded-full bg-emerald-600 text-[6px] font-black text-white">
-                        d
-                      </span>
-                      {p.discountPct}%
-                    </span>
+                    {p.discountPct}%
                     {p.mrp && (
                       <span className="tabular font-medium text-muted line-through">
-                        ({formatINR(p.mrp)})
+                        {formatINR(p.mrp)}
                       </span>
                     )}
                   </div>
@@ -112,9 +84,9 @@ export function CategoryPanel({ shelf }: { shelf: Shelf }) {
         <div className="mt-6 flex justify-center">
           <Link
             href={`/search?q=${encodeURIComponent(shelf.category)}`}
-            className="inline-flex h-10 items-center gap-1.5 rounded-xl border border-emerald-600/40 bg-card px-7 text-[13px] font-extrabold text-[var(--dw-green-mid)] transition-colors hover:bg-emerald-500 hover:text-white"
+            className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-emerald-600/40 bg-card px-6 text-[12.5px] font-extrabold text-[var(--dw-green-mid)] transition-colors hover:bg-emerald-500 hover:text-white"
           >
-            View all {shelf.category} <ArrowRight className="h-3.5 w-3.5" />
+            View all <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
       </div>
@@ -122,26 +94,25 @@ export function CategoryPanel({ shelf }: { shelf: Shelf }) {
   );
 }
 
-/** Horizontal scroll row of category tiles (Buyhatke's "browse categories" strip). */
+/** Horizontal scroll row of category tiles. */
 export function CategoryStrip({
   items,
 }: {
   items: { name: string; count: number; emoji: string }[];
 }) {
   return (
-    <div className="flex flex-wrap gap-2.5">
+    <div className="-mx-4 flex gap-2.5 overflow-x-auto px-4 pb-2 sm:mx-0 sm:flex-wrap sm:px-0">
       {items.map((c) => (
         <Link
           key={c.name}
           href={`/search?q=${encodeURIComponent(c.name)}`}
-          className="group inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-4 py-2.5 text-[13px] font-bold text-body transition-all hover:-translate-y-0.5 hover:border-emerald-400/50 hover:text-headline"
+          title={`${c.count} products`}
+          className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-hairline bg-card px-3.5 py-2 text-[12.5px] font-bold text-body transition-all hover:-translate-y-0.5 hover:border-emerald-400/50 hover:text-headline"
         >
-          <span aria-hidden>{c.emoji}</span>
-          {c.name}
-          <span className="tabular rounded-full bg-elevated px-1.5 py-0.5 text-[10px] font-extrabold text-muted">
-            {c.count}
+          <span aria-hidden className="text-[15px] leading-none">
+            {c.emoji}
           </span>
-          <ChevronRight className="h-3.5 w-3.5 text-muted transition-transform group-hover:translate-x-0.5" />
+          {c.name}
         </Link>
       ))}
     </div>

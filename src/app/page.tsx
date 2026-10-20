@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
+import { StoreLogoRow } from "@/components/ui/StoreLogo";
 import { Hero } from "@/components/landing/Hero";
 import { CategoryPanel, CategoryStrip } from "@/components/landing/CategoryPanel";
 import {
@@ -79,13 +80,27 @@ export default async function HomePage() {
       <DealsMovingNow deals={drops} />
 
       {/* ---------- stats strip ---------- */}
-      <section className="border-b border-hairline py-8">
+      <section className="border-b border-hairline py-6">
         <Container>
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-center text-[13px] font-extrabold text-secondary">
-            <Stat value={`${points.toLocaleString("en-IN")}+`} label="Price points tracked" />
-            <Stat value={`${stats.stores}`} label="Stores compared" />
-            <Stat value={`${stats.products.toLocaleString("en-IN")}+`} label="Products tracked" />
-            <Stat value="100%" label="Real observations" />
+          <div className="flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-center text-[12.5px] font-extrabold text-secondary">
+            <Stat value={`${points.toLocaleString("en-IN")}+`} label="price points" />
+            <Stat value={`${stats.stores}`} label="stores" />
+            <Stat value={`${stats.products.toLocaleString("en-IN")}+`} label="products" />
+            <Stat value="100%" label="real" />
+          </div>
+        </Container>
+      </section>
+
+      {/* ---------- store strip ---------- */}
+      <section className="border-b border-hairline bg-subtle py-5">
+        <Container>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+            <StoreLogoRow
+              merchants={stats.storeRows.map((s) => s.merchant)}
+              size={28}
+              className="opacity-85"
+            />
+            <span className="text-[11.5px] font-bold text-muted">+2,000 more via Cuelinks</span>
           </div>
         </Container>
       </section>

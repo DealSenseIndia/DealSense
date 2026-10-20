@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
+import { PageSearch } from "@/components/site/PageSearch";
 import { DealGrid } from "@/components/deals/DealGrid";
 import { getFilteredDeals, getFilterFacets } from "@/lib/db/deals";
 import { STORE_META } from "@/lib/db/shelves";
@@ -40,18 +41,15 @@ export default async function DealsPage({
     <section className="relative py-12">
       <Container size="wide">
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <h1 className="text-[30px] font-extrabold tracking-[-0.025em] text-headline sm:text-[38px]">
-              Live deals
-            </h1>
-            <p className="mt-2 max-w-2xl text-[14.5px] text-body">
-              Every card below is backed by real recorded price history — not a sticker discount.
-            </p>
-          </div>
+          <h1 className="text-[30px] font-extrabold tracking-[-0.025em] text-headline sm:text-[38px]">
+            Live deals
+          </h1>
           <span className="tabular rounded-xl border border-hairline bg-card px-4 py-2.5 text-[13px] font-extrabold text-secondary">
             {deals.length} products
           </span>
         </div>
+
+        <PageSearch className="mt-6 max-w-xl" />
 
         <DealGrid
           deals={deals}

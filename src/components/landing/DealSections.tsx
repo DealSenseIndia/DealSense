@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowDown, Flame, Radio } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { StoreLogo } from "@/components/ui/StoreLogo";
 import type { DealRow } from "@/lib/db/deals";
 import { cn, formatINR, timeAgo } from "@/lib/utils";
 
@@ -66,12 +67,7 @@ export function DealsMovingNow({ deals }: { deals: DealRow[] }) {
                 {d.title}
               </div>
               <div className="mt-1.5 flex items-center gap-1.5">
-                <span
-                  className="grid h-4 w-4 place-items-center rounded text-[7px] font-black text-white"
-                  style={{ background: d.storeColor }}
-                >
-                  {d.storeShort}
-                </span>
+                <StoreLogo merchant={d.merchant} size={15} />
                 <span className="tabular text-[12.5px] font-extrabold text-headline">
                   {formatINR(d.price)}
                 </span>
@@ -164,23 +160,20 @@ export function PriceBuckets({
   const active = buckets.filter((b) => b.count > 0);
   if (!active.length) return null;
   return (
-    <section className="border-y border-hairline bg-subtle py-10">
+    <section className="border-y border-hairline bg-subtle py-7">
       <Container size="wide">
-        <h2 className="text-[22px] font-extrabold tracking-tight text-headline">
-          Hot deals by price
-        </h2>
-        <p className="mt-1 text-[13.5px] text-body">
-          Straight to your budget — no scrolling required.
-        </p>
-        <div className="mt-5 flex flex-wrap gap-2.5">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <span className="mr-1 text-[12px] font-extrabold uppercase tracking-wider text-muted">
+            Under
+          </span>
           {active.map((b) => (
             <Link
               key={b.max}
               href={`/deals?priceMax=${b.max}`}
-              className="group inline-flex items-center gap-2 rounded-full border border-hairline bg-card px-5 py-2.5 text-[13px] font-extrabold text-body transition-all hover:-translate-y-0.5 hover:border-emerald-400/60 hover:text-headline"
+              className="group inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-4 py-2 text-[12.5px] font-extrabold text-headline transition-all hover:-translate-y-0.5 hover:border-emerald-400/60"
             >
-              <span className="text-headline">Under ₹{b.max.toLocaleString("en-IN")}</span>
-              <span className="tabular rounded-full bg-elevated px-2 py-0.5 text-[10px] font-extrabold text-muted">
+              ₹{b.max.toLocaleString("en-IN")}
+              <span className="tabular rounded-full bg-elevated px-1.5 text-[10px] font-extrabold text-muted">
                 {b.count}
               </span>
             </Link>
@@ -196,20 +189,20 @@ export function DiscountTiers({ tiers }: { tiers: { min: number; count: number }
   const active = tiers.filter((t) => t.count > 0);
   if (!active.length) return null;
   return (
-    <section className="py-12">
+    <section className="py-7">
       <Container size="wide">
-        <h2 className="text-[22px] font-extrabold tracking-tight text-headline">
-          Best discounts by percentage
-        </h2>
-        <div className="mt-5 flex flex-wrap gap-2.5">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <span className="mr-1 text-[12px] font-extrabold uppercase tracking-wider text-muted">
+            Min off
+          </span>
           {active.map((t) => (
             <Link
               key={t.min}
               href={`/deals?discountMin=${t.min}`}
-              className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-500/10 px-5 py-2.5 text-[13px] font-extrabold text-amber-700 transition-all hover:-translate-y-0.5 hover:bg-amber-500 hover:text-white dark:text-amber-300"
+              className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-500/10 px-4 py-2 text-[12.5px] font-extrabold text-amber-700 transition-all hover:-translate-y-0.5 hover:bg-amber-500 hover:text-white dark:text-amber-300"
             >
-              Minimum {t.min}% off
-              <span className="tabular rounded-full bg-card/70 px-2 py-0.5 text-[10px] font-extrabold">
+              {t.min}%
+              <span className="tabular rounded-full bg-card/70 px-1.5 text-[10px] font-extrabold">
                 {t.count}
               </span>
             </Link>
@@ -228,26 +221,14 @@ export function PlatformShelves({
 }) {
   if (!shelves.length) return null;
   return (
-    <section className="py-12">
+    <section className="py-8">
       <Container size="wide">
-        <h2 className="text-[26px] font-extrabold tracking-[-0.025em] text-headline sm:text-[32px]">
-          Top deals by platform
-        </h2>
-        <p className="mt-1.5 text-[13.5px] text-body">
-          The same stores your favourite — with the price history behind every number.
-        </p>
-
-        <div className="mt-6 space-y-8">
+        <div className="space-y-8">
           {shelves.map((s) => (
             <div key={s.merchant}>
               <div className="mb-3 flex items-center gap-2">
-                <span
-                  className="grid h-7 w-7 place-items-center rounded-lg text-[9px] font-black text-white"
-                  style={{ background: s.meta.color }}
-                >
-                  {s.meta.short}
-                </span>
-                <span className="text-[15px] font-extrabold text-headline">{s.meta.name}</span>
+                <StoreLogo merchant={s.merchant} size={22} />
+                <span className="text-[14px] font-extrabold text-headline">{s.meta.name}</span>
                 <Link
                   href={`/deals?store=${s.merchant}`}
                   className="text-[12px] font-extrabold text-[var(--dw-green-mid)] hover:underline"
@@ -275,7 +256,7 @@ export function PlatformShelves({
                       )}
                       {d.discountPct > 0 && (
                         <span className="absolute left-1.5 top-1.5 rounded-full bg-emerald-600 px-1.5 py-0.5 text-[8.5px] font-extrabold text-white">
-                          {d.discountPct}% off
+                          {d.discountPct}%
                         </span>
                       )}
                     </div>
