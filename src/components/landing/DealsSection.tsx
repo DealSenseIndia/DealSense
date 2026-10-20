@@ -21,9 +21,9 @@ type Filter =
   | "wearables";
 
 const FILTERS: { id: Filter; label: string; icon?: React.ReactNode }[] = [
-  { id: "all", label: "All Drops", icon: <Flame className="h-3.5 w-3.5" /> },
+  { id: "all", label: "All Deals", icon: <Flame className="h-3.5 w-3.5" /> },
   { id: "steep", label: "Steep Drops", icon: <TrendingDown className="h-3.5 w-3.5" /> },
-  { id: "low", label: "All-Time Lows", icon: <Trophy className="h-3.5 w-3.5" /> },
+  { id: "low", label: "All Time Lows", icon: <Trophy className="h-3.5 w-3.5" /> },
   { id: "score85", label: "Score 85+", icon: <Zap className="h-3.5 w-3.5" /> },
   { id: "phones", label: "Mobiles & 5G" },
   { id: "laptops", label: "Laptops" },
@@ -47,10 +47,15 @@ export function DealsSection({ deals }: { deals: DealItem[] }) {
   const filtered = useMemo(() => {
     switch (filter) {
       case "steep":
-        return deals.filter((d) => d.verdict.genuineDiscountPct !== null && d.verdict.genuineDiscountPct >= 8);
+        return deals.filter(
+          (d) => d.verdict.genuineDiscountPct !== null && d.verdict.genuineDiscountPct >= 8,
+        );
       case "low":
         return deals.filter(
-          (d) => d.observationCount >= 3 && d.verdict.stats.low !== null && d.price <= d.verdict.stats.low,
+          (d) =>
+            d.observationCount >= 3 &&
+            d.verdict.stats.low !== null &&
+            d.price <= d.verdict.stats.low,
         );
       case "score85":
         return deals.filter((d) => (d.verdict.score ?? 0) >= 85);
@@ -66,35 +71,36 @@ export function DealsSection({ deals }: { deals: DealItem[] }) {
 
   return (
     <section className="relative py-12" id="deals">
-      <div className="mx-auto w-full max-w-[1400px] px-4 sm:px-6">
+      <div className="pointer-events-none absolute inset-0 bg-wash" aria-hidden />
+      <div className="relative mx-auto w-full max-w-[1400px] px-4 sm:px-6">
         <div className="flex flex-wrap items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-3 py-1.5 text-[11.5px] font-extrabold text-[var(--dw-green-mid)]">
-            <span className="h-1.5 w-1.5 animate-pulse-ring rounded-full bg-emerald-500" />
+            <span className="h-1.5 w-1.5 animate-pulse-ring rounded-full bg-brand-500" />
             Live Price Tracker · Updated Hourly
           </span>
         </div>
 
         <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className="text-[28px] font-extrabold tracking-tight text-headline sm:text-[34px]">
+            <h2 className="text-[28px] font-extrabold tracking-[-0.025em] text-headline sm:text-[36px]">
               🔥 Today&apos;s Biggest Price Drops
             </h2>
-            <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-body">
+            <p className="mt-2 max-w-2xl text-[14.5px] leading-relaxed text-body">
               Real, verified price drops across Amazon and Flipkart. Track genuine price history and
               spot fake discounts.
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="rounded-lg border border-hairline bg-card px-3 py-2 text-[12.5px] font-bold text-secondary">
-              <span className="tabular text-headline">{deals.length}</span> Products Found
+            <span className="rounded-xl border border-hairline bg-card px-3.5 py-2 text-[12.5px] font-bold text-secondary">
+              <span className="tabular text-headline">{deals.length}</span> products found
             </span>
             <ButtonLink href="/analyze" variant="outline" size="sm">
-              <RefreshCw className="h-3.5 w-3.5" /> Refresh Live Prices
+              <RefreshCw className="h-3.5 w-3.5" /> Refresh live prices
             </ButtonLink>
           </div>
         </div>
 
-        {/* filters */}
+        {/* chip bar — PriceHistory.ai style with a dark active pill */}
         <div className="mt-6 flex flex-wrap gap-2">
           {FILTERS.map((f) => {
             const active = filter === f.id;
@@ -103,10 +109,10 @@ export function DealsSection({ deals }: { deals: DealItem[] }) {
                 key={f.id}
                 onClick={() => setFilter(f.id)}
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-[12.5px] font-bold transition-all",
+                  "inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[12.5px] font-bold transition-all",
                   active
-                    ? "border-emerald-accent bg-emerald-accent text-white shadow-[0_6px_16px_-8px_rgba(16,185,129,0.9)]"
-                    : "border-hairline bg-card text-body hover:-translate-y-0.5 hover:border-emerald-accent/50 hover:text-headline",
+                    ? "bg-[#0B1220] text-white shadow-[0_8px_20px_-10px_rgba(11,18,32,0.9)]"
+                    : "border border-hairline bg-card text-body hover:-translate-y-0.5 hover:border-brand-400/50 hover:text-headline",
                 )}
               >
                 {f.icon}
@@ -117,14 +123,14 @@ export function DealsSection({ deals }: { deals: DealItem[] }) {
         </div>
 
         {filtered.length === 0 ? (
-          <div className="mt-8 rounded-2xl border border-dashed border-hairline bg-subtle p-12 text-center">
+          <div className="mt-8 rounded-3xl border border-dashed border-hairline bg-card p-12 text-center">
             <div className="text-4xl">🌱</div>
             <h3 className="mt-4 text-lg font-extrabold text-headline">Nothing here yet</h3>
             <p className="mx-auto mt-2 max-w-md text-[13.5px] text-body">
               DealSense only shows real, verified observations. This filter has no matching products
               yet — try another filter or track a product to start building history.
             </p>
-            <ButtonLink href="/analyze" className="mt-6">
+            <ButtonLink href="/analyze" variant="gradient" className="mt-6">
               Analyze a product
             </ButtonLink>
           </div>

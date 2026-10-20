@@ -145,7 +145,10 @@ export interface AnalysisResult {
       sampleSize: number;
     } | null;
     advertisedDiscountPct: number | null;
-    evidence: { kind: string; text: string }[];
+    evidence: {
+      kind: "VERIFIED FACT" | "CALCULATION" | "MARKET CONTEXT" | "RECOMMENDATION";
+      text: string;
+    }[];
     hasSufficientHistory: boolean;
   };
   message?: string;

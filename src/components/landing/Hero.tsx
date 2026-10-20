@@ -3,35 +3,43 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Bell, Link2, Search, ShieldCheck, Sparkles, TrendingDown } from "lucide-react";
+import { Bell, Link2, Mic, Search, ShieldCheck, Sparkles, TrendingDown, Zap } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const POPULAR = [
-  { label: "iPhone 15", q: "iPhone 15" },
-  { label: "PS5", q: "PS5" },
-  { label: "Smart TV", q: "Smart TV" },
-  { label: "Laptops", q: "laptop" },
-  { label: "Nike Shoes", q: "Nike shoes" },
-  { label: "Watches", q: "smartwatch" },
+  { label: "iPhone 17", q: "iPhone 17", emoji: "📱" },
+  { label: "PS5", q: "PS5", emoji: "🎮" },
+  { label: "Smart TV", q: "Smart TV", emoji: "📺" },
+  { label: "Laptops", q: "laptop", emoji: "💻" },
+  { label: "Headphones", q: "headphones", emoji: "🎧" },
+  { label: "Watches", q: "smartwatch", emoji: "⌚" },
+];
+
+const STORES = [
+  { label: "Amazon", short: "a", bg: "#FF9900", fg: "#000" },
+  { label: "Flipkart", short: "f", bg: "#2874F0", fg: "#fff" },
+  { label: "Croma", short: "C", bg: "#00A0E9", fg: "#fff" },
+  { label: "Myntra", short: "M", bg: "#FF3F6C", fg: "#fff" },
+  { label: "AJIO", short: "A", bg: "#2C4152", fg: "#fff" },
 ];
 
 const rise = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 0, y: 24 },
   show: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: 0.08 * i, duration: 0.65, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { delay: 0.06 * i, duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
   }),
 };
 
-export function Hero() {
+export function Hero({ trackedToday = 0 }: { trackedToday?: number }) {
   const [url, setUrl] = useState("");
   const router = useRouter();
 
-  function analyze(value: string) {
+  function go(value: string) {
     const v = value.trim();
     if (!v) return;
     if (/^https?:\/\//i.test(v) || /amazon|flipkart/i.test(v)) {
@@ -42,18 +50,8 @@ export function Hero() {
   }
 
   return (
-    <section className="relative overflow-hidden pb-10 pt-10 sm:pt-14">
-      {/* soft ambient wash */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-40 right-[-10%] h-[520px] w-[520px] rounded-full opacity-[0.55] blur-[110px]"
-        style={{ background: "radial-gradient(circle, rgba(16,185,129,0.28), transparent 65%)" }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-20 left-[-14%] h-[420px] w-[420px] rounded-full opacity-40 blur-[110px]"
-        style={{ background: "radial-gradient(circle, rgba(56,189,248,0.22), transparent 65%)" }}
-      />
+    <section className="relative overflow-hidden pb-12 pt-10 sm:pt-14">
+      <div className="pointer-events-none absolute inset-0 bg-wash-strong" aria-hidden />
 
       <Container size="wide" className="relative">
         <div className="grid items-center gap-10 lg:grid-cols-[1.02fr_0.98fr]">
@@ -66,8 +64,10 @@ export function Hero() {
               animate="show"
               className="inline-flex items-center gap-2 rounded-full border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-3.5 py-1.5 text-[11.5px] font-extrabold text-[var(--dw-green-mid)]"
             >
-              <ShieldCheck className="h-3.5 w-3.5" />
-              India&apos;s Most Trusted Shopping Intelligence Platform
+              <span className="h-2 w-2 animate-pulse-ring rounded-full bg-brand-500" />
+              {trackedToday > 0
+                ? `${trackedToday.toLocaleString("en-IN")} price points tracked`
+                : "Live price tracking across India"}
             </motion.div>
 
             <motion.h1
@@ -75,11 +75,13 @@ export function Hero() {
               custom={1}
               initial="hidden"
               animate="show"
-              className="mt-5 text-[40px] font-extrabold leading-[1.02] tracking-[-0.03em] text-headline sm:text-[56px] lg:text-[64px]"
+              className="mt-5 text-[38px] font-extrabold leading-[1.03] tracking-[-0.035em] text-headline sm:text-[54px] lg:text-[62px]"
             >
-              Shop smarter.
+              DealSense:
               <br />
-              Save <span className="text-emerald-accent">bigger.</span>
+              <span className="text-gradient-brand">Never overpay</span>{" "}
+              <span className="text-gradient-deep">online</span>
+              <span className="inline-block h-[0.9em] w-[3px] translate-y-[0.05em] animate-blink bg-brand-500" />
             </motion.h1>
 
             <motion.p
@@ -89,11 +91,11 @@ export function Hero() {
               animate="show"
               className="mt-5 max-w-[30rem] text-[15.5px] leading-relaxed text-body"
             >
-              Track price history, compare across stores, get price drop alerts and know the best
-              time to buy. Real verified data — never a fake discount.
+              Paste any Amazon or Flipkart link. We read the real price history, compare every store
+              and tell you plainly: <strong className="font-bold text-headline">buy, wait or avoid.</strong>
             </motion.p>
 
-            {/* Search bar */}
+            {/* Big search bar */}
             <motion.form
               variants={rise}
               custom={3}
@@ -101,57 +103,56 @@ export function Hero() {
               animate="show"
               onSubmit={(e) => {
                 e.preventDefault();
-                analyze(url);
+                go(url);
               }}
-              className="mt-7 flex max-w-[40rem] flex-col gap-2.5 rounded-2xl border border-hairline bg-card p-2 shadow-card sm:flex-row sm:items-center"
+              className="mt-7 flex max-w-[38rem] items-center gap-2 rounded-2xl border border-hairline bg-card p-2 shadow-[0_18px_40px_-24px_rgba(15,23,42,0.35)] transition-shadow focus-within:shadow-[0_18px_50px_-20px_rgba(16,185,129,0.45)]"
             >
-              <div className="flex min-w-0 flex-1 items-center gap-2.5 px-2">
-                <Link2 className="h-4 w-4 shrink-0 text-muted" />
-                <span className="flex shrink-0 items-center gap-1">
-                  <span className="grid h-6 w-6 place-items-center rounded-md bg-[#FF9900] text-[8.5px] font-black text-black">
-                    a
-                  </span>
-                  <span className="grid h-6 w-6 place-items-center rounded-md bg-[#2874F0] text-[8.5px] font-black text-white">
-                    f
-                  </span>
-                </span>
-                <input
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  placeholder="Paste any product link (Amazon, Flipkart, etc.) or search"
-                  className="h-10 min-w-0 flex-1 bg-transparent text-[14px] text-headline placeholder:text-muted focus:outline-none"
-                  autoComplete="off"
-                  spellCheck={false}
-                />
-              </div>
+              <span className="pl-2.5 text-muted">
+                <Link2 className="h-4.5 w-4.5" />
+              </span>
+              <input
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder="Search for any product or paste a link…"
+                className="h-11 min-w-0 flex-1 bg-transparent text-[14.5px] text-headline placeholder:text-muted focus:outline-none"
+                autoComplete="off"
+                spellCheck={false}
+              />
+              <span className="hidden h-5 w-px bg-hairline sm:block" />
+              <button type="button" aria-label="Voice search" className="hidden text-muted hover:text-headline sm:block">
+                <Mic className="h-4 w-4" />
+              </button>
               <button
                 type="submit"
-                className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-emerald-accent px-6 text-[13.5px] font-extrabold text-white shadow-[0_8px_22px_-10px_rgba(16,185,129,0.9)] transition-all hover:-translate-y-0.5 hover:bg-[var(--dw-green-mid)]"
+                className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl bg-gradient-brand px-5 text-[13.5px] font-extrabold text-[#04140d] transition-transform hover:-translate-y-0.5 hover:brightness-105"
               >
                 <Search className="h-4 w-4" />
-                Analyze Deal
+                Find best deals
               </button>
             </motion.form>
 
+            {/* Popular pills */}
             <motion.div
               variants={rise}
               custom={4}
               initial="hidden"
               animate="show"
-              className="mt-4 flex flex-wrap items-center gap-2"
+              className="mt-5 flex flex-wrap items-center gap-2"
             >
-              <span className="text-[12.5px] font-bold text-secondary">Popular:</span>
+              <span className="text-[12.5px] font-bold text-muted">Popular:</span>
               {POPULAR.map((p) => (
                 <Link
                   key={p.label}
                   href={`/search?q=${encodeURIComponent(p.q)}`}
-                  className="rounded-full border border-hairline bg-card px-3 py-1.5 text-[12px] font-semibold text-body transition-all hover:-translate-y-0.5 hover:border-emerald-accent/50 hover:text-headline"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-3 py-1.5 text-[12px] font-semibold text-body transition-all hover:-translate-y-0.5 hover:border-brand-400/50 hover:text-headline"
                 >
+                  <span aria-hidden>{p.emoji}</span>
                   {p.label}
                 </Link>
               ))}
             </motion.div>
 
+            {/* Trust row */}
             <motion.div
               variants={rise}
               custom={5}
@@ -160,43 +161,64 @@ export function Hero() {
               className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12.5px] font-semibold text-secondary"
             >
               <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck className="h-3.5 w-3.5 text-emerald-accent" /> Live verified prices
+                <ShieldCheck className="h-3.5 w-3.5 text-brand-500" /> Live verified prices
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <TrendingDown className="h-3.5 w-3.5 text-emerald-accent" /> Real price history
+                <TrendingDown className="h-3.5 w-3.5 text-brand-500" /> Real price history
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Sparkles className="h-3.5 w-3.5 text-emerald-accent" /> True landed cost
+                <Zap className="h-3.5 w-3.5 text-brand-500" /> True landed cost
               </span>
+            </motion.div>
+
+            {/* Store logos */}
+            <motion.div
+              variants={rise}
+              custom={6}
+              initial="hidden"
+              animate="show"
+              className="mt-6 flex flex-wrap items-center gap-4"
+            >
+              <span className="text-[11.5px] font-bold text-muted">We compare</span>
+              {STORES.map((s) => (
+                <span
+                  key={s.label}
+                  title={s.label}
+                  className="grid h-7 w-7 place-items-center rounded-lg text-[9.5px] font-black shadow-sm"
+                  style={{ background: s.bg, color: s.fg }}
+                >
+                  {s.short}
+                </span>
+              ))}
+              <span className="text-[11.5px] font-semibold text-muted">+ 2,000 more stores via Cuelinks</span>
             </motion.div>
           </div>
 
-          {/* ---------------- Right: illustration + floating widget cards ---------------- */}
+          {/* ---------------- Right: our girl + floating cards ---------------- */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96, y: 18 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ delay: 0.22, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.18, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="relative mx-auto w-full max-w-[560px]"
           >
             <div className="relative">
-              {/* The illustration */}
               <motion.div
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 22 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ delay: 0.26, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 className="relative z-0"
               >
                 <Image
                   src="/brand/hero-illustration.webp"
-                  alt="A shopper checking a price on her phone, tracking a rising price chart"
+                  alt="A shopper checking a price on her phone while tracking a price chart"
                   width={1024}
                   height={576}
                   priority
-                  className="h-auto w-full"
+                  className="h-auto w-full drop-shadow-[0_24px_48px_rgba(15,23,42,0.14)]"
                 />
               </motion.div>
 
-              {/* Floating widget cards layered over the illustration */}
+              {/* Floating widget cards */}
               <div className="pointer-events-none absolute inset-0 z-10">
                 <FloatCard className="left-0 top-0 w-[212px] animate-float sm:-left-3" delay="0s">
                   <div className="flex items-center justify-between gap-2">
@@ -259,7 +281,7 @@ export function Hero() {
                     <span className="text-muted">(12,540)</span>
                   </div>
                   <div className="tabular mt-1.5 text-[18px] font-extrabold text-headline">₹24,999</div>
-                  <div className="mt-2 flex h-8 items-center justify-center rounded-lg bg-emerald-accent text-[11.5px] font-extrabold text-white">
+                  <div className="mt-2 flex h-8 items-center justify-center rounded-lg bg-gradient-brand text-[11.5px] font-extrabold text-[#04140d]">
                     Check Deal →
                   </div>
                 </FloatCard>
@@ -315,9 +337,9 @@ function FloatCard({
     <motion.div
       initial={{ opacity: 0, y: 14, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay: 0.45, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ delay: 0.4, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        "absolute rounded-2xl border border-hairline bg-card p-4 shadow-pop",
+        "absolute rounded-2xl border border-hairline bg-card/95 p-4 shadow-[0_20px_50px_-20px_rgba(15,23,42,0.35)] backdrop-blur-md",
         className,
       )}
       style={{ animationDelay: delay }}

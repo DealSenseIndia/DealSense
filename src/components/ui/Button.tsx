@@ -1,25 +1,27 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "secondary" | "ghost" | "outline";
+type Variant = "primary" | "gradient" | "iris" | "secondary" | "ghost" | "outline";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "relative inline-flex items-center justify-center gap-2 rounded-btn font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-accent/50 disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap";
+  "relative inline-flex items-center justify-center gap-2 rounded-btn font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/50 disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap";
 
 const variants: Record<Variant, string> = {
-  primary:
-    "bg-emerald-accent text-white shadow-[0_8px_22px_-10px_rgba(16,185,129,0.9)] hover:bg-[var(--dw-green-mid)] hover:-translate-y-0.5",
+  primary: "bg-brand-500 text-white hover:bg-brand-600",
+  gradient:
+    "bg-gradient-brand text-[#04140d] shadow-[0_10px_30px_-12px_rgba(16,185,129,0.85)] hover:shadow-[0_16px_40px_-12px_rgba(34,211,238,0.9)] hover:-translate-y-0.5 hover:brightness-105",
+  iris: "bg-gradient-iris text-white shadow-[0_10px_30px_-12px_rgba(99,102,241,0.9)] hover:-translate-y-0.5 hover:brightness-105",
   secondary: "bg-terminal text-white hover:opacity-90",
   outline:
-    "border border-hairline-strong bg-card text-headline hover:border-emerald-accent/50 hover:-translate-y-0.5",
+    "border border-hairline-strong bg-card text-headline hover:border-iris-400/60 hover:-translate-y-0.5",
   ghost: "text-body hover:bg-elevated hover:text-headline",
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-3.5 text-[12.5px]",
+  sm: "h-9 px-4 text-[12.5px]",
   md: "h-11 px-6 text-[13.5px]",
-  lg: "h-12 px-7 text-[14px]",
+  lg: "h-13 px-7 text-[15px]",
 };
 
 export function Button({

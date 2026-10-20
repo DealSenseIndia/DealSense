@@ -1,7 +1,18 @@
 import Link from "next/link";
+import {
+  Bell,
+  Bot,
+  ChartNoAxesCombined,
+  CircleDollarSign,
+  Layers,
+  ShieldCheck,
+  Sparkles,
+  TrendingDown,
+  Zap,
+} from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
-import { Reveal } from "@/components/motion/Reveal";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { Counter } from "@/components/motion/Counter";
 
 const steps = [
@@ -30,7 +41,7 @@ export function HowItWorks() {
           <p className="text-[12px] font-extrabold uppercase tracking-widest text-[var(--dw-green-mid)]">
             How it works
           </p>
-          <h2 className="mt-3 text-[30px] font-extrabold tracking-tight text-headline sm:text-[36px]">
+          <h2 className="mt-3 text-[30px] font-extrabold tracking-[-0.025em] text-headline sm:text-[38px]">
             A decision, not just a price
           </h2>
           <p className="mt-3 text-[15px] text-body">
@@ -38,21 +49,82 @@ export function HowItWorks() {
           </p>
         </Reveal>
 
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
-          {steps.map((s, i) => (
-            <Reveal key={s.n} delay={i * 0.08}>
-              <div className="group h-full rounded-card border border-hairline bg-card p-6 shadow-card transition-all hover:-translate-y-1 hover:border-emerald-accent/40 hover:shadow-lift">
+        <Stagger className="mt-12 grid gap-5 md:grid-cols-3">
+          {steps.map((s) => (
+            <StaggerItem key={s.n}>
+              <div className="group h-full rounded-card border border-hairline bg-card p-6 shadow-card transition-all hover:-translate-y-1 hover:border-brand-400/40 hover:shadow-[0_20px_50px_-24px_rgba(16,185,129,0.5)]">
                 <div className="flex items-center justify-between">
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-[var(--dw-green-surface)] text-[16px] font-extrabold text-[var(--dw-green-mid)]">
+                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-brand text-[15px] font-extrabold text-[#04140d]">
                     {s.n}
                   </span>
                 </div>
                 <h3 className="mt-5 text-[16px] font-extrabold text-headline">{s.title}</h3>
                 <p className="mt-2 text-[13.5px] leading-relaxed text-body">{s.body}</p>
               </div>
-            </Reveal>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
+      </Container>
+    </section>
+  );
+}
+
+export function Features() {
+  const features = [
+    {
+      title: "Real price history",
+      body: "Every price point is a genuine, timestamped observation. We never draw a made-up chart.",
+      icon: ChartNoAxesCombined,
+      span: "md:col-span-2",
+    },
+    {
+      title: "True landed price",
+      body: "Base + delivery − coupon − card offer = what you actually pay.",
+      icon: CircleDollarSign,
+    },
+    {
+      title: "Cross-store comparison",
+      body: "Amazon vs Flipkart, matched to the exact same variant. No 128GB-vs-256GB nonsense.",
+      icon: Layers,
+    },
+    {
+      title: "Fake-discount detection",
+      body: "We catch inflated MRPs and say so, instead of celebrating a fake deal.",
+      icon: ShieldCheck,
+    },
+    {
+      title: "Price drop alerts",
+      body: "Set a target, a % drop or a deal score. Get pinged on Telegram or email the moment it hits.",
+      icon: Bell,
+    },
+  ];
+
+  return (
+    <section className="relative py-16">
+      <Container>
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <p className="text-[12px] font-extrabold uppercase tracking-widest text-[var(--dw-green-mid)]">
+            Built different
+          </p>
+          <h2 className="mt-3 text-[30px] font-extrabold tracking-[-0.025em] text-headline sm:text-[38px]">
+            The honesty layer for Indian shopping
+          </h2>
+        </Reveal>
+
+        <Stagger className="mt-12 grid gap-5 md:grid-cols-3">
+          {features.map((f) => (
+            <StaggerItem key={f.title} className={f.span}>
+              <div className="group relative h-full overflow-hidden rounded-card border border-hairline bg-card p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-400/40 hover:shadow-[0_24px_60px_-28px_rgba(16,185,129,0.55)]">
+                <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-brand-500/10 blur-2xl" />
+                <span className="relative grid h-11 w-11 place-items-center rounded-2xl bg-gradient-brand text-[#04140d]">
+                  <f.icon className="h-5 w-5" />
+                </span>
+                <h3 className="relative mt-5 text-[17px] font-extrabold text-headline">{f.title}</h3>
+                <p className="relative mt-2 text-[13.5px] leading-relaxed text-body">{f.body}</p>
+              </div>
+            </StaggerItem>
+          ))}
+        </Stagger>
       </Container>
     </section>
   );
@@ -62,12 +134,12 @@ export function Integrity() {
   return (
     <section className="relative border-t border-hairline py-16">
       <Container>
-        <div className="grid items-center gap-10 rounded-[24px] border border-hairline bg-card p-8 shadow-card sm:p-12 lg:grid-cols-2">
+        <div className="grid items-center gap-10 rounded-[28px] border border-hairline bg-card p-8 shadow-card sm:p-12 lg:grid-cols-2">
           <div>
             <p className="text-[12px] font-extrabold uppercase tracking-widest text-[var(--dw-green-mid)]">
               Our one rule
             </p>
-            <h2 className="mt-3 text-[28px] font-extrabold tracking-tight text-headline sm:text-[34px]">
+            <h2 className="mt-3 text-[28px] font-extrabold tracking-[-0.025em] text-headline sm:text-[36px]">
               We will never show you a fake deal.
             </h2>
             <p className="mt-3 text-[15px] text-body">
@@ -81,7 +153,7 @@ export function Integrity() {
                 "If a discount is inflated, we call it out.",
               ].map((t) => (
                 <li key={t} className="flex items-start gap-2.5 text-[13.5px] text-body">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-accent" />
+                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-brand-500" />
                   {t}
                 </li>
               ))}
@@ -142,7 +214,7 @@ export function Faq() {
       <Container size="narrow">
         <Reveal className="text-center">
           <p className="text-[12px] font-extrabold uppercase tracking-widest text-[var(--dw-green-mid)]">FAQ</p>
-          <h2 className="mt-3 text-[30px] font-extrabold tracking-tight text-headline sm:text-[36px]">
+          <h2 className="mt-3 text-[30px] font-extrabold tracking-[-0.025em] text-headline sm:text-[38px]">
             Questions, answered
           </h2>
         </Reveal>
@@ -150,7 +222,7 @@ export function Faq() {
           {faqs.map((it) => (
             <details
               key={it.q}
-              className="group rounded-2xl border border-hairline bg-card px-5 py-4 transition-colors open:border-emerald-accent/40 open:bg-subtle"
+              className="group rounded-2xl border border-hairline bg-card px-5 py-4 transition-colors open:border-brand-400/40 open:bg-subtle"
             >
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[14.5px] font-bold text-headline">
                 {it.q}
@@ -167,32 +239,62 @@ export function Faq() {
   );
 }
 
+/** Buyhatke-style community bar + CTA */
+export function CommunityBar() {
+  return (
+    <div className="border-y border-hairline bg-card/70 py-5 backdrop-blur">
+      <Container>
+        <div className="flex flex-wrap items-center justify-center gap-3 text-[13.5px] font-bold text-headline">
+          <span className="inline-flex items-center gap-2">
+            <Bot className="h-4 w-4 text-brand-500" />
+            Join our deal community on:
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#25D366]/40 bg-[#25D366]/10 px-3.5 py-1.5 text-[#128C7E] dark:text-[#4ade80]">
+            WhatsApp
+          </span>
+          <span className="text-muted">·</span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-400/40 bg-sky-500/10 px-3.5 py-1.5 text-sky-600 dark:text-sky-300">
+            Telegram
+          </span>
+        </div>
+      </Container>
+    </div>
+  );
+}
+
 export function CtaBand() {
   return (
-    <section className="relative border-t border-hairline py-16">
-      <Container>
-        <div className="relative overflow-hidden rounded-[24px] border border-[var(--dw-green-border)] bg-gradient-to-br from-[var(--dw-green-surface)] via-card to-card p-10 text-center shadow-card sm:p-16">
+    <section className="relative py-16">
+      <div className="pointer-events-none absolute inset-0 bg-wash" aria-hidden />
+      <Container className="relative">
+        <div className="relative overflow-hidden rounded-[28px] border border-hairline bg-card p-10 text-center shadow-card sm:p-16">
+          <div className="pointer-events-none absolute inset-0 bg-gradient-brand opacity-[0.07]" />
           <div className="relative mx-auto max-w-2xl">
-            <h2 className="text-[30px] font-extrabold tracking-tight text-headline sm:text-[38px]">
+            <Sparkles className="mx-auto h-7 w-7 text-brand-500" />
+            <h2 className="mt-5 text-[30px] font-extrabold tracking-[-0.025em] text-headline sm:text-[40px]">
               Stop guessing. Start checking.
             </h2>
             <p className="mt-3 text-[15px] text-body">
               Paste a link and get the truth in seconds. It&apos;s free, and it might save you thousands.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
-              <ButtonLink href="/analyze" size="lg">
+              <ButtonLink href="/analyze" variant="gradient" size="lg">
                 Analyze a deal
               </ButtonLink>
               <ButtonLink href="/search?q=laptop" variant="outline" size="lg">
                 Browse products
               </ButtonLink>
             </div>
-            <p className="mt-6 text-[12.5px] text-secondary">
-              Prefer to browse?{" "}
-              <Link href="/deals" className="font-bold text-[var(--dw-green-mid)] underline">
-                See live deals
-              </Link>
-              .
+            <p className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[12.5px] font-semibold text-secondary">
+              <span className="inline-flex items-center gap-1.5">
+                <Zap className="h-3.5 w-3.5 text-brand-500" /> Instant verdict
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <TrendingDown className="h-3.5 w-3.5 text-brand-500" /> Real price history
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Bell className="h-3.5 w-3.5 text-brand-500" /> Free drop alerts
+              </span>
             </p>
           </div>
         </div>

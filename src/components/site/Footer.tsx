@@ -16,14 +16,31 @@ export function Footer() {
                 height={32}
                 className="h-8 w-8 rounded-[9px]"
               />
-              <span className="text-[16px] font-extrabold tracking-tight text-headline">
-                Deal<span className="text-emerald-accent">Sense</span>
+              <span className="text-[17px] font-extrabold tracking-tight text-headline">
+                Deal<span className="text-gradient-brand">Sense</span>
               </span>
             </div>
             <p className="mt-3 max-w-xs text-[13px] leading-relaxed text-secondary">
               India&apos;s shopping decision engine. Real price history, true landed cost and an honest
               verdict — before you buy.
             </p>
+            <div className="mt-4 flex items-center gap-2">
+              {[
+                { l: "Amazon", s: "a", bg: "#FF9900", fg: "#000" },
+                { l: "Flipkart", s: "f", bg: "#2874F0", fg: "#fff" },
+                { l: "Croma", s: "C", bg: "#00A0E9", fg: "#fff" },
+                { l: "Myntra", s: "M", bg: "#FF3F6C", fg: "#fff" },
+              ].map((s) => (
+                <span
+                  key={s.l}
+                  title={s.l}
+                  className="grid h-7 w-7 place-items-center rounded-lg text-[9px] font-black"
+                  style={{ background: s.bg, color: s.fg }}
+                >
+                  {s.s}
+                </span>
+              ))}
+            </div>
           </div>
 
           <FooterCol
@@ -36,11 +53,12 @@ export function Footer() {
             ]}
           />
           <FooterCol
-            title="Stores"
+            title="Track"
             links={[
-              { href: "/search?q=amazon+deals", label: "Amazon India" },
-              { href: "/search?q=flipkart+deals", label: "Flipkart" },
-              { href: "/track", label: "Track prices" },
+              { href: "/track", label: "Your alerts" },
+              { href: "/search?q=iphone", label: "iPhone prices" },
+              { href: "/search?q=laptop", label: "Laptop prices" },
+              { href: "/search?q=tv", label: "TV prices" },
             ]}
           />
           <FooterCol
@@ -71,7 +89,10 @@ function FooterCol({ title, links }: { title: string; links: { href: string; lab
       <ul className="mt-3.5 space-y-2">
         {links.map((l) => (
           <li key={l.label}>
-            <Link href={l.href} className="text-[13px] font-semibold text-body transition-colors hover:text-[var(--dw-green-mid)]">
+            <Link
+              href={l.href}
+              className="text-[13px] font-semibold text-body transition-colors hover:text-[var(--dw-green-mid)]"
+            >
               {l.label}
             </Link>
           </li>
