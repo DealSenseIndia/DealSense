@@ -18,7 +18,8 @@
     "history": "tsx scripts/seed-history.ts",
     "merge": "tsx scripts/merge-products.ts",
     "scrape": "tsx scripts/refresh.ts",
-    "shot": "node scripts/shot.mjs"
+    "shot": "node scripts/shot.mjs",
+    "art:soften": "node scripts/soften-hero.mjs"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",

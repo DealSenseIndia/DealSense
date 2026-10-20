@@ -6,6 +6,13 @@
    Emerald accent, slate neutrals, navy headline ink, tabular rupee figures.
    ================================================================== */
 
+/* The app's theme lives on <html data-theme="light|dark"> (set by the theme
+   toggle in layout.tsx). Tailwind's stock `dark:` variant keys off the OS
+   media query, which means every `dark:` utility in the app was following the
+   OPERATING SYSTEM instead of the theme the visitor actually picked. Point the
+   variant at our own attribute so the two always agree. */
+@custom-variant dark (&:where([data-theme="dark"] *, [data-theme="dark"]));
+
 @theme {
   --color-brand-50: #ecfdf5;
   --color-brand-100: #d1fae5;

@@ -14,6 +14,23 @@
 - **Catalogue:** 242 products / 299 listings / 32,805 recorded price points across
   Amazon, Flipkart, Myntra and Tata CLiQ. Every point is a real observation.
 
+## Hero background + artwork (important)
+
+- The hero is a **green wash**, never black:
+  `radial-gradient(48% 52% at 77% 62%, rgba(233,252,242,0.95) 0%, transparent 72%)` over
+  `linear-gradient(160deg, #F5FDF9 0%, #EDFBF3 42%, #DEF5E9 100%)`.
+  Dark theme: the same shape in deep forest green (`#062B20 → #04211A`), never `#0F172A`.
+- **The artwork is feathered.** The source cut-out has a hard pale-mint (`#E9FCF2`) halo that
+  read as a pasted rectangle. `npm run art:soften` blurs the alpha channel (sigma 7) and writes
+  it back, producing `public/brand/hero-illustration-soft.png/.webp`. The hero uses the soft
+  webp; the mint pool in the background matches the artwork's halo exactly, so the girl
+  dissolves into the page.
+- **`dark:` is not the media query here.** The app stores the theme on
+  `<html data-theme="light|dark">`. Tailwind's stock `dark:` variant follows the OS, which meant
+  every `dark:` utility in the app followed the OPERATING SYSTEM rather than the theme the
+  visitor picked — a dark hero appearing on a light page. Fixed globally in `globals.css` with
+  `@custom-variant dark (&:where([data-theme="dark"] *, [data-theme="dark"]));`.
+
 ## Homepage (current)
 
 The hero is a **verbatim rebuild of the DealSense 1.0 hero** — the sizes, spacing, colours and

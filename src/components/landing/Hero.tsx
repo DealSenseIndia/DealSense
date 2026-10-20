@@ -53,13 +53,16 @@ export function Hero({ featured }: { featured?: FeaturedDeal | null }) {
 
   return (
     <section className="relative overflow-hidden border-b border-hairline">
-      {/* the DealSense 1.0 hero gradient */}
+      {/* Green hero wash. The pool of mint behind the illustration is the exact
+          colour of the artwork's own halo, so the girl dissolves into it
+          instead of sitting on a visible cut-out edge. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, #F0FDF4 0%, #F7FEE7 40%, #FFFFFF 100%)",
+            "radial-gradient(48% 52% at 77% 62%, rgba(233,252,242,0.95) 0%, rgba(233,252,242,0) 72%), " +
+            "linear-gradient(160deg, #F5FDF9 0%, #EDFBF3 42%, #DEF5E9 100%)",
         }}
       />
       <div
@@ -67,7 +70,8 @@ export function Hero({ featured }: { featured?: FeaturedDeal | null }) {
         className="pointer-events-none absolute inset-0 hidden dark:block"
         style={{
           background:
-            "linear-gradient(180deg, rgba(6,78,59,0.16) 0%, rgba(11,16,29,0.95) 100%)",
+            "radial-gradient(48% 52% at 77% 62%, rgba(16,185,129,0.16) 0%, rgba(16,185,129,0) 72%), " +
+            "linear-gradient(160deg, #062B20 0%, #04211A 55%, #051A14 100%)",
         }}
       />
 
@@ -152,14 +156,14 @@ export function Hero({ featured }: { featured?: FeaturedDeal | null }) {
 
           {/* ===================== RIGHT — girl + floating cards ===================== */}
           <div className="relative mx-auto flex h-[420px] w-full max-w-[550px] items-end justify-center max-lg:h-[380px] max-lg:max-w-[440px] max-sm:flex max-sm:h-auto max-sm:max-w-none max-sm:flex-col max-sm:items-center max-sm:pt-3">
-            {/* official artwork */}
+            {/* official artwork — feathered edge, melts into the green wash */}
             <Image
-              src="/brand/hero-illustration.webp"
+              src="/brand/hero-illustration-soft.webp"
               alt="DealSense Shopping Intelligence"
               width={1024}
               height={576}
               priority
-              className="relative z-[2] mx-auto block h-auto w-full max-w-[500px] shrink-0 object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.15)] max-sm:max-w-[290px]"
+              className="relative z-[2] mx-auto block h-auto w-full max-w-[500px] shrink-0 object-contain drop-shadow-[0_10px_30px_rgba(16,185,129,0.10)] max-sm:max-w-[290px]"
             />
 
             {/* FLOAT 1 — Price History */}
