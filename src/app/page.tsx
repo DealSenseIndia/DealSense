@@ -1,11 +1,23 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Hero } from "@/components/landing/Hero";
 import { CategoryPanel, CategoryStrip } from "@/components/landing/CategoryPanel";
+import {
+  AllTimeLows,
+  DealsMovingNow,
+  DiscountTiers,
+  PlatformShelves,
+  PriceBuckets,
+} from "@/components/landing/DealSections";
 import { CommunityBar, CtaBand, Faq, HowItWorks, Integrity } from "@/components/landing/Sections";
-import { getShelves, getCatalogueStats, getTotalObservations, STORE_META } from "@/lib/db/shelves";
+import {
+  getAllTimeLows,
+  getDiscountTiers,
+  getPlatformShelves,
+  getPriceBuckets,
+  getRecentDrops,
+} from "@/lib/db/deals";
+import { getShelves, getCatalogueStats, getTotalObservations } from "@/lib/db/shelves";
 import { site } from "@/lib/config";
 
 export const metadata: Metadata = {
@@ -19,30 +31,37 @@ export const dynamic = "force-dynamic";
 const EMOJI: Record<string, string> = {
   Smartphones: "📱",
   Laptops: "💻",
+  "Traditional Laptops": "💼",
   Audio: "🎧",
   "In-Ear": "🎵",
   "Over-Ear": "🎧",
+  Televisions: "📺",
   "Wrist Watches": "⌚",
   Dresses: "👗",
   Kurtas: "👘",
   Sarees: "🥻",
-  Sunglasses: "🕶️",
+  Jeans: "👖",
+  Tshirts: "👕",
+  "Running Shoes": "👟",
+  Sneakers: "👟",
+  "Nike Sports Shoes": "👟",
   "Air Fryers": "🍟",
   Perfume: "🧴",
+  Lipstick: "💄",
   Backpacks: "🎒",
-  "Bluetooth Speakers": "🔊",
-  "Keyboard & Mouse Sets": "⌨️",
-  "Basic Cases": "📱",
-  "Traditional Laptops": "💼",
-  "All in One PCs": "🖥️",
-  Serums: "🧴",
+  Sunglasses: "🕶️",
 };
 
 export default async function HomePage() {
-  const [shelves, stats, points] = await Promise.all([
+  const [shelves, stats, points, drops, lows, buckets, tiers, platform] = await Promise.all([
     getShelves(6),
     getCatalogueStats(),
     getTotalObservations(),
+    getRecentDrops(14),
+    getAllTimeLows(12),
+    getPriceBuckets(),
+    getDiscountTiers(),
+    getPlatformShelves(6),
   ]);
 
   const categoryItems = shelves.slice(0, 14).map((s) => ({
@@ -53,15 +72,13 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero
-        pointsTracked={points}
-        stores={stats.stores}
-        products={stats.products}
-      />
+      <Hero pointsTracked={points} stores={stats.stores} products={stats.products} />
 
       <CommunityBar />
 
-      {/* ---------- stats strip (Buyhatke style) ---------- */}
+      <DealsMovingNow deals={drops} />
+
+      {/* ---------- stats strip ---------- */}
       <section className="border-b border-hairline py-8">
         <Container>
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-center text-[13px] font-extrabold text-secondary">
@@ -73,52 +90,24 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      {/* ---------- store strip ---------- */}
-      <section className="border-b border-hairline bg-subtle py-7">
-        <Container>
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-            <span className="text-[12px] font-bold text-muted">We track</span>
-            {stats.storeRows.map(({ merchant, count }) => {
-              const m = STORE_META[merchant] ?? {
-                name: merchant,
-                short: merchant.slice(0, 2).toUpperCase(),
-                color: "#64748B",
-              };
-              return (
-                <span
-                  key={merchant}
-                  title={`${m.name} — ${count} products`}
-                  className="grid h-9 w-9 place-items-center rounded-xl text-[10px] font-black text-white shadow-sm"
-                  style={{ background: m.color }}
-                >
-                  {m.short}
-                </span>
-              );
-            })}
-            <span className="text-[12px] font-bold text-muted">
-              + 2,000 more stores via Cuelinks
-            </span>
-          </div>
-        </Container>
-      </section>
+      <AllTimeLows deals={lows} />
+      <PriceBuckets buckets={buckets} />
 
-      {/* ---------- category shelves (Buyhatke panels) ---------- */}
+      {/* ---------- category shelves ---------- */}
       {shelves.length > 0 && (
-        <section className="py-14">
+        <section className="py-6">
           <Container size="wide">
-            <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <p className="text-[12px] font-extrabold uppercase tracking-widest text-[var(--dw-green-mid)]">
-                  Top deals across categories
-                </p>
-                <h2 className="mt-2 text-[28px] font-extrabold tracking-[-0.025em] text-headline sm:text-[34px]">
-                  Every product here has real price history
-                </h2>
-                <p className="mt-2 max-w-2xl text-[14px] text-body">
-                  We only list products we can actually track. Every price, discount and verdict below
-                  is backed by recorded observations.
-                </p>
-              </div>
+            <div className="mb-7">
+              <p className="text-[12px] font-extrabold uppercase tracking-widest text-[var(--dw-green-mid)]">
+                Top deals across categories
+              </p>
+              <h2 className="mt-2 text-[26px] font-extrabold tracking-[-0.025em] text-headline sm:text-[32px]">
+                Every product here has real price history
+              </h2>
+              <p className="mt-2 max-w-2xl text-[14px] text-body">
+                We only list products we can actually track. Every price, discount and verdict below
+                is backed by recorded observations.
+              </p>
             </div>
 
             <div className="space-y-6">
@@ -129,6 +118,9 @@ export default async function HomePage() {
           </Container>
         </section>
       )}
+
+      <DiscountTiers tiers={tiers} />
+      <PlatformShelves shelves={platform} />
 
       {/* ---------- category strip ---------- */}
       {categoryItems.length > 0 && (

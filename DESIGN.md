@@ -59,21 +59,36 @@ Original DealSense brand assets live in `public/brand/` and are carried over fro
 - **Header (Buyhatke style)** — brand mark + nav, then a **full-width search bar** underneath with
   store logos, a mic button and a gradient "Find best deals" CTA. Right side: alert bell, theme
   toggle, gradient "Check a deal" button.
-- **Hero (PriceHistory.ai style)** — green-dot stat pill, huge two-line headline
-  (`DealSense:` / `Never overpay online` with a gradient + blinking cursor), big rounded search with
-  a gradient CTA, emoji "Popular:" pills, a trust row, a store-logo row, and **our girl illustration**
-  on the right with four floating widget cards layered over her.
+- **Hero (PriceHistory.ai style)** — green-dot stat pill, `PRICE HISTORY & TRACKER` eyebrow, huge
+  two-line headline (`Never overpay` navy / `online` green gradient) with a blinking cursor, big
+  rounded search with a gradient CTA, emoji "Popular:" pills, two CTAs, a trust row, and **our girl
+  illustration** on the right with four floating widget cards layered over her.
 - **Community bar** — WhatsApp / Telegram pill bar.
-- **Deals section** — dark active chip bar (All Drops / Steep Drops / All-Time Lows / Score 85+ /
-  per-category / Under ₹999) and a product grid.
-- **Product card** — Buy-now / All-time-low / Steep-drop / Building-history badges, store logo,
-  image, sparkline, price + MRP, score, gradient affiliate CTA.
-- **PDP stat cards (PriceHistory.ai)** — four colour-coded cards (emerald *Highest*, rose *Lowest*,
-  sky *Average*, violet *Current*), each with a gradient icon tile, a tag pill, the value, a
-  "±x% vs current" delta and a mini sparkline.
-- **Buy-verdict panel** — the dark card. "Should you buy at this price?", a big **BUY SCORE**, a
-  **TREND** readout, the gradient Skip→Wait→Okay→Yes scale with an animated knob, confidence chips,
-  a natural-language **PRICE INSIGHT** paragraph, and a right rail (Tracking · Typical price ·
+- **"Deals moving now"** — a **live ticker of real recorded price drops** with the exact drop
+  amount and timestamp ("dropped 2h ago"). We know *when* every price changed, so this is
+  genuinely live — not a label.
+- **Stats strip** — price points tracked · stores compared · products tracked · % real.
+- **"At their all-time low"** — products whose *current* price equals the lowest we ever recorded
+  for them. Computed from history, not asserted.
+- **"Hot deals by price"** — budget buckets (Under ₹999 … ₹49,999) with live counts.
+- **"Best discounts by percentage"** — tiers (min 20% … 70% off) with live counts.
+- **Category shelf panels (Buyhatke)** — mint gradient card, "Up to N% off" badge, category title,
+  Top Brands / Best Deals / Max Savings sub-filters, product row, "View all".
+- **"Top deals by platform"** — one row per store (Amazon, Flipkart, Myntra…).
+- **Category strip** → How it works → One rule → FAQ → CTA → Footer.
+
+### Filter URLs (shareable, SEO-friendly)
+
+`/deals?priceMax=999` · `?discountMin=50` · `?store=amazon` · `?category=Jeans` ·
+`?sort=drop|allTimeLow|discount|history`
+
+### PDP
+
+- **4 colour-coded stat cards** — emerald *Highest*, rose *Lowest*, sky *Average*, teal *Current*,
+  each with a gradient icon tile, tag pill, "±x% vs current" delta and a mini sparkline.
+- **Buy-verdict panel (dark)** — "Should you buy at this price?", a big **BUY SCORE**, a **TREND**
+  readout, the gradient Skip→Wait→Okay→Yes scale with an animated knob, confidence chips, a
+  natural-language **PRICE INSIGHT** paragraph, and a right rail (Tracking · Typical price ·
   Potential saving · Current price).
 - **Store comparison (Buyhatke style)** — "Compare & find the lowest price", a green
   "You save ₹X" pill, per-store cards with a **BEST DEAL** badge, "₹X more than the best store",
