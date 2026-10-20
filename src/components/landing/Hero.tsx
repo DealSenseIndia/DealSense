@@ -70,7 +70,7 @@ export function Hero({ featured }: { featured?: FeaturedDeal | null }) {
         className="pointer-events-none absolute inset-0 hidden dark:block"
         style={{
           background:
-            "radial-gradient(48% 52% at 77% 62%, rgba(16,185,129,0.16) 0%, rgba(16,185,129,0) 72%), " +
+            "radial-gradient(42% 48% at 76% 60%, rgba(16,185,129,0.22) 0%, rgba(16,185,129,0) 72%), " +
             "linear-gradient(160deg, #062B20 0%, #04211A 55%, #051A14 100%)",
         }}
       />
@@ -156,15 +156,31 @@ export function Hero({ featured }: { featured?: FeaturedDeal | null }) {
 
           {/* ===================== RIGHT — girl + floating cards ===================== */}
           <div className="relative mx-auto flex h-[420px] w-full max-w-[550px] items-end justify-center max-lg:h-[380px] max-lg:max-w-[440px] max-sm:flex max-sm:h-auto max-sm:max-w-none max-sm:flex-col max-sm:items-center max-sm:pt-3">
-            {/* official artwork — feathered edge, melts into the green wash */}
-            <Image
-              src="/brand/hero-illustration-soft.webp"
-              alt="DealSense Shopping Intelligence"
-              width={1024}
-              height={576}
-              priority
-              className="relative z-[2] mx-auto block h-auto w-full max-w-[500px] shrink-0 object-contain drop-shadow-[0_10px_30px_rgba(16,185,129,0.10)] max-sm:max-w-[290px]"
-            />
+            {/* The artwork, exactly as drawn — no crop, no filter, no retouch.
+                It sits on a mint panel the colour of its own halo, masked to a
+                soft oval, so the illustration's hard silhouette has nothing to
+                show against and simply dissolves into the green wash. */}
+            <div className="relative mx-auto w-full max-w-[500px] shrink-0 max-sm:max-w-[290px]">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 dark:hidden"
+                style={{
+                  background: "#e8faef",
+                  WebkitMaskImage:
+                    "radial-gradient(ellipse 50% 56% at 53% 50%, #000 86%, transparent 100%)",
+                  maskImage:
+                    "radial-gradient(ellipse 50% 56% at 53% 50%, #000 86%, transparent 100%)",
+                }}
+              />
+              <Image
+                src="/brand/hero-illustration.png"
+                alt="DealSense Shopping Intelligence"
+                width={1024}
+                height={576}
+                priority
+                className="relative z-[2] block h-auto w-full"
+              />
+            </div>
 
             {/* FLOAT 1 — Price History */}
             <div className="floating-overlay-card float-anim-a absolute left-[-20px] top-[75px] z-[3] w-[245px] rounded-[18px] border border-hairline bg-card p-[14px_16px_12px] shadow-card max-sm:hidden">

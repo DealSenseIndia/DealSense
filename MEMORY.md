@@ -20,11 +20,20 @@
   `radial-gradient(48% 52% at 77% 62%, rgba(233,252,242,0.95) 0%, transparent 72%)` over
   `linear-gradient(160deg, #F5FDF9 0%, #EDFBF3 42%, #DEF5E9 100%)`.
   Dark theme: the same shape in deep forest green (`#062B20 → #04211A`), never `#0F172A`.
-- **The artwork is feathered.** The source cut-out has a hard pale-mint (`#E9FCF2`) halo that
-  read as a pasted rectangle. `npm run art:soften` blurs the alpha channel (sigma 7) and writes
-  it back, producing `public/brand/hero-illustration-soft.png/.webp`. The hero uses the soft
-  webp; the mint pool in the background matches the artwork's halo exactly, so the girl
-  dissolves into the page.
+- **The artwork is NEVER post-processed.** Do not blur, feather, mask, crop, re-colour or
+  re-encode it. `public/brand/hero-illustration.png` is byte-identical to the old project's
+  `frontend/assets/hero-illustration.png` (sha1 `1F01CA9E…`) and is served as-is.
+  - A previous attempt feathered the alpha in sharp. It produced **black outlines** around
+    every leaf and the sofa, because dropping the alpha exposed the PNG's transparent-pixel
+    garbage RGB (a dark teal) at the edges. Never do that.
+- The blend is done **entirely in CSS**: a mint panel (`#e8faef`, the artwork's own halo
+  colour) sits behind the image, masked to
+  `radial-gradient(ellipse 50% 56% at 53% 50%, #000 86%, transparent 100%)`.
+  The artwork's silhouette is 11.5%–94.5% of the width and 4.2%–96.4% of the height, so the
+  whole silhouette lands on the solid part of the panel — mint on mint, no seam — and only the
+  panel's own outer edge fades into the green.
+- In **dark mode** the mint panel is hidden (`dark:hidden`) and an emerald glow replaces it;
+  the figure then reads as lit against deep green.
 - **`dark:` is not the media query here.** The app stores the theme on
   `<html data-theme="light|dark">`. Tailwind's stock `dark:` variant follows the OS, which meant
   every `dark:` utility in the app followed the OPERATING SYSTEM rather than the theme the
