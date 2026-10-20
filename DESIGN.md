@@ -18,20 +18,24 @@ Original DealSense brand assets live in `public/brand/` and are carried over fro
 
 `src/app/icon.png`, `src/app/favicon.ico` and `src/app/apple-icon.png` are wired to the same brand files.
 
-### Store logos — fetched fresh from online
+### Store app icons — fetched fresh from online
 
-`public/brand/stores/` is **not** from the legacy project. Sources:
+`public/brand/stores/icons/` is **not** from the legacy project. Each store's own favicon / Apple
+touch icon was fetched (falling back to the Google favicon service), then normalised with sharp to
+**128×128 square PNGs, 1–10 KB each (~50 KB total)**.
 
-| Store | Source | File |
-| --- | --- | --- |
-| Amazon | Simple Icons (jsDelivr) | `amazon.svg` (recoloured `#FF9900`) |
-| Flipkart | Simple Icons (jsDelivr) | `flipkart.svg` (recoloured `#2874F0`) |
-| Myntra | myntra.com's own `logo_2021.png` | `myntra.png` |
-| Tata CLiQ, Croma, Reliance Digital, Meesho, Nykaa | Wikimedia Commons | `.png` |
+| Store | | Store | |
+| --- | --- | --- | --- |
+| Amazon | `icons/amazon.png` | Tata CLiQ | `icons/tatacliq.png` |
+| Flipkart | `icons/flipkart.png` | Croma | `icons/croma.png` |
+| Myntra | `icons/myntra.png` | Reliance Digital | `icons/reliancedigital.png` |
+| Nykaa | `icons/nykaa.png` | Meesho | `icons/meesho.png` |
+| FirstCry | `icons/firstcry.png` | Biba | `icons/biba.png` |
+| AJIO | `icons/ajio.png` | Libas | `icons/libas.png` |
+| Shopsy | `icons/shopsy.png` | | |
 
-All normalised with sharp to ≤180px / ≤4 KB each (~20 KB total). Wordmarks are wide, so
-`<StoreLogo />` renders them with `max-width: size × 3.4` instead of crushing them into a square.
-Stores without art fall back to a coloured initial tile.
+`<StoreLogo />` renders them as **square app-icon tiles** (22% radius) — never wordmarks, which
+crush at small sizes. Stores without an icon fall back to a coloured initial tile.
 
 ## Colour tokens (`src/app/globals.css`)
 

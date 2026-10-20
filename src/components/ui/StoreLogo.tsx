@@ -1,18 +1,24 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Store logos fetched fresh from online sources (Simple Icons + Wikimedia),
- * never from the legacy project. Missing stores fall back to a coloured tile.
+ * Square app-style store icons, fetched from each store's own site /
+ * the Google favicon service and normalised to 128px PNGs.
+ * No wordmarks — icons read cleanly at every size.
  */
-const LOGOS: Record<string, string> = {
-  amazon: "/brand/stores/amazon.svg",
-  flipkart: "/brand/stores/flipkart.svg",
-  myntra: "/brand/stores/myntra.png",
-  tatacliq: "/brand/stores/tatacliq.png",
-  croma: "/brand/stores/croma.png",
-  reliancedigital: "/brand/stores/reliancedigital.png",
-  meesho: "/brand/stores/meesho.png",
-  nykaa: "/brand/stores/nykaa.png",
+const ICONS: Record<string, string> = {
+  amazon: "/brand/stores/icons/amazon.png",
+  flipkart: "/brand/stores/icons/flipkart.png",
+  myntra: "/brand/stores/icons/myntra.png",
+  tatacliq: "/brand/stores/icons/tatacliq.png",
+  croma: "/brand/stores/icons/croma.png",
+  reliancedigital: "/brand/stores/icons/reliancedigital.png",
+  meesho: "/brand/stores/icons/meesho.png",
+  nykaa: "/brand/stores/icons/nykaa.png",
+  firstcry: "/brand/stores/icons/firstcry.png",
+  biba: "/brand/stores/icons/biba.png",
+  ajio: "/brand/stores/icons/ajio.png",
+  libas: "/brand/stores/icons/libas.png",
+  shopsy: "/brand/stores/icons/shopsy.png",
 };
 
 const FALLBACK: Record<string, { short: string; color: string }> = {
@@ -28,19 +34,23 @@ const FALLBACK: Record<string, { short: string; color: string }> = {
   croma: { short: "CR", color: "#00A0E9" },
   meesho: { short: "MS", color: "#57057A" },
   nykaa: { short: "NY", color: "#E5008E" },
+  shopsy: { short: "SH", color: "#6D22B8" },
 };
 
 export function StoreLogo({
   merchant,
   className,
   size = 20,
+  rounded = true,
 }: {
   merchant: string;
   className?: string;
   size?: number;
+  rounded?: boolean;
 }) {
   const key = merchant.toLowerCase().replace(/[^a-z]/g, "");
-  const src = LOGOS[key];
+  const src = ICONS[key];
+
   if (src) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
@@ -49,16 +59,20 @@ export function StoreLogo({
         alt={merchant}
         width={size}
         height={size}
-        className={cn("shrink-0 object-contain", className)}
-        // Wordmarks are wide; let them breathe instead of being crushed into a square.
-        style={{ maxWidth: size * 3.4, maxHeight: size, width: "auto", height: "auto" }}
+        className={cn("shrink-0 object-contain", rounded && "rounded-[22%]", className)}
+        style={{ width: size, height: size }}
       />
     );
   }
+
   const fb = FALLBACK[key] ?? { short: key.slice(0, 2).toUpperCase(), color: "#64748B" };
   return (
     <span
-      className={cn("grid shrink-0 place-items-center font-black text-white", className)}
+      className={cn(
+        "grid shrink-0 place-items-center font-black text-white",
+        rounded && "rounded-[22%]",
+        className,
+      )}
       style={{ width: size, height: size, background: fb.color, fontSize: Math.max(7, size * 0.4) }}
     >
       {fb.short}
@@ -66,7 +80,7 @@ export function StoreLogo({
   );
 }
 
-/** Horizontal row of store logos (trust strip). */
+/** Horizontal row of store icons (trust strip). */
 export function StoreLogoRow({
   merchants,
   size = 26,
@@ -77,13 +91,13 @@ export function StoreLogoRow({
   className?: string;
 }) {
   return (
-    <div className={cn("flex flex-wrap items-center gap-x-4 gap-y-2", className)}>
+    <div className={cn("flex flex-wrap items-center gap-x-3 gap-y-2", className)}>
       {merchants.map((m) => (
         <StoreLogo
           key={m}
           merchant={m}
           size={size}
-          className="opacity-80 transition-opacity hover:opacity-100"
+          className="opacity-90 transition-opacity hover:opacity-100"
         />
       ))}
     </div>
