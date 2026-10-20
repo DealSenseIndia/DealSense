@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Bell, Link2, Search, ShieldCheck, Sparkles, TrendingDown } from "lucide-react";
@@ -170,113 +171,129 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* ---------------- Right: floating widget cards ---------------- */}
+          {/* ---------------- Right: illustration + floating widget cards ---------------- */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96, y: 18 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ delay: 0.28, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mx-auto w-full max-w-[520px]"
+            transition={{ delay: 0.22, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="relative mx-auto w-full max-w-[560px]"
           >
-            <div className="relative h-[420px] sm:h-[440px]">
-              {/* Price history card */}
-              <FloatCard className="left-0 top-0 w-[268px] animate-float" delay="0s">
-                <div className="flex items-center justify-between">
-                  <span className="text-[12.5px] font-extrabold text-headline">Price History</span>
-                  <span className="rounded-lg border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-2 py-1 text-[10px] font-extrabold text-[var(--dw-green-mid)]">
-                    Lowest ₹37,499
-                  </span>
-                </div>
-                <svg viewBox="0 0 220 64" className="mt-3 h-14 w-full" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="hf" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#10B981" stopOpacity="0.25" />
-                      <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
-                    </linearGradient>
-                  </defs>
-                  <path
-                    d="M0 40 C 22 34, 40 50, 62 42 C 84 34, 104 54, 128 46 C 152 38, 176 52, 220 20 L220 64 L0 64 Z"
-                    fill="url(#hf)"
-                  />
-                  <path
-                    d="M0 40 C 22 34, 40 50, 62 42 C 84 34, 104 54, 128 46 C 152 38, 176 52, 220 20"
-                    fill="none"
-                    stroke="#10B981"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <div className="mt-1 text-[10.5px] font-semibold text-muted">on 12 Sep 2026</div>
-              </FloatCard>
+            <div className="relative">
+              {/* The illustration */}
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                className="relative z-0"
+              >
+                <Image
+                  src="/brand/hero-illustration.webp"
+                  alt="A shopper checking a price on her phone, tracking a rising price chart"
+                  width={1024}
+                  height={576}
+                  priority
+                  className="h-auto w-full"
+                />
+              </motion.div>
 
-              {/* Price drop alert card */}
-              <FloatCard className="bottom-6 left-2 w-[236px] animate-float sm:left-4" delay="-3s">
-                <div className="flex items-center gap-2">
-                  <span className="grid h-8 w-8 place-items-center rounded-lg bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]">
-                    <Bell className="h-4 w-4" />
-                  </span>
-                  <div>
-                    <div className="text-[12.5px] font-extrabold text-headline">Price Drop Alert</div>
-                    <div className="text-[10.5px] font-semibold text-muted">Great news!</div>
+              {/* Floating widget cards layered over the illustration */}
+              <div className="pointer-events-none absolute inset-0 z-10">
+                <FloatCard className="left-0 top-0 w-[230px] animate-float sm:-left-2" delay="0s">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[12px] font-extrabold text-headline">Price History</span>
+                    <span className="rounded-lg border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-2 py-0.5 text-[9.5px] font-extrabold text-[var(--dw-green-mid)]">
+                      Lowest ₹37,499
+                    </span>
                   </div>
-                </div>
-                <div className="mt-2.5 text-[11.5px] font-semibold text-secondary">Price dropped by</div>
-                <div className="tabular text-[19px] font-extrabold text-[var(--dw-green-mid)]">₹2,500</div>
-              </FloatCard>
+                  <svg viewBox="0 0 200 56" className="mt-2.5 h-12 w-full" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="hf2" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#10B981" stopOpacity="0.28" />
+                        <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
+                      </linearGradient>
+                    </defs>
+                    <path
+                      d="M0 34 C 20 28, 36 44, 56 36 C 76 28, 94 46, 116 38 C 138 30, 160 44, 200 16 L200 56 L0 56 Z"
+                      fill="url(#hf2)"
+                    />
+                    <path
+                      d="M0 34 C 20 28, 36 44, 56 36 C 76 28, 94 46, 116 38 C 138 30, 160 44, 200 16"
+                      fill="none"
+                      stroke="#10B981"
+                      strokeWidth="2.4"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <div className="mt-1 text-[10px] font-semibold text-muted">on 12 Sep 2026</div>
+                </FloatCard>
 
-              {/* Recently viewed card */}
-              <FloatCard className="right-0 top-[86px] w-[228px] animate-float" delay="-1.6s">
-                <div className="flex items-center justify-between">
-                  <span className="rounded-md border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-2 py-0.5 text-[9.5px] font-extrabold uppercase tracking-wider text-[var(--dw-green-mid)]">
-                    Recently viewed
-                  </span>
-                </div>
-                <div className="mt-2.5 text-[13px] font-extrabold text-headline">Sony WH-1000XM5</div>
-                <div className="mt-1 flex items-center gap-1.5 text-[11px]">
-                  <span className="grid h-4 w-4 place-items-center rounded bg-[#FF9900] text-[7px] font-black text-black">
-                    a
-                  </span>
-                  <span className="font-bold text-body">Amazon India</span>
-                </div>
-                <div className="mt-1.5 flex items-center gap-1 text-[11px] font-semibold text-secondary">
-                  <span className="text-amber-500">★</span> 4.6
-                  <span className="text-muted">(12,540)</span>
-                </div>
-                <div className="tabular mt-2 text-[20px] font-extrabold text-headline">₹24,999</div>
-                <div className="mt-2.5 flex h-9 items-center justify-center rounded-lg bg-emerald-accent text-[12px] font-extrabold text-white">
-                  Check Deal →
-                </div>
-              </FloatCard>
-
-              {/* Verdict card */}
-              <FloatCard className="bottom-0 right-2 w-[250px] animate-float sm:right-6" delay="-5s">
-                <div className="flex items-center gap-3">
-                  <div className="relative grid h-12 w-12 shrink-0 place-items-center">
-                    <svg viewBox="0 0 48 48" className="h-full w-full -rotate-90">
-                      <circle cx="24" cy="24" r="20" fill="none" stroke="var(--border-card)" strokeWidth="4" />
-                      <motion.circle
-                        cx="24"
-                        cy="24"
-                        r="20"
-                        fill="none"
-                        stroke="#10B981"
-                        strokeWidth="4"
-                        strokeLinecap="round"
-                        strokeDasharray={2 * Math.PI * 20}
-                        initial={{ strokeDashoffset: 2 * Math.PI * 20 }}
-                        animate={{ strokeDashoffset: 2 * Math.PI * 20 * (1 - 0.92) }}
-                        transition={{ delay: 0.7, duration: 1.3, ease: [0.22, 1, 0.36, 1] }}
-                      />
-                    </svg>
-                    <span className="tabular absolute text-[12px] font-extrabold text-headline">92</span>
-                  </div>
-                  <div>
-                    <div className="text-[12.5px] font-extrabold text-[var(--dw-green-mid)]">Buy Now</div>
-                    <div className="text-[10.5px] font-semibold leading-snug text-secondary">
-                      12% below the price this usually costs
+                <FloatCard className="bottom-2 left-0 w-[210px] animate-float sm:left-4" delay="-3s">
+                  <div className="flex items-center gap-2">
+                    <span className="grid h-7 w-7 place-items-center rounded-lg bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]">
+                      <Bell className="h-3.5 w-3.5" />
+                    </span>
+                    <div>
+                      <div className="text-[11.5px] font-extrabold text-headline">Price Drop Alert</div>
+                      <div className="text-[9.5px] font-semibold text-muted">Great news!</div>
                     </div>
                   </div>
-                </div>
-              </FloatCard>
+                  <div className="mt-2 text-[10.5px] font-semibold text-secondary">Price dropped by</div>
+                  <div className="tabular text-[17px] font-extrabold text-[var(--dw-green-mid)]">₹2,500</div>
+                </FloatCard>
+
+                <FloatCard className="right-0 top-[16%] w-[205px] animate-float sm:-right-2" delay="-1.6s">
+                  <span className="rounded-md border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-[var(--dw-green-mid)]">
+                    Recently viewed
+                  </span>
+                  <div className="mt-2 text-[12px] font-extrabold leading-snug text-headline">
+                    Sony WH-1000XM5
+                  </div>
+                  <div className="mt-1 flex items-center gap-1.5 text-[10.5px]">
+                    <span className="grid h-3.5 w-3.5 place-items-center rounded bg-[#FF9900] text-[6.5px] font-black text-black">
+                      a
+                    </span>
+                    <span className="font-bold text-body">Amazon India</span>
+                  </div>
+                  <div className="mt-1 flex items-center gap-1 text-[10.5px] font-semibold text-secondary">
+                    <span className="text-amber-500">★</span> 4.6
+                    <span className="text-muted">(12,540)</span>
+                  </div>
+                  <div className="tabular mt-1.5 text-[18px] font-extrabold text-headline">₹24,999</div>
+                  <div className="mt-2 flex h-8 items-center justify-center rounded-lg bg-emerald-accent text-[11.5px] font-extrabold text-white">
+                    Check Deal →
+                  </div>
+                </FloatCard>
+
+                <FloatCard className="bottom-[-6px] right-[16%] w-[210px] animate-float" delay="-5s">
+                  <div className="flex items-center gap-2.5">
+                    <div className="relative grid h-10 w-10 shrink-0 place-items-center">
+                      <svg viewBox="0 0 48 48" className="h-full w-full -rotate-90">
+                        <circle cx="24" cy="24" r="20" fill="none" stroke="var(--border-card)" strokeWidth="4" />
+                        <motion.circle
+                          cx="24"
+                          cy="24"
+                          r="20"
+                          fill="none"
+                          stroke="#10B981"
+                          strokeWidth="4"
+                          strokeLinecap="round"
+                          strokeDasharray={2 * Math.PI * 20}
+                          initial={{ strokeDashoffset: 2 * Math.PI * 20 }}
+                          animate={{ strokeDashoffset: 2 * Math.PI * 20 * (1 - 0.92) }}
+                          transition={{ delay: 0.7, duration: 1.3, ease: [0.22, 1, 0.36, 1] }}
+                        />
+                      </svg>
+                      <span className="tabular absolute text-[11px] font-extrabold text-headline">92</span>
+                    </div>
+                    <div>
+                      <div className="text-[12px] font-extrabold text-[var(--dw-green-mid)]">Buy Now</div>
+                      <div className="text-[9.5px] font-semibold leading-snug text-secondary">
+                        12% below the price this usually costs
+                      </div>
+                    </div>
+                  </div>
+                </FloatCard>
+              </div>
             </div>
           </motion.div>
         </div>

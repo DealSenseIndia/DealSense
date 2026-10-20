@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 
 export function Footer() {
@@ -8,12 +9,13 @@ export function Footer() {
         <div className="grid gap-9 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
           <div>
             <div className="flex items-center gap-2.5">
-              <span className="grid h-8 w-8 place-items-center rounded-lg bg-emerald-accent text-white">
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 15l5-5 4 4 7-7" />
-                  <path d="M20 7h-5m5 0v5" />
-                </svg>
-              </span>
+              <Image
+                src="/brand/dealsense-icon.png"
+                alt="DealSense"
+                width={32}
+                height={32}
+                className="h-8 w-8 rounded-[9px]"
+              />
               <span className="text-[16px] font-extrabold tracking-tight text-headline">
                 Deal<span className="text-emerald-accent">Sense</span>
               </span>

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Bell, Menu, Search, X } from "lucide-react";
@@ -38,12 +39,14 @@ export function Nav() {
     >
       <Container size="wide" className="flex h-16 items-center gap-4">
         <Link href="/" className="group flex shrink-0 items-center gap-2.5">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-emerald-accent text-white shadow-[0_6px_18px_-6px_rgba(16,185,129,0.8)]">
-            <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M4 15l5-5 4 4 7-7" />
-              <path d="M20 7h-5m5 0v5" />
-            </svg>
-          </span>
+          <Image
+            src="/brand/dealsense-icon.png"
+            alt="DealSense"
+            width={36}
+            height={36}
+            priority
+            className="h-9 w-9 rounded-[10px] transition-transform duration-300 group-hover:scale-105"
+          />
           <span className="leading-none">
             <span className="block text-[17px] font-extrabold tracking-tight text-headline">
               Deal<span className="text-emerald-accent">Sense</span>
