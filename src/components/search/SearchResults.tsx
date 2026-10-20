@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ChevronRight, Loader2, Search, Star } from "lucide-react";
 import { StoreLogo } from "@/components/ui/StoreLogo";
+import { ProductThumb } from "@/components/ui/ProductThumb";
 import { Button } from "@/components/ui/Button";
 import { cn, formatINR } from "@/lib/utils";
 
@@ -136,18 +136,14 @@ export function SearchResults({ initialQuery }: { initialQuery: string }) {
                   className="group flex flex-col overflow-hidden rounded-card border border-hairline bg-card shadow-card transition-all hover:-translate-y-1 hover:border-emerald-400/50 hover:shadow-lift"
                 >
                   <Link href={analyzeUrl} className="relative block aspect-square overflow-hidden bg-subtle">
-                    {h.imageUrl ? (
-                      <Image
-                        src={h.imageUrl}
-                        alt={h.title}
-                        fill
-                        sizes="(max-width: 640px) 50vw, 220px"
-                        className="object-contain p-3 transition-transform duration-500 group-hover:scale-105"
-                        unoptimized
-                      />
-                    ) : (
-                      <div className="grid h-full place-items-center text-2xl text-muted">🛍️</div>
-                    )}
+                    <ProductThumb
+                      imageUrl={h.imageUrl}
+                      alt={h.title}
+                      merchant={h.merchant}
+                      sizes="(max-width: 640px) 50vw, 220px"
+                      padding="p-3"
+                      imageClassName="transition-transform duration-500 group-hover:scale-105"
+                    />
                     <StoreLogo
                       merchant={h.merchant}
                       size={20}

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight, LineChart, TrendingDown } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { PageSearch } from "@/components/site/PageSearch";
 import { StoreLogo } from "@/components/ui/StoreLogo";
+import { ProductThumb } from "@/components/ui/ProductThumb";
 import { getAllTimeLows, getLatestDeals } from "@/lib/db/deals";
 import { formatINR, timeAgo } from "@/lib/utils";
 
@@ -69,16 +69,13 @@ export default async function PriceHistoryPage() {
                   className="group overflow-hidden rounded-2xl border border-hairline bg-card p-3 shadow-card transition-all hover:-translate-y-1 hover:border-emerald-400/50"
                 >
                   <div className="relative aspect-square overflow-hidden rounded-xl bg-subtle">
-                    {d.imageUrl && (
-                      <Image
-                        src={d.imageUrl}
-                        alt={d.title}
-                        fill
-                        sizes="(max-width: 640px) 50vw, 200px"
-                        className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
-                        unoptimized
-                      />
-                    )}
+                    <ProductThumb
+                      imageUrl={d.imageUrl}
+                      alt={d.title}
+                      merchant={d.merchant}
+                      sizes="(max-width: 640px) 50vw, 200px"
+                      imageClassName="transition-transform duration-500 group-hover:scale-105"
+                    />
                     <span className="absolute left-1.5 top-1.5 rounded-full bg-emerald-600 px-1.5 py-0.5 text-[8.5px] font-extrabold uppercase tracking-wider text-white">
                       All-time low
                     </span>
@@ -93,7 +90,7 @@ export default async function PriceHistoryPage() {
                     </span>
                   </div>
                   <div className="mt-0.5 text-[10px] font-semibold text-muted">
-                    {d.observations} pts · {timeAgo(d.lastDropAt ?? Date.now())}
+                    {d.observations} pts · {timeAgo(d.lastSeenAt ?? Date.now())}
                   </div>
                 </Link>
               ))}
@@ -124,16 +121,13 @@ export default async function PriceHistoryPage() {
                 className="group overflow-hidden rounded-2xl border border-hairline bg-card p-3 shadow-card transition-all hover:-translate-y-1 hover:border-emerald-400/50"
               >
                 <div className="relative aspect-square overflow-hidden rounded-xl bg-subtle">
-                  {d.imageUrl && (
-                    <Image
-                      src={d.imageUrl}
-                      alt={d.title}
-                      fill
-                      sizes="(max-width: 640px) 50vw, 200px"
-                      className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
-                      unoptimized
-                    />
-                  )}
+                  <ProductThumb
+                    imageUrl={d.imageUrl}
+                    alt={d.title}
+                    merchant={d.merchant}
+                    sizes="(max-width: 640px) 50vw, 200px"
+                    imageClassName="transition-transform duration-500 group-hover:scale-105"
+                  />
                 </div>
                 <div className="mt-2 line-clamp-2 min-h-[2rem] text-[11.5px] font-bold leading-snug text-headline">
                   {d.title}

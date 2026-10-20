@@ -116,7 +116,7 @@ export default async function CategoriesPage() {
             {popular.slice(0, 8).map((p) => (
               <Link
                 key={p}
-                href={`/search?q=${encodeURIComponent(p)}`}
+                href={`/deals?category=${encodeURIComponent(p)}`}
                 className="rounded-full border border-hairline bg-card px-3 py-1.5 text-[12px] font-bold text-body transition-all hover:-translate-y-0.5 hover:border-emerald-400/50 hover:text-headline"
               >
                 {p}
@@ -148,7 +148,8 @@ export default async function CategoriesPage() {
                 {groups.map((g) => (
                   <Link
                     key={g.slug}
-                    href={`/search?q=${encodeURIComponent(g.name)}`}
+                    id={g.slug}
+                    href={`/categories#${g.slug}`}
                     className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-semibold text-body transition-colors hover:bg-elevated hover:text-headline"
                   >
                     <span className="grid h-6 w-6 place-items-center rounded-md bg-elevated text-secondary">
@@ -164,10 +165,10 @@ export default async function CategoriesPage() {
             {/* ---- grid ---- */}
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {groups.map((g) => (
-                <Link
+                <div
                   key={g.slug}
-                  href={`/search?q=${encodeURIComponent(g.name)}`}
-                  className="group flex flex-col overflow-hidden rounded-2xl border border-hairline bg-card shadow-card transition-all hover:-translate-y-1 hover:border-emerald-400/50 hover:shadow-lift"
+                  id={g.slug}
+                  className="group flex scroll-mt-24 flex-col overflow-hidden rounded-2xl border border-hairline bg-card shadow-card transition-all hover:-translate-y-1 hover:border-emerald-400/50 hover:shadow-lift"
                 >
                   <div className="relative aspect-[16/9] overflow-hidden bg-subtle">
                     {g.coverImage ? (
@@ -187,20 +188,33 @@ export default async function CategoriesPage() {
                   <div className="flex flex-1 flex-col p-4">
                     <h3 className="text-[15px] font-extrabold text-headline">{g.name}</h3>
                     <div className="mt-1 text-[12.5px] font-bold text-[var(--dw-green-mid)]">
-                      {g.count} deals
+                      {g.count} deal{g.count === 1 ? "" : "s"}
                     </div>
                     <ul className="mt-3 flex-1 space-y-1">
                       {g.subcategories.slice(0, 6).map((s) => (
-                        <li key={s} className="truncate text-[12px] text-body">
-                          {s}
+                        <li key={s}>
+                          <Link
+                            href={`/deals?category=${encodeURIComponent(s)}`}
+                            className="flex items-center gap-1 truncate rounded px-1 py-0.5 text-[12px] text-body transition-colors hover:bg-elevated hover:text-headline"
+                          >
+                            <ChevronRight className="h-3 w-3 shrink-0 text-muted" />
+                            {s}
+                          </Link>
                         </li>
                       ))}
                     </ul>
-                    <div className="mt-3 flex items-center gap-1 text-[12.5px] font-extrabold text-[var(--dw-green-mid)]">
-                      Explore <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                    </div>
+                    <Link
+                      href={
+                        g.subcategories[0]
+                          ? `/deals?category=${encodeURIComponent(g.subcategories[0])}`
+                          : "/deals"
+                      }
+                      className="mt-3 flex items-center gap-1 text-[12.5px] font-extrabold text-[var(--dw-green-mid)] hover:underline"
+                    >
+                      Explore {g.name} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                    </Link>
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           </div>

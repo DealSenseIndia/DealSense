@@ -92,7 +92,7 @@ export function FreshnessBadge({ freshness, ts }: { freshness: Freshness; ts?: n
     OBSERVED: { cls: "border-sky-400/40 bg-sky-500/10 text-sky-600 dark:text-sky-300", label: "Observed", dot: "bg-sky-500" },
     STALE: { cls: "border-amber-400/40 bg-amber-500/10 text-amber-600 dark:text-amber-300", label: "Stale", dot: "bg-amber-500" },
     EXPIRED: { cls: "border-red-400/40 bg-red-500/10 text-red-600 dark:text-red-300", label: "Expired", dot: "bg-red-500" },
-    UNKNOWN: { cls: "border-hairline bg-elevated text-secondary", label: "No data", dot: "bg-slate-400" },
+    UNKNOWN: { cls: "border-hairline bg-elevated text-secondary", label: "Recorded", dot: "bg-slate-400" },
   };
   const m = map[freshness];
   return (

@@ -16,7 +16,9 @@
     "discover": "tsx scripts/discover.ts",
     "catalogue": "tsx scripts/import-catalogue.ts",
     "history": "tsx scripts/seed-history.ts",
-    "scrape": "tsx scripts/refresh.ts"
+    "merge": "tsx scripts/merge-products.ts",
+    "scrape": "tsx scripts/refresh.ts",
+    "shot": "node scripts/shot.mjs"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",

@@ -90,8 +90,10 @@ export function StatCards({ cards }: { cards: StatCardSpec[] }) {
                 {c.icon}
               </span>
               <div className="min-w-0 flex-1">
-                <div className="flex items-center justify-between gap-1.5">
-                  <span className="truncate text-[12.5px] font-extrabold text-headline">{c.title}</span>
+                <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
+                  <span className="text-[12.5px] font-extrabold leading-tight text-headline">
+                    {c.title}
+                  </span>
                   {c.tag && (
                     <span className={cn("shrink-0 rounded-md border px-1.5 py-0.5 text-[9.5px] font-extrabold", t.chip)}>
                       {c.tag}
@@ -133,8 +135,10 @@ export function buildStatCards(input: {
   median: number | null;
   spark: number[];
   hasHistory: boolean;
+  /** True when the current price was just verified on the store page. */
+  isLive?: boolean;
 }): StatCardSpec[] {
-  const { current, low, high, median, spark, hasHistory } = input;
+  const { current, low, high, median, spark, hasHistory, isLive = false } = input;
   const pct = (v: number | null) =>
     v !== null && current ? ((v - current) / current) * 100 : null;
 
@@ -175,9 +179,9 @@ export function buildStatCards(input: {
     {
       key: "current",
       title: "Current price",
-      tag: "Live",
+      tag: isLive ? "Live" : "Latest",
       value: current,
-      sub: "Verified on the store right now",
+      sub: isLive ? "Verified on the store right now" : "Last recorded price",
       deltaPct: 0,
       spark,
       tone: "violet",

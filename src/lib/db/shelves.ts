@@ -42,6 +42,9 @@ export const SUPPORTED_STORES = Object.keys(STORE_META);
 /**
  * Group the catalogue into category shelves (Buyhatke-style panels).
  * Only products with a real price are included.
+ *
+ * @param perCategory how many products to keep per category shelf
+ * @param maxCategories how many category shelves to return (0 = all)
  */
 /** Categories we want to lead the homepage, in priority order. */
 const CATEGORY_PRIORITY = [
@@ -76,7 +79,8 @@ const CATEGORY_PRIORITY = [
 const ACCESSORY_RE =
   /\b(case|cases|cover|covers|back cover|tempered glass|screen guard|protector|charger|chargers|adapter|cable|cables|data cable|earphones? case|pouch|holder|stand|wallet|bag for|strap|band for|stickers?)\b/i;
 
-export async function getShelves(limit = 8): Promise<Shelf[]> {
+export async function getShelves(perCategory = 8, maxCategories = 0): Promise<Shelf[]> {
+  const limit = perCategory;
   await ensureSchema();
 
   const rows = await db
@@ -145,7 +149,8 @@ export async function getShelves(limit = 8): Promise<Shelf[]> {
         rank(a.category) - rank(b.category) ||
         b.maxDiscount - a.maxDiscount ||
         b.products.length - a.products.length,
-    );
+    )
+    .slice(0, maxCategories > 0 ? maxCategories : undefined);
 }
 
 /** Headline numbers for the homepage stats strip. */

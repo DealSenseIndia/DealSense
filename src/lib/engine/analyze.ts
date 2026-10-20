@@ -5,8 +5,10 @@ import {
   countObservations,
   findProductByIdentityKey,
   getLatestObservation,
+  getListingByMerchantProduct,
   getListingsByProduct,
   getObservations,
+  getProductById,
   getProductBySlug,
   recordEvent,
   uid,
@@ -74,9 +76,26 @@ export async function analyzeUrl(rawUrl: string): Promise<AnalysisResult> {
   const merchant: Merchant = p.merchant;
   const identityKey = buildIdentityKey(p.title);
 
-  // 1) Canonical product (reuse across stores when identity matches).
-  let product = await findProductByIdentityKey(identityKey);
-  if (!product) {
+  // 1) Canonical product.
+  //    If we already track this exact store product, reuse the product that
+  //    owns that listing — never create a second row for the same item
+  //    (that used to orphan products and split their price history).
+  const existingListing = await getListingByMerchantProduct(merchant, p.merchantProductId);
+  const owner = existingListing ? await getProductById(existingListing.productId) : null;
+
+  let product = owner ?? (await findProductByIdentityKey(identityKey));
+
+  if (product) {
+    product = await upsertProduct({
+      slug: product.slug,
+      title: product.title,
+      brand: product.brand,
+      category: product.category,
+      imageUrl: product.imageUrl ?? p.imageUrl,
+      images: p.images,
+      identityKey,
+    });
+  } else {
     const slug = await uniqueSlug(p.title, identityKey);
     product = await upsertProduct({
       slug,
@@ -84,16 +103,6 @@ export async function analyzeUrl(rawUrl: string): Promise<AnalysisResult> {
       brand: p.brand,
       category: p.category,
       imageUrl: p.imageUrl,
-      images: p.images,
-      identityKey,
-    });
-  } else {
-    product = await upsertProduct({
-      slug: product.slug,
-      title: product.title,
-      brand: product.brand,
-      category: product.category,
-      imageUrl: product.imageUrl ?? p.imageUrl,
       images: p.images,
       identityKey,
     });

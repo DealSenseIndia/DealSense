@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Flame, Heart } from "lucide-react";
 import type { DealRow } from "@/lib/db/deals";
 import { StoreLogo } from "@/components/ui/StoreLogo";
+import { ProductThumb } from "@/components/ui/ProductThumb";
 import { cn, formatINR } from "@/lib/utils";
 
 export function DealCard({ deal }: { deal: DealRow }) {
@@ -12,18 +12,14 @@ export function DealCard({ deal }: { deal: DealRow }) {
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-card border border-hairline bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400/40 hover:shadow-[0_22px_55px_-26px_rgba(16,185,129,0.5)]">
       <Link href={`/product/${deal.slug}`} className="relative block aspect-[4/3] overflow-hidden bg-subtle">
-        {deal.imageUrl ? (
-          <Image
-            src={deal.imageUrl}
-            alt={deal.title}
-            fill
-            sizes="(max-width: 640px) 50vw, 240px"
-            className="object-contain p-3 transition-transform duration-500 group-hover:scale-105"
-            unoptimized
-          />
-        ) : (
-          <div className="grid h-full place-items-center text-2xl text-muted">🛍️</div>
-        )}
+        <ProductThumb
+          imageUrl={deal.imageUrl}
+          alt={deal.title}
+          merchant={deal.merchant}
+          sizes="(max-width: 640px) 50vw, 240px"
+          padding="p-3"
+          imageClassName="transition-transform duration-500 group-hover:scale-105"
+        />
 
         <div className="absolute left-2 top-2 flex flex-wrap gap-1.5">
           {isBuy && (

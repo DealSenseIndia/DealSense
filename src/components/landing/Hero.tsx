@@ -3,38 +3,51 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Bell, Link2, Mic, Search, ShieldCheck, Sparkles, TrendingDown, Zap } from "lucide-react";
-import { Container } from "@/components/ui/Container";
-import { cn } from "@/lib/utils";
+import {
+  Bell,
+  ChevronRight,
+  Link2,
+  Search,
+  ShieldCheck,
+  TrendingDown,
+  Zap,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Container } from "@/components/ui/Container";
+import { StoreLogo } from "@/components/ui/StoreLogo";
+import { cn, formatINR } from "@/lib/utils";
 
-const POPULAR = [
-  { label: "iPhone 17", q: "iPhone 17", emoji: "📱" },
-  { label: "PS5", q: "PS5", emoji: "🎮" },
-  { label: "Smart TV", q: "television", emoji: "📺" },
-  { label: "Laptops", q: "laptop", emoji: "💻" },
-  { label: "Headphones", q: "headphones", emoji: "🎧" },
-  { label: "Watches", q: "smartwatch", emoji: "⌚" },
-];
+export interface FeaturedDeal {
+  title: string;
+  imageUrl: string | null;
+  price: number | null;
+  mrp: number | null;
+  discount: number | null;
+  rating: number | null;
+  reviewCount: number | null;
+  merchant: string;
+  href: string;
+  /** Recorded price series, oldest -> newest. */
+  series?: number[];
+  /** All-time low with the date it was observed. */
+  low?: { price: number; at: number } | null;
+  /** Most recent genuine price drop. */
+  lastDrop?: { amount: number; at: number } | null;
+  /** Number of recorded price points. */
+  points?: number;
+}
 
-const rise = {
-  hidden: { opacity: 0, y: 24 },
-  show: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: 0.06 * i, duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
-  }),
-};
+const STORE_ICONS = ["amazon", "flipkart", "myntra"];
 
 export function Hero({
-  pointsTracked = 0,
-  stores = 0,
-  products = 0,
+  productsTracked = 0,
+  storesCompared = 0,
+  featured,
 }: {
-  pointsTracked?: number;
-  stores?: number;
-  products?: number;
+  productsTracked?: number;
+  storesCompared?: number;
+  featured?: FeaturedDeal | null;
 }) {
   const [url, setUrl] = useState("");
   const router = useRouter();
@@ -42,180 +55,126 @@ export function Hero({
   function go(value: string) {
     const v = value.trim();
     if (!v) return;
-    if (/^https?:\/\//i.test(v) || /amazon|flipkart|myntra|ajio/i.test(v)) {
-      router.push(`/analyze?url=${encodeURIComponent(v)}`);
-    } else {
-      router.push(`/search?q=${encodeURIComponent(v)}`);
-    }
+    if (/^https?:\/\//i.test(v)) router.push(`/analyze?url=${encodeURIComponent(v)}`);
+    else router.push(`/search?q=${encodeURIComponent(v)}`);
   }
 
   return (
-    <section className="relative overflow-hidden pb-12 pt-12 sm:pt-16">
-      <div className="pointer-events-none absolute inset-0 bg-wash-strong" aria-hidden />
+    <section className="relative overflow-hidden pb-10 pt-10 sm:pt-14">
+      <div className="pointer-events-none absolute inset-0 bg-wash" aria-hidden />
 
-      <Container size="wide" className="relative">
-        <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-          {/* ---------------- Left ---------------- */}
+      <Container>
+        <div className="grid items-center gap-8 lg:grid-cols-[1fr_1.02fr]">
+          {/* ================= LEFT ================= */}
           <div>
+            {/* trust badge */}
             <motion.div
-              variants={rise}
-              custom={0}
-              initial="hidden"
-              animate="show"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="inline-flex items-center gap-2 rounded-full border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-3.5 py-1.5 text-[11.5px] font-extrabold text-[var(--dw-green-mid)]"
             >
-              <span className="h-2 w-2 animate-pulse-ring rounded-full bg-brand-500" />
-              {pointsTracked > 0
-                ? `${pointsTracked.toLocaleString("en-IN")} price points tracked`
-                : "Live price tracking across India"}
+              <ShieldCheck className="h-3.5 w-3.5" />
+              India&apos;s Most Trusted Shopping Intelligence Platform
             </motion.div>
 
-            <motion.p
-              variants={rise}
-              custom={1}
-              initial="hidden"
-              animate="show"
-              className="mt-6 text-[11.5px] font-extrabold uppercase tracking-[0.2em] text-muted"
-            >
-              Price history &amp; tracker
-            </motion.p>
-
+            {/* headline */}
             <motion.h1
-              variants={rise}
-              custom={2}
-              initial="hidden"
-              animate="show"
-              className="mt-3 text-[40px] font-extrabold leading-[1.02] tracking-[-0.035em] text-headline sm:text-[56px] lg:text-[66px]"
+              initial={{ opacity: 0, y: 22 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.08, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-5 text-[42px] font-extrabold leading-[1.03] tracking-[-0.035em] text-headline sm:text-[58px] lg:text-[66px]"
             >
-              Never overpay
+              Shop <span className="text-emerald-600">smarter.</span>
               <br />
-              <span className="text-gradient-brand">online</span>
-              <span className="inline-block h-[0.85em] w-[3px] translate-y-[0.05em] animate-blink bg-brand-500" />
+              Save <span className="text-emerald-600">bigger.</span>
             </motion.h1>
 
             <motion.p
-              variants={rise}
-              custom={3}
-              initial="hidden"
-              animate="show"
-              className="mt-5 max-w-[30rem] text-[16px] leading-relaxed text-body"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.16, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-5 max-w-[32rem] text-[15.5px] leading-relaxed text-body"
             >
-              Track real price history across every store, compare the true landed cost, and know
-              the right moment to buy. No fake discounts — ever.
+              Track price history, compare across stores, get price drop alerts and know the best
+              time to buy.
             </motion.p>
 
             {/* search */}
             <motion.form
-              variants={rise}
-              custom={4}
-              initial="hidden"
-              animate="show"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.24, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               onSubmit={(e) => {
                 e.preventDefault();
                 go(url);
               }}
-              className="mt-7 flex max-w-[38rem] items-center gap-2 rounded-2xl border border-hairline bg-card p-2 shadow-[0_18px_40px_-24px_rgba(15,23,42,0.35)] transition-shadow focus-within:shadow-[0_18px_50px_-20px_rgba(16,185,129,0.45)]"
+              className="mt-7 flex max-w-[40rem] items-center gap-2 rounded-2xl border border-hairline bg-card p-2 shadow-card focus-within:border-emerald-500/50 focus-within:shadow-[0_18px_46px_-22px_rgba(16,185,129,0.6)]"
             >
-              <span className="pl-2.5 text-muted">
-                <Link2 className="h-4.5 w-4.5" />
+              <span className="flex shrink-0 items-center gap-2 pl-2.5">
+                <Link2 className="h-4.5 w-4.5 text-muted" />
+                <span className="hidden items-center gap-1.5 sm:flex">
+                  {STORE_ICONS.map((s) => (
+                    <StoreLogo key={s} merchant={s} size={20} />
+                  ))}
+                </span>
+                <span className="hidden h-5 w-px bg-hairline sm:block" />
               </span>
               <input
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                placeholder="Search for any product or paste a link…"
+                placeholder="Paste any product link or search here…"
                 className="h-11 min-w-0 flex-1 bg-transparent text-[14.5px] text-headline placeholder:text-muted focus:outline-none"
                 autoComplete="off"
                 spellCheck={false}
               />
-              <span className="hidden h-5 w-px bg-hairline sm:block" />
-              <button type="button" aria-label="Voice search" className="hidden text-muted hover:text-headline sm:block">
-                <Mic className="h-4 w-4" />
-              </button>
               <button
                 type="submit"
-                className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl bg-gradient-brand px-5 text-[13.5px] font-extrabold text-white shadow-[0_8px_22px_-10px_rgba(5,150,105,0.9)] transition-transform hover:-translate-y-0.5"
+                className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl bg-emerald-600 px-5 text-[13.5px] font-extrabold text-white shadow-[0_10px_26px_-12px_rgba(5,150,105,0.95)] transition-all hover:-translate-y-0.5 hover:bg-emerald-700"
               >
                 <Search className="h-4 w-4" />
-                Find best deals
+                Analyze Deal
               </button>
             </motion.form>
 
-            {/* popular */}
-            <motion.div
-              variants={rise}
-              custom={5}
-              initial="hidden"
-              animate="show"
-              className="mt-5 flex flex-wrap items-center gap-2"
-            >
-              <span className="text-[12.5px] font-bold text-muted">Popular:</span>
-              {POPULAR.map((p) => (
-                <Link
-                  key={p.label}
-                  href={`/search?q=${encodeURIComponent(p.q)}`}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-3 py-1.5 text-[12px] font-semibold text-body transition-all hover:-translate-y-0.5 hover:border-emerald-400/50 hover:text-headline"
-                >
-                  <span aria-hidden>{p.emoji}</span>
-                  {p.label}
-                </Link>
-              ))}
-            </motion.div>
-
             {/* CTAs */}
             <motion.div
-              variants={rise}
-              custom={6}
-              initial="hidden"
-              animate="show"
-              className="mt-7 flex flex-wrap gap-3"
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-6 flex flex-wrap gap-3"
             >
               <Link
                 href="/analyze"
-                className="inline-flex h-11 items-center gap-2 rounded-btn bg-gradient-brand px-6 text-[13.5px] font-extrabold text-white shadow-[0_10px_26px_-12px_rgba(5,150,105,0.95)] transition-transform hover:-translate-y-0.5"
+                className="inline-flex h-11 items-center gap-2 rounded-xl bg-emerald-600 px-6 text-[13.5px] font-extrabold text-white shadow-[0_10px_26px_-12px_rgba(5,150,105,0.95)] transition-all hover:-translate-y-0.5 hover:bg-emerald-700"
               >
-                Check a deal <Zap className="h-4 w-4" />
+                <Zap className="h-4 w-4" />
+                Analyze a Deal
               </Link>
               <Link
                 href="/deals"
-                className="inline-flex h-11 items-center gap-2 rounded-btn border border-emerald-600/40 bg-card px-6 text-[13.5px] font-extrabold text-[var(--dw-green-mid)] transition-colors hover:bg-emerald-500 hover:text-white"
+                className="inline-flex h-11 items-center gap-2 rounded-xl border border-emerald-600/40 bg-[var(--dw-green-surface)] px-6 text-[13.5px] font-extrabold text-[var(--dw-green-mid)] transition-all hover:-translate-y-0.5 hover:bg-emerald-600 hover:text-white"
               >
+                <TrendingDown className="h-4 w-4" />
                 Browse live deals
               </Link>
             </motion.div>
-
-            {/* trust row */}
-            <motion.div
-              variants={rise}
-              custom={7}
-              initial="hidden"
-              animate="show"
-              className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2.5 text-[12.5px] font-semibold text-secondary"
-            >
-              <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck className="h-3.5 w-3.5 text-brand-500" /> Live verified prices
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <TrendingDown className="h-3.5 w-3.5 text-brand-500" /> Real price history
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Sparkles className="h-3.5 w-3.5 text-brand-500" /> True landed cost
-              </span>
-            </motion.div>
           </div>
 
-          {/* ---------------- Right: our girl + floating cards ---------------- */}
+          {/* ================= RIGHT — girl + old floating cards ================= */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 18 }}
+            initial={{ opacity: 0, scale: 0.97, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ delay: 0.18, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mx-auto w-full max-w-[560px]"
+            transition={{ delay: 0.14, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="relative mx-auto w-full max-w-[640px]"
           >
-            <div className="relative">
+            <div className="relative min-h-[400px] sm:min-h-[430px]">
+              {/* the girl */}
               <motion.div
-                initial={{ opacity: 0, y: 22 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.26, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="relative z-0"
+                transition={{ delay: 0.22, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                className="relative z-[1] mx-auto w-full max-w-[500px]"
               >
                 <Image
                   src="/brand/hero-illustration.webp"
@@ -223,107 +182,121 @@ export function Hero({
                   width={1024}
                   height={576}
                   priority
-                  className="h-auto w-full drop-shadow-[0_24px_48px_rgba(15,23,42,0.14)]"
+                  className="h-auto w-full drop-shadow-[0_14px_34px_rgba(15,23,42,0.16)]"
                 />
               </motion.div>
 
-              <div className="pointer-events-none absolute inset-0 z-10">
-                <FloatCard className="left-0 top-0 w-[212px] animate-float sm:-left-3" delay="0s">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[12px] font-extrabold text-headline">Price History</span>
-                    <span className="rounded-lg border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-2 py-0.5 text-[9.5px] font-extrabold text-[var(--dw-green-mid)]">
-                      Lowest ₹37,499
-                    </span>
-                  </div>
-                  <svg viewBox="0 0 200 56" className="mt-2.5 h-12 w-full" preserveAspectRatio="none">
-                    <defs>
-                      <linearGradient id="hf2" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#10B981" stopOpacity="0.28" />
-                        <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
-                      </linearGradient>
-                    </defs>
-                    <path
-                      d="M0 34 C 20 28, 36 44, 56 36 C 76 28, 94 46, 116 38 C 138 30, 160 44, 200 16 L200 56 L0 56 Z"
-                      fill="url(#hf2)"
-                    />
-                    <path
-                      d="M0 34 C 20 28, 36 44, 56 36 C 76 28, 94 46, 116 38 C 138 30, 160 44, 200 16"
-                      fill="none"
-                      stroke="#10B981"
-                      strokeWidth="2.4"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                  <div className="mt-1 text-[10px] font-semibold text-muted">on 12 Sep 2026</div>
-                </FloatCard>
-
-                <FloatCard className="left-0 top-[40%] w-[196px] animate-float sm:left-1" delay="-3s">
-                  <div className="flex items-center gap-2">
-                    <span className="grid h-7 w-7 place-items-center rounded-lg bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]">
-                      <Bell className="h-3.5 w-3.5" />
-                    </span>
-                    <div>
-                      <div className="text-[11.5px] font-extrabold text-headline">Price Drop Alert</div>
-                      <div className="text-[9.5px] font-semibold text-muted">Great news!</div>
+              {/* FLOAT 1 — Price History (top-left) — real recorded series */}
+              <FloatCard className="left-0 top-[48px] w-[220px] sm:-left-6" delay="0s">
+                <div className="flex items-baseline justify-between gap-2">
+                  <div className="text-[12.5px] font-extrabold text-headline">Price History</div>
+                  {featured?.points ? (
+                    <div className="text-[9.5px] font-bold text-muted">
+                      {featured.points} pts
                     </div>
-                  </div>
-                  <div className="mt-2 text-[10.5px] font-semibold text-secondary">Price dropped by</div>
-                  <div className="tabular text-[17px] font-extrabold text-[var(--dw-green-mid)]">₹2,500</div>
-                </FloatCard>
-
-                <FloatCard className="right-0 top-0 w-[192px] animate-float sm:-right-2" delay="-1.6s">
-                  <span className="rounded-md border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-[var(--dw-green-mid)]">
-                    Recently viewed
-                  </span>
-                  <div className="mt-2 text-[12px] font-extrabold leading-snug text-headline">
-                    Sony WH-1000XM5
-                  </div>
-                  <div className="mt-1 flex items-center gap-1.5 text-[10.5px]">
-                    <span className="grid h-3.5 w-3.5 place-items-center rounded bg-[#FF9900] text-[6.5px] font-black text-black">
-                      a
-                    </span>
-                    <span className="font-bold text-body">Amazon India</span>
-                  </div>
-                  <div className="mt-1 flex items-center gap-1 text-[10.5px] font-semibold text-secondary">
-                    <span className="text-amber-500">★</span> 4.6
-                    <span className="text-muted">(12,540)</span>
-                  </div>
-                  <div className="tabular mt-1.5 text-[18px] font-extrabold text-headline">₹24,999</div>
-                  <div className="mt-2 flex h-8 items-center justify-center rounded-lg bg-gradient-brand text-[11.5px] font-extrabold text-white">
-                    Check Deal →
-                  </div>
-                </FloatCard>
-
-                <FloatCard className="bottom-0 right-[2%] w-[198px] animate-float" delay="-5s">
-                  <div className="flex items-center gap-2.5">
-                    <div className="relative grid h-10 w-10 shrink-0 place-items-center">
-                      <svg viewBox="0 0 48 48" className="h-full w-full -rotate-90">
-                        <circle cx="24" cy="24" r="20" fill="none" stroke="var(--border-card)" strokeWidth="4" />
-                        <motion.circle
-                          cx="24"
-                          cy="24"
-                          r="20"
-                          fill="none"
-                          stroke="#10B981"
-                          strokeWidth="4"
-                          strokeLinecap="round"
-                          strokeDasharray={2 * Math.PI * 20}
-                          initial={{ strokeDashoffset: 2 * Math.PI * 20 }}
-                          animate={{ strokeDashoffset: 2 * Math.PI * 20 * (1 - 0.92) }}
-                          transition={{ delay: 0.7, duration: 1.3, ease: [0.22, 1, 0.36, 1] }}
-                        />
-                      </svg>
-                      <span className="tabular absolute text-[11px] font-extrabold text-headline">92</span>
-                    </div>
-                    <div>
-                      <div className="text-[12px] font-extrabold text-[var(--dw-green-mid)]">Buy Now</div>
-                      <div className="text-[9.5px] font-semibold leading-snug text-secondary">
-                        12% below the usual price
+                  ) : null}
+                </div>
+                <div className="mt-1.5">
+                  <Sparkline series={featured?.series ?? []} />
+                  {featured?.low ? (
+                    <div className="mt-1 rounded-lg border border-hairline bg-subtle px-2.5 py-1.5">
+                      <div className="text-[9.5px] font-extrabold uppercase tracking-wider text-muted">
+                        Lowest Price
+                      </div>
+                      <div className="tabular text-[13px] font-extrabold text-[var(--dw-green-mid)]">
+                        {formatINR(featured.low.price)}
+                      </div>
+                      <div className="text-[9.5px] font-semibold text-muted">
+                        on {formatDate(featured.low.at)}
                       </div>
                     </div>
+                  ) : null}
+                </div>
+              </FloatCard>
+
+              {/* FLOAT 2 — Price Drop Alert (foreground left) — real recorded drop */}
+              <FloatCard className="left-0 top-[200px] w-[208px] sm:left-2" delay="-3s">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]">
+                  <Bell className="h-4.5 w-4.5" />
+                </span>
+                <div className="min-w-0">
+                  <div className="text-[12px] font-extrabold text-headline">Price Drop Alert</div>
+                  <div className="text-[10.5px] font-semibold text-muted">Great news!</div>
+                  {featured?.lastDrop ? (
+                    <>
+                      <div className="tabular mt-0.5 text-[12.5px] font-extrabold text-[var(--dw-green-mid)]">
+                        Price dropped by {formatINR(featured.lastDrop.amount)}
+                      </div>
+                      <div className="text-[9.5px] font-semibold text-muted">
+                        on {formatDate(featured.lastDrop.at)}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="mt-0.5 text-[11.5px] font-bold text-muted">
+                      Watching this product closely
+                    </div>
+                  )}
+                </div>
+              </FloatCard>
+
+              {/* FLOAT 3 — Featured / recently viewed (top-right, in front) */}
+              {featured && (
+                <Link
+                  href={featured.href}
+                  className="absolute right-0 top-[8px] z-[4] w-[238px] rounded-2xl border border-hairline bg-card p-3.5 shadow-pop transition-transform hover:-translate-y-1 sm:-right-6"
+                >
+                  <div className="flex gap-3">
+                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-subtle">
+                      {featured.imageUrl && (
+                        <Image
+                          src={featured.imageUrl}
+                          alt={featured.title}
+                          fill
+                          sizes="64px"
+                          className="object-contain p-1"
+                          unoptimized
+                        />
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <span className="inline-block rounded-md border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-1.5 py-0.5 text-[8.5px] font-extrabold uppercase tracking-wider text-[var(--dw-green-mid)]">
+                        {featured.lastDrop ? "Live drop" : "Recently viewed"}
+                      </span>
+                      <div className="mt-1 line-clamp-1 text-[12px] font-extrabold text-headline">
+                        {featured.title}
+                      </div>
+                      {featured.rating !== null && (
+                        <div className="mt-0.5 flex items-center gap-1 text-[10px] font-semibold text-secondary">
+                          <span className="text-amber-500">★</span> {featured.rating}
+                          {featured.reviewCount ? (
+                            <span className="text-muted">({featured.reviewCount.toLocaleString("en-IN")})</span>
+                          ) : null}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </FloatCard>
-              </div>
+
+                  <div className="mt-2.5 flex flex-wrap items-baseline gap-2">
+                    <span className="tabular text-[17px] font-extrabold text-headline">
+                      {formatINR(featured.price)}
+                    </span>
+                    {featured.mrp && (
+                      <span className="tabular text-[11px] text-muted line-through">
+                        {formatINR(featured.mrp)}
+                      </span>
+                    )}
+                    {featured.discount !== null && (
+                      <span className="rounded-md bg-[var(--dw-green-surface)] px-1.5 py-0.5 text-[9.5px] font-extrabold text-[var(--dw-green-mid)]">
+                        {featured.discount}% OFF
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="mt-2.5 flex h-8 items-center justify-center gap-1.5 rounded-lg bg-emerald-600 text-[11.5px] font-extrabold text-white">
+                    View Deal <ChevronRight className="h-3.5 w-3.5" />
+                  </div>
+                </Link>
+              )}
             </div>
           </motion.div>
         </div>
@@ -345,9 +318,9 @@ function FloatCard({
     <motion.div
       initial={{ opacity: 0, y: 14, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay: 0.4, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ delay: 0.4, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        "absolute rounded-2xl border border-hairline bg-card/95 p-4 shadow-[0_20px_50px_-20px_rgba(15,23,42,0.35)] backdrop-blur-md",
+        "absolute z-[3] rounded-2xl border border-hairline bg-card p-3.5 shadow-pop",
         className,
       )}
       style={{ animationDelay: delay }}
@@ -355,4 +328,70 @@ function FloatCard({
       {children}
     </motion.div>
   );
+}
+
+const SPARK_W = 215;
+const SPARK_H = 58;
+
+/** Real price sparkline — drawn from the recorded series, never a stock path. */
+function Sparkline({ series }: { series: number[] }) {
+  const pts = series.filter((p) => Number.isFinite(p) && p > 0);
+
+  if (pts.length < 2) {
+    return (
+      <div className="flex h-[52px] items-center justify-center rounded-lg border border-dashed border-hairline text-[10.5px] font-semibold text-muted">
+        Collecting price points…
+      </div>
+    );
+  }
+
+  const min = Math.min(...pts);
+  const max = Math.max(...pts);
+  const span = max - min || 1;
+  const padX = 5;
+  const padRight = 9;
+  const padTop = 6;
+  const padBottom = 5;
+  const innerH = SPARK_H - padTop - padBottom;
+
+  const xy = pts.map((p, i) => {
+    const x = padX + (i / (pts.length - 1)) * (SPARK_W - padX - padRight);
+    const y = padTop + innerH - ((p - min) / span) * innerH;
+    return [x, y] as const;
+  });
+
+  const line = xy.map(([x, y], i) => `${i === 0 ? "M" : "L"} ${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
+  const area = `${line} L ${xy[xy.length - 1][0].toFixed(1)},${SPARK_H} L ${xy[0][0].toFixed(1)},${SPARK_H} Z`;
+  const last = xy[xy.length - 1];
+
+  return (
+    <svg
+      viewBox={`0 0 ${SPARK_W} ${SPARK_H}`}
+      className="h-[52px] w-full"
+      fill="none"
+      preserveAspectRatio="none"
+      role="img"
+      aria-label={`Recorded price trend, ${pts.length} points`}
+    >
+      <defs>
+        <linearGradient id="histGreenGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#22C55E" stopOpacity="0.32" />
+          <stop offset="70%" stopColor="#22C55E" stopOpacity="0.06" />
+          <stop offset="100%" stopColor="#22C55E" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <line x1="4" y1="6" x2="4" y2="56" stroke="#E2E8F0" strokeWidth="1.5" strokeLinecap="round" />
+      <path d={area} fill="url(#histGreenGrad)" />
+      <path d={line} stroke="#22C55E" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx={last[0]} cy={last[1]} r="2.6" fill="#22C55E" />
+    </svg>
+  );
+}
+
+function formatDate(ts: number): string {
+  return new Date(ts).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 }

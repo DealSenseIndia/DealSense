@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowDown, Flame, Radio } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { StoreLogo } from "@/components/ui/StoreLogo";
+import { ProductThumb } from "@/components/ui/ProductThumb";
 import type { DealRow } from "@/lib/db/deals";
 import { cn, formatINR, timeAgo } from "@/lib/utils";
 
@@ -44,18 +44,13 @@ export function DealsMovingNow({ deals }: { deals: DealRow[] }) {
               className="group overflow-hidden rounded-2xl border border-hairline bg-card p-3 shadow-card transition-all hover:-translate-y-1 hover:border-emerald-400/50 hover:shadow-[0_18px_40px_-20px_rgba(16,185,129,0.55)]"
             >
               <div className="relative aspect-square overflow-hidden rounded-xl bg-subtle">
-                {d.imageUrl ? (
-                  <Image
-                    src={d.imageUrl}
-                    alt={d.title}
-                    fill
-                    sizes="(max-width: 640px) 50vw, 180px"
-                    className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
-                    unoptimized
-                  />
-                ) : (
-                  <div className="grid h-full place-items-center text-2xl text-muted">🛍️</div>
-                )}
+                <ProductThumb
+                  imageUrl={d.imageUrl}
+                  alt={d.title}
+                  merchant={d.merchant}
+                  sizes="(max-width: 640px) 50vw, 180px"
+                  imageClassName="transition-transform duration-500 group-hover:scale-105"
+                />
                 {d.dropAmount ? (
                   <span className="absolute left-1.5 top-1.5 inline-flex items-center gap-0.5 rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-extrabold text-white">
                     <ArrowDown className="h-2.5 w-2.5" />₹{d.dropAmount.toLocaleString("en-IN")}
@@ -120,16 +115,13 @@ export function AllTimeLows({ deals }: { deals: DealRow[] }) {
               className="group overflow-hidden rounded-2xl border-2 border-red-400/40 bg-card p-3 shadow-card transition-all hover:-translate-y-1 hover:border-red-400"
             >
               <div className="relative aspect-square overflow-hidden rounded-xl bg-subtle">
-                {d.imageUrl && (
-                  <Image
-                    src={d.imageUrl}
-                    alt={d.title}
-                    fill
-                    sizes="(max-width: 640px) 50vw, 200px"
-                    className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
-                    unoptimized
-                  />
-                )}
+                <ProductThumb
+                  imageUrl={d.imageUrl}
+                  alt={d.title}
+                  merchant={d.merchant}
+                  sizes="(max-width: 640px) 50vw, 200px"
+                  imageClassName="transition-transform duration-500 group-hover:scale-105"
+                />
                 <span className="absolute left-1.5 top-1.5 rounded-full bg-red-500 px-1.5 py-0.5 text-[8.5px] font-extrabold uppercase tracking-wider text-white">
                   All-time low
                 </span>
@@ -244,16 +236,13 @@ export function PlatformShelves({
                     className="group overflow-hidden rounded-2xl border border-hairline bg-card p-3 shadow-card transition-all hover:-translate-y-1 hover:border-emerald-400/50"
                   >
                     <div className="relative aspect-square overflow-hidden rounded-xl bg-subtle">
-                      {d.imageUrl && (
-                        <Image
-                          src={d.imageUrl}
-                          alt={d.title}
-                          fill
-                          sizes="(max-width: 640px) 50vw, 200px"
-                          className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
-                          unoptimized
-                        />
-                      )}
+                      <ProductThumb
+                        imageUrl={d.imageUrl}
+                        alt={d.title}
+                        merchant={d.merchant}
+                        sizes="(max-width: 640px) 50vw, 200px"
+                        imageClassName="transition-transform duration-500 group-hover:scale-105"
+                      />
                       {d.discountPct > 0 && (
                         <span className="absolute left-1.5 top-1.5 rounded-full bg-emerald-600 px-1.5 py-0.5 text-[8.5px] font-extrabold text-white">
                           {d.discountPct}%

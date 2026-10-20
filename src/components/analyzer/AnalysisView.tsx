@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import {
@@ -20,6 +19,7 @@ import { cn, formatINR, timeAgo } from "@/lib/utils";
 import { FreshnessBadge, Tag } from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
 import { StoreLogo } from "@/components/ui/StoreLogo";
+import { ProductThumb } from "@/components/ui/ProductThumb";
 import { PriceChart } from "./PriceChart";
 import { LandedPriceCard } from "./LandedPriceCard";
 import { AlertPanel } from "./AlertPanel";
@@ -41,7 +41,9 @@ export function AnalysisView({ result }: { result: AnalysisResult }) {
   const bundle = result.bundle;
   const meta = merchantMeta[listing.merchant];
   const rivalMeta = result.rival ? merchantMeta[result.rival.merchant] : null;
-  const [imgError, setImgError] = useState(false);
+  const lastObservedAt = result.history.primary.length
+    ? result.history.primary[result.history.primary.length - 1].t
+    : null;
 
   const discount =
     listing.mrp && listing.price && listing.mrp > listing.price
@@ -69,6 +71,7 @@ export function AnalysisView({ result }: { result: AnalysisResult }) {
     median: bundle?.median90 ?? bundle?.median ?? null,
     spark: points.slice(-40).map((p) => p.price),
     hasHistory,
+    isLive: Boolean(listing.lastCheckedAt),
   });
 
   return (
@@ -109,7 +112,10 @@ export function AnalysisView({ result }: { result: AnalysisResult }) {
           </span>
         )}
         <span className="ml-auto">
-          <FreshnessBadge freshness={freshnessOf(listing.lastCheckedAt)} ts={listing.lastCheckedAt} />
+          <FreshnessBadge
+            freshness={freshnessOf(listing.lastCheckedAt)}
+            ts={listing.lastCheckedAt ?? lastObservedAt}
+          />
         </span>
       </div>
 
@@ -117,19 +123,14 @@ export function AnalysisView({ result }: { result: AnalysisResult }) {
         {/* ---------- left column ---------- */}
         <div className="space-y-4 lg:max-w-[340px]">
           <div className="relative mx-auto aspect-square w-full max-w-[420px] overflow-hidden rounded-2xl border border-hairline bg-card lg:max-w-none">
-            {product.imageUrl && !imgError ? (
-              <Image
-                src={product.imageUrl}
-                alt={product.title}
-                fill
-                sizes="(max-width: 1024px) 100vw, 340px"
-                className="object-contain p-5"
-                onError={() => setImgError(true)}
-                unoptimized
-              />
-            ) : (
-              <div className="grid h-full place-items-center text-4xl text-muted">🛍️</div>
-            )}
+            <ProductThumb
+              imageUrl={product.imageUrl}
+              alt={product.title}
+              merchant={listing.merchant}
+              sizes="(max-width: 1024px) 100vw, 340px"
+              padding="p-5"
+              iconScale={0.34}
+            />
           </div>
 
           <div className="mx-auto rounded-2xl border border-hairline bg-card p-4 shadow-card lg:mx-0">
@@ -164,8 +165,9 @@ export function AnalysisView({ result }: { result: AnalysisResult }) {
               View deal on {meta.name} <ArrowRight className="h-4 w-4" />
             </ButtonLink>
             <p className="mt-2 text-center text-[10.5px] font-semibold text-muted">
-              Verified {listing.lastCheckedAt ? timeAgo(listing.lastCheckedAt) : "recently"} · confirm
-              at checkout
+              {listing.lastCheckedAt
+                ? `Verified ${timeAgo(listing.lastCheckedAt)} · confirm at checkout`
+                : `Last recorded price · confirm at checkout`}
             </p>
           </div>
         </div>

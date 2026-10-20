@@ -23,6 +23,8 @@ export interface DealRow {
   listingId?: string;
   lastDropAt: number | null;
   dropAmount: number | null;
+  /** Timestamp of the most recent recorded price point. */
+  lastSeenAt: number | null;
 }
 
 /** Full stats for every listing that has a price. */
@@ -80,6 +82,7 @@ async function baseRows() {
       median: prices.length ? [...prices].sort((a, b) => a - b)[Math.floor(prices.length / 2)] : null,
       lastDropAt: null,
       dropAmount: null,
+      lastSeenAt: obs.length ? Math.max(...obs.map((o) => o.t)) : null,
     });
   }
   return out;
@@ -150,8 +153,7 @@ export async function getRecentDrops(limit = 14): Promise<DealRow[]> {
 }
 
 /** Products whose current price IS their all-time low. */
-export async function getAllTimeLows(limit = 12): Promise<DealRow[]> {
-  const rows = await baseRows();
+export async function getAllTimeLows(limit = 12): Promise<DealRow[]> {  const rows = await baseRows();
   return rows
     .filter((r) => r.observations >= 3 && r.low !== null && r.price <= r.low)
     .sort((a, b) => b.discountPct - a.discountPct || b.observations - a.observations)

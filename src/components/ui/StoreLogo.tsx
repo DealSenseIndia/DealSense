@@ -103,3 +103,39 @@ export function StoreLogoRow({
     </div>
   );
 }
+
+/**
+ * Store logo that fills its parent box (used as a product-image fallback).
+ * The parent controls the size.
+ */
+export function StoreLogoFill({
+  merchant,
+  className,
+}: {
+  merchant: string;
+  className?: string;
+}) {
+  const key = merchant.toLowerCase().replace(/[^a-z]/g, "");
+  const src = ICONS[key];
+
+  if (src) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt={merchant}
+        className={cn("h-full w-full object-contain", className)}
+      />
+    );
+  }
+
+  const fb = FALLBACK[key] ?? { short: key.slice(0, 2).toUpperCase(), color: "#64748B" };
+  return (
+    <span
+      className={cn("grid h-full w-full place-items-center font-black text-white", className)}
+      style={{ background: fb.color, fontSize: "32%" }}
+    >
+      {fb.short}
+    </span>
+  );
+}

@@ -108,6 +108,11 @@ function groupFor(category: string | null): (typeof GROUPS)[number] | null {
   return null;
 }
 
+/** Public helper: map a raw leaf category to its top-level group. */
+export function groupForCategory(category: string | null) {
+  return groupFor(category);
+}
+
 /** Top-level category groups built from the real catalogue. */
 export async function getCategoryGroups(): Promise<CategoryGroup[]> {
   await ensureSchema();

@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import type { Shelf } from "@/lib/db/shelves";
 import { StoreLogo } from "@/components/ui/StoreLogo";
+import { ProductThumb } from "@/components/ui/ProductThumb";
 import { cn, formatINR } from "@/lib/utils";
 
 /**
@@ -41,18 +41,13 @@ export function CategoryPanel({ shelf }: { shelf: Shelf }) {
                 className="group flex flex-col rounded-2xl border border-hairline bg-card p-3 shadow-card transition-all hover:-translate-y-1 hover:border-emerald-400/50 hover:shadow-[0_18px_40px_-20px_rgba(16,185,129,0.55)]"
               >
                 <div className="relative aspect-square overflow-hidden rounded-xl bg-subtle">
-                  {p.imageUrl ? (
-                    <Image
-                      src={p.imageUrl}
-                      alt={p.title}
-                      fill
-                      sizes="(max-width: 640px) 50vw, 200px"
-                      className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
-                      unoptimized
-                    />
-                  ) : (
-                    <div className="grid h-full place-items-center text-2xl text-muted">🛍️</div>
-                  )}
+                  <ProductThumb
+                    imageUrl={p.imageUrl}
+                    alt={p.title}
+                    merchant={p.merchant}
+                    sizes="(max-width: 640px) 50vw, 200px"
+                    imageClassName="transition-transform duration-500 group-hover:scale-105"
+                  />
                 </div>
 
                 <div className="mt-2.5 line-clamp-2 min-h-[2.1rem] text-[11.5px] font-bold leading-snug text-headline">
@@ -83,7 +78,7 @@ export function CategoryPanel({ shelf }: { shelf: Shelf }) {
 
         <div className="mt-6 flex justify-center">
           <Link
-            href={`/search?q=${encodeURIComponent(shelf.category)}`}
+            href={`/deals?category=${encodeURIComponent(shelf.category)}`}
             className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-emerald-600/40 bg-card px-6 text-[12.5px] font-extrabold text-[var(--dw-green-mid)] transition-colors hover:bg-emerald-500 hover:text-white"
           >
             View all <ArrowRight className="h-3.5 w-3.5" />
