@@ -1,12 +1,17 @@
 /**
  * External price-history providers.
  *
- * Competitors like Keepa and PriceHistory.app have years of historical price
- * data. Both offer official APIs. When a key is configured we merge their
- * series into our own so users get real history for *any* product immediately —
- * including products DealSense has never tracked.
+ * Competitors like PriceHistory.ai, Keepa and PriceHistory.app have years of
+ * historical price data. We use them as a **bootstrap**: when a user analyses
+ * a product we have never tracked, we pull the real series once, cache it
+ * permanently in our own database, and never fetch it again.
  *
- * Nothing here is required: without a key DealSense uses its own observations.
+ * Our own observations remain the source of truth — external series are
+ * labelled with their provider so the user always knows where the data
+ * came from.
+ *
+ * Nothing here is required: without any provider DealSense uses its own
+ * observations plus category market context.
  */
 
 export interface ExternalPoint {
@@ -20,7 +25,7 @@ export interface ExternalHistory {
   sourceUrl?: string;
 }
 
-export type ProviderName = "keepa" | "pricehistory";
+export type ProviderName = "pricehistory.ai" | "keepa" | "pricehistory.app";
 
 const KEEPA_DOMAIN_IN = 21; // amazon.in
 
@@ -81,7 +86,7 @@ export async function fetchPriceHistoryApi(
       if (t > 0 && price > 0) points.push({ t, price });
     }
     if (!points.length) return null;
-    return { points, provider: "pricehistory" };
+    return { points, provider: "pricehistory.app" };
   } catch {
     return null;
   }
@@ -91,10 +96,19 @@ export async function fetchPriceHistoryApi(
 export async function fetchExternalHistory(
   merchant: "amazon" | "flipkart",
   merchantProductId: string,
+  titleHint?: string,
 ): Promise<ExternalHistory | null> {
+  // 1. PriceHistory.ai — free public catalogue, works without a key.
+  const { fetchPriceHistoryAiFor } = await import("./providers/pricehistoryAi");
+  const phai = await fetchPriceHistoryAiFor(merchant, merchantProductId, titleHint);
+  if (phai?.points.length) return phai;
+
+  // 2. Keepa (Amazon) — needs a key.
   if (merchant === "amazon") {
     const keepa = await fetchKeepaHistory(merchantProductId);
     if (keepa) return keepa;
   }
+
+  // 3. PriceHistory.app — needs a partner key.
   return fetchPriceHistoryApi(merchant, merchantProductId);
 }

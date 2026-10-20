@@ -162,12 +162,27 @@ export function AnalysisView({ result }: { result: AnalysisResult }) {
 
           {/* chart */}
           <div className="rounded-2xl border border-hairline bg-card p-4 shadow-card">
-            <div className="mb-3 flex items-center justify-between">
+            <div className="mb-3 flex items-center justify-between gap-2">
               <h2 className="text-[12px] font-extrabold uppercase tracking-wider text-secondary">
                 Price History
               </h2>
-              {bundle?.source && bundle.source !== "none" && (
-                <span className="text-[10.5px] font-bold text-muted">Source: {bundle.sourceLabel}</span>
+              {bundle && bundle.source !== "none" && (
+                <span className="text-[10.5px] font-bold text-muted">
+                  Source:{" "}
+                  {bundle.source === "external" ? (
+                    <a
+                      href="https://pricehistory.ai"
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                      className="underline decoration-dotted underline-offset-2 hover:text-[var(--dw-green-mid)]"
+                      title="Historical price data sourced from PriceHistory.ai and cached by DealSense"
+                    >
+                      PriceHistory.ai
+                    </a>
+                  ) : (
+                    bundle.sourceLabel
+                  )}
+                </span>
               )}
             </div>
             <PriceChart

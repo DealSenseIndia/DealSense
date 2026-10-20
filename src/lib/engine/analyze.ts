@@ -153,64 +153,47 @@ export async function analyzeUrl(rawUrl: string): Promise<AnalysisResult> {
     lastError: null,
   });
 
-  // 5) History + verdict.
-  const obs = await getObservations(listing.id);
-  const stats = computeStats(obs);
-  const verdict = evaluateDeal({
-    current: p.price as number,
-    mrp: p.mrp,
-    stats,
-  });
-
-  const landed = computeLandedPrice({
-    base: p.price as number,
-    shipping: p.shipping,
-    coupon: p.coupon,
-    merchant,
-  });
-
-  // 6) Cross-store rival (same product, other merchant, same variant).
+  // 5) History + verdict. The bundle's verdict uses the merged history
+  //    (our observations + any imported provider series), so it is the
+  //    authoritative one.
   const rivalListing = await findRivalListing(product, listing);
-  const { bundle } = await buildBundle({ product, listing, rivalListing });  let rival: AnalysisResult["rival"] = null;
-  let rivalHistory: { t: number; price: number }[] = [];
-  if (rivalListing) {
-    const rObs = await getObservations(rivalListing.id);
-    rivalHistory = priceSeries(rObs);
-    const rivalStats = computeStats(rObs);
-    rival = {
-      merchant: rivalListing.merchant as Merchant,
-      price: rivalListing.price ?? rivalStats.median,
-      effectivePrice: rivalListing.price ?? null,
-      url: rivalListing.url,
-      affiliateUrl: affiliateUrl(rivalListing.merchant as Merchant, rivalListing.url, affiliate.amazonTag, affiliate.cuelinksChannel),
-      lastCheckedAt: rivalListing.lastCheckedAt,
-    };
-  }
+  const { bundle, verdict, landed, rival, rivalPoints } = await buildBundle({
+    product,
+    listing,
+    rivalListing,
+  });
 
   await recordEvent("analyze", {
     merchant,
     productId: product.id,
-    verdict: verdict.verdict,
-    score: verdict.score,
+    verdict: verdict?.verdict,
+    score: verdict?.score,
   });
 
-  // 7) Alert evaluation happens AFTER the observation is committed.
+  // 6) Alert evaluation happens AFTER the observation is committed.
   //    Failures here must never affect the analysis response.
   try {
     const { evaluateAlerts } = await import("./alerts");
-    await evaluateAlerts({
-      listingId: listing.id,
-      productId: product.id,
-      productTitle: product.title,
-      merchant,
-      effectivePrice: landed.effective,
-      verdict: verdict.verdict,
-      confidence: verdict.confidence,
-      score: verdict.score,
-      reasons: verdict.reasons,
-      affiliateUrl: affiliateUrl(merchant, listing.url, affiliate.amazonTag, affiliate.cuelinksChannel),
-      observedAt: ts,
-    });
+    if (verdict && landed) {
+      await evaluateAlerts({
+        listingId: listing.id,
+        productId: product.id,
+        productTitle: product.title,
+        merchant,
+        effectivePrice: landed.effective,
+        verdict: verdict.verdict,
+        confidence: verdict.confidence,
+        score: verdict.score,
+        reasons: verdict.reasons,
+        affiliateUrl: affiliateUrl(
+          merchant,
+          listing.url,
+          affiliate.amazonTag,
+          affiliate.cuelinksChannel,
+        ),
+        observedAt: ts,
+      });
+    }
   } catch {
     /* alert delivery is best-effort */
   }
@@ -245,7 +228,7 @@ export async function analyzeUrl(rawUrl: string): Promise<AnalysisResult> {
     rival,
     landed,
     verdict,
-    history: { primary: priceSeries(obs), rival: rivalHistory },
+    history: { primary: bundle.points, rival: rivalPoints },
     bundle,
   };
 }

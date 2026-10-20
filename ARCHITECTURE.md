@@ -53,15 +53,24 @@ POST /api/analyze { url }
 ## History resolution (the key idea)
 
 A product DealSense has never tracked still gets a useful, honest description. The engine layers
-four sources, in order of trust:
+five sources, in order of trust:
 
 1. **Our own observations** — immutable, timestamped, authoritative.
-2. **External provider** — Keepa or PriceHistory.app via their official APIs, if a key is set.
-3. **Cross-store proxy** — the same product's history from the *other* store.
-4. **Category market context** — the real typical price band for that category, computed from
+2. **Imported history** — a real series pulled from a price-history provider (PriceHistory.ai by
+   default) and stored permanently in our own `observations` table as `source = "imported"`.
+   Fetched once per product, then we own it.
+3. **External provider** — Keepa or PriceHistory.app via their official APIs, if a key is set.
+4. **Cross-store proxy** — the same product's history from the *other* store.
+5. **Category market context** — the real typical price band for that category, computed from
    every listing we have verified. This is always available and always real.
 
 The MRP discount is reported separately as **advertised**, never as verified history.
+
+Provider rules (see `PRICE-HISTORY-SOURCES.md`):
+- **Exact product-id match only** — a near-match would attach the wrong product's history.
+- **On demand, one product at a time, throttled** — never a bulk harvest.
+- **Always attributed** in the UI.
+- **Our affiliate links** on every outbound button, never the provider's.
 
 ## Data model
 

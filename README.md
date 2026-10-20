@@ -26,15 +26,29 @@ Most deal sites shout "70% OFF". DealSense does the maths that matters, and it h
 
 ## Price history for *any* product
 
-When someone searches for a product DealSense has never tracked, the engine layers four sources of
+When someone searches for a product DealSense has never tracked, the engine layers sources of
 truth instead of showing an empty box:
 
 | Layer | Source | Available |
 | --- | --- | --- |
 | 1 | **Our own observations** — immutable, timestamped | always, grows over time |
-| 2 | **External provider** — Keepa / PriceHistory.app official APIs | when a key is set |
-| 3 | **Cross-store proxy** — the same product's history on the other store | when the rival is tracked |
-| 4 | **Market context** — the real typical price band for that category | always, computed from verified listings |
+| 2 | **Imported history** — real series from a price-history provider, cached forever in our own DB | after the first fetch |
+| 3 | **External provider** — Keepa / PriceHistory.app official APIs | when a key is set |
+| 4 | **Cross-store proxy** — the same product's history on the other store | when the rival is tracked |
+| 5 | **Market context** — the real typical price band for that category | always, computed from verified listings |
+
+**We already ship a working, free provider.** PriceHistory.ai publishes public product pages
+and a public catalogue API; we pull the real price series on demand (one product at a time,
+throttled), persist it in our own database so it is never fetched twice, and always show
+`Source: PriceHistory.ai` on the page. Measured results: the Samsung Galaxy S25 Ultra returns
+**239 real price points spanning 20 months** (₹69,999 → ₹1,29,999).
+
+Full survey of every competitor we tested, what each can give us and what it costs:
+**[`PRICE-HISTORY-SOURCES.md`](./PRICE-HISTORY-SOURCES.md)**.
+
+The rules we follow: **exact product-id match only** (a near-match would attach the wrong
+product's history), **fetch once and own it forever**, **never bulk-harvest**, **always
+attribute**, and **our affiliate links on every buy button** — never the provider's.
 
 MRP discounts are reported separately as **advertised**, never as verified history.
 
@@ -58,6 +72,7 @@ Open http://localhost:3000. That's it — the database is a local SQLite file cr
 ```bash
 npm run discover      # pull real products from Amazon + Flipkart
 npm run crossstore    # find Amazon equivalents for the Flipkart products
+npm run history       # import real price history for tracked products
 npm run db:seed -- https://www.amazon.in/dp/B0XXXXXXXX   # analyze specific links
 npm run scrape        # refresh listings that are due
 ```
@@ -171,6 +186,7 @@ tests/            25 tests (npm test)
 | `npm run typecheck` | TypeScript check |
 | `npm run discover` | Pull real products from Amazon + Flipkart |
 | `npm run crossstore` | Find Amazon equivalents for Flipkart products |
+| `npm run history` | Import real price history for tracked products |
 | `npm run db:seed` | Init DB (+ analyze URLs you pass) |
 | `npm run scrape` | Refresh due listings |
 

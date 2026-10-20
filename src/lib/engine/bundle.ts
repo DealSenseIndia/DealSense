@@ -1,6 +1,6 @@
 import type { AnalysisResult, LandedPrice, PricePoint, VerdictResult } from "../types";
 import { getCategoryContext } from "../db/market";
-import { getListingsByProduct, getObservations } from "../db/queries";
+import { getListingsByProduct, getObservations, addObservation } from "../db/queries";
 import type { ListingRow, ProductRow } from "../db/queries";
 import { computeLandedPrice } from "./landedPrice";
 import { computeStats, priceSeries } from "./stats";
@@ -19,6 +19,13 @@ import { isSameProduct, sameVariant, titleSimilarity } from "./identity";
  * Assemble everything a product page needs: history (ours + external + proxy),
  * market context, verdict, landed price and labelled evidence.
  */
+/**
+ * How many of our own observations are enough before we stop importing
+ * provider history. Imported points are kept forever, so this only controls
+ * whether we fetch a provider series for a freshly-discovered product.
+ */
+const EXTERNAL_BOOTSTRAP_LIMIT = 50;
+
 export async function buildBundle(input: {
   product: ProductRow;
   listing: ListingRow;
@@ -30,26 +37,51 @@ export async function buildBundle(input: {
   rival: AnalysisResult["rival"];
   points: PricePoint[];
   rivalPoints: PricePoint[];
-}> {
-  const { product, listing, rivalListing } = input;
+}> {  const { product, listing, rivalListing } = input;
 
   const ownObs = await getObservations(listing.id);
   const ownPoints = priceSeries(ownObs);
 
-  // 1. External provider (Keepa / PriceHistory) if keyed.
+  // 1. External provider (PriceHistory.ai / Keepa / PriceHistory.app).
+  //    Imported points are persisted into our own observation table the first
+  //    time, so each product is fetched from the provider at most once.
   let points = ownPoints;
   let source: HistoryBundle["source"] = ownPoints.length ? "own" : "none";
   let sourceLabel = "DealSense observations";
 
-  if (ownPoints.length < 3) {
+  const imported = ownObs.filter((o) => o.source === "imported");
+  if (imported.length) {
+    const importedPoints = priceSeries(imported);
+    points = mergeExternal(ownPoints, {
+      points: importedPoints.map((p) => ({ t: p.t, price: p.price })),
+      provider: "imported",
+    });
+    source = ownPoints.length ? "own" : "external";
+    sourceLabel = ownPoints.length
+      ? "DealSense observations + imported history"
+      : "imported price history";
+  } else if (ownPoints.length < EXTERNAL_BOOTSTRAP_LIMIT) {
+    // We only have a thin record of our own. Pull the provider's longer
+    // history once (it is cached permanently in our observation table).
     const ext = await fetchExternalHistory(
       listing.merchant as "amazon" | "flipkart",
       listing.merchantProductId,
+      listing.title ?? product.title,
     );
     if (ext?.points.length) {
+      // Persist the imported series so we never fetch this product again.
+      for (const p of ext.points) {
+        await addObservation({
+          listingId: listing.id,
+          price: p.price,
+          mrp: null,
+          source: "imported",
+          observedAt: p.t,
+        });
+      }
       points = mergeExternal(ownPoints, ext);
       source = "external";
-      sourceLabel = `${ext.provider} historical data`;
+      sourceLabel = `${ext.provider} price history`;
     }
   }
 
@@ -145,7 +177,14 @@ export async function buildBundle(input: {
     hasSufficientHistory: stats.count >= 3,
   };
 
-  return { bundle, verdict, landed, rival, points, rivalPoints };
+  return {
+    bundle,
+    verdict,
+    landed,
+    rival,
+    points,
+    rivalPoints,
+  };
 }
 
 export async function findRivalListing(product: ProductRow, listing: ListingRow): Promise<ListingRow | null> {
