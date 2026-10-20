@@ -70,12 +70,19 @@ Open http://localhost:3000. That's it — the database is a local SQLite file cr
 ### Populate real data
 
 ```bash
+npm run catalogue -- --products 120  # import products WITH real price history
 npm run discover      # pull real products from Amazon + Flipkart
 npm run crossstore    # find Amazon equivalents for the Flipkart products
 npm run history       # import real price history for tracked products
+npm run merge         # merge duplicate product rows, drop orphans
 npm run db:seed -- https://www.amazon.in/dp/B0XXXXXXXX   # analyze specific links
 npm run scrape        # refresh listings that are due
 ```
+
+> `npm run merge` is worth running after any catalogue import. It merges
+> products that were stored twice (same title, different rows) onto one row
+> and removes products that have no listing — those would 404 and, worse,
+> would split a product's price history across two records.
 
 ---
 
@@ -154,7 +161,16 @@ layer. Every outbound button already routes through it.
 
 4. Deploy. Vercel runs a daily refresh; **GitHub Actions** (`.github/workflows/refresh.yml`) runs it
    hourly for free — add `DEALSENSE_URL` and `CRON_SECRET` as repo secrets.
-5. Run `npm run discover` once (locally, against the Turso DB) so production has real products.
+5. Seed the production database once, from a machine that has `TURSO_DATABASE_URL` set:
+
+   ```bash
+   npm run catalogue -- --products 120   # products WITH real price history
+   npm run merge                        # merge duplicates, drop orphans
+   npm run scrape                       # pull live prices for everything tracked
+   ```
+
+   Run these against the **Turso** database (not the local SQLite file) so the
+   deployed site starts with a real catalogue instead of an empty one.
 
 ---
 
@@ -187,8 +203,11 @@ tests/            25 tests (npm test)
 | `npm run discover` | Pull real products from Amazon + Flipkart |
 | `npm run crossstore` | Find Amazon equivalents for Flipkart products |
 | `npm run history` | Import real price history for tracked products |
+| `npm run catalogue` | Import products *with* their real price history |
+| `npm run merge` | Merge duplicate product rows, drop orphans |
 | `npm run db:seed` | Init DB (+ analyze URLs you pass) |
 | `npm run scrape` | Refresh due listings |
+| `npm run shot <path> <out.png>` | Screenshot a page and audit it for overflow |
 
 ---
 
