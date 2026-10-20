@@ -30,6 +30,7 @@ export interface PHAIProduct {
   id: number;
   title: string;
   brand: string | null;
+  category: string | null;
   platform: "amazon" | "flipkart" | string;
   asin: string;
   current_price: number | null;
@@ -84,6 +85,7 @@ export async function searchPriceHistoryAi(query: string, limit = 50): Promise<P
       id: Number(r.id),
       title: String(r.title ?? ""),
       brand: (r.brand as string) || null,
+      category: (r.category as string) || null,
       platform: String(r.platform ?? ""),
       asin: String(r.asin ?? ""),
       current_price: r.current_price != null ? Number(r.current_price) : null,

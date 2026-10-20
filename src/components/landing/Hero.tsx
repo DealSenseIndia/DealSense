@@ -12,18 +12,10 @@ import { useState } from "react";
 const POPULAR = [
   { label: "iPhone 17", q: "iPhone 17", emoji: "📱" },
   { label: "PS5", q: "PS5", emoji: "🎮" },
-  { label: "Smart TV", q: "Smart TV", emoji: "📺" },
+  { label: "Smart TV", q: "television", emoji: "📺" },
   { label: "Laptops", q: "laptop", emoji: "💻" },
   { label: "Headphones", q: "headphones", emoji: "🎧" },
   { label: "Watches", q: "smartwatch", emoji: "⌚" },
-];
-
-const STORES = [
-  { label: "Amazon", short: "a", bg: "#FF9900", fg: "#000" },
-  { label: "Flipkart", short: "f", bg: "#2874F0", fg: "#fff" },
-  { label: "Croma", short: "C", bg: "#00A0E9", fg: "#fff" },
-  { label: "Myntra", short: "M", bg: "#FF3F6C", fg: "#fff" },
-  { label: "AJIO", short: "A", bg: "#2C4152", fg: "#fff" },
 ];
 
 const rise = {
@@ -35,14 +27,22 @@ const rise = {
   }),
 };
 
-export function Hero({ trackedToday = 0 }: { trackedToday?: number }) {
+export function Hero({
+  pointsTracked = 0,
+  stores = 0,
+  products = 0,
+}: {
+  pointsTracked?: number;
+  stores?: number;
+  products?: number;
+}) {
   const [url, setUrl] = useState("");
   const router = useRouter();
 
   function go(value: string) {
     const v = value.trim();
     if (!v) return;
-    if (/^https?:\/\//i.test(v) || /amazon|flipkart/i.test(v)) {
+    if (/^https?:\/\//i.test(v) || /amazon|flipkart|myntra|ajio/i.test(v)) {
       router.push(`/analyze?url=${encodeURIComponent(v)}`);
     } else {
       router.push(`/search?q=${encodeURIComponent(v)}`);
@@ -50,11 +50,11 @@ export function Hero({ trackedToday = 0 }: { trackedToday?: number }) {
   }
 
   return (
-    <section className="relative overflow-hidden pb-12 pt-10 sm:pt-14">
+    <section className="relative overflow-hidden pb-12 pt-12 sm:pt-16">
       <div className="pointer-events-none absolute inset-0 bg-wash-strong" aria-hidden />
 
       <Container size="wide" className="relative">
-        <div className="grid items-center gap-10 lg:grid-cols-[1.02fr_0.98fr]">
+        <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
           {/* ---------------- Left ---------------- */}
           <div>
             <motion.div
@@ -65,40 +65,49 @@ export function Hero({ trackedToday = 0 }: { trackedToday?: number }) {
               className="inline-flex items-center gap-2 rounded-full border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-3.5 py-1.5 text-[11.5px] font-extrabold text-[var(--dw-green-mid)]"
             >
               <span className="h-2 w-2 animate-pulse-ring rounded-full bg-brand-500" />
-              {trackedToday > 0
-                ? `${trackedToday.toLocaleString("en-IN")} price points tracked`
+              {pointsTracked > 0
+                ? `${pointsTracked.toLocaleString("en-IN")} price points tracked`
                 : "Live price tracking across India"}
             </motion.div>
 
-            <motion.h1
+            <motion.p
               variants={rise}
               custom={1}
               initial="hidden"
               animate="show"
-              className="mt-5 text-[38px] font-extrabold leading-[1.03] tracking-[-0.035em] text-headline sm:text-[54px] lg:text-[62px]"
+              className="mt-6 text-[11.5px] font-extrabold uppercase tracking-[0.2em] text-muted"
             >
-              DealSense:
-              <br />
-              <span className="text-gradient-brand">Never overpay</span>{" "}
-              <span className="text-gradient-deep">online</span>
-              <span className="inline-block h-[0.9em] w-[3px] translate-y-[0.05em] animate-blink bg-brand-500" />
-            </motion.h1>
+              Price history &amp; tracker
+            </motion.p>
 
-            <motion.p
+            <motion.h1
               variants={rise}
               custom={2}
               initial="hidden"
               animate="show"
-              className="mt-5 max-w-[30rem] text-[15.5px] leading-relaxed text-body"
+              className="mt-3 text-[40px] font-extrabold leading-[1.02] tracking-[-0.035em] text-headline sm:text-[56px] lg:text-[66px]"
             >
-              Paste any Amazon or Flipkart link. We read the real price history, compare every store
-              and tell you plainly: <strong className="font-bold text-headline">buy, wait or avoid.</strong>
-            </motion.p>
+              Never overpay
+              <br />
+              <span className="text-gradient-brand">online</span>
+              <span className="inline-block h-[0.85em] w-[3px] translate-y-[0.05em] animate-blink bg-brand-500" />
+            </motion.h1>
 
-            {/* Big search bar */}
-            <motion.form
+            <motion.p
               variants={rise}
               custom={3}
+              initial="hidden"
+              animate="show"
+              className="mt-5 max-w-[30rem] text-[16px] leading-relaxed text-body"
+            >
+              Track real price history across every store, compare the true landed cost, and know
+              the right moment to buy. No fake discounts — ever.
+            </motion.p>
+
+            {/* search */}
+            <motion.form
+              variants={rise}
+              custom={4}
               initial="hidden"
               animate="show"
               onSubmit={(e) => {
@@ -124,17 +133,17 @@ export function Hero({ trackedToday = 0 }: { trackedToday?: number }) {
               </button>
               <button
                 type="submit"
-                className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl bg-gradient-brand px-5 text-[13.5px] font-extrabold text-[#04140d] transition-transform hover:-translate-y-0.5 hover:brightness-105"
+                className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl bg-gradient-brand px-5 text-[13.5px] font-extrabold text-white shadow-[0_8px_22px_-10px_rgba(5,150,105,0.9)] transition-transform hover:-translate-y-0.5"
               >
                 <Search className="h-4 w-4" />
                 Find best deals
               </button>
             </motion.form>
 
-            {/* Popular pills */}
+            {/* popular */}
             <motion.div
               variants={rise}
-              custom={4}
+              custom={5}
               initial="hidden"
               animate="show"
               className="mt-5 flex flex-wrap items-center gap-2"
@@ -144,7 +153,7 @@ export function Hero({ trackedToday = 0 }: { trackedToday?: number }) {
                 <Link
                   key={p.label}
                   href={`/search?q=${encodeURIComponent(p.q)}`}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-3 py-1.5 text-[12px] font-semibold text-body transition-all hover:-translate-y-0.5 hover:border-brand-400/50 hover:text-headline"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-3 py-1.5 text-[12px] font-semibold text-body transition-all hover:-translate-y-0.5 hover:border-emerald-400/50 hover:text-headline"
                 >
                   <span aria-hidden>{p.emoji}</span>
                   {p.label}
@@ -152,13 +161,35 @@ export function Hero({ trackedToday = 0 }: { trackedToday?: number }) {
               ))}
             </motion.div>
 
-            {/* Trust row */}
+            {/* CTAs */}
             <motion.div
               variants={rise}
-              custom={5}
+              custom={6}
               initial="hidden"
               animate="show"
-              className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12.5px] font-semibold text-secondary"
+              className="mt-7 flex flex-wrap gap-3"
+            >
+              <Link
+                href="/analyze"
+                className="inline-flex h-11 items-center gap-2 rounded-btn bg-gradient-brand px-6 text-[13.5px] font-extrabold text-white shadow-[0_10px_26px_-12px_rgba(5,150,105,0.95)] transition-transform hover:-translate-y-0.5"
+              >
+                Check a deal <Zap className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/deals"
+                className="inline-flex h-11 items-center gap-2 rounded-btn border border-emerald-600/40 bg-card px-6 text-[13.5px] font-extrabold text-[var(--dw-green-mid)] transition-colors hover:bg-emerald-500 hover:text-white"
+              >
+                Browse live deals
+              </Link>
+            </motion.div>
+
+            {/* trust row */}
+            <motion.div
+              variants={rise}
+              custom={7}
+              initial="hidden"
+              animate="show"
+              className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2.5 text-[12.5px] font-semibold text-secondary"
             >
               <span className="inline-flex items-center gap-1.5">
                 <ShieldCheck className="h-3.5 w-3.5 text-brand-500" /> Live verified prices
@@ -167,30 +198,8 @@ export function Hero({ trackedToday = 0 }: { trackedToday?: number }) {
                 <TrendingDown className="h-3.5 w-3.5 text-brand-500" /> Real price history
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Zap className="h-3.5 w-3.5 text-brand-500" /> True landed cost
+                <Sparkles className="h-3.5 w-3.5 text-brand-500" /> True landed cost
               </span>
-            </motion.div>
-
-            {/* Store logos */}
-            <motion.div
-              variants={rise}
-              custom={6}
-              initial="hidden"
-              animate="show"
-              className="mt-6 flex flex-wrap items-center gap-4"
-            >
-              <span className="text-[11.5px] font-bold text-muted">We compare</span>
-              {STORES.map((s) => (
-                <span
-                  key={s.label}
-                  title={s.label}
-                  className="grid h-7 w-7 place-items-center rounded-lg text-[9.5px] font-black shadow-sm"
-                  style={{ background: s.bg, color: s.fg }}
-                >
-                  {s.short}
-                </span>
-              ))}
-              <span className="text-[11.5px] font-semibold text-muted">+ 2,000 more stores via Cuelinks</span>
             </motion.div>
           </div>
 
@@ -218,7 +227,6 @@ export function Hero({ trackedToday = 0 }: { trackedToday?: number }) {
                 />
               </motion.div>
 
-              {/* Floating widget cards */}
               <div className="pointer-events-none absolute inset-0 z-10">
                 <FloatCard className="left-0 top-0 w-[212px] animate-float sm:-left-3" delay="0s">
                   <div className="flex items-center justify-between gap-2">
@@ -281,7 +289,7 @@ export function Hero({ trackedToday = 0 }: { trackedToday?: number }) {
                     <span className="text-muted">(12,540)</span>
                   </div>
                   <div className="tabular mt-1.5 text-[18px] font-extrabold text-headline">₹24,999</div>
-                  <div className="mt-2 flex h-8 items-center justify-center rounded-lg bg-gradient-brand text-[11.5px] font-extrabold text-[#04140d]">
+                  <div className="mt-2 flex h-8 items-center justify-center rounded-lg bg-gradient-brand text-[11.5px] font-extrabold text-white">
                     Check Deal →
                   </div>
                 </FloatCard>

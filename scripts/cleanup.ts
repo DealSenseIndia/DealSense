@@ -9,22 +9,33 @@ async function main() {
   await ensureSchema();
 
   const rows = await db
-    .select({ id: products.id, slug: products.slug, title: products.title })
+    .select({ id: products.id, slug: products.slug, title: products.title, category: products.category })
     .from(products);
 
   let removed = 0;
+  let normalised = 0;
   for (const p of rows) {
-    if (!isAccessory(p.title)) continue;
-    const ls = await db.select({ id: listings.id }).from(listings).where(eq(listings.productId, p.id));
-    for (const l of ls) {
-      await db.delete(observations).where(eq(observations.listingId, l.id));
-      await db.delete(listings).where(eq(listings.id, l.id));
+    if (isAccessory(p.title)) {
+      const ls = await db.select({ id: listings.id }).from(listings).where(eq(listings.productId, p.id));
+      for (const l of ls) {
+        await db.delete(observations).where(eq(observations.listingId, l.id));
+        await db.delete(listings).where(eq(listings.id, l.id));
+      }
+      await db.delete(products).where(eq(products.id, p.id));
+      console.log(`✗ removed accessory: ${p.title.slice(0, 80)}`);
+      removed++;
+      continue;
     }
-    await db.delete(products).where(eq(products.id, p.id));
-    console.log(`✗ removed accessory: ${p.title}`);
-    removed++;
+    // Normalise "A > B > C" category paths down to the leaf segment.
+    if (p.category?.includes(">")) {
+      const leaf = p.category.split(">").pop()!.trim();
+      if (leaf && leaf !== p.category) {
+        await db.update(products).set({ category: leaf }).where(eq(products.id, p.id));
+        normalised++;
+      }
+    }
   }
-  console.log(`\nRemoved ${removed} accessory product(s).`);
+  console.log(`\nRemoved ${removed} accessory product(s), normalised ${normalised} categories.`);
 }
 
 main().then(() => process.exit(0));

@@ -42,11 +42,11 @@ const TONES: Record<
     stroke: "#0ea5e9",
   },
   violet: {
-    ring: "border-violet-400/40",
-    tile: "bg-gradient-to-br from-violet-400 to-violet-600",
-    text: "text-violet-600 dark:text-violet-300",
-    chip: "border-violet-400/40 bg-violet-500/10 text-violet-600 dark:text-violet-300",
-    stroke: "#8b5cf6",
+    ring: "border-teal-400/40",
+    tile: "bg-gradient-to-br from-teal-400 to-teal-600",
+    text: "text-teal-600 dark:text-teal-300",
+    chip: "border-teal-400/40 bg-teal-500/10 text-teal-600 dark:text-teal-300",
+    stroke: "#14b8a6",
   },
 };
 

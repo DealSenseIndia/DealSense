@@ -17,7 +17,7 @@ export function Pill({
     amber: "border-amber-400/40 text-amber-600 bg-amber-50 dark:text-amber-300 dark:bg-amber-500/10",
     blue: "border-sky-400/40 text-sky-600 bg-sky-50 dark:text-sky-300 dark:bg-sky-500/10",
     red: "border-red-400/40 text-red-600 bg-red-50 dark:text-red-300 dark:bg-red-500/10",
-    violet: "border-violet-400/40 text-violet-600 bg-violet-50 dark:text-violet-300 dark:bg-violet-500/10",
+    violet: "border-teal-400/40 text-teal-600 bg-teal-50 dark:text-teal-300 dark:bg-teal-500/10",
   };
   return (
     <span

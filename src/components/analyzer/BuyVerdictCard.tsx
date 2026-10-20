@@ -47,7 +47,7 @@ export function BuyVerdictCard({
           {/* header row */}
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
             <div className="flex items-center gap-2.5">
-              <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600">
+              <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600">
                 <Info className="h-4 w-4" />
               </span>
               <h2 className="text-[16px] font-extrabold tracking-tight sm:text-[18px]">
@@ -128,7 +128,7 @@ export function BuyVerdictCard({
           {/* insight */}
           <div className="mt-6 border-t border-white/10 pt-5">
             <div className="flex items-center gap-2 text-[10.5px] font-extrabold uppercase tracking-widest text-slate-400">
-              <Bot className="h-3.5 w-3.5 text-indigo-400" />
+              <Bot className="h-3.5 w-3.5 text-emerald-400" />
               Price insight
             </div>
             <p className="mt-2.5 text-[13.5px] leading-relaxed text-slate-300">
