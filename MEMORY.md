@@ -42,6 +42,41 @@
 - `src/app/track/page.tsx` — the "No alerts yet" empty state.
 - `src/components/search/SearchResults.tsx` — the "No results" state.
 
+## Live Deals panel (the homepage feed)
+
+`src/components/landing/LiveDeals.tsx` — the compact feed, modelled on the Buyhatke/price-history
+site the user liked. One row per product:
+
+- thumbnail → title → store category → **real rating** (stars + score + review count) →
+  points tracked → drop age
+- **real price-history sparkline** (last 24 recorded prices, `PriceSpark`)
+- store icon + name → price, MRP, discount %
+- a **live countdown** (`NextCheckCountdown`) to the next hourly price check
+
+"View All" opens `/deals`, which has the filter sidebar (price / discount / store / category /
+sort) and paginates 48 at a time with a "Show more" button.
+
+## Real ratings everywhere
+
+`src/components/ui/Rating.tsx` draws the store's own rating as half-star-capable stars plus the
+score and the review count. `listings.reviewCount` is populated for 236 of 299 listings, so the
+count is real — never derived.
+
+`DealRow` now carries `reviewCount` and `spark` (last 24 recorded prices).
+
+## The taxonomy
+
+`src/lib/db/taxonomy.ts` holds the **full 15-umbrella taxonomy** ported from the old project's
+`backend/data/seed_taxonomy.py` — every umbrella, every sub-category, every leaf (~700 names).
+`getCategoryGroups()` returns **all 15** umbrellas whether or not we track them, each with its
+description, its children and each child's leaves, plus a real count of how many listings we
+actually track. The /categories page shows the whole map: solid pills where we track, dashed
+pills where we don't yet.
+
+`resolveLeaf()` maps a raw store category ("APPLE Mobiles", "Levis Jeans", "In-Ear") onto its
+taxonomy leaf, and `/deals?category=…` filters through it — so "Smartphones" returns all 120
+phone listings across the brand shelves, not just the ones filed under that exact name.
+
 ## Homepage (current)
 
 The hero is a **verbatim rebuild of the DealSense 1.0 hero** — the sizes, spacing, colours and

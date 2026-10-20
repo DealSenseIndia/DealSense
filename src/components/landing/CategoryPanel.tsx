@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import type { Shelf } from "@/lib/db/shelves";
 import { StoreLogo } from "@/components/ui/StoreLogo";
 import { ProductThumb } from "@/components/ui/ProductThumb";
+import { Rating } from "@/components/ui/Rating";
 import { cn, formatINR } from "@/lib/utils";
 
 /**
@@ -52,6 +53,10 @@ export function CategoryPanel({ shelf }: { shelf: Shelf }) {
 
                 <div className="mt-2.5 line-clamp-2 min-h-[2.1rem] text-[11.5px] font-bold leading-snug text-headline">
                   {p.title}
+                </div>
+
+                <div className="mt-1">
+                  <Rating rating={p.rating} reviewCount={p.reviewCount} />
                 </div>
 
                 <div className="mt-2 flex items-center gap-1.5">

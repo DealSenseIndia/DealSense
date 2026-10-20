@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ChevronRight, Search, Sparkles } from "lucide-react";
+import { ChevronRight, Sparkles } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { PageSearch } from "@/components/site/PageSearch";
 import { getCategoryGroups, getPopularSearches } from "@/lib/db/taxonomy";
@@ -15,70 +14,6 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = "force-dynamic";
-
-const ICONS: Record<string, React.ReactNode> = {
-  Laptop: (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="4" width="18" height="12" rx="2" />
-      <path d="M2 20h20" />
-    </svg>
-  ),
-  Shirt: (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M8 3 4 6l2 4 2-1v10h8V9l2 1 2-4-4-3-2 2h-4L8 3Z" />
-    </svg>
-  ),
-  Sofa: (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3" />
-      <path d="M2 13a2 2 0 0 1 2 2v3h16v-3a2 2 0 0 1 2-2" />
-    </svg>
-  ),
-  Sparkles: (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18" />
-    </svg>
-  ),
-  Dumbbell: (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11" />
-    </svg>
-  ),
-  Gamepad2: (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 11h4M8 9v4M15 12h.01M18 10h.01" />
-      <path d="M17.3 5H6.7A4.7 4.7 0 0 0 2 9.7v4.6A4.7 4.7 0 0 0 6.7 19c1.6 0 2.4-.8 3.3-1.8h4c.9 1 1.7 1.8 3.3 1.8a4.7 4.7 0 0 0 4.7-4.7V9.7A4.7 4.7 0 0 0 17.3 5Z" />
-    </svg>
-  ),
-  BookOpen: (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 6v15M3 4h6a3 3 0 0 1 3 3v12a2.5 2.5 0 0 0-2.5-2.5H3V4ZM21 4h-6a3 3 0 0 0-3 3v12a2.5 2.5 0 0 1 2.5-2.5H21V4Z" />
-    </svg>
-  ),
-  Baby: (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M9 10h.01M15 10h.01M8.5 15a4.5 4.5 0 0 0 7 0" />
-    </svg>
-  ),
-  Car: (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 16v2M20 16v2M3 16h18v-4l-2-5H5L3 12v4Z" />
-      <path d="M6 12h12" />
-    </svg>
-  ),
-  Plane: (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M10 19 12 5l2 14M8 19h8M2 12l20-6-4 8 4 8-20-6 4-4Z" />
-    </svg>
-  ),
-  Dog: (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 3 4 8l2 2v6a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3v-6l2-2-2-5" />
-      <path d="M9 13h.01M15 13h.01" />
-    </svg>
-  ),
-};
 
 export default async function CategoriesPage() {
   const [groups, popular] = await Promise.all([getCategoryGroups(), getPopularSearches()]);
@@ -102,8 +37,8 @@ export default async function CategoriesPage() {
               All Product <span className="text-gradient-brand">Categories</span>
             </h1>
             <p className="mt-2 max-w-xl text-[14.5px] leading-relaxed text-body">
-              Every category is built from products we actually track — each one with real recorded
-              price history behind it.
+              The full map of what DealSense covers — every umbrella, every sub-category. A badge
+              shows how many products we actually track with real recorded price history.
             </p>
           </div>
           <PageSearch className="w-full max-w-md" placeholder="Search for categories, products, brands…" />
@@ -148,73 +83,104 @@ export default async function CategoriesPage() {
                 {groups.map((g) => (
                   <Link
                     key={g.slug}
-                    id={g.slug}
+                    id={`${g.slug}-side`}
                     href={`/categories#${g.slug}`}
                     className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-semibold text-body transition-colors hover:bg-elevated hover:text-headline"
                   >
-                    <span className="grid h-6 w-6 place-items-center rounded-md bg-elevated text-secondary">
-                      {ICONS[g.icon]}
+                    <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-elevated text-[13px]">
+                      {g.icon}
                     </span>
-                    {g.name}
-                    <ChevronRight className="ml-auto h-3.5 w-3.5 text-muted" />
+                    <span className="truncate">{g.name}</span>
+                    {g.count > 0 ? (
+                      <span className="tabular ml-auto text-[10.5px] font-bold text-[var(--dw-green-mid)]">
+                        {g.count}
+                      </span>
+                    ) : (
+                      <ChevronRight className="ml-auto h-3.5 w-3.5 text-muted" />
+                    )}
                   </Link>
                 ))}
               </nav>
             </aside>
 
-            {/* ---- grid ---- */}
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {/* ---- grid: every umbrella, every sub-category ---- */}
+            <div className="space-y-5">
               {groups.map((g) => (
-                <div
+                <section
                   key={g.slug}
                   id={g.slug}
-                  className="group flex scroll-mt-24 flex-col overflow-hidden rounded-2xl border border-hairline bg-card shadow-card transition-all hover:-translate-y-1 hover:border-emerald-400/50 hover:shadow-lift"
+                  className="group scroll-mt-24 overflow-hidden rounded-2xl border border-hairline bg-card shadow-card transition-all hover:border-emerald-400/40"
                 >
-                  <div className="relative aspect-[16/9] overflow-hidden bg-subtle">
-                    {g.coverImage ? (
-                      <Image
-                        src={g.coverImage}
-                        alt={g.name}
-                        fill
-                        sizes="(max-width: 640px) 100vw, 340px"
-                        className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
-                        unoptimized
-                      />
-                    ) : (
-                      <div className="grid h-full place-items-center text-3xl">{g.emoji}</div>
-                    )}
+                  {/* umbrella header */}
+                  <div className="flex flex-wrap items-center gap-3 border-b border-hairline bg-subtle px-5 py-4">
+                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--dw-green-surface)] text-[22px]">
+                      {g.icon}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-[17px] font-extrabold tracking-tight text-headline">
+                        {g.name}
+                      </h3>
+                      <p className="mt-0.5 text-[12.5px] leading-snug text-muted">
+                        {g.description}
+                      </p>
+                    </div>
+                    <span
+                      className={
+                        g.count > 0
+                          ? "tabular shrink-0 rounded-full bg-[var(--dw-green-surface)] px-3 py-1 text-[11.5px] font-extrabold text-[var(--dw-green-mid)]"
+                          : "tabular shrink-0 rounded-full border border-hairline px-3 py-1 text-[11.5px] font-bold text-muted"
+                      }
+                    >
+                      {g.count > 0
+                        ? `${g.count} tracked`
+                        : "not tracked yet"}
+                    </span>
                   </div>
 
-                  <div className="flex flex-1 flex-col p-4">
-                    <h3 className="text-[15px] font-extrabold text-headline">{g.name}</h3>
-                    <div className="mt-1 text-[12.5px] font-bold text-[var(--dw-green-mid)]">
-                      {g.count} deal{g.count === 1 ? "" : "s"}
-                    </div>
-                    <ul className="mt-3 flex-1 space-y-1">
-                      {g.subcategories.slice(0, 6).map((s) => (
-                        <li key={s}>
-                          <Link
-                            href={`/deals?category=${encodeURIComponent(s)}`}
-                            className="flex items-center gap-1 truncate rounded px-1 py-0.5 text-[12px] text-body transition-colors hover:bg-elevated hover:text-headline"
-                          >
-                            <ChevronRight className="h-3 w-3 shrink-0 text-muted" />
-                            {s}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                    <Link
-                      href={
-                        g.subcategories[0]
-                          ? `/deals?category=${encodeURIComponent(g.subcategories[0])}`
-                          : "/deals"
-                      }
-                      className="mt-3 flex items-center gap-1 text-[12.5px] font-extrabold text-[var(--dw-green-mid)] hover:underline"
-                    >
-                      Explore {g.name} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                    </Link>
+                  {/* sub-categories and their leaves */}
+                  <div className="grid gap-x-6 gap-y-5 p-5 sm:grid-cols-2 xl:grid-cols-3">
+                    {g.children.map((c) => (
+                      <div key={c.name}>
+                        <div className="flex items-baseline gap-2">
+                          <h4 className="text-[12.5px] font-extrabold uppercase tracking-wider text-headline">
+                            {c.name}
+                          </h4>
+                          {c.count > 0 ? (
+                            <span className="tabular text-[10.5px] font-bold text-[var(--dw-green-mid)]">
+                              {c.count}
+                            </span>
+                          ) : null}
+                        </div>
+                        <ul className="mt-2 flex flex-wrap gap-1.5">
+                          {c.leaves.map((l) => (
+                            <li key={l.name}>
+                              <Link
+                                href={`/deals?category=${encodeURIComponent(l.name)}`}
+                                title={
+                                  l.count > 0
+                                    ? `${l.count} tracked`
+                                    : "We do not track this yet"
+                                }
+                                className={
+                                  l.count > 0
+                                    ? "inline-flex items-center gap-1 rounded-full border border-hairline bg-card px-2.5 py-1 text-[11.5px] font-semibold text-body transition-all hover:-translate-y-px hover:border-emerald-400/60 hover:text-headline"
+                                    : "inline-flex items-center rounded-full border border-dashed border-hairline px-2.5 py-1 text-[11.5px] font-medium text-muted transition-colors hover:text-secondary"
+                                }
+                              >
+                                {l.name}
+                                {l.count > 0 ? (
+                                  <span className="tabular text-[10px] font-bold text-[var(--dw-green-mid)]">
+                                    {l.count}
+                                  </span>
+                                ) : null}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
                   </div>
-                </div>
+                </section>
               ))}
             </div>
           </div>

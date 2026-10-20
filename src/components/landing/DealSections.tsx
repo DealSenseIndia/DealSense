@@ -3,6 +3,7 @@ import { ArrowDown } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { StoreLogo } from "@/components/ui/StoreLogo";
 import { ProductThumb } from "@/components/ui/ProductThumb";
+import { Rating } from "@/components/ui/Rating";
 import type { DealRow } from "@/lib/db/deals";
 import { cn, formatINR, timeAgo } from "@/lib/utils";
 
@@ -84,6 +85,9 @@ export function DealsMovingNow({
 
               <div className="mt-2 line-clamp-2 min-h-[2rem] text-[11px] font-bold leading-snug text-headline">
                 {d.title}
+              </div>
+              <div className="mt-1">
+                <Rating rating={d.rating} reviewCount={d.reviewCount} />
               </div>
               <div className="mt-1.5 flex items-center gap-1.5">
                 <StoreLogo merchant={d.merchant} size={15} />

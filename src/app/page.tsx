@@ -2,10 +2,17 @@ import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
 import { Hero, type FeaturedDeal } from "@/components/landing/Hero";
 import { CategoryPanel } from "@/components/landing/CategoryPanel";
+import { LiveDeals } from "@/components/landing/LiveDeals";
 import { AllTimeLows, DealsMovingNow, PlatformShelves } from "@/components/landing/DealSections";
 import { CtaBand } from "@/components/landing/CtaBand";
 import { Faq, HowItWorks } from "@/components/landing/Sections";
-import { getAllTimeLows, getFilterFacets, getPlatformShelves, getRecentDrops } from "@/lib/db/deals";
+import {
+  getAllTimeLows,
+  getFilterFacets,
+  getLatestDeals,
+  getPlatformShelves,
+  getRecentDrops,
+} from "@/lib/db/deals";
 import { getShelves } from "@/lib/db/shelves";
 import { getHistorySpotlight } from "@/lib/db/spotlight";
 import { site } from "@/lib/config";
@@ -28,12 +35,13 @@ const STORE_LABEL: Record<string, string> = {
 };
 
 export default async function HomePage() {
-  const [shelves, drops, lows, platform, facets] = await Promise.all([
+  const [shelves, drops, lows, platform, facets, live] = await Promise.all([
     getShelves(6, 6),
     getRecentDrops(14),
     getAllTimeLows(12),
     getPlatformShelves(6),
     getFilterFacets(),
+    getLatestDeals(8),
   ]);
 
   // The hero's floating cards all describe ONE product — the one with the
@@ -81,6 +89,8 @@ export default async function HomePage() {
       <Hero featured={featured} />
 
       {/* ---------- the products ---------- */}
+      <LiveDeals deals={live} />
+
       <DealsMovingNow deals={drops} filters={filters} />
 
       <AllTimeLows deals={lows} />

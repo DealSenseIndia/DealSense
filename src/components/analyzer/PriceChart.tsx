@@ -119,6 +119,26 @@ export function PriceChart({
   const hovered = hover !== null ? pts.p[hover] : null;
   const priceTicks = 4;
 
+  /** Typical price line, lowest point and the current point — the three
+      numbers a price-history graph is actually read for. */
+  const marks = useMemo(() => {
+    if (!pts.p.length || !model) return null;
+    const prices = pts.p.map((p) => p.q.price);
+    const sorted = [...prices].sort((a, b) => a - b);
+    const median = sorted[Math.floor(sorted.length / 2)];
+    const lowPt = pts.p.reduce((a, b) => (b.q.price < a.q.price ? b : a));
+    const lastPt = pts.p[pts.p.length - 1];
+    return {
+      median,
+      medianY: model.y(median),
+      lowPt,
+      lastPt,
+    };
+  }, [pts, model]);
+
+  /** With hundreds of points the dots turn into noise — draw the line only. */
+  const showDots = pts.p.length <= 90;
+
   function onMove(e: React.MouseEvent) {
     const svg = svgRef.current;
     if (!svg || !pts.p.length) return;
@@ -224,17 +244,69 @@ export function PriceChart({
             <path d={smooth(pts.p)} fill="none" stroke={primaryColor} strokeWidth="2.5" strokeLinecap="round" />
           )}
 
-          {pts.p.map((pt, i) => (
-            <circle
-              key={i}
-              cx={pt.x}
-              cy={pt.y}
-              r={hover === i ? 4.5 : 2}
-              fill="#0F172A"
-              stroke={primaryColor}
-              strokeWidth="2"
-            />
-          ))}
+          {/* typical price line */}
+          {marks ? (
+            <>
+              <line
+                x1={PAD.left}
+                y1={marks.medianY}
+                x2={W - PAD.right}
+                y2={marks.medianY}
+                stroke="rgba(255,255,255,0.34)"
+                strokeWidth="1"
+                strokeDasharray="5 4"
+              />
+              <text
+                x={W - PAD.right - 4}
+                y={marks.medianY - 5}
+                textAnchor="end"
+                fontSize="10"
+                fontWeight="700"
+                fill="#94A3B8"
+                className="tabular"
+              >
+                typical {formatINR(Math.round(marks.median))}
+              </text>
+            </>
+          ) : null}
+
+          {showDots &&
+            pts.p.map((pt, i) => (
+              <circle
+                key={i}
+                cx={pt.x}
+                cy={pt.y}
+                r={hover === i ? 4.5 : 2}
+                fill="#0F172A"
+                stroke={primaryColor}
+                strokeWidth="2"
+              />
+            ))}
+
+          {/* lowest price marker */}
+          {marks ? (
+            <g>
+              <circle
+                cx={marks.lowPt.x}
+                cy={marks.lowPt.y}
+                r="5"
+                fill="#10B981"
+                stroke="#0F172A"
+                strokeWidth="2.5"
+              />
+              <text
+                x={marks.lowPt.x}
+                y={marks.lowPt.y - 11}
+                textAnchor="middle"
+                fontSize="10.5"
+                fontWeight="800"
+                fill="#34D399"
+                className="tabular"
+              >
+                low {formatINR(marks.lowPt.q.price)}
+              </text>
+            </g>
+          ) : null}
 
           {hovered && (
             <line

@@ -1,7 +1,8 @@
-import { and, desc, eq, gte, isNotNull, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, isNotNull, sql } from "drizzle-orm";
 import { db, ensureSchema } from "./client";
 import { listings, observations, products } from "./schema";
 import { STORE_META } from "./shelves";
+import { resolveLeaf } from "./taxonomy";
 
 export interface DealRow {
   slug: string;
@@ -15,6 +16,8 @@ export interface DealRow {
   mrp: number | null;
   discountPct: number;
   rating: number | null;
+  /** Real review count from the store, when we recorded one. */
+  reviewCount: number | null;
   url: string;
   observations: number;
   low: number | null;
@@ -25,6 +28,8 @@ export interface DealRow {
   dropAmount: number | null;
   /** Timestamp of the most recent recorded price point. */
   lastSeenAt: number | null;
+  /** Recent recorded prices, oldest -> newest. Drives the mini price-history graph. */
+  spark: number[];
 }
 
 /** Full stats for every listing that has a price. */
@@ -40,6 +45,7 @@ async function baseRows() {
       price: listings.price,
       mrp: listings.mrp,
       rating: listings.rating,
+      reviewCount: listings.reviewCount,
       url: listings.url,
       listingId: listings.id,
     })
@@ -54,7 +60,8 @@ async function baseRows() {
     const obs = await db
       .select({ price: observations.price, t: observations.observedAt })
       .from(observations)
-      .where(eq(observations.listingId, r.listingId));
+      .where(eq(observations.listingId, r.listingId))
+      .orderBy(asc(observations.observedAt));
     const prices = obs.map((o) => o.price).filter((p): p is number => p !== null && p > 0);
     const mrp = r.mrp && r.mrp > price ? r.mrp : null;
     const meta = STORE_META[r.merchant] ?? {
@@ -74,6 +81,7 @@ async function baseRows() {
       mrp,
       discountPct: mrp ? Math.round(((mrp - price) / mrp) * 100) : 0,
       rating: r.rating,
+      reviewCount: r.reviewCount,
       url: r.url,
       listingId: r.listingId,
       observations: prices.length,
@@ -83,9 +91,23 @@ async function baseRows() {
       lastDropAt: null,
       dropAmount: null,
       lastSeenAt: obs.length ? Math.max(...obs.map((o) => o.t)) : null,
+      spark: sparkSeries(obs.map((o) => o.price)),
     });
   }
   return out;
+}
+
+/** Last 24 recorded prices, oldest -> newest. Drives the mini price-history graph. */
+const SPARK_POINTS = 24;
+
+function sparkSeries(prices: (number | null)[]): number[] {
+  const clean = prices.filter((p): p is number => p !== null && p > 0);
+  if (clean.length <= SPARK_POINTS) return clean;
+  const step = Math.ceil(clean.length / SPARK_POINTS);
+  const out: number[] = [];
+  for (let i = 0; i < clean.length; i += step) out.push(clean[i]);
+  if (out[out.length - 1] !== clean[clean.length - 1]) out.push(clean[clean.length - 1]);
+  return out.slice(-SPARK_POINTS);
 }
 
 /** Most recent real price drops — "deals moving now". */
@@ -234,8 +256,17 @@ export async function getFilteredDeals(f: DealFilters): Promise<DealRow[]> {
   if (f.discountMin) out = out.filter((r) => r.discountPct >= f.discountMin!);
   if (f.store) out = out.filter((r) => r.merchant === f.store);
   if (f.category) {
+    // Match on the taxonomy leaf, so "Smartphones" also picks up the
+    // "APPLE Mobiles" / "OnePlus Mobiles" shelves a store files them under.
+    // The title is only used when the leaf itself is unknown.
+    const leaf = resolveLeaf(f.category);
     const needle = f.category.toLowerCase();
-    out = out.filter((r) => (r.title + " " + (r.category ?? "")).toLowerCase().includes(needle));
+    out = out.filter((r) => {
+      if (leaf) {
+        return r.category ? resolveLeaf(r.category) === leaf : false;
+      }
+      return (r.title + " " + (r.category ?? "")).toLowerCase().includes(needle);
+    });
   }
 
   switch (f.sort) {
@@ -257,7 +288,7 @@ export async function getFilteredDeals(f: DealFilters): Promise<DealRow[]> {
       out = out.sort((a, b) => b.discountPct - a.discountPct || b.observations - a.observations);
   }
 
-  return out.slice(0, 120);
+  return out.slice(0, 400);
 }
 
 export async function getFilterFacets() {
@@ -278,7 +309,10 @@ export async function getFilterFacets() {
   }
   for (const r of rows) {
     const c = r.category;
-    if (c) catMap.set(c, (catMap.get(c) ?? 0) + 1);
+    if (!c) continue;
+    // Group the store's own category names into the taxonomy leaf they sit in.
+    const key = resolveLeaf(c) ?? c;
+    catMap.set(key, (catMap.get(key) ?? 0) + 1);
   }
 
   return {

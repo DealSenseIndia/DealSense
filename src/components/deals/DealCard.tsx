@@ -3,6 +3,8 @@ import { ArrowUpRight, Flame, Heart } from "lucide-react";
 import type { DealRow } from "@/lib/db/deals";
 import { StoreLogo } from "@/components/ui/StoreLogo";
 import { ProductThumb } from "@/components/ui/ProductThumb";
+import { Rating } from "@/components/ui/Rating";
+import { PriceSpark } from "@/components/ui/PriceSpark";
 import { cn, formatINR } from "@/lib/utils";
 
 export function DealCard({ deal }: { deal: DealRow }) {
@@ -49,14 +51,20 @@ export function DealCard({ deal }: { deal: DealRow }) {
           {deal.title}
         </Link>
 
-        <div className="mt-1.5 flex items-center gap-1.5 text-[10px] font-bold text-muted">
-          {deal.rating ? (
-            <span className="inline-flex items-center gap-0.5">
-              <span className="text-amber-500">★</span>
-              {deal.rating}
+        <div className="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1">
+          <Rating rating={deal.rating} reviewCount={deal.reviewCount} />
+          <span className="tabular text-[10px] font-bold text-muted">
+            {deal.observations} pts tracked
+          </span>
+        </div>
+
+        <div className="mt-2 flex items-center justify-between gap-2">
+          <PriceSpark series={deal.spark} width={82} height={26} />
+          {deal.observations > 1 ? (
+            <span className="tabular text-[9.5px] font-semibold text-muted">
+              low {formatINR(deal.low)}
             </span>
           ) : null}
-          <span className="tabular">{deal.observations} pts tracked</span>
         </div>
 
         <div className="mt-auto flex items-end justify-between gap-2 pt-2.5">

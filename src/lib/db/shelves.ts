@@ -11,6 +11,7 @@ export interface ShelfProduct {
   mrp: number | null;
   discountPct: number;
   rating: number | null;
+  reviewCount: number | null;
   url: string;
   affiliateUrl: string;
 }
@@ -94,6 +95,7 @@ export async function getShelves(perCategory = 8, maxCategories = 0): Promise<Sh
       price: listings.price,
       mrp: listings.mrp,
       rating: listings.rating,
+      reviewCount: listings.reviewCount,
       url: listings.url,
     })
     .from(products)
@@ -126,6 +128,7 @@ export async function getShelves(perCategory = 8, maxCategories = 0): Promise<Sh
       mrp,
       discountPct,
       rating: r.rating,
+      reviewCount: r.reviewCount,
       url: r.url,
       affiliateUrl: r.url,
     });

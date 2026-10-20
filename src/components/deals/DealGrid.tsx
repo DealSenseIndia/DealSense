@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { ChevronRight, SlidersHorizontal, X } from "lucide-react";
 import type { DealRow } from "@/lib/db/deals";
 import { StoreLogo } from "@/components/ui/StoreLogo";
@@ -31,6 +32,14 @@ export function DealGrid({
   };
 }) {
   const router = useRouter();
+  const PAGE = 48;
+  const [shown, setShown] = useState(PAGE);
+  const visible = deals.slice(0, shown);
+
+  // A new filter set starts from the top again.
+  useEffect(() => {
+    setShown(PAGE);
+  }, [deals]);
 
   function go(params: Record<string, string | number | undefined>) {
     const q = new URLSearchParams();
@@ -175,11 +184,32 @@ export function DealGrid({
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
-            {deals.map((d) => (
-              <DealCard key={d.slug} deal={d} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
+              {visible.map((d) => (
+                <DealCard key={`${d.slug}-${d.merchant}`} deal={d} />
+              ))}
+            </div>
+
+            {shown < deals.length ? (
+              <div className="mt-8 flex flex-col items-center gap-3">
+                <p className="text-[12.5px] font-semibold text-muted">
+                  Showing {shown} of {deals.length} products
+                </p>
+                <button
+                  onClick={() => setShown((s) => s + PAGE)}
+                  className="inline-flex h-11 items-center gap-2 rounded-xl border border-emerald-600/30 bg-[var(--dw-green-surface)] px-6 text-[13px] font-extrabold text-[var(--dw-green-mid)] transition-all hover:-translate-y-0.5 hover:bg-emerald-600 hover:text-white"
+                >
+                  Show more products
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            ) : (
+              <p className="mt-8 text-center text-[12.5px] font-semibold text-muted">
+                That&apos;s every product we track.
+              </p>
+            )}
+          </>
         )}
       </div>
     </div>
