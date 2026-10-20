@@ -128,9 +128,14 @@ export function PriceChart({
     const median = sorted[Math.floor(sorted.length / 2)];
     const lowPt = pts.p.reduce((a, b) => (b.q.price < a.q.price ? b : a));
     const lastPt = pts.p[pts.p.length - 1];
+    // The band we call "typical" — the middle half of everything we recorded.
+    const q1 = sorted[Math.floor(sorted.length * 0.25)];
+    const q3 = sorted[Math.floor(sorted.length * 0.75)];
     return {
       median,
       medianY: model.y(median),
+      bandTop: model.y(q3),
+      bandBottom: model.y(q1),
       lowPt,
       lastPt,
     };
@@ -208,7 +213,37 @@ export function PriceChart({
               <stop offset="0%" stopColor={primaryColor} stopOpacity="0.22" />
               <stop offset="100%" stopColor={primaryColor} stopOpacity="0" />
             </linearGradient>
+            <filter id="pcGlow" x="-20%" y="-40%" width="140%" height="180%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
           </defs>
+
+          {/* the typical price band — where this product usually sits */}
+          {marks ? (
+            <>
+              <rect
+                x={PAD.left}
+                y={marks.bandTop}
+                width={W - PAD.left - PAD.right}
+                height={Math.max(2, marks.bandBottom - marks.bandTop)}
+                fill="rgba(148,163,184,0.10)"
+                rx="3"
+              />
+              <text
+                x={PAD.left + 6}
+                y={marks.bandTop - 5}
+                fontSize="9.5"
+                fontWeight="700"
+                fill="#64748B"
+              >
+                usual price range
+              </text>
+            </>
+          ) : null}
 
           {Array.from({ length: priceTicks + 1 }).map((_, i) => {
             const y = PAD.top + (i / priceTicks) * (H - PAD.top - PAD.bottom);
@@ -241,7 +276,14 @@ export function PriceChart({
           )}
 
           {pts.p.length > 1 && (
-            <path d={smooth(pts.p)} fill="none" stroke={primaryColor} strokeWidth="2.5" strokeLinecap="round" />
+            <path
+              d={smooth(pts.p)}
+              fill="none"
+              stroke={primaryColor}
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              filter="url(#pcGlow)"
+            />
           )}
 
           {/* typical price line */}
@@ -304,6 +346,40 @@ export function PriceChart({
                 className="tabular"
               >
                 low {formatINR(marks.lowPt.q.price)}
+              </text>
+            </g>
+          ) : null}
+
+          {/* where the price is right now */}
+          {marks ? (
+            <g>
+              <circle
+                cx={marks.lastPt.x}
+                cy={marks.lastPt.y}
+                r="5.5"
+                fill="#F8FAFC"
+                stroke={primaryColor}
+                strokeWidth="3"
+              />
+              <line
+                x1={marks.lastPt.x}
+                y1={marks.lastPt.y}
+                x2={W - PAD.right}
+                y2={marks.lastPt.y}
+                stroke="rgba(248,250,252,0.28)"
+                strokeWidth="1"
+                strokeDasharray="3 3"
+              />
+              <text
+                x={W - PAD.right - 4}
+                y={marks.lastPt.y - 9}
+                textAnchor="end"
+                fontSize="10.5"
+                fontWeight="800"
+                fill="#F8FAFC"
+                className="tabular"
+              >
+                now {formatINR(marks.lastPt.q.price)}
               </text>
             </g>
           ) : null}

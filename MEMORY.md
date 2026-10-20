@@ -47,14 +47,30 @@
 `src/components/landing/LiveDeals.tsx` — the compact feed, modelled on the Buyhatke/price-history
 site the user liked. One row per product:
 
-- thumbnail → title → store category → **real rating** (stars + score + review count) →
-  points tracked → drop age
+- thumbnail → title → **real rating** (stars + score + review count) → points tracked → drop age
 - **real price-history sparkline** (last 24 recorded prices, `PriceSpark`)
 - store icon + name → price, MRP, discount %
 - a **live countdown** (`NextCheckCountdown`) to the next hourly price check
 
-"View All" opens `/deals`, which has the filter sidebar (price / discount / store / category /
-sort) and paginates 48 at a time with a "Show more" button.
+It is deliberately small — four rows collapsed, with a "Show N more" toggle to expand in
+place, and "View All" opening `/deals` (filter sidebar + 48-per-page "Show more").
+
+## Product page
+
+Fixed a 500 on every Myntra/Tata CLiQ product page: `merchantMeta` only had Amazon and
+Flipkart, so `merchantMeta[listing.merchant]` was undefined. `config.ts` now lists all 13
+stores and exports `storeMeta()`, a never-throws lookup that every component uses.
+
+The PDP now carries, besides the verdict panel and the price chart:
+
+- **Customer reviews** (`ReviewsPanel.tsx`) — the store's headline rating next to a star
+  distribution computed from the individual reviews we read, sort by most recent / most
+  helpful / highest / lowest, real review cards with author, verified badge, date, body and
+  the variant the buyer picked.
+- **Similar products** (`SimilarProducts.tsx`) — from our own catalogue, ranked by same brand
+  and category, each with its rating and its own price-history sparkline.
+- A price-history graph with the **usual price range** band shaded behind the line, a dashed
+  **typical** line, a labelled **low** marker and a **now** flag on the right edge.
 
 ## Real ratings everywhere
 
@@ -64,14 +80,37 @@ count is real — never derived.
 
 `DealRow` now carries `reviewCount` and `spark` (last 24 recorded prices).
 
+## Real customer reviews (Amazon)
+
+`src/lib/merchants/reviews.ts` pulls **real** reviews out of the store's own product page —
+author, star rating, headline, body, date, verified-purchase flag, the variant the buyer
+picked, and the helpful count. Amazon's markup uses `data-hook="review"` blocks with
+`reviewTitle`, `reviewText`, `review-star-rating`, `review-date`, `avp-badge` and
+`format-strip` inside them.
+
+- New table `reviews` (schema.ts + the DDL in client.ts).
+- `upsertReviews` / `getReviewsForProduct` in queries.ts.
+- `analyze()` stores whatever the page gave us on every live check.
+- `npm run seed-reviews -- --limit N` backfills by re-fetching each listing once.
+  **717 real reviews across 82 Amazon listings** are stored so far.
+- The PDP shows the store's headline rating AND a distribution computed from the individual
+  reviews we actually read, side by side, with a note saying which is which.
+
 ## The taxonomy
 
-`src/lib/db/taxonomy.ts` holds the **full 15-umbrella taxonomy** ported from the old project's
-`backend/data/seed_taxonomy.py` — every umbrella, every sub-category, every leaf (~700 names).
-`getCategoryGroups()` returns **all 15** umbrellas whether or not we track them, each with its
-description, its children and each child's leaves, plus a real count of how many listings we
-actually track. The /categories page shows the whole map: solid pills where we track, dashed
-pills where we don't yet.
+`src/lib/db/taxonomy.ts` holds the taxonomy, now **17 umbrellas**:
+
+- The 15 from the old project's `backend/data/seed_taxonomy.py`.
+- **Computers & Accessories** and **Grocery & Gourmet Foods** added from pricehistory.ai,
+  with the computer leaves moved out of Electronics.
+- Every Buyhatke leaf is in there too — Soundbar Speakers, Wi-fi Routers, Computer Keyboards,
+  Computer Mice, Printers, Monitors, Microwave, Dishwashers, Pop-up Toasters, Juicers,
+  Salwar Suits, Flip-Flops, Hair Masks & Packs, Hair Sprays & Mists, Clippers & Trimmers,
+  Bedsheets, Mattress Protectors, Duffel Bags, Laptop Bags, and so on.
+
+`getCategoryGroups()` returns **all 17** umbrellas whether or not we track them, each with its
+description, its children and each child's leaves, plus a real count of what we do track. The
+/categories page shows the whole map: solid pills where we track, dashed where we don't yet.
 
 `resolveLeaf()` maps a raw store category ("APPLE Mobiles", "Levis Jeans", "In-Ear") onto its
 taxonomy leaf, and `/deals?category=…` filters through it — so "Smartphones" returns all 120

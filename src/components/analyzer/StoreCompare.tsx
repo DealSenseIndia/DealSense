@@ -2,7 +2,7 @@
 
 import { ExternalLink } from "lucide-react";
 import type { AnalysisResult } from "@/lib/types";
-import { merchantMeta } from "@/lib/config";
+import { storeMeta } from "@/lib/config";
 import { formatINR, timeAgo } from "@/lib/utils";
 import { ButtonLink } from "@/components/ui/Button";
 
@@ -15,7 +15,7 @@ export function StoreCompare({
   rival: AnalysisResult["rival"];
   landedEffective: number | null;
 }) {
-  const primaryMeta = merchantMeta[listing.merchant];
+  const primaryMeta = storeMeta(listing.merchant);
 
   return (
     <div className="rounded-3xl border border-line bg-surface p-6 backdrop-blur-xl">
@@ -57,14 +57,14 @@ function Row({
   url,
   primary = false,
 }: {
-  merchant: keyof typeof merchantMeta;
+  merchant: string;
   price: number | null;
   effective: number | null;
   checkedAt: number | null;
   url: string;
   primary?: boolean;
 }) {
-  const meta = merchantMeta[merchant];
+  const meta = storeMeta(merchant);
   return (
     <div className="flex items-center gap-4 rounded-2xl border border-line bg-surface-raised/40 p-4">
       <span

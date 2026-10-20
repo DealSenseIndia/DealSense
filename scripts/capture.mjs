@@ -23,7 +23,8 @@ const ctx = await browser.newContext({
   deviceScaleFactor: 1,
 });
 const page = await ctx.newPage();
-await page.goto(target, { waitUntil: "networkidle", timeout: 90000 });
+await page.goto(target, { waitUntil: "domcontentloaded", timeout: 90000 });
+await page.waitForTimeout(1500);
 
 // Hide the scrollbar so nothing eats a stripe on the right.
 await page.addStyleTag({ content: "html{scrollbar-width:none}::-webkit-scrollbar{display:none}" });

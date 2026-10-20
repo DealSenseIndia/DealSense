@@ -37,7 +37,7 @@ export function CategoryPanel({ shelf }: { shelf: Shelf }) {
           {shelf.products.map((p) => {
             return (
               <Link
-                key={p.slug}
+                key={`${p.slug}-${p.merchant}`}
                 href={`/product/${p.slug}`}
                 className="group flex flex-col rounded-2xl border border-hairline bg-card p-3 shadow-card transition-all hover:-translate-y-1 hover:border-emerald-400/50 hover:shadow-[0_18px_40px_-20px_rgba(16,185,129,0.55)]"
               >

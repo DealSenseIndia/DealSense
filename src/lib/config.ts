@@ -18,16 +18,66 @@ export const affiliate = {
   cuelinksChannel: process.env.NEXT_PUBLIC_CUELINKS_CHANNEL || "317867",
 } as const;
 
-export const supportedMerchants = ["amazon", "flipkart"] as const;
+/**
+ * Every store we can hold a listing for. The first two are the ones we
+ * actively scrape live prices for; the rest come from the catalogue import
+ * and are still compared and tracked.
+ */
+export const supportedMerchants = [
+  "amazon",
+  "flipkart",
+  "myntra",
+  "tatacliq",
+  "croma",
+  "reliancedigital",
+  "ajio",
+  "firstcry",
+  "libas",
+  "biba",
+  "meesho",
+  "nykaa",
+  "shopsy",
+] as const;
 export type Merchant = (typeof supportedMerchants)[number];
 
+/** Store display details. Lookup is always safe — see `storeMeta()`. */
 export const merchantMeta: Record<
   Merchant,
   { name: string; color: string; short: string }
 > = {
   amazon: { name: "Amazon", color: "#FF9900", short: "AZ" },
   flipkart: { name: "Flipkart", color: "#2874F0", short: "FK" },
+  myntra: { name: "Myntra", color: "#FF3F6C", short: "MY" },
+  tatacliq: { name: "Tata CLiQ", color: "#6E2B8B", short: "TC" },
+  croma: { name: "Croma", color: "#00A0E9", short: "CR" },
+  reliancedigital: { name: "Reliance Digital", color: "#D71920", short: "RD" },
+  ajio: { name: "AJIO", color: "#2C4152", short: "AJ" },
+  firstcry: { name: "FirstCry", color: "#F48C06", short: "FC" },
+  libas: { name: "Libas", color: "#8B1E5B", short: "LB" },
+  biba: { name: "Biba", color: "#C2185B", short: "BB" },
+  meesho: { name: "Meesho", color: "#57057A", short: "MS" },
+  nykaa: { name: "Nykaa", color: "#E5008E", short: "NY" },
+  shopsy: { name: "Shopsy", color: "#6D22B8", short: "SH" },
 };
+
+/**
+ * Never-throw lookup for a store name that may not be in the table above
+ * (a listing can name a store we have not seen before).
+ */
+export function storeMeta(merchant: string): {
+  name: string;
+  color: string;
+  short: string;
+} {
+  const key = merchant.toLowerCase().replace(/[^a-z]/g, "") as Merchant;
+  const found = merchantMeta[key];
+  if (found) return found;
+  return {
+    name: merchant.charAt(0).toUpperCase() + merchant.slice(1),
+    color: "#64748B",
+    short: merchant.slice(0, 2).toUpperCase(),
+  };
+}
 
 /** Freshness thresholds (ms). Drives the trust badges. */
 export const freshness = {

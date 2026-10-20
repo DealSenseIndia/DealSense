@@ -14,7 +14,7 @@ import {
   Zap,
 } from "lucide-react";
 import type { AnalysisResult } from "@/lib/types";
-import { merchantMeta } from "@/lib/config";
+import { storeMeta } from "@/lib/config";
 import { cn, formatINR, timeAgo } from "@/lib/utils";
 import { FreshnessBadge, Tag } from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
@@ -25,6 +25,10 @@ import { LandedPriceCard } from "./LandedPriceCard";
 import { AlertPanel } from "./AlertPanel";
 import { buildStatCards, StatCards } from "./StatCards";
 import { BuyVerdictCard } from "./BuyVerdictCard";
+import { ReviewsPanel } from "./ReviewsPanel";
+import { SimilarProducts } from "./SimilarProducts";
+import type { ReviewRow } from "@/lib/db/queries";
+import type { SimilarProduct } from "@/lib/db/similar";
 
 function freshnessOf(ts: number | null) {
   if (!ts) return "UNKNOWN" as const;
@@ -35,12 +39,22 @@ function freshnessOf(ts: number | null) {
   return "EXPIRED" as const;
 }
 
-export function AnalysisView({ result }: { result: AnalysisResult }) {
+export function AnalysisView({
+  result,
+  reviews = [],
+  similar = [],
+  storeReviewCount = null,
+}: {
+  result: AnalysisResult;
+  reviews?: ReviewRow[];
+  similar?: SimilarProduct[];
+  storeReviewCount?: number | null;
+}) {
   const listing = result.listing!;
   const product = result.product!;
   const bundle = result.bundle;
-  const meta = merchantMeta[listing.merchant];
-  const rivalMeta = result.rival ? merchantMeta[result.rival.merchant] : null;
+  const meta = storeMeta(listing.merchant);
+  const rivalMeta = result.rival ? storeMeta(result.rival.merchant) : null;
   const lastObservedAt = result.history.primary.length
     ? result.history.primary[result.history.primary.length - 1].t
     : null;
@@ -376,6 +390,18 @@ export function AnalysisView({ result }: { result: AnalysisResult }) {
           </div>
         ))}
       </div>
+
+      {/* ---------- customer reviews ---------- */}
+      {reviews.length > 0 || storeReviewCount ? (
+        <ReviewsPanel
+          reviews={reviews}
+          storeRating={listing.rating}
+          storeReviewCount={storeReviewCount}
+        />
+      ) : null}
+
+      {/* ---------- similar products ---------- */}
+      {similar.length > 0 && <SimilarProducts products={similar} />}
     </div>
   );
 }
@@ -429,12 +455,12 @@ function StorePill({
   inStock,
   primary,
 }: {
-  merchant: keyof typeof merchantMeta;
+  merchant: string;
   price: number | null;
   inStock: boolean | null;
   primary?: boolean;
 }) {
-  const m = merchantMeta[merchant];
+  const m = storeMeta(merchant);
   const color = merchant === "amazon" ? "#FF9900" : "#2874F0";
   return (
     <span
@@ -473,7 +499,7 @@ function StoreRow({
   saving,
   others,
 }: {
-  merchant: keyof typeof merchantMeta;
+  merchant: string;
   price: number | null;
   inStock: boolean | null;
   rating?: number | null;
@@ -483,7 +509,7 @@ function StoreRow({
   saving: number;
   others: number;
 }) {
-  const m = merchantMeta[merchant];
+  const m = storeMeta(merchant);
   const color = merchant === "amazon" ? "#FF9900" : "#2874F0";
   return (
     <div

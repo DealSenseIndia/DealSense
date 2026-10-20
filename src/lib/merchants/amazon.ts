@@ -1,7 +1,8 @@
 import * as cheerio from "cheerio";
-import type { ExtractedProduct } from "../types";
+import type { ExtractedProduct, StoreReview } from "../types";
 import type { FetchResult } from "./http";
 import { cleanTitle, extractBrandFromTitle, inferCategory, parseCount, parsePrice, parseRating } from "./parse";
+import { extractAmazonReviews } from "./reviews";
 
 function firstText($: cheerio.CheerioAPI, selectors: string[]): string | null {
   for (const s of selectors) {
@@ -206,6 +207,16 @@ export function extractAmazon(res: FetchResult, asin: string, url: string): Extr
 
   const confidence = (title ? 0.3 : 0) + (price !== null ? 0.5 : 0) + (images.length ? 0.2 : 0);
 
+  // Real customer reviews, straight off the page.
+  let reviews: StoreReview[] = [];
+  if (res.format === "html") {
+    try {
+      reviews = extractAmazonReviews(res.content);
+    } catch {
+      reviews = [];
+    }
+  }
+
   return {
     merchant: "amazon",
     merchantProductId: asin,
@@ -226,5 +237,6 @@ export function extractAmazon(res: FetchResult, asin: string, url: string): Extr
     coupon: null,
     extractionMethod: `amazon_${res.via}`,
     confidence: Math.round(confidence * 100) / 100,
+    reviews,
   };
 }

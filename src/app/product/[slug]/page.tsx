@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { AnalysisView } from "@/components/analyzer/AnalysisView";
 import { loadAnalysisBySlug } from "@/lib/engine/load";
+import { getReviewsForProduct } from "@/lib/db/queries";
+import { getSimilarProducts } from "@/lib/db/similar";
 import { site } from "@/lib/config";
 import { formatINR } from "@/lib/utils";
 
@@ -46,6 +48,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const product = result.product;
   const listing = result.listing;
 
+  const [reviews, similar] = await Promise.all([
+    getReviewsForProduct(product.id),
+    getSimilarProducts(product.id, 8),
+  ]);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -87,7 +94,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <Container>
-        <AnalysisView result={result} />
+        <AnalysisView
+          result={result}
+          reviews={reviews}
+          similar={similar}
+          storeReviewCount={listing.reviewCount}
+        />
       </Container>
     </section>
   );

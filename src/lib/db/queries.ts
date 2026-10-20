@@ -1,6 +1,6 @@
 import { and, desc, eq, gte, isNull, lte, or, sql } from "drizzle-orm";
 import { db, ensureSchema } from "./client";
-import { alerts, alertEvents, events, listings, observations, products } from "./schema";
+import { alerts, alertEvents, events, listings, observations, products, reviews } from "./schema";
 
 const now = () => Date.now();
 export const uid = () => crypto.randomUUID();
@@ -9,6 +9,97 @@ export type ProductRow = typeof products.$inferSelect;
 export type ListingRow = typeof listings.$inferSelect;
 export type ObservationRow = typeof observations.$inferSelect;
 export type AlertRow = typeof alerts.$inferSelect;
+export type ReviewRow = typeof reviews.$inferSelect;
+
+/* ------------------------------------------------------------------ */
+/* Reviews (real, read off the store's own product page)              */
+/* ------------------------------------------------------------------ */
+
+/** Store a batch of real reviews for a listing. Duplicates are skipped. */
+export async function upsertReviews(
+  listingId: string,
+  items: {
+    author: string | null;
+    stars: number | null;
+    title: string | null;
+    body: string | null;
+    reviewedAt: string | null;
+    verified: boolean;
+    variant: string | null;
+    helpful: number | null;
+    source?: string;
+  }[],
+): Promise<number> {
+  if (!items.length) return 0;
+  await ensureSchema();
+
+  const existing = await db
+    .select({ id: reviews.id, title: reviews.title, body: reviews.body })
+    .from(reviews)
+    .where(eq(reviews.listingId, listingId));
+  const seen = new Set(existing.map((r) => reviewKey(r.title, r.body)));
+
+  let added = 0;
+  for (const r of items) {
+    const key = reviewKey(r.title, r.body);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    await db.insert(reviews).values({
+      id: uid(),
+      listingId,
+      author: r.author,
+      stars: r.stars,
+      title: r.title,
+      body: r.body,
+      reviewedAt: r.reviewedAt,
+      verified: r.verified,
+      variant: r.variant,
+      helpful: r.helpful,
+      source: r.source ?? "store",
+      createdAt: now(),
+    });
+    added++;
+  }
+  return added;
+}
+
+function reviewKey(title: string | null, body: string | null): string {
+  return `${(title ?? "").trim().toLowerCase()}|${(body ?? "").trim().slice(0, 120).toLowerCase()}`;
+}
+
+/** Every real review we have for a listing, newest rating first. */
+export async function getReviewsForListing(listingId: string): Promise<ReviewRow[]> {
+  await ensureSchema();
+  return db
+    .select()
+    .from(reviews)
+    .where(eq(reviews.listingId, listingId))
+    .orderBy(desc(reviews.stars), desc(reviews.createdAt));
+}
+
+/** Reviews across every listing of a product (all stores). */
+export async function getReviewsForProduct(productId: string): Promise<ReviewRow[]> {
+  await ensureSchema();
+  const rows = await db
+    .select({ listingId: listings.id })
+    .from(listings)
+    .where(eq(listings.productId, productId));
+  if (!rows.length) return [];
+  const ids = rows.map((r) => r.listingId);
+  const out: ReviewRow[] = [];
+  for (const id of ids) out.push(...(await getReviewsForListing(id)));
+  return out.sort((a, b) => (b.stars ?? 0) - (a.stars ?? 0) || b.createdAt - a.createdAt);
+}
+
+export async function countReviewsForProduct(productId: string): Promise<number> {
+  await ensureSchema();
+  const rows = await db
+    .select({ n: sql<number>`count(*)` })
+    .from(reviews)
+    .innerJoin(listings, eq(reviews.listingId, listings.id))
+    .where(eq(listings.productId, productId));
+  return rows[0]?.n ?? 0;
+}
 
 /* ------------------------------------------------------------------ */
 /* Products                                                            */

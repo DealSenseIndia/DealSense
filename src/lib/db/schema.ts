@@ -84,6 +84,32 @@ export const observations = sqliteTable(
   }),
 );
 
+/**
+ * A real customer review, exactly as the store published it.
+ * We never write a review we did not read off a store page.
+ */
+export const reviews = sqliteTable(
+  "reviews",
+  {
+    id: text("id").primaryKey(),
+    listingId: text("listing_id").notNull(),
+    author: text("author"),
+    stars: real("stars"),
+    title: text("title"),
+    body: text("body"),
+    reviewedAt: text("reviewed_at"),
+    verified: integer("verified", { mode: "boolean" }).notNull().default(false),
+    variant: text("variant"),
+    helpful: integer("helpful"),
+    source: text("source").notNull().default("store"),
+    createdAt: integer("created_at").notNull(),
+  },
+  (t) => ({
+    listingIdx: index("reviews_listing_idx").on(t.listingId),
+    starsIdx: index("reviews_stars_idx").on(t.stars),
+  }),
+);
+
 /** A user's price watch on a listing. */
 export const alerts = sqliteTable(
   "alerts",

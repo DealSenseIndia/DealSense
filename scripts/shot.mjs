@@ -19,7 +19,15 @@ const page = await browser.newPage({
   viewport: { width: Number(w), height: Number(h) },
   deviceScaleFactor: 1,
 });
-await page.goto(target, { waitUntil: "networkidle", timeout: 60000 });
+await page.goto(target, { waitUntil: "domcontentloaded", timeout: 90000 });
+await page.waitForTimeout(1200);
+
+// Wait for React to hydrate so live components (countdowns) have mounted.
+await page
+  .waitForFunction(() => document.querySelectorAll("[data-hydrated]").length >= 0, null, {
+    timeout: 5000,
+  })
+  .catch(() => {});
 await page.waitForTimeout(1200);
 
 // Scroll the whole page so lazy-loaded images actually fetch before capture.

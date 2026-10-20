@@ -19,7 +19,8 @@
     "merge": "tsx scripts/merge-products.ts",
     "scrape": "tsx scripts/refresh.ts",
     "shot": "node scripts/shot.mjs",
-    "capture": "node scripts/capture.mjs"
+    "capture": "node scripts/capture.mjs",
+    "reviews": "tsx scripts/seed-reviews.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",

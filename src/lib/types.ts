@@ -1,6 +1,8 @@
 import type { Merchant } from "./config";
+import type { StoreReview } from "./merchants/reviews";
 
 export type { Merchant };
+export type { StoreReview };
 
 export type Verdict = "BUY" | "FAIR" | "WAIT" | "AVOID" | "INSUFFICIENT";
 export type Confidence = "HIGH" | "MEDIUM" | "LOW" | "INSUFFICIENT";
@@ -33,6 +35,8 @@ export interface ExtractedProduct {
   coupon: number | null;
   extractionMethod: string;
   confidence: number;
+  /** Real customer reviews read off the store's own page. */
+  reviews?: StoreReview[];
 }
 
 export interface DealStats {

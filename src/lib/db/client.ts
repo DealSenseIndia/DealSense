@@ -112,6 +112,23 @@ CREATE TABLE IF NOT EXISTS observations (
 CREATE INDEX IF NOT EXISTS observations_listing_idx ON observations (listing_id);
 CREATE INDEX IF NOT EXISTS observations_observed_idx ON observations (observed_at);
 
+CREATE TABLE IF NOT EXISTS reviews (
+  id TEXT PRIMARY KEY,
+  listing_id TEXT NOT NULL,
+  author TEXT,
+  stars REAL,
+  title TEXT,
+  body TEXT,
+  reviewed_at TEXT,
+  verified INTEGER NOT NULL DEFAULT 0,
+  variant TEXT,
+  helpful INTEGER,
+  source TEXT NOT NULL DEFAULT 'store',
+  created_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS reviews_listing_idx ON reviews (listing_id);
+CREATE INDEX IF NOT EXISTS reviews_stars_idx ON reviews (stars);
+
 CREATE TABLE IF NOT EXISTS alerts (
   id TEXT PRIMARY KEY,
   product_id TEXT NOT NULL,

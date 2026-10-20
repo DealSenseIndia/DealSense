@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { Confidence, Freshness, Verdict } from "@/lib/types";
-import { merchantMeta } from "@/lib/config";
+import { storeMeta } from "@/lib/config";
 
 export function Pill({
   children,
@@ -37,11 +37,11 @@ export function StoreBadge({
   className,
   showName = true,
 }: {
-  merchant: keyof typeof merchantMeta;
+  merchant: string;
   className?: string;
   showName?: boolean;
 }) {
-  const m = merchantMeta[merchant];
+  const m = storeMeta(merchant);
   return (
     <span
       className={cn(

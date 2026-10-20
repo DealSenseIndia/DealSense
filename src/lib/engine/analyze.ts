@@ -15,6 +15,7 @@ import {
   updateListingState,
   upsertListing,
   upsertProduct,
+  upsertReviews,
 } from "../db/queries";
 import { buildIdentityKey, sameVariant } from "./identity";
 import { buildBundle, findRivalListing } from "./bundle";
@@ -127,8 +128,7 @@ export async function analyzeUrl(rawUrl: string): Promise<AnalysisResult> {
 
   // 3) Observation — only from a verified price, with honest dedupe.
   const latest = await getLatestObservation(listing.id);
-  const ts = Date.now();
-  if (p.price !== null) {
+  const ts = Date.now();  if (p.price !== null) {
     const obsCount = await countObservations(listing.id);
     const priceChanged = !latest || latest.price !== p.price;
     const sinceLast = latest ? ts - latest.observedAt : Number.POSITIVE_INFINITY;
@@ -153,7 +153,28 @@ export async function analyzeUrl(rawUrl: string): Promise<AnalysisResult> {
     }
   }
 
-  // 4) Next refresh.
+  // 4) Reviews — real ones, read off the store's own product page.
+  if (p.reviews?.length) {
+    try {
+      await upsertReviews(
+        listing.id,
+        p.reviews.map((r) => ({
+          author: r.author,
+          stars: r.stars,
+          title: r.title,
+          body: r.body,
+          reviewedAt: r.date,
+          verified: r.verified,
+          variant: r.variant,
+          helpful: r.helpful,
+        })),
+      );
+    } catch {
+      /* reviews are a bonus — never fail the analysis over them */
+    }
+  }
+
+  // 5) Next refresh.
   const nextCheckAt = ts + (p.price !== null ? 10 * 60 * 60 * 1000 : 30 * 60 * 1000);
   await updateListingState(listing.id, {
     lastCheckedAt: ts,
