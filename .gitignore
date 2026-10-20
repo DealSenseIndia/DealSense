@@ -15,3 +15,7 @@ data/*.sqlite
 next-env.d.ts
 tsconfig.tsbuildinfo
 /tmp
+
+# local dev logs
+devlog.txt
+*.log
