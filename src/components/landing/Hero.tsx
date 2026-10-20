@@ -198,7 +198,7 @@ export function Hero() {
 
               {/* Floating widget cards layered over the illustration */}
               <div className="pointer-events-none absolute inset-0 z-10">
-                <FloatCard className="left-0 top-0 w-[230px] animate-float sm:-left-2" delay="0s">
+                <FloatCard className="left-0 top-0 w-[212px] animate-float sm:-left-3" delay="0s">
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-[12px] font-extrabold text-headline">Price History</span>
                     <span className="rounded-lg border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-2 py-0.5 text-[9.5px] font-extrabold text-[var(--dw-green-mid)]">
@@ -227,7 +227,7 @@ export function Hero() {
                   <div className="mt-1 text-[10px] font-semibold text-muted">on 12 Sep 2026</div>
                 </FloatCard>
 
-                <FloatCard className="bottom-2 left-0 w-[210px] animate-float sm:left-4" delay="-3s">
+                <FloatCard className="left-0 top-[40%] w-[196px] animate-float sm:left-1" delay="-3s">
                   <div className="flex items-center gap-2">
                     <span className="grid h-7 w-7 place-items-center rounded-lg bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]">
                       <Bell className="h-3.5 w-3.5" />
@@ -241,7 +241,7 @@ export function Hero() {
                   <div className="tabular text-[17px] font-extrabold text-[var(--dw-green-mid)]">₹2,500</div>
                 </FloatCard>
 
-                <FloatCard className="right-0 top-[16%] w-[205px] animate-float sm:-right-2" delay="-1.6s">
+                <FloatCard className="right-0 top-0 w-[192px] animate-float sm:-right-2" delay="-1.6s">
                   <span className="rounded-md border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-[var(--dw-green-mid)]">
                     Recently viewed
                   </span>
@@ -264,7 +264,7 @@ export function Hero() {
                   </div>
                 </FloatCard>
 
-                <FloatCard className="bottom-[-6px] right-[16%] w-[210px] animate-float" delay="-5s">
+                <FloatCard className="bottom-0 right-[2%] w-[198px] animate-float" delay="-5s">
                   <div className="flex items-center gap-2.5">
                     <div className="relative grid h-10 w-10 shrink-0 place-items-center">
                       <svg viewBox="0 0 48 48" className="h-full w-full -rotate-90">
@@ -288,7 +288,7 @@ export function Hero() {
                     <div>
                       <div className="text-[12px] font-extrabold text-[var(--dw-green-mid)]">Buy Now</div>
                       <div className="text-[9.5px] font-semibold leading-snug text-secondary">
-                        12% below the price this usually costs
+                        12% below the usual price
                       </div>
                     </div>
                   </div>

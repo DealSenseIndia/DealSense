@@ -49,7 +49,9 @@ export function DealsSection({ deals }: { deals: DealItem[] }) {
       case "steep":
         return deals.filter((d) => d.verdict.genuineDiscountPct !== null && d.verdict.genuineDiscountPct >= 8);
       case "low":
-        return deals.filter((d) => d.verdict.stats.low !== null && d.price <= d.verdict.stats.low);
+        return deals.filter(
+          (d) => d.observationCount >= 3 && d.verdict.stats.low !== null && d.price <= d.verdict.stats.low,
+        );
       case "score85":
         return deals.filter((d) => (d.verdict.score ?? 0) >= 85);
       case "under999":

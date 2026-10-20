@@ -33,7 +33,9 @@ export function DealCard({ deal, index = 0 }: { deal: DealItem; index?: number }
   const discount =
     deal.mrp && deal.mrp > deal.price ? Math.round(((deal.mrp - deal.price) / deal.mrp) * 100) : null;
 
-  const isLow = deal.verdict.stats.low !== null && deal.price <= deal.verdict.stats.low;
+  // Only claim an all-time low once we have a real history to compare against.
+  const hasHistory = deal.observationCount >= 3;
+  const isLow = hasHistory && deal.verdict.stats.low !== null && deal.price <= deal.verdict.stats.low;
   const score = deal.verdict.score;
 
   return (
@@ -60,9 +62,14 @@ export function DealCard({ deal, index = 0 }: { deal: DealItem; index?: number }
               All-time low
             </span>
           )}
-          {score !== null && score >= 85 && !isLow && (
+          {hasHistory && score !== null && score >= 85 && !isLow && (
             <span className="rounded-full border border-amber-400/40 bg-amber-500/15 px-2 py-0.5 text-[9.5px] font-extrabold uppercase tracking-wider text-amber-600 backdrop-blur dark:text-amber-300">
               Steep drop
+            </span>
+          )}
+          {!hasHistory && (
+            <span className="rounded-full border border-hairline-strong bg-card/85 px-2 py-0.5 text-[9.5px] font-extrabold uppercase tracking-wider text-secondary backdrop-blur">
+              Building history
             </span>
           )}
         </div>

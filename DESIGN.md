@@ -29,6 +29,20 @@ Persisted in `localStorage` (`dealsense_theme`), applied with an inline anti-FOU
 
 **Verdicts:** BUY `#059669` · FAIR `#0284C7` · WAIT `#D97706` · AVOID `#DC2626`.
 
+## Brand assets
+
+Original DealSense brand assets live in `public/brand/` and are carried over from DealSense 1.0:
+
+| File | Use |
+| --- | --- |
+| `hero-illustration.png` / `.webp` | homepage hero — shopper on the green sofa with her phone (PNG 128 KB, WebP 80 KB) |
+| `dealsense-icon.png` | the logo mark — nav, footer, app icon (256px) |
+| `dealsense-horizontal.png` | horizontal wordmark lockup |
+| `favicon.ico`, `favicon-16x32.png`, `favicon-32x32.png` | browser favicon |
+| `apple-touch-icon.png` | iOS home-screen icon |
+
+`src/app/icon.png`, `src/app/favicon.ico` and `src/app/apple-icon.png` are wired to the same brand files.
+
 ## Typography
 
 - **Headlines / body:** Inter (800–900 for headlines).
