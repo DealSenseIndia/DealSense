@@ -37,15 +37,19 @@ await page.waitForTimeout(800);
 
 const overflow = await page.evaluate(() => {
   const vw = window.innerWidth;
+  const inScroller = (el) => {
+    let p = el.parentElement;
+    while (p && p !== document.body) {
+      const ox = getComputedStyle(p).overflowX;
+      if (ox === "auto" || ox === "scroll" || ox === "hidden") return true;
+      p = p.parentElement;
+    }
+    return false;
+  };
   const bad = [...document.querySelectorAll("*")]
     .filter((e) => e.getBoundingClientRect().width > 0)
     .filter((e) => e.getBoundingClientRect().right > vw + 1)
-    .filter((e) => {
-      const p = e.parentElement;
-      if (!p) return true;
-      const ox = getComputedStyle(p).overflowX;
-      return ox !== "auto" && ox !== "scroll";
-    })
+    .filter((e) => !inScroller(e))
     .slice(0, 10)
     .map((e) => ({
       tag: e.tagName,
