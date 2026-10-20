@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowDown, Flame, Radio } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { StoreLogo } from "@/components/ui/StoreLogo";
 import { ProductThumb } from "@/components/ui/ProductThumb";
@@ -7,36 +7,60 @@ import type { DealRow } from "@/lib/db/deals";
 import { cn, formatINR, timeAgo } from "@/lib/utils";
 
 /**
- * "Deals moving now" — a live ticker of real, recently-recorded price drops.
- * We know the exact timestamp of every drop, so this is genuinely live.
+ * "Today's Biggest Price Drops" — the DealSense 1.0 feed header, with real
+ * filter pills that point at the live /deals filters.
  */
-export function DealsMovingNow({ deals }: { deals: DealRow[] }) {
+export function DealsMovingNow({
+  deals,
+  filters,
+}: {
+  deals: DealRow[];
+  filters: { label: string; href: string; count?: number }[];
+}) {
   if (!deals.length) return null;
 
   return (
-    <section className="relative overflow-hidden border-y border-hairline bg-gradient-to-r from-emerald-50 via-card to-teal-50 py-10 dark:from-emerald-950/30 dark:via-card dark:to-teal-950/20">
-      <Container>
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/10 px-2.5 py-1 text-[10.5px] font-extrabold uppercase tracking-wider text-red-600 dark:text-red-400">
-              <Radio className="h-3 w-3 animate-pulse" /> Live
-            </span>
-            <h2 className="text-[22px] font-extrabold tracking-tight text-headline sm:text-[26px]">
-              Deals moving now
+    <section className="py-12" id="liveDeals">
+      <Container size="wide">
+        <div className="mb-[22px] flex flex-wrap items-end justify-between gap-5">
+          <div className="flex flex-col gap-1.5">
+            <h2 className="text-[28px] font-extrabold tracking-[-0.03em] text-headline">
+              Today&apos;s Biggest Price Drops
             </h2>
-            <span className="hidden text-[13px] text-muted sm:inline">
-              prices we recorded dropping, in the last few weeks
-            </span>
+            <p className="max-w-[650px] text-[14.5px] leading-[1.5] text-body">
+              Real price drops, checked against historical prices — not just the discount printed
+              on the product page.
+            </p>
           </div>
           <Link
             href="/deals"
-            className="text-[13px] font-extrabold text-[var(--dw-green-mid)] hover:underline"
+            className="text-[13.5px] font-extrabold text-[var(--dw-green-mid)] hover:underline"
           >
-            See all →
+            View all deals →
           </Link>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
+        {/* filter pills */}
+        {filters.length > 0 && (
+          <div className="mb-6 flex flex-wrap gap-2">
+            {filters.map((f) => (
+              <Link
+                key={f.label}
+                href={f.href}
+                className="inline-flex items-center gap-[7px] whitespace-nowrap rounded-full border border-hairline bg-card px-4 py-2 text-[13px] font-semibold text-body transition-all hover:-translate-y-px hover:border-[var(--dw-green-mid)] hover:text-headline"
+              >
+                {f.label}
+                {f.count !== undefined ? (
+                  <span className="tabular rounded-full bg-subtle px-1.5 text-[10px] font-semibold text-secondary">
+                    {f.count}
+                  </span>
+                ) : null}
+              </Link>
+            ))}
+          </div>
+        )}
+
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
           {deals.slice(0, 14).map((d) => (
             <Link
               key={d.slug}
@@ -84,26 +108,23 @@ export function DealsMovingNow({ deals }: { deals: DealRow[] }) {
 export function AllTimeLows({ deals }: { deals: DealRow[] }) {
   if (!deals.length) return null;
   return (
-    <section className="py-14">
+    <section className="py-12">
       <Container size="wide">
-        <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <p className="flex items-center gap-1.5 text-[12px] font-extrabold uppercase tracking-widest text-red-500">
-              <Flame className="h-3.5 w-3.5" /> Rare
-            </p>
-            <h2 className="mt-2 text-[26px] font-extrabold tracking-[-0.025em] text-headline sm:text-[32px]">
+        <div className="mb-[22px] flex flex-wrap items-end justify-between gap-5">
+          <div className="flex flex-col gap-1.5">
+            <h2 className="text-[28px] font-extrabold tracking-[-0.03em] text-headline">
               At their all-time low
             </h2>
-            <p className="mt-1.5 max-w-2xl text-[13.5px] text-body">
+            <p className="max-w-[650px] text-[14.5px] leading-[1.5] text-body">
               The current price is the lowest we have ever recorded for that product. Not a sticker
               discount — a real one.
             </p>
           </div>
           <Link
             href="/deals?sort=allTimeLow"
-            className="text-[13px] font-extrabold text-[var(--dw-green-mid)] hover:underline"
+            className="text-[13.5px] font-extrabold text-[var(--dw-green-mid)] hover:underline"
           >
-            See all →
+            View all →
           </Link>
         </div>
 
@@ -135,68 +156,6 @@ export function AllTimeLows({ deals }: { deals: DealRow[] }) {
               <div className="mt-0.5 text-[10px] font-bold text-muted">
                 {d.observations} points tracked
               </div>
-            </Link>
-          ))}
-        </div>
-      </Container>
-    </section>
-  );
-}
-
-/** "Hot deals by price" — the budget-shopper buckets. */
-export function PriceBuckets({
-  buckets,
-}: {
-  buckets: { max: number; count: number; best: number }[];
-}) {
-  const active = buckets.filter((b) => b.count > 0);
-  if (!active.length) return null;
-  return (
-    <section className="border-y border-hairline bg-subtle py-7">
-      <Container size="wide">
-        <div className="flex flex-wrap items-center gap-2.5">
-          <span className="mr-1 text-[12px] font-extrabold uppercase tracking-wider text-muted">
-            Under
-          </span>
-          {active.map((b) => (
-            <Link
-              key={b.max}
-              href={`/deals?priceMax=${b.max}`}
-              className="group inline-flex items-center gap-1.5 rounded-full border border-hairline bg-card px-4 py-2 text-[12.5px] font-extrabold text-headline transition-all hover:-translate-y-0.5 hover:border-emerald-400/60"
-            >
-              ₹{b.max.toLocaleString("en-IN")}
-              <span className="tabular rounded-full bg-elevated px-1.5 text-[10px] font-extrabold text-muted">
-                {b.count}
-              </span>
-            </Link>
-          ))}
-        </div>
-      </Container>
-    </section>
-  );
-}
-
-/** "Best discounts by percentage". */
-export function DiscountTiers({ tiers }: { tiers: { min: number; count: number }[] }) {
-  const active = tiers.filter((t) => t.count > 0);
-  if (!active.length) return null;
-  return (
-    <section className="py-7">
-      <Container size="wide">
-        <div className="flex flex-wrap items-center gap-2.5">
-          <span className="mr-1 text-[12px] font-extrabold uppercase tracking-wider text-muted">
-            Min off
-          </span>
-          {active.map((t) => (
-            <Link
-              key={t.min}
-              href={`/deals?discountMin=${t.min}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-500/10 px-4 py-2 text-[12.5px] font-extrabold text-amber-700 transition-all hover:-translate-y-0.5 hover:bg-amber-500 hover:text-white dark:text-amber-300"
-            >
-              {t.min}%
-              <span className="tabular rounded-full bg-card/70 px-1.5 text-[10px] font-extrabold">
-                {t.count}
-              </span>
             </Link>
           ))}
         </div>

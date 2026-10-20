@@ -270,6 +270,32 @@ body {
 
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
+/* --------------------------------------------------------------------------
+   Hero floating cards — the DealSense 1.0 float loop, verbatim.
+   -------------------------------------------------------------------------- */
+@keyframes floatCardMotionA {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-11px); }
+}
+@keyframes floatCardMotionB {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(9px); }
+}
+@keyframes floatCardMotionC {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-11px); }
+}
+
+.float-anim-a { animation: floatCardMotionA 5.2s ease-in-out infinite; }
+.float-anim-b { animation: floatCardMotionB 5.8s ease-in-out infinite 0.6s; }
+.float-anim-c { animation: floatCardMotionC 4.6s ease-in-out infinite 1.2s; }
+
+.floating-overlay-card:hover { animation-play-state: paused !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .float-anim-a, .float-anim-b, .float-anim-c { animation: none !important; }
+}
+
 .prose-ds h2 { font-size: 1.5rem; font-weight: 700; margin: 2rem 0 0.75rem; }
 .prose-ds h3 { font-size: 1.15rem; font-weight: 650; margin: 1.5rem 0 0.5rem; }
 .prose-ds p { color: var(--text-body); line-height: 1.75; margin: 0.75rem 0; }

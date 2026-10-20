@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDownRight, ArrowUpRight, BarChart3, Flame, Tag as TagIcon, TrendingUp } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, BarChart3, Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatINR } from "@/lib/utils";
 

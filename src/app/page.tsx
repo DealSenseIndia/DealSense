@@ -2,24 +2,10 @@ import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
 import { Hero, type FeaturedDeal } from "@/components/landing/Hero";
 import { CategoryPanel } from "@/components/landing/CategoryPanel";
-import { CategoryNavStrip, TrustStrip } from "@/components/landing/TrustStrip";
-import {
-  AllTimeLows,
-  DealsMovingNow,
-  DiscountTiers,
-  PlatformShelves,
-  PriceBuckets,
-} from "@/components/landing/DealSections";
-import { CommunityBar, CtaBand, Faq, HowItWorks, Integrity } from "@/components/landing/Sections";
-import {
-  getAllTimeLows,
-  getDiscountTiers,
-  getPlatformShelves,
-  getPriceBuckets,
-  getRecentDrops,
-} from "@/lib/db/deals";
-import { getShelves, getCatalogueStats, getTotalObservations } from "@/lib/db/shelves";
-import { getCategoryGroups, groupForCategory } from "@/lib/db/taxonomy";
+import { AllTimeLows, DealsMovingNow, PlatformShelves } from "@/components/landing/DealSections";
+import { Faq, HowItWorks } from "@/components/landing/Sections";
+import { getAllTimeLows, getFilterFacets, getPlatformShelves, getRecentDrops } from "@/lib/db/deals";
+import { getShelves } from "@/lib/db/shelves";
 import { getHistorySpotlight } from "@/lib/db/spotlight";
 import { site } from "@/lib/config";
 
@@ -31,23 +17,27 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function HomePage() {
-  const [shelves, stats, points, drops, lows, buckets, tiers, platform, groups, recent] =
-    await Promise.all([
-      getShelves(6, 6),
-      getCatalogueStats(),
-      getTotalObservations(),
-      getRecentDrops(14),
-      getAllTimeLows(12),
-      getPriceBuckets(),
-      getDiscountTiers(),
-      getPlatformShelves(6),
-      getCategoryGroups(),
-      getRecentDrops(400),
-    ]);
+const STORE_LABEL: Record<string, string> = {
+  amazon: "Amazon",
+  flipkart: "Flipkart",
+  myntra: "Myntra",
+  tatacliq: "Tata CLiQ",
+  croma: "Croma",
+  reliancedigital: "Reliance Digital",
+};
 
-  // Live featured product for the hero's floating cards — one product with a
-  // complete, real story: deep recorded history AND a genuine recent drop.
+export default async function HomePage() {
+  const [shelves, drops, lows, platform, facets] = await Promise.all([
+    getShelves(6, 6),
+    getRecentDrops(14),
+    getAllTimeLows(12),
+    getPlatformShelves(6),
+    getFilterFacets(),
+  ]);
+
+  // The hero's floating cards all describe ONE product — the one with the
+  // deepest recorded history and a genuine recent drop. Every number on the
+  // hero comes from the database.
   const spotlight = await getHistorySpotlight();
   const featured: FeaturedDeal | null = spotlight
     ? {
@@ -67,60 +57,44 @@ export default async function HomePage() {
       }
     : null;
 
-  // Category quick-nav strip — real top-level groups, real recent-drop counts.
-  const dropCounts = new Map<string, number>();
-  for (const d of recent) {
-    const g = groupForCategory(d.category);
-    if (!g) continue;
-    dropCounts.set(g.slug, (dropCounts.get(g.slug) ?? 0) + 1);
-  }
-  const navItems = groups
-    .map((g) => ({
-      name: g.name,
-      emoji: g.emoji,
-      drops: dropCounts.get(g.slug) ?? 0,
-      tracked: g.count,
-      href: `/categories#${g.slug}`,
-    }))
-    .filter((g) => g.tracked > 0)
-    .sort((a, b) => b.drops - a.drops || b.tracked - a.tracked)
-    .slice(0, 8);
+  // Filter pills — the old home feed's pill row, wired to the live filters.
+  const filters = [
+    { label: "All Deals", href: "/deals" },
+    { label: "Steep Drops", href: "/deals?sort=drop" },
+    { label: "All-Time Lows", href: "/deals?sort=allTimeLow" },
+    { label: "Most Tracked", href: "/deals?sort=history" },
+    ...facets.priceCaps
+      .filter((p) => p.count > 0)
+      .slice(0, 2)
+      .map((p) => ({ label: `Under ₹${p.max.toLocaleString("en-IN")}`, href: `/deals?priceMax=${p.max}`, count: p.count })),
+    ...facets.discounts
+      .filter((d) => d.count > 0 && d.min >= 50 && d.count >= 5)
+      .map((d) => ({ label: `${d.min}% off`, href: `/deals?discountMin=${d.min}`, count: d.count })),
+    ...facets.stores
+      .filter((s) => s.count > 5)
+      .map((s) => ({ label: STORE_LABEL[s.merchant] ?? s.merchant, href: `/deals?store=${s.merchant}`, count: s.count })),
+  ];
 
   return (
     <>
-      <Hero
-        productsTracked={stats.products}
-        storesCompared={stats.stores}
-        featured={featured}
-      />
+      <Hero featured={featured} />
 
-      <TrustStrip
-        productsTracked={stats.products}
-        pointsTracked={points}
-        storesCompared={stats.stores}
-        storeNames="Amazon, Flipkart, Myntra"
-      />
-
-      <CategoryNavStrip items={navItems} />
-
-      <CommunityBar />
-
-      <DealsMovingNow deals={drops} />
+      {/* ---------- the products ---------- */}
+      <DealsMovingNow deals={drops} filters={filters} />
 
       <AllTimeLows deals={lows} />
-      <PriceBuckets buckets={buckets} />
 
-      {/* ---------- category shelves ---------- */}
       {shelves.length > 0 && (
         <section className="py-6">
           <Container size="wide">
             <div className="mb-7">
-              <p className="text-[12px] font-extrabold uppercase tracking-widest text-[var(--dw-green-mid)]">
-                Top deals across categories
-              </p>
-              <h2 className="mt-2 text-[26px] font-extrabold tracking-[-0.025em] text-headline sm:text-[32px]">
+              <h2 className="text-[28px] font-extrabold tracking-[-0.03em] text-headline">
                 Every product here has real price history
               </h2>
+              <p className="mt-1.5 max-w-[650px] text-[14.5px] leading-[1.5] text-body">
+                We only list what we can actually track. Every card below has a recorded price
+                series behind it.
+              </p>
             </div>
 
             <div className="space-y-6">
@@ -132,13 +106,10 @@ export default async function HomePage() {
         </section>
       )}
 
-      <DiscountTiers tiers={tiers} />
       <PlatformShelves shelves={platform} />
 
       <HowItWorks />
-      <Integrity />
       <Faq />
-      <CtaBand />
     </>
   );
 }

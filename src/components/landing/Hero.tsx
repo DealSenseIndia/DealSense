@@ -2,18 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import {
-  Bell,
-  ChevronRight,
-  Link2,
-  Search,
-  ShieldCheck,
-  TrendingDown,
-  Zap,
-} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Bell, ChevronRight, Link2, Search, ShieldCheck } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { StoreLogo } from "@/components/ui/StoreLogo";
 import { cn, formatINR } from "@/lib/utils";
@@ -38,17 +29,18 @@ export interface FeaturedDeal {
   points?: number;
 }
 
+const POPULAR = [
+  { label: "iPhone 15", q: "iPhone 15" },
+  { label: "PS5", q: "PS5" },
+  { label: "Smart TV", q: "Smart TV" },
+  { label: "Laptops", q: "laptop" },
+  { label: "Nike Shoes", q: "Nike shoes" },
+  { label: "Watches", q: "smartwatch" },
+];
+
 const STORE_ICONS = ["amazon", "flipkart", "myntra"];
 
-export function Hero({
-  productsTracked = 0,
-  storesCompared = 0,
-  featured,
-}: {
-  productsTracked?: number;
-  storesCompared?: number;
-  featured?: FeaturedDeal | null;
-}) {
+export function Hero({ featured }: { featured?: FeaturedDeal | null }) {
   const [url, setUrl] = useState("");
   const router = useRouter();
 
@@ -60,322 +52,226 @@ export function Hero({
   }
 
   return (
-    <section className="relative overflow-hidden pb-10 pt-10 sm:pt-14">
-      <div className="pointer-events-none absolute inset-0 bg-wash" aria-hidden />
+    <section className="relative overflow-hidden border-b border-hairline">
+      {/* the DealSense 1.0 hero gradient */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, #F0FDF4 0%, #F7FEE7 40%, #FFFFFF 100%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 hidden dark:block"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(6,78,59,0.16) 0%, rgba(11,16,29,0.95) 100%)",
+        }}
+      />
 
-      <Container>
-        <div className="grid items-center gap-8 lg:grid-cols-[1fr_1.02fr]">
-          {/* ================= LEFT ================= */}
-          <div>
+      <Container size="wide">
+        <div className="relative grid items-center gap-9 py-9 lg:grid-cols-[54%_46%]">
+          {/* ===================== LEFT ===================== */}
+          <div className="flex min-w-0 flex-col gap-[18px]">
             {/* trust badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="inline-flex items-center gap-2 rounded-full border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-3.5 py-1.5 text-[11.5px] font-extrabold text-[var(--dw-green-mid)]"
-            >
-              <ShieldCheck className="h-3.5 w-3.5" />
+            <span className="inline-flex w-fit items-center gap-[7px] rounded-full border border-[var(--dw-green-border)] bg-[rgba(16,185,129,0.08)] px-[14px] py-[5px] text-[11.5px] font-semibold text-[var(--dw-green-bot)] shadow-[0_0_16px_rgba(16,185,129,0.12)]">
+              <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-[var(--dw-green-main)]" />
               India&apos;s Most Trusted Shopping Intelligence Platform
-            </motion.div>
+            </span>
 
             {/* headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 22 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.08, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-5 text-[42px] font-extrabold leading-[1.03] tracking-[-0.035em] text-headline sm:text-[58px] lg:text-[66px]"
-            >
-              Shop <span className="text-emerald-600">smarter.</span>
+            <h1 className="text-[52px] font-black leading-[1.08] tracking-[-0.035em] text-headline max-lg:text-[40px] max-sm:text-[32px]">
+              Shop <span className="text-[var(--dw-green-main)] [text-shadow:0_0_30px_rgba(16,185,129,0.3)]">smarter.</span>
               <br />
-              Save <span className="text-emerald-600">bigger.</span>
-            </motion.h1>
+              Save <span className="text-[var(--dw-green-main)] [text-shadow:0_0_30px_rgba(16,185,129,0.3)]">bigger.</span>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.16, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-5 max-w-[32rem] text-[15.5px] leading-relaxed text-body"
-            >
+            {/* sub */}
+            <p className="max-w-[520px] text-[15.5px] leading-[1.6] text-body">
               Track price history, compare across stores, get price drop alerts and know the best
               time to buy.
-            </motion.p>
+            </p>
 
             {/* search */}
-            <motion.form
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.24, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            <form
               onSubmit={(e) => {
                 e.preventDefault();
                 go(url);
               }}
-              className="mt-7 flex max-w-[40rem] flex-col gap-2 rounded-2xl border border-hairline bg-card p-2 shadow-card focus-within:border-emerald-500/50 focus-within:shadow-[0_18px_46px_-22px_rgba(16,185,129,0.6)] sm:flex-row sm:items-center"
+              className="flex w-full max-w-[680px] flex-col items-stretch gap-1 rounded-2xl border border-hairline bg-card p-[6px_8px] shadow-card transition-all focus-within:border-[var(--dw-green-mid)] focus-within:shadow-[0_0_0_3px_rgba(16,185,129,0.18)] sm:flex-row sm:items-center"
             >
-              <div className="flex w-full min-w-0 items-center gap-2 pl-2.5 sm:flex-1">
-                <Link2 className="h-4.5 w-4.5 shrink-0 text-muted" />
-                <span className="hidden items-center gap-1.5 sm:flex">
+              <span className="flex min-w-0 flex-1 items-center gap-2 pl-[10px] pr-1">
+                <Link2 className="h-[18px] w-[18px] shrink-0 text-muted" />
+                <span className="hidden items-center gap-[5px] rounded-full border border-hairline bg-subtle px-[7px] py-[3px] sm:flex">
                   {STORE_ICONS.map((s) => (
-                    <StoreLogo key={s} merchant={s} size={20} />
+                    <span
+                      key={s}
+                      className="flex h-5 w-5 items-center justify-center rounded-full border border-hairline bg-card"
+                    >
+                      <StoreLogo merchant={s} size={14} rounded={false} />
+                    </span>
                   ))}
                 </span>
-                <span className="hidden h-5 w-px bg-hairline sm:block" />
+                <span className="ml-1 mr-0.5 hidden h-6 w-px shrink-0 bg-hairline sm:block" />
                 <input
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
-                  placeholder="Paste any product link or search here…"
-                  className="h-11 w-full min-w-0 flex-1 bg-transparent text-[14.5px] text-headline placeholder:text-muted focus:outline-none"
+                  placeholder="Paste any product link (Amazon, Flipkart, etc.) or search"
+                  className="h-[46px] w-full min-w-0 flex-1 bg-transparent px-3 text-[14px] text-headline placeholder:text-[13.5px] placeholder:text-muted focus:outline-none"
                   autoComplete="off"
                   spellCheck={false}
                 />
-              </div>
+              </span>
+
               <button
                 type="submit"
-                className="inline-flex h-11 w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 text-[13.5px] font-extrabold text-white shadow-[0_10px_26px_-12px_rgba(5,150,105,0.95)] transition-all hover:-translate-y-0.5 hover:bg-emerald-700 sm:w-auto"
+                className="inline-flex h-[42px] w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 text-[13.5px] font-bold text-white shadow-[0_8px_22px_-10px_rgba(5,150,105,0.95)] transition-all hover:-translate-y-0.5 hover:bg-emerald-700 sm:w-auto"
               >
                 <Search className="h-4 w-4" />
                 Analyze Deal
               </button>
-            </motion.form>
+            </form>
 
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-6 flex flex-wrap gap-3"
-            >
-              <Link
-                href="/analyze"
-                className="inline-flex h-11 items-center gap-2 rounded-xl bg-emerald-600 px-6 text-[13.5px] font-extrabold text-white shadow-[0_10px_26px_-12px_rgba(5,150,105,0.95)] transition-all hover:-translate-y-0.5 hover:bg-emerald-700"
-              >
-                <Zap className="h-4 w-4" />
-                Analyze a Deal
-              </Link>
-              <Link
-                href="/deals"
-                className="inline-flex h-11 items-center gap-2 rounded-xl border border-emerald-600/40 bg-[var(--dw-green-surface)] px-6 text-[13.5px] font-extrabold text-[var(--dw-green-mid)] transition-all hover:-translate-y-0.5 hover:bg-emerald-600 hover:text-white"
-              >
-                <TrendingDown className="h-4 w-4" />
-                Browse live deals
-              </Link>
-            </motion.div>
+            {/* popular */}
+            <div className="mt-[10px] flex flex-wrap items-center gap-2">
+              <span className="mr-0.5 text-[13px] font-bold text-body">Popular:</span>
+              {POPULAR.map((p) => (
+                <button
+                  key={p.label}
+                  type="button"
+                  onClick={() => router.push(`/search?q=${encodeURIComponent(p.q)}`)}
+                  className="inline-flex items-center justify-center whitespace-nowrap rounded-full border border-hairline bg-card px-[13px] py-[5px] text-[12.5px] font-medium text-body transition-all hover:-translate-y-px hover:border-[var(--dw-green-mid)] hover:text-headline hover:shadow-card"
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* ================= RIGHT — girl + old floating cards ================= */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.97, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ delay: 0.14, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="relative mx-auto w-full max-w-[640px]"
-          >
-            <div className="relative min-h-[400px] sm:min-h-[430px]">
-              {/* the girl */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.22, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="relative z-[1] mx-auto w-full max-w-[500px]"
-              >
-                <Image
-                  src="/brand/hero-illustration.webp"
-                  alt="A shopper checking a price on her phone while tracking a price chart"
-                  width={1024}
-                  height={576}
-                  priority
-                  className="h-auto w-full drop-shadow-[0_14px_34px_rgba(15,23,42,0.16)]"
-                />
-              </motion.div>
+          {/* ===================== RIGHT — girl + floating cards ===================== */}
+          <div className="relative mx-auto flex h-[420px] w-full max-w-[550px] items-end justify-center max-lg:h-[380px] max-lg:max-w-[440px] max-sm:flex max-sm:h-auto max-sm:max-w-none max-sm:flex-col max-sm:items-center max-sm:pt-3">
+            {/* official artwork */}
+            <Image
+              src="/brand/hero-illustration.webp"
+              alt="DealSense Shopping Intelligence"
+              width={1024}
+              height={576}
+              priority
+              className="relative z-[2] mx-auto block h-auto w-full max-w-[500px] shrink-0 object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.15)] max-sm:max-w-[290px]"
+            />
 
-              {/* FLOAT 1 — Price History (top-left) — real recorded series */}
-              <FloatCard
-                className="hidden left-0 top-[44px] w-[224px] sm:-left-6 sm:block"
-                delay="0s"
-              >
-                <HistoryCardContent featured={featured} />
-              </FloatCard>
-
-              {/* FLOAT 2 — Price Drop Alert (foreground left) — real recorded drop */}
-              <FloatCard
-                className="hidden left-0 top-[222px] w-[224px] sm:left-2 sm:block"
-                delay="-3s"
-              >
-                <AlertCardContent featured={featured} />
-              </FloatCard>
-
-              {/* FLOAT 3 — Featured / recently viewed (top-right, in front) */}
-              {featured && (
-                <Link
-                  href={featured.href}
-                  className="absolute right-0 top-[8px] z-[4] hidden w-[238px] rounded-2xl border border-hairline bg-card p-3.5 shadow-pop transition-transform hover:-translate-y-1 sm:-right-6 sm:block"
-                >
-                  <ProductCardContent featured={featured} />
-                </Link>
-              )}
-
-              {/* ---------- mobile: the same cards, stacked ---------- */}
-              <div className="mt-4 space-y-3 sm:hidden">
-                <div className="rounded-2xl border border-hairline bg-card p-3.5 shadow-pop">
-                  <HistoryCardContent featured={featured} />
-                </div>
-                <div className="rounded-2xl border border-hairline bg-card p-3.5 shadow-pop">
-                  <AlertCardContent featured={featured} />
-                </div>
-                {featured && (
-                  <Link
-                    href={featured.href}
-                    className="block rounded-2xl border border-hairline bg-card p-3.5 shadow-pop"
-                  >
-                    <ProductCardContent featured={featured} />
-                  </Link>
-                )}
+            {/* FLOAT 1 — Price History */}
+            <div className="floating-overlay-card float-anim-a absolute left-[-20px] top-[75px] z-[3] w-[245px] rounded-[18px] border border-hairline bg-card p-[14px_16px_12px] shadow-card max-sm:hidden">
+              <div className="mb-1.5 text-[13px] font-bold leading-tight text-headline">
+                Price History
+              </div>
+              <div className="relative h-[56px] w-full">
+                <Sparkline series={featured?.series ?? []} />
+                {featured?.low ? (
+                  <div className="absolute -top-2.5 right-1.5 z-[2] rounded-xl border border-[var(--dw-green-border)] bg-card px-2.5 py-[5px] text-left shadow-card">
+                    <span className="block text-[9.5px] font-bold leading-tight text-[var(--dw-green-bot)]">
+                      Lowest Price
+                    </span>
+                    <span className="tabular my-px block text-[14px] font-extrabold leading-tight text-headline">
+                      {formatINR(featured.low.price)}
+                    </span>
+                    <span className="block text-[9px] font-medium leading-tight text-muted">
+                      on {formatDate(featured.low.at)}
+                    </span>
+                  </div>
+                ) : null}
               </div>
             </div>
-          </motion.div>
+
+            {/* FLOAT 2 — Price Drop Alert */}
+            <div className="floating-overlay-card float-anim-b absolute left-0 top-[205px] z-[3] flex w-[240px] items-center gap-3 rounded-[18px] border border-hairline bg-card px-4 py-3 shadow-card max-sm:hidden">
+              <span className="grid h-[38px] w-[38px] shrink-0 place-items-center rounded-[10px] border border-[var(--dw-green-border)] bg-[rgba(16,185,129,0.08)]">
+                <Bell className="h-5 w-5 text-[var(--dw-green-main)]" />
+              </span>
+              <div className="flex min-w-0 flex-col">
+                <div className="text-[11.5px] font-bold leading-tight text-headline">
+                  Price Drop Alert
+                </div>
+                <div className="my-px text-[10px] text-muted">Great news!</div>
+                <div className="text-[11.5px] font-extrabold leading-tight text-[var(--dw-green-bot)]">
+                  {featured?.lastDrop
+                    ? `Price dropped by ${formatINR(featured.lastDrop.amount)}`
+                    : "Watching this product closely"}
+                </div>
+              </div>
+            </div>
+
+            {/* FLOAT 3 — Featured product */}
+            {featured ? (
+              <Link
+                href={featured.href}
+                className="floating-overlay-card float-anim-c absolute right-[-5px] top-[15px] z-[3] flex w-[320px] items-start gap-[14px] rounded-[18px] border border-hairline bg-card p-[14px_16px] shadow-card transition-transform hover:-translate-y-1 max-sm:static max-sm:mt-3.5 max-sm:w-full max-sm:max-w-[340px]"
+              >
+                <div className="flex h-[92px] w-[76px] shrink-0 items-center justify-center">
+                  {featured.imageUrl ? (
+                    <Image
+                      src={featured.imageUrl}
+                      alt={featured.title}
+                      width={76}
+                      height={92}
+                      className="max-h-full max-w-full object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.15)]"
+                      unoptimized
+                    />
+                  ) : (
+                    <StoreLogo merchant={featured.merchant} size={44} />
+                  )}
+                </div>
+                <div className="flex min-w-0 flex-1 flex-col">
+                  <div>
+                    <span className="inline-block rounded border border-[var(--dw-green-border)] bg-[rgba(16,185,129,0.08)] px-[7px] py-[2px] text-[9px] font-extrabold uppercase leading-[1.2] tracking-[0.5px] text-[var(--dw-green-bot)]">
+                      {featured.lastDrop ? "Live Drop" : "Recently Viewed"}
+                    </span>
+                  </div>
+                  <h4 className="mt-1 max-w-[195px] truncate text-[13.5px] font-extrabold leading-tight text-headline">
+                    {featured.title}
+                  </h4>
+                  <div className="mt-0.5 mb-[3px] max-w-[195px] truncate text-[11px] font-medium text-muted">
+                    {featured.points ? `${featured.points} price points tracked` : featured.merchant}
+                  </div>
+                  {featured.rating !== null ? (
+                    <div className="mb-1.5 flex items-center gap-1 text-[11.5px]">
+                      <span className="font-bold text-headline">{featured.rating}</span>
+                      <span className="-tracking-[1px] text-amber-500">★★★★★</span>
+                      {featured.reviewCount ? (
+                        <span className="text-[11px] text-muted">
+                          ({featured.reviewCount.toLocaleString("en-IN")})
+                        </span>
+                      ) : null}
+                    </div>
+                  ) : null}
+                  <div className="mb-2 flex items-baseline gap-1.5">
+                    <span className="tabular text-[16px] font-extrabold text-[var(--dw-green-mid)]">
+                      {formatINR(featured.price)}
+                    </span>
+                    {featured.mrp ? (
+                      <span className="tabular text-[11.5px] text-muted line-through">
+                        {formatINR(featured.mrp)}
+                      </span>
+                    ) : null}
+                    {featured.discount ? (
+                      <span className="whitespace-nowrap rounded border border-red-500/30 bg-red-500/10 px-1.5 py-[2px] text-[10.5px] font-bold text-red-600">
+                        {featured.discount}% OFF
+                      </span>
+                    ) : null}
+                  </div>
+                  <span className="flex h-[34px] w-full items-center justify-center gap-1.5 rounded-lg border border-hairline bg-subtle text-[12.5px] font-semibold text-headline transition-all hover:-translate-y-px hover:border-[var(--dw-green-mid)] hover:text-[var(--dw-green-bot)]">
+                    View Deal
+                    <ChevronRight className="h-3.5 w-3.5" />
+                  </span>
+                </div>
+              </Link>
+            ) : null}
+          </div>
         </div>
       </Container>
     </section>
-  );
-}
-
-function FloatCard({
-  children,
-  className,
-  delay = "0s",
-}: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: string;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 14, scale: 0.97 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay: 0.4, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-      className={cn(
-        "absolute z-[3] rounded-2xl border border-hairline bg-card p-3.5 shadow-pop",
-        className,
-      )}
-      style={{ animationDelay: delay }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-/** Price History card — the real recorded series, low and date. */
-function HistoryCardContent({ featured }: { featured: FeaturedDeal | null | undefined }) {
-  return (
-    <>
-      <div className="flex items-baseline justify-between gap-2">
-        <div className="text-[12.5px] font-extrabold text-headline">Price History</div>
-        {featured?.points ? (
-          <div className="text-[9.5px] font-bold text-muted">{featured.points} pts</div>
-        ) : null}
-      </div>
-      <div className="mt-1.5">
-        <Sparkline series={featured?.series ?? []} />
-        {featured?.low ? (
-          <div className="mt-1 rounded-lg border border-hairline bg-subtle px-2.5 py-1.5">
-            <div className="text-[9.5px] font-extrabold uppercase tracking-wider text-muted">
-              Lowest Price
-            </div>
-            <div className="tabular text-[13px] font-extrabold text-[var(--dw-green-mid)]">
-              {formatINR(featured.low.price)}
-            </div>
-            <div className="text-[9.5px] font-semibold text-muted">
-              on {formatDate(featured.low.at)}
-            </div>
-          </div>
-        ) : null}
-      </div>
-    </>
-  );
-}
-
-/** Price Drop Alert card — the real most recent drop. */
-function AlertCardContent({ featured }: { featured: FeaturedDeal | null | undefined }) {
-  return (
-    <div className="flex items-center gap-3">
-      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]">
-        <Bell className="h-4.5 w-4.5" />
-      </span>
-      <div className="min-w-0">
-        <div className="text-[12px] font-extrabold text-headline">Price Drop Alert</div>
-        <div className="text-[10.5px] font-semibold text-muted">Great news!</div>
-        {featured?.lastDrop ? (
-          <>
-            <div className="tabular mt-0.5 text-[12px] font-extrabold leading-tight text-[var(--dw-green-mid)]">
-              Price dropped by {formatINR(featured.lastDrop.amount)}
-            </div>
-            <div className="text-[9.5px] font-semibold text-muted">
-              on {formatDate(featured.lastDrop.at)}
-            </div>
-          </>
-        ) : (
-          <div className="mt-0.5 text-[11.5px] font-bold text-muted">
-            Watching this product closely
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-/** The live product card. */
-function ProductCardContent({ featured }: { featured: FeaturedDeal }) {
-  return (
-    <>
-      <div className="flex gap-3">
-        <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-subtle">
-          {featured.imageUrl && (
-            <Image
-              src={featured.imageUrl}
-              alt={featured.title}
-              fill
-              sizes="64px"
-              className="object-contain p-1"
-              unoptimized
-            />
-          )}
-        </div>
-        <div className="min-w-0 flex-1">
-          <span className="inline-block rounded-md border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-1.5 py-0.5 text-[8.5px] font-extrabold uppercase tracking-wider text-[var(--dw-green-mid)]">
-            {featured.lastDrop ? "Live drop" : "Recently viewed"}
-          </span>
-          <div className="mt-1 line-clamp-1 text-[12px] font-extrabold text-headline">
-            {featured.title}
-          </div>
-          {featured.rating !== null && (
-            <div className="mt-0.5 flex items-center gap-1 text-[10px] font-semibold text-secondary">
-              <span className="text-amber-500">★</span> {featured.rating}
-              {featured.reviewCount ? (
-                <span className="text-muted">({featured.reviewCount.toLocaleString("en-IN")})</span>
-              ) : null}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="mt-2.5 flex flex-wrap items-baseline gap-2">
-        <span className="tabular text-[17px] font-extrabold text-headline">
-          {formatINR(featured.price)}
-        </span>
-        {featured.mrp && (
-          <span className="tabular text-[11px] text-muted line-through">
-            {formatINR(featured.mrp)}
-          </span>
-        )}
-        {featured.discount !== null && (
-          <span className="rounded-md bg-[var(--dw-green-surface)] px-1.5 py-0.5 text-[9.5px] font-extrabold text-[var(--dw-green-mid)]">
-            {featured.discount}% OFF
-          </span>
-        )}
-      </div>
-
-      <div className="mt-2.5 flex h-8 items-center justify-center gap-1.5 rounded-lg bg-emerald-600 text-[11.5px] font-extrabold text-white">
-        View Deal <ChevronRight className="h-3.5 w-3.5" />
-      </div>
-    </>
   );
 }
 
@@ -388,7 +284,7 @@ function Sparkline({ series }: { series: number[] }) {
 
   if (pts.length < 2) {
     return (
-      <div className="flex h-[52px] items-center justify-center rounded-lg border border-dashed border-hairline text-[10.5px] font-semibold text-muted">
+      <div className="flex h-[56px] items-center justify-center rounded-lg border border-dashed border-hairline text-[10.5px] font-semibold text-muted">
         Collecting price points…
       </div>
     );
@@ -411,12 +307,11 @@ function Sparkline({ series }: { series: number[] }) {
 
   const line = xy.map(([x, y], i) => `${i === 0 ? "M" : "L"} ${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
   const area = `${line} L ${xy[xy.length - 1][0].toFixed(1)},${SPARK_H} L ${xy[0][0].toFixed(1)},${SPARK_H} Z`;
-  const last = xy[xy.length - 1];
 
   return (
     <svg
       viewBox={`0 0 ${SPARK_W} ${SPARK_H}`}
-      className="h-[52px] w-full"
+      className="block h-full w-full"
       fill="none"
       preserveAspectRatio="none"
       role="img"
@@ -432,7 +327,6 @@ function Sparkline({ series }: { series: number[] }) {
       <line x1="4" y1="6" x2="4" y2="56" stroke="#E2E8F0" strokeWidth="1.5" strokeLinecap="round" />
       <path d={area} fill="url(#histGreenGrad)" />
       <path d={line} stroke="#22C55E" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx={last[0]} cy={last[1]} r="2.6" fill="#22C55E" />
     </svg>
   );
 }

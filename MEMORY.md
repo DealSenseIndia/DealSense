@@ -16,27 +16,47 @@
 
 ## Homepage (current)
 
-The hero is the DealSense 1.0 layout, rebuilt on the DealWise visual language:
+The hero is a **verbatim rebuild of the DealSense 1.0 hero** — the sizes, spacing, colours and
+floating-card geometry come straight from the old `frontend/css/hero.css`:
 
-- Green trust badge "India's Most Trusted Shopping Intelligence Platform".
-- Headline "Shop smarter. / Save bigger." with the two key words in emerald.
-- Sub-copy: "Track price history, compare across stores, get price drop alerts and know the
-  best time to buy."
-- Search bar carries the real Amazon / Flipkart / Myntra **app icons** and a green
-  "Analyze Deal" button. Below it, "Analyze a Deal" (solid green) and
-  "Browse live deals" (light green).
-- **No "Popular:" chips.** They are replaced by a category quick-nav strip built from the
-  real taxonomy (Electronics / Fashion & Apparel / Sports & Fitness) with accurate
-  "N Drops Today" counts, plus an "All Categories" tile.
-- Three floating cards flank the girl (Price History, Price Drop Alert, live product card).
-  On phones they stack below the illustration instead of overflowing.
-- A five-pillar trust strip: products tracked, real price history, deal authenticity score,
-  store comparison, instant alerts — all with live numbers.
+- Green gradient hero (`#F0FDF4 → #F7FEE7 → #FFFFFF`), grid `54% / 46%`, gap 36px.
+- Green trust badge "India's Most Trusted Shopping Intelligence Platform" (11.5px).
+- Headline "Shop smarter. / Save bigger." — **52px**, weight 900, line-height 1.08.
+- Sub-copy at 15.5px / 1.6, max-width 520px.
+- Search card: radius 16px, padding `6px 8px`, max-width 680px, 46px input, the three store
+  app icons inside a pill, green "Analyze Deal" button.
+- Popular pills at 12.5px.
+- Artwork frame: `max-width 550px`, `height 420px`, artwork **bottom-aligned** at max-width 500px.
+- Floating cards at the old positions: Price History `top 75 / left -20 / 245px`,
+  Price Drop Alert `top 205 / left 0 / 240px`, featured product `top 15 / right -5 / 320px`.
+- The float loop is the old one — `floatCardMotionA/B/C` at 5.2s / 5.8s / 4.6s, and hovering a
+  card pauses it. (Amplified from ±6px to ±11px so the motion actually reads.)
+- The "Lowest Price" box sits **over** the chart at `top -10px / right 6px`, like the old design.
 
 **The floating cards are not decoration.** `getHistorySpotlight()` picks the product with the
 deepest recorded history *and* a genuine recent drop, then every number on the three cards
 (sparkline, all-time low + date, drop amount + date) comes from that product. No hardcoded
 prices anywhere on the homepage.
+
+**The page is product-first.** After the hero it goes straight to products:
+
+1. Today's Biggest Price Drops — 14 products + a working filter-pill row (all real filters).
+2. At their all-time low — 12 products.
+3. Category shelves — 6 panels of products.
+4. Per-store rows.
+5. How DealSense works → FAQ → footer.
+
+No stat bands, no "join our community" bar, no trust-pillar strip, no CTA band. Those were
+removed — the user asked for a clean look that shows products, not the site's own marketing.
+
+## Footer
+
+Rebuilt on the old project's "deep forest emerald" footer (`footer.css`): dark
+`#061A12 → #030D09` gradient, the method ribbon (stores tracked / prices observed / discount
+honesty / no paid placements), a 4-column grid (brand + store app icons, Explore, Tools, How
+DealSense Works), the affiliate & trust disclosure, and the bottom legal bar. Improved over the
+old one: the QR-code column is replaced by a 3-step "How DealSense Works" explainer, and the
+links all point at real routes.
 
 ## Verified working (real network)
 
