@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/Container";
 import { Hero, type FeaturedDeal } from "@/components/landing/Hero";
 import { CategoryPanel } from "@/components/landing/CategoryPanel";
 import { AllTimeLows, DealsMovingNow, PlatformShelves } from "@/components/landing/DealSections";
+import { CtaBand } from "@/components/landing/CtaBand";
 import { Faq, HowItWorks } from "@/components/landing/Sections";
 import { getAllTimeLows, getFilterFacets, getPlatformShelves, getRecentDrops } from "@/lib/db/deals";
 import { getShelves } from "@/lib/db/shelves";
@@ -110,6 +111,7 @@ export default async function HomePage() {
 
       <HowItWorks />
       <Faq />
+      <CtaBand />
     </>
   );
 }

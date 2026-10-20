@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { Bell, ChevronRight, Plus } from "lucide-react";
+import { ChevronRight, Plus } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { PageSearch } from "@/components/site/PageSearch";
 import { listAlerts } from "@/lib/db/queries";
@@ -49,11 +50,16 @@ export default async function TrackPage() {
         </div>
 
         {alerts.length === 0 ? (
-          <div className="mt-9 rounded-3xl border border-dashed border-hairline bg-subtle p-12 text-center">
-            <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]">
-              <Bell className="h-6 w-6" />
-            </span>
-            <h2 className="mt-4 text-lg font-extrabold text-headline">No alerts yet</h2>
+          <div className="mt-9 overflow-hidden rounded-3xl border border-dashed border-hairline bg-subtle p-10 text-center sm:p-14">
+            <Image
+              src="/brand/shopping-bags.png"
+              alt=""
+              aria-hidden
+              width={1672}
+              height={941}
+              className="mx-auto h-40 w-auto max-w-[260px] object-contain opacity-95"
+            />
+            <h2 className="mt-6 text-lg font-extrabold text-headline">No alerts yet</h2>
             <p className="mx-auto mt-2 max-w-md text-[13.5px] text-body">
               Open any product, set your target price, and we&apos;ll watch it — on Telegram or email.
             </p>

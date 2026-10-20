@@ -20,25 +20,27 @@
   `radial-gradient(48% 52% at 77% 62%, rgba(233,252,242,0.95) 0%, transparent 72%)` over
   `linear-gradient(160deg, #F5FDF9 0%, #EDFBF3 42%, #DEF5E9 100%)`.
   Dark theme: the same shape in deep forest green (`#062B20 → #04211A`), never `#0F172A`.
-- **The artwork is NEVER post-processed.** Do not blur, feather, mask, crop, re-colour or
-  re-encode it. `public/brand/hero-illustration.png` is byte-identical to the old project's
-  `frontend/assets/hero-illustration.png` (sha1 `1F01CA9E…`) and is served as-is.
+- **The artwork is NEVER post-processed.** No blur, no feather, no mask, no crop, no filter, no
+  re-encode. It is posted exactly as drawn.
+  - `public/brand/hero-illustration.png` = the user's `dealwise-lady.png` (1672×941).
+  - `public/brand/shopping-bags.png` = the user's shopping-bags render (1672×941).
   - A previous attempt feathered the alpha in sharp. It produced **black outlines** around
     every leaf and the sofa, because dropping the alpha exposed the PNG's transparent-pixel
     garbage RGB (a dark teal) at the edges. Never do that.
-- The blend is done **entirely in CSS**: a mint panel (`#e8faef`, the artwork's own halo
-  colour) sits behind the image, masked to
-  `radial-gradient(ellipse 50% 56% at 53% 50%, #000 86%, transparent 100%)`.
-  The artwork's silhouette is 11.5%–94.5% of the width and 4.2%–96.4% of the height, so the
-  whole silhouette lands on the solid part of the panel — mint on mint, no seam — and only the
-  panel's own outer edge fades into the green.
-- In **dark mode** the mint panel is hidden (`dark:hidden`) and an emerald glow replaces it;
-  the figure then reads as lit against deep green.
+  - A mint panel behind the art was tried too — it read as a pasted rounded rectangle. The
+    original's cloud edges are already soft, so it needs nothing.
 - **`dark:` is not the media query here.** The app stores the theme on
   `<html data-theme="light|dark">`. Tailwind's stock `dark:` variant follows the OS, which meant
   every `dark:` utility in the app followed the OPERATING SYSTEM rather than the theme the
   visitor picked — a dark hero appearing on a light page. Fixed globally in `globals.css` with
   `@custom-variant dark (&:where([data-theme="dark"] *, [data-theme="dark"]));`.
+
+## Where the shopping-bags artwork is used
+
+- `src/components/landing/CtaBand.tsx` — the closing band on the homepage ("Stop guessing what
+  it should cost." + the artwork on the right).
+- `src/app/track/page.tsx` — the "No alerts yet" empty state.
+- `src/components/search/SearchResults.tsx` — the "No results" state.
 
 ## Homepage (current)
 

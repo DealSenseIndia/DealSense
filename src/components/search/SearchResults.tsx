@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ChevronRight, Loader2, Search, Star } from "lucide-react";
 import { StoreLogo } from "@/components/ui/StoreLogo";
@@ -109,9 +110,16 @@ export function SearchResults({ initialQuery }: { initialQuery: string }) {
       )}
 
       {!loading && searched && hits.length === 0 && !error && (
-        <div className="mt-10 rounded-2xl border border-dashed border-hairline bg-subtle p-12 text-center">
-          <div className="text-4xl">🔍</div>
-          <h2 className="mt-4 text-lg font-extrabold text-headline">No results</h2>
+        <div className="mt-10 overflow-hidden rounded-2xl border border-dashed border-hairline bg-subtle p-10 text-center">
+          <Image
+            src="/brand/shopping-bags.png"
+            alt=""
+            aria-hidden
+            width={1672}
+            height={941}
+            className="mx-auto h-32 w-auto max-w-[210px] object-contain opacity-95"
+          />
+          <h2 className="mt-5 text-lg font-extrabold text-headline">No results</h2>
           <p className="mx-auto mt-2 max-w-md text-[13.5px] text-body">
             Try a different spelling, or paste a product link directly.
           </p>
