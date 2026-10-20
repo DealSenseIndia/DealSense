@@ -46,8 +46,13 @@ export function Nav() {
               priority
               className="h-8.5 w-8.5 rounded-[10px] transition-transform duration-300 group-hover:scale-105"
             />
-            <span className="text-[19px] font-extrabold tracking-[-0.02em] text-headline">
-              Deal<span className="text-gradient-brand">Sense</span>
+            <span className="leading-none">
+              <span className="block text-[19px] font-extrabold tracking-[-0.02em] text-headline">
+                Deal<span className="text-gradient-brand">Sense</span>
+              </span>
+              <span className="mt-0.5 hidden text-[10px] font-semibold text-muted sm:block">
+                Shop smarter. Save more.
+              </span>
             </span>
           </Link>
 

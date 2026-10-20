@@ -6,6 +6,7 @@ import { useState } from "react";
 import {
   ArrowRight,
   Check,
+  ChevronRight,
   ExternalLink,
   Heart,
   ShieldCheck,
@@ -18,6 +19,7 @@ import { merchantMeta } from "@/lib/config";
 import { cn, formatINR, timeAgo } from "@/lib/utils";
 import { FreshnessBadge, Tag } from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
+import { StoreLogo } from "@/components/ui/StoreLogo";
 import { PriceChart } from "./PriceChart";
 import { LandedPriceCard } from "./LandedPriceCard";
 import { AlertPanel } from "./AlertPanel";
@@ -71,6 +73,19 @@ export function AnalysisView({ result }: { result: AnalysisResult }) {
 
   return (
     <div className="space-y-6">
+      {/* ---------- breadcrumb ---------- */}
+      <nav className="flex items-center gap-1.5 text-[12.5px] font-semibold text-muted">
+        <Link href="/" className="text-[var(--dw-green-mid)] hover:underline">
+          Home
+        </Link>
+        <ChevronRight className="h-3.5 w-3.5" />
+        <Link href="/deals" className="text-[var(--dw-green-mid)] hover:underline">
+          Deals
+        </Link>
+        <ChevronRight className="h-3.5 w-3.5" />
+        <span className="truncate">{product.title}</span>
+      </nav>
+
       {/* ---------- top store pills ---------- */}
       <div className="flex flex-wrap items-center gap-2">
         <StorePill
@@ -338,7 +353,69 @@ export function AnalysisView({ result }: { result: AnalysisResult }) {
           productTitle={product.title}
         />
       </div>
+
+      {/* ---------- trust strip ---------- */}
+      <div className="grid gap-5 border-t border-hairline pt-8 sm:grid-cols-3 lg:grid-cols-5">
+        {[
+          { t: "Real Price History", s: "Every price was actually observed.", icon: <LineChartIcon /> },
+          { t: "Buy / Wait / Avoid", s: "A plain verdict, with the maths shown.", icon: <ScaleIcon /> },
+          { t: "Compare Everywhere", s: "Amazon, Flipkart and Myntra side by side.", icon: <LayersIcon /> },
+          { t: "True Landed Cost", s: "Delivery, coupons and card offers included.", icon: <WalletIcon /> },
+          { t: "Save Money", s: "Transparent deals. No fake discounts.", icon: <HeartIcon /> },
+        ].map((i) => (
+          <div key={i.t} className="flex items-start gap-3">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]">
+              {i.icon}
+            </span>
+            <div className="min-w-0">
+              <div className="text-[13.5px] font-extrabold text-headline">{i.t}</div>
+              <div className="mt-0.5 text-[12px] leading-snug text-body">{i.s}</div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
+  );
+}
+
+const I = "h-4 w-4";
+function LineChartIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className={I} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 3v18h18" />
+      <path d="m7 14 4-4 3 3 5-6" />
+    </svg>
+  );
+}
+function ScaleIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className={I} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3v18M5 7h14M8 21h8" />
+      <path d="m5 7-3 6h6ZM19 7l-3 6h6Z" />
+    </svg>
+  );
+}
+function LayersIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className={I} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m12 3 9 5-9 5-9-5 9-5Z" />
+      <path d="m3 13 9 5 9-5" />
+    </svg>
+  );
+}
+function WalletIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className={I} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5" />
+      <circle cx="17" cy="13" r="1.2" fill="currentColor" />
+    </svg>
+  );
+}
+function HeartIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className={I} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 20s-7-4.5-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.5-7 9-7 9Z" />
+    </svg>
   );
 }
 
@@ -420,12 +497,7 @@ function StoreRow({
       )}
 
       <div className="flex items-center gap-3">
-        <span
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-xl text-[10px] font-black text-white"
-          style={{ background: color }}
-        >
-          {m.short}
-        </span>
+        <StoreLogo merchant={merchant} size={36} />
         <div className="min-w-0 flex-1">
           <div className="text-[14px] font-extrabold text-headline">{m.name}</div>
           {rating !== null && rating !== undefined && (

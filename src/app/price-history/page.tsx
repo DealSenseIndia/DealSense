@@ -1,100 +1,165 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, TrendingDown } from "lucide-react";
+import { ChevronRight, LineChart, TrendingDown } from "lucide-react";
 import { Container } from "@/components/ui/Container";
-import { getLiveDeals } from "@/lib/engine/deals";
-import { formatINR } from "@/lib/utils";
-import { Tag } from "@/components/ui/Badge";
+import { PageSearch } from "@/components/site/PageSearch";
+import { StoreLogo } from "@/components/ui/StoreLogo";
+import { getAllTimeLows, getLatestDeals } from "@/lib/db/deals";
+import { formatINR, timeAgo } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Price history",
   description:
-    "Explore verified price history for products across Amazon India and Flipkart. Real observations, real low, real verdict.",
+    "Every price point DealSense has actually recorded — low, high, typical and the exact moment the price moved.",
   alternates: { canonical: "/price-history" },
 };
 
 export const dynamic = "force-dynamic";
 
 export default async function PriceHistoryPage() {
-  const deals = await getLiveDeals(60);
-  const withHistory = deals.filter((d) => d.verdict.stats.count > 0);
+  const [lows, latest] = await Promise.all([getAllTimeLows(24), getLatestDeals(12)]);
 
   return (
-    <section className="relative py-12">
+    <section className="relative py-8">
       <Container size="wide">
-        <div className="max-w-2xl">
-          <h1 className="text-[30px] font-extrabold tracking-tight text-headline sm:text-[36px]">
-            Price history, honestly recorded
-          </h1>
-          <p className="mt-2 text-[14.5px] text-body">
-            Every point on every chart is a real observation DealSense made on a merchant page. No
-            estimated history, no invented curves.
-          </p>
-        </div>
+        <nav className="flex items-center gap-1.5 text-[12.5px] font-semibold text-muted">
+          <Link href="/" className="text-[var(--dw-green-mid)] hover:underline">
+            Home
+          </Link>
+          <ChevronRight className="h-3.5 w-3.5" />
+          <span>Price History</span>
+        </nav>
 
-        {withHistory.length === 0 ? (
-          <div className="mt-10 rounded-2xl border border-dashed border-hairline bg-subtle p-12 text-center">
-            <p className="text-[14px] text-body">
-              No recorded history yet. Analyze a product to start building the record.
+        <div className="mt-4 flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <h1 className="text-[30px] font-extrabold tracking-[-0.03em] text-headline sm:text-[40px]">
+              Price <span className="text-gradient-brand">History</span>
+            </h1>
+            <p className="mt-2 max-w-xl text-[14.5px] leading-relaxed text-body">
+              Every point below was actually observed on a store page — not estimated, not modelled.
             </p>
           </div>
-        ) : (
-          <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {withHistory.map((d) => {
-              const stats = d.verdict.stats;
-              const drop =
-                stats.high !== null && stats.low !== null && stats.high > stats.low
-                  ? Math.round(((stats.high - stats.low) / stats.high) * 100)
-                  : null;
-              return (
+          <PageSearch className="w-full max-w-md" placeholder="Search a product to see its history…" />
+        </div>
+
+        {/* ---- all-time lows ---- */}
+        <div className="mt-9">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <TrendingDown className="h-4 w-4 text-emerald-500" />
+            <h2 className="text-[18px] font-extrabold tracking-tight text-headline">
+              At their all-time low
+            </h2>
+            <Link
+              href="/deals?sort=allTimeLow"
+              className="text-[12.5px] font-extrabold text-[var(--dw-green-mid)] hover:underline"
+            >
+              see all →
+            </Link>
+          </div>
+
+          {lows.length === 0 ? (
+            <Empty />
+          ) : (
+            <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+              {lows.map((d) => (
                 <Link
-                  key={d.listingId}
+                  key={d.slug}
                   href={`/product/${d.slug}`}
-                  className="group rounded-card border border-hairline bg-card p-5 shadow-card transition-all hover:-translate-y-1 hover:border-emerald-accent/40 hover:shadow-lift"
+                  className="group overflow-hidden rounded-2xl border border-hairline bg-card p-3 shadow-card transition-all hover:-translate-y-1 hover:border-emerald-400/50"
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <h2 className="line-clamp-2 text-[14px] font-extrabold leading-snug text-headline group-hover:text-[var(--dw-green-mid)]">
-                      {d.title}
-                    </h2>
-                    <ArrowRight className="h-4 w-4 shrink-0 text-muted transition-transform group-hover:translate-x-1" />
-                  </div>
-                  <div className="tabular mt-3 text-[22px] font-extrabold tracking-tight text-headline">
-                    {formatINR(d.price)}
-                  </div>
-                  <div className="mt-3 grid grid-cols-3 gap-2 border-t border-hairline pt-3 text-center">
-                    <div>
-                      <div className="tabular text-[13px] font-extrabold text-[var(--dw-green-mid)]">
-                        {formatINR(stats.low)}
-                      </div>
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-muted">Low</div>
-                    </div>
-                    <div>
-                      <div className="tabular text-[13px] font-extrabold text-headline">
-                        {formatINR(stats.median)}
-                      </div>
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-muted">Typical</div>
-                    </div>
-                    <div>
-                      <div className="tabular text-[13px] font-extrabold text-headline">
-                        {formatINR(stats.high)}
-                      </div>
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-muted">High</div>
-                    </div>
-                  </div>
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    <Tag tone="brand">{stats.count} observations</Tag>
-                    {drop !== null && (
-                      <Tag tone="amber">
-                        <TrendingDown className="h-2.5 w-2.5" /> {drop}% spread
-                      </Tag>
+                  <div className="relative aspect-square overflow-hidden rounded-xl bg-subtle">
+                    {d.imageUrl && (
+                      <Image
+                        src={d.imageUrl}
+                        alt={d.title}
+                        fill
+                        sizes="(max-width: 640px) 50vw, 200px"
+                        className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
+                        unoptimized
+                      />
                     )}
+                    <span className="absolute left-1.5 top-1.5 rounded-full bg-emerald-600 px-1.5 py-0.5 text-[8.5px] font-extrabold uppercase tracking-wider text-white">
+                      All-time low
+                    </span>
+                  </div>
+                  <div className="mt-2 line-clamp-2 min-h-[2rem] text-[11.5px] font-bold leading-snug text-headline">
+                    {d.title}
+                  </div>
+                  <div className="mt-1.5 flex items-center gap-1.5">
+                    <StoreLogo merchant={d.merchant} size={14} />
+                    <span className="tabular text-[13px] font-extrabold text-headline">
+                      {formatINR(d.price)}
+                    </span>
+                  </div>
+                  <div className="mt-0.5 text-[10px] font-semibold text-muted">
+                    {d.observations} pts · {timeAgo(d.lastDropAt ?? Date.now())}
                   </div>
                 </Link>
-              );
-            })}
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* ---- most tracked ---- */}
+        <div className="mt-12">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <LineChart className="h-4 w-4 text-emerald-500" />
+            <h2 className="text-[18px] font-extrabold tracking-tight text-headline">
+              Most tracked products
+            </h2>
+            <Link
+              href="/deals?sort=history"
+              className="text-[12.5px] font-extrabold text-[var(--dw-green-mid)] hover:underline"
+            >
+              see all →
+            </Link>
           </div>
-        )}
+
+          <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+            {latest.map((d) => (
+              <Link
+                key={d.slug}
+                href={`/product/${d.slug}`}
+                className="group overflow-hidden rounded-2xl border border-hairline bg-card p-3 shadow-card transition-all hover:-translate-y-1 hover:border-emerald-400/50"
+              >
+                <div className="relative aspect-square overflow-hidden rounded-xl bg-subtle">
+                  {d.imageUrl && (
+                    <Image
+                      src={d.imageUrl}
+                      alt={d.title}
+                      fill
+                      sizes="(max-width: 640px) 50vw, 200px"
+                      className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
+                      unoptimized
+                    />
+                  )}
+                </div>
+                <div className="mt-2 line-clamp-2 min-h-[2rem] text-[11.5px] font-bold leading-snug text-headline">
+                  {d.title}
+                </div>
+                <div className="mt-1.5 flex items-center gap-1.5">
+                  <StoreLogo merchant={d.merchant} size={14} />
+                  <span className="tabular text-[13px] font-extrabold text-headline">
+                    {formatINR(d.price)}
+                  </span>
+                </div>
+                <div className="mt-0.5 text-[10px] font-semibold text-muted">
+                  {d.observations} observations
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
       </Container>
     </section>
+  );
+}
+
+function Empty() {
+  return (
+    <div className="mt-4 rounded-2xl border border-dashed border-hairline bg-subtle p-10 text-center text-[13.5px] text-body">
+      No all-time lows recorded yet.
+    </div>
   );
 }

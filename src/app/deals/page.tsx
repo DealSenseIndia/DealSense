@@ -3,7 +3,6 @@ import { Container } from "@/components/ui/Container";
 import { PageSearch } from "@/components/site/PageSearch";
 import { DealGrid } from "@/components/deals/DealGrid";
 import { getFilteredDeals, getFilterFacets } from "@/lib/db/deals";
-import { STORE_META } from "@/lib/db/shelves";
 
 export const metadata: Metadata = {
   title: "Live deals",
@@ -55,7 +54,6 @@ export default async function DealsPage({
           deals={deals}
           facets={facets}
           active={{ priceMax, discountMin, store, category, sort }}
-          storeMeta={STORE_META}
         />
       </Container>
     </section>
