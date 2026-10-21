@@ -21,3 +21,5 @@ devlog.txt
 *.log
 run-compare.cmd
 compare-merge.log
+run-gallery.cmd
+gallery-backfill.log

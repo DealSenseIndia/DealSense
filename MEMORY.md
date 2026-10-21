@@ -68,21 +68,28 @@ place, and "View All" opening `/deals` (filter sidebar + 48-per-page "Show more"
 
 `src/components/analyzer/ProductDetail.tsx` assembles it:
 
-1. **ProductHeaderStrip** — image, title, the store's rating, tag chips, a green "Lowest Price
-   Ever" card, the current price with the discount, and a **dark DealSense Score card** with an
-   arc gauge (score/10 + a label). Stacks cleanly on a phone.
-2. Stat cards, the verdict panel, landed price, price-drop alert, market context.
-3. **PriceHistoryPanel** — the dark chart: one line per store (Amazon orange, Flipkart blue),
-   1M/3M/6M/1Y/2Y/ALL ranges, per-store toggles, **event callouts** placed in collision-free
-   lanes, a **dashed 30-day projection**, a **Deal Intensity** strip and a **Key Deal Events**
-   row. Scrolls sideways on a phone so it stays readable.
-4. **AnalysisCards** — Price Insights (highest, lowest, average, drop from the peak),
-   DealSense Analysis (plain-English findings), Our Recommendation (Buy Now / Hold Off / Skip
-   It) in a green gradient card.
-5. Compare store prices, customer reviews, similar products, and the evidence list.
+1. **ProductHeaderStrip** — title, the store's rating, tag chips, the MRP with its discount, and
+   the **DealSense score out of 100** with a ring gauge. The prices live on the chart, not here.
+2. **ProductGallery** — every photo the store published for this product, with thumbnails, arrow
+   navigation and a zoom lightbox. `npm run gallery` re-reads the store pages to capture it
+   (the main image tag only ever holds one photo at many sizes — the gallery is in the `hiRes`
+   entries and the thumbnail strip).
+3. A full-width **"View deal on <store>"** button, then the stat cards, the verdict panel,
+   the landed price, the alert panel and the market context.
+4. **PriceHistoryPanel** — the chart. Light in light mode, dark in dark mode, using the site's
+   emerald and sky. One line per store, 1M/3M/6M/1Y/2Y/ALL, per-store toggles, a single
+   compact stat row (Now / Lowest ever / Average / From peak), **small markers on the line where
+   a sale or deal happened — their details only on hover** — a dashed 30-day projection and the
+   deal-intensity strip. Scrolls sideways on a phone.
+5. **AnalysisCards** — what the history says, and our recommendation.
+6. Compare store prices, customer reviews, similar products, and the evidence list.
+
+**Card offers are opt-in.** `LandedPriceCard` starts on "No offer" and only applies a bank
+discount when the shopper picks one. We never discount a price they did not ask for.
+
+**The score is a percentage** out of 100, not a number out of 10.
 
 ### The intelligence — `src/lib/engine/insights.ts`
-
 Everything is derived from the recorded points. Nothing is invented.
 
 - **Events** — launch price, lowest ever, biggest drop, biggest rise, and sale dips that sit

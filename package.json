@@ -21,7 +21,8 @@
     "shot": "node scripts/shot.mjs",
     "capture": "node scripts/capture.mjs",
     "reviews": "tsx scripts/seed-reviews.ts",
-    "compare": "tsx scripts/compare-merge.ts"
+    "compare": "tsx scripts/compare-merge.ts",
+    "gallery": "tsx scripts/backfill-gallery.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",

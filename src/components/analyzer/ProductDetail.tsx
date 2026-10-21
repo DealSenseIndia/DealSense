@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ChevronRight, ShieldCheck } from "lucide-react";
+import { useMemo } from "react";
 import type { AnalysisResult } from "@/lib/types";
 import type { ReviewRow } from "@/lib/db/queries";
 import type { SimilarProduct } from "@/lib/db/similar";
@@ -15,6 +16,7 @@ import {
   recommendation,
 } from "@/lib/engine/insights";
 import { ProductHeaderStrip } from "./ProductHeaderStrip";
+import { ProductGallery } from "./ProductGallery";
 import { PriceHistoryPanel, type StoreSeries } from "./PriceHistoryPanel";
 import { AnalysisCards } from "./AnalysisCards";
 import { StoreComparisonPanel } from "./StoreComparisonPanel";
@@ -93,8 +95,52 @@ export function ProductDetail({
     hasHistory,
   });
 
-  const scoreOutOfTen = result.verdict?.score ? result.verdict.score / 10 : null;
+  const scoreOutOfTen = result.verdict?.score ?? null;
   const lowestEver = insights.lowest;
+
+  // The numbers that used to sit in their own boxes, now on the chart.
+  const chartStats = [
+    {
+      label: "Now",
+      value: current !== null ? formatINR(current) : "—",
+      tone: "plain" as const,
+    },
+    {
+      label: "Lowest ever",
+      value: insights.lowest ? formatINR(insights.lowest.price) : "—",
+      note: insights.lowest
+        ? new Date(insights.lowest.at).toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          })
+        : undefined,
+      tone: "good" as const,
+    },
+    {
+      label: "Average",
+      value: insights.average ? formatINR(insights.average) : "—",
+      note: insights.highest ? `peak ${formatINR(insights.highest.price)}` : undefined,
+      tone: "muted" as const,
+    },
+    {
+      label: "From peak",
+      value:
+        insights.dropFromHighPct !== null ? `${insights.dropFromHighPct}%` : "—",
+      note:
+        insights.dropFromHighAmount && insights.dropFromHighAmount > 0
+          ? `${formatINR(insights.dropFromHighAmount)} off the top`
+          : undefined,
+      tone: "good" as const,
+    },
+  ];
+
+  // Every photo the store published for this product.
+  const gallery = useMemo(() => {
+    const list = product.images?.length ? product.images : [];
+    const all = [product.imageUrl, ...list].filter(Boolean) as string[];
+    return Array.from(new Set(all));
+  }, [product.imageUrl, product.images]);
 
   return (
     <div className="space-y-5">
@@ -114,20 +160,24 @@ export function ProductDetail({
       {/* ---------- the strip ---------- */}
       <ProductHeaderStrip
         title={product.title}
-        imageUrl={product.imageUrl}
-        merchant={listing.merchant}
         rating={listing.rating}
         reviewCount={listing.reviewCount}
         brand={product.brand}
         category={product.category}
         currentPrice={listing.price}
         mrp={listing.mrp}
-        lowest={lowestEver}
-        score={scoreOutOfTen}
+        score={result.verdict?.score ?? null}
       />
 
-      {/* ---------- verdict + side panels ---------- */}
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_340px]">
+      {/* ---------- gallery + price panel ---------- */}
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)_320px]">
+        <div className="lg:sticky lg:top-20 lg:self-start">
+          <ProductGallery
+            images={gallery}
+            alt={product.title}
+          />
+        </div>
+
         <div className="space-y-5">
           <StatCards cards={statCards} />
 
@@ -142,6 +192,19 @@ export function ProductDetail({
         </div>
 
         <div className="space-y-5">
+          {/* the buy button */}
+          <a
+            href={listing.affiliateUrl}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 text-[14px] font-extrabold text-white shadow-[0_10px_26px_-12px_rgba(5,150,105,0.95)] transition-all hover:-translate-y-0.5 hover:bg-emerald-700"
+          >
+            View deal on {meta.name}
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </a>
+
           {listing.price !== null && (
             <LandedPriceCard base={listing.price} merchant={listing.merchant} />
           )}
@@ -176,11 +239,11 @@ export function ProductDetail({
         forecast={forecast}
         intensity={intensity}
         currentPrice={current}
+        stats={chartStats}
       />
 
       {/* ---------- insights, analysis, recommendation ---------- */}
       <AnalysisCards
-        insights={insights}
         bullets={bullets}
         recommendation={rec.recommendation}
         headline={rec.headline}

@@ -55,6 +55,43 @@ function regexPrices(html: string): number[] {
   return found;
 }
 
+/**
+ * Every distinct product photo in Amazon's gallery.
+ *
+ * The main image tag only carries one photo at many sizes, so the gallery
+ * lives in the `hiRes` entries of the image block and in the thumbnail
+ * strip. We pull both and key them on the image id so the same photo at
+ * different sizes is only counted once.
+ */
+export function extractAmazonGallery(html: string, limit = 10): string[] {
+  if (!html) return [];
+
+  const byId = new Map<string, string>();
+
+  const keep = (url: string) => {
+    const m = url.match(/\/images\/I\/([^.?_]+)[._]/);
+    if (!m) return;
+    const id = m[1];
+    const existing = byId.get(id);
+    // Prefer the largest version we have seen of this photo.
+    if (!existing || url.length > existing.length) byId.set(id, url);
+  };
+
+  // High resolution entries.
+  for (const m of html.matchAll(/"hiRes"\s*:\s*"(https:[^"]+)"/g)) keep(m[1]);
+
+  // The thumbnail strip, which carries the remaining photos.
+  for (const m of html.matchAll(/data-a-dynamic-image="([^"]{40,6000})"/g)) {
+    const decoded = m[1]
+      .replace(/&quot;/g, '"')
+      .replace(/&amp;/g, "&")
+      .replace(/\\u002F/g, "/");
+    for (const u of decoded.matchAll(/"(https:[^"]{40,220})"/g)) keep(u[1]);
+  }
+
+  return [...byId.values()].slice(0, limit);
+}
+
 /** Extract main price + MRP from rendered plain text (reader fallback). */
 export function pricesFromText(text: string): { price: number | null; mrp: number | null } {
   const idx = text.indexOf("M.R.P");
@@ -193,6 +230,19 @@ export function extractAmazon(res: FetchResult, asin: string, url: string): Extr
     li.forEach((i) => typeof i === "string" && images.push(i));
   }
   images = Array.from(new Set(images.filter((i) => typeof i === "string" && i.startsWith("http")))).slice(0, 8);
+
+  // The full gallery, every distinct photo the store published.
+  const gallery = extractAmazonGallery(res.content, 10);
+  if (gallery.length) {
+    const merged = [...gallery];
+    for (const i of images) {
+      if (merged.length >= 10) break;
+      if (!merged.some((m) => m.includes(i.split("/").pop()?.split(".")[0] ?? " "))) {
+        merged.push(i);
+      }
+    }
+    images = merged.slice(0, 10);
+  }
 
   const seller =
     firstText($, ["#sellerProfileTriggerId", "#merchant-info", "#tabular-buybox .tabular-buybox-text"]) || null;

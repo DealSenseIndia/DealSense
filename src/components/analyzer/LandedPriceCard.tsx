@@ -17,6 +17,7 @@ export function LandedPriceCard({
   merchant: Merchant;
 }) {
   const offers = useMemo(() => offersFor(merchant as never), [merchant]);
+  // null = no offer applied. Nothing is discounted until the shopper asks for it.
   const [selected, setSelected] = useState<string | null>(null);
 
   const landed: LandedPrice = useMemo(
@@ -25,7 +26,8 @@ export function LandedPriceCard({
         base,
         shipping,
         merchant: merchant as never,
-        selectedOfferId: selected,
+        selectedOfferId: selected && selected !== "best" ? selected : undefined,
+        autoBestOffer: selected === "best",
       }),
     [base, shipping, merchant, selected],
   );
@@ -34,21 +36,23 @@ export function LandedPriceCard({
     <div className="rounded-2xl border border-hairline bg-card p-5 shadow-card">
       <div className="flex items-center gap-1.5 text-[12px] font-extrabold uppercase tracking-wider text-secondary">
         <Receipt className="h-3.5 w-3.5 text-emerald-accent" />
-        True landed price
+        What you will pay
       </div>
 
-      <div className="mt-4 flex items-end justify-between">
+      <div className="mt-4 flex items-end justify-between gap-3">
         <div>
-          <div className="text-[11.5px] font-semibold text-muted">You actually pay</div>
-          <div className="tabular text-[32px] font-extrabold leading-none tracking-tight text-[var(--dw-green-mid)]">
+          <div className="text-[11.5px] font-semibold text-muted">
+            {landed.savings > 0 ? "With the offer you pick" : "Price on the store"}
+          </div>
+          <div className="tabular text-[30px] font-extrabold leading-none tracking-tight text-headline">
             {formatINR(landed.effective)}
           </div>
         </div>
-        {landed.savings > 0 && (
+        {landed.savings > 0 ? (
           <div className="rounded-full border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-2.5 py-1 text-[11.5px] font-extrabold text-[var(--dw-green-mid)]">
             Save {formatINR(landed.savings)}
           </div>
-        )}
+        ) : null}
       </div>
 
       <div className="mt-4 space-y-2 border-t border-hairline pt-4">
@@ -85,8 +89,22 @@ export function LandedPriceCard({
                 : "border-hairline text-secondary hover:border-hairline-strong",
             )}
           >
-            Best offer
+            No offer
           </button>
+          {offers.length > 0 ? (
+            <button
+              onClick={() => setSelected("best")}
+              title="The biggest discount we know of for this card"
+              className={cn(
+                "rounded-full border px-2.5 py-1 text-[11.5px] font-bold transition-colors",
+                selected === "best"
+                  ? "border-emerald-accent bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]"
+                  : "border-hairline text-secondary hover:border-hairline-strong",
+              )}
+            >
+              Best offer
+            </button>
+          ) : null}
           {offers.map((o) => (
             <button
               key={o.id}
@@ -103,6 +121,12 @@ export function LandedPriceCard({
             </button>
           ))}
         </div>
+        {selected === null ? (
+          <p className="mt-2 text-[11px] leading-snug text-muted">
+            We do not apply a card offer unless you pick one. The price above is what the store is
+            showing.
+          </p>
+        ) : null}
       </div>
     </div>
   );

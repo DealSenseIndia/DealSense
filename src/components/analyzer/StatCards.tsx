@@ -71,7 +71,7 @@ function MiniSpark({ points, stroke }: { points: number[]; stroke: string }) {
 
 export function StatCards({ cards }: { cards: StatCardSpec[] }) {
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-3">
       {cards.map((c) => {
         const t = TONES[c.tone];
         const delta = c.deltaPct ?? null;

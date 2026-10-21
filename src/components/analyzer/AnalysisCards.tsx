@@ -1,29 +1,18 @@
-import {
-  ArrowDownRight,
-  ArrowUpRight,
-  Check,
-  Crown,
-  LineChart,
-  Sparkles,
-  TrendingDown,
-  X,
-} from "lucide-react";
-import type { AnalysisBullet, PriceInsights } from "@/lib/engine/insights";
-import { cn, formatINR } from "@/lib/utils";
+import { Check, Crown, Sparkles, X } from "lucide-react";
+import type { AnalysisBullet } from "@/lib/engine/insights";
+import { cn } from "@/lib/utils";
 
 /**
- * The three cards under the chart: the numbers, what we make of them, and
- * what we would do about it.
+ * The two cards under the chart: what we make of the history, and what we
+ * would do about it. The raw numbers live on the chart itself.
  */
 export function AnalysisCards({
-  insights,
   bullets,
   recommendation,
   headline,
   sub,
   className,
 }: {
-  insights: PriceInsights;
   bullets: AnalysisBullet[];
   recommendation: "BUY" | "WAIT" | "AVOID";
   headline: string;
@@ -31,61 +20,14 @@ export function AnalysisCards({
   className?: string;
 }) {
   return (
-    <div className={cn("grid gap-4 lg:grid-cols-3", className)}>
-      {/* ---------- price insights ---------- */}
-      <div className="rounded-2xl border border-hairline bg-card p-5 shadow-card">
-        <h3 className="flex items-center gap-2 text-[15px] font-extrabold text-headline">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]">
-            <LineChart className="h-4 w-4" />
-          </span>
-          Price Insights
-        </h3>
-
-        <div className="mt-4 grid grid-cols-2 gap-2.5">
-          <Insight
-            icon={<ArrowUpRight className="h-3.5 w-3.5" />}
-            tone="rose"
-            label="Highest Price"
-            value={insights.highest ? formatINR(insights.highest.price) : "—"}
-            note={insights.highest ? fmtDate(insights.highest.at) : undefined}
-          />
-          <Insight
-            icon={<ArrowDownRight className="h-3.5 w-3.5" />}
-            tone="emerald"
-            label="Lowest Price"
-            value={insights.lowest ? formatINR(insights.lowest.price) : "—"}
-            note={insights.lowest ? fmtDate(insights.lowest.at) : undefined}
-          />
-          <Insight
-            icon={<LineChart className="h-3.5 w-3.5" />}
-            tone="slate"
-            label="Average Price"
-            value={insights.average ? formatINR(insights.average) : "—"}
-            note={insights.median ? `median ${formatINR(insights.median)}` : undefined}
-          />
-          <Insight
-            icon={<TrendingDown className="h-3.5 w-3.5" />}
-            tone="amber"
-            label="Price Drop"
-            value={
-              insights.dropFromHighPct !== null ? `${insights.dropFromHighPct}%` : "—"
-            }
-            note={
-              insights.dropFromHighAmount
-                ? `${formatINR(insights.dropFromHighAmount)} off the peak`
-                : undefined
-            }
-          />
-        </div>
-      </div>
-
+    <div className={cn("grid gap-4 lg:grid-cols-[1.35fr_1fr]", className)}>
       {/* ---------- analysis ---------- */}
       <div className="rounded-2xl border border-hairline bg-card p-5 shadow-card">
         <h3 className="flex items-center gap-2 text-[15px] font-extrabold text-headline">
           <span className="grid h-8 w-8 place-items-center rounded-lg bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]">
             <Sparkles className="h-4 w-4" />
           </span>
-          DealSense Analysis
+          What the history says
         </h3>
 
         <ul className="mt-4 space-y-2.5">
@@ -135,7 +77,7 @@ export function AnalysisCards({
           <span className="grid h-8 w-8 place-items-center rounded-lg bg-white/15">
             <Crown className="h-4 w-4" />
           </span>
-          Our Recommendation
+          Our recommendation
         </h3>
 
         <div className="mt-4 flex items-center gap-4">
@@ -152,49 +94,4 @@ export function AnalysisCards({
       </div>
     </div>
   );
-}
-
-function Insight({
-  icon,
-  tone,
-  label,
-  value,
-  note,
-}: {
-  icon: React.ReactNode;
-  tone: "rose" | "emerald" | "slate" | "amber";
-  label: string;
-  value: string;
-  note?: string;
-}) {
-  return (
-    <div className="rounded-xl border border-hairline bg-subtle p-3">
-      <div
-        className={cn(
-          "grid h-7 w-7 place-items-center rounded-lg",
-          tone === "rose" && "bg-rose-500/12 text-rose-600",
-          tone === "emerald" && "bg-emerald-500/12 text-emerald-600",
-          tone === "slate" && "bg-slate-500/12 text-slate-500",
-          tone === "amber" && "bg-amber-500/12 text-amber-600",
-        )}
-      >
-        {icon}
-      </div>
-      <div className="tabular mt-2 text-[15px] font-extrabold leading-none text-headline">
-        {value}
-      </div>
-      <div className="mt-1 text-[10.5px] font-bold text-headline">{label}</div>
-      {note ? (
-        <div className="mt-0.5 text-[9.5px] font-semibold text-muted">{note}</div>
-      ) : null}
-    </div>
-  );
-}
-
-function fmtDate(t: number): string {
-  return new Date(t).toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
 }
