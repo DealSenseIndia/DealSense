@@ -41,13 +41,31 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function ProductPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ opt?: string }>;
+}) {
+  const [{ slug }, sp] = await Promise.all([params, searchParams]);
   const result = await loadAnalysisBySlug(slug);
   if (!result?.product || !result.listing) notFound();
 
   const product = result.product;
   const listing = result.listing;
+
+  // The option the visitor picked on the page, e.g. "colour:Black".
+  const opt = (() => {
+    const raw = (sp.opt ?? "").trim();
+    if (!raw) return null;
+    const idx = raw.indexOf(":");
+    if (idx <= 0) return null;
+    const key = raw.slice(0, idx);
+    const value = raw.slice(idx + 1);
+    if (!key || !value) return null;
+    return { key, value };
+  })();
 
   const [reviews, similar, comparison] = await Promise.all([
     getReviewsForProduct(product.id),
@@ -101,6 +119,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           reviews={reviews}
           similar={similar}
           comparison={comparison}
+          option={opt}
+          slug={slug}
         />
       </Container>
     </section>

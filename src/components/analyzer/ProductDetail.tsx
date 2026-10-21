@@ -6,6 +6,7 @@ import type { ReviewRow } from "@/lib/db/queries";
 import type { SimilarProduct } from "@/lib/db/similar";
 import type { StoreComparison } from "@/lib/db/compare";
 import { storeMeta } from "@/lib/config";
+import { buildOptions, variantMatches } from "@/lib/db/variants";
 import { formatINR, timeAgo } from "@/lib/utils";
 import {
   analysisBullets,
@@ -21,6 +22,7 @@ import { PriceHistoryPanel, type StoreSeries } from "./PriceHistoryPanel";
 import { AnalysisCards } from "./AnalysisCards";
 import { StoreComparisonPanel } from "./StoreComparisonPanel";
 import { ReviewsPanel } from "./ReviewsPanel";
+import { ProductOptions } from "./ProductOptions";
 import { SimilarProducts } from "./SimilarProducts";
 import { StatCards, buildStatCards } from "./StatCards";
 import { BuyVerdictCard } from "./BuyVerdictCard";
@@ -32,11 +34,15 @@ export function ProductDetail({
   reviews,
   similar,
   comparison,
+  option = null,
+  slug = "",
 }: {
   result: AnalysisResult;
   reviews: ReviewRow[];
   similar: SimilarProduct[];
   comparison: StoreComparison | null;
+  option?: { key: string; value: string } | null;
+  slug?: string;
 }) {
   const listing = result.listing!;
   const product = result.product!;
@@ -142,10 +148,20 @@ export function ProductDetail({
     return Array.from(new Set(all));
   }, [product.imageUrl, product.images]);
 
+  // The product's real options — colours, sizes, configurations — read off
+  // the variant each reviewer actually bought.
+  const options = useMemo(() => buildOptions(reviews), [reviews]);
+
+  // Reviews for the option the visitor picked, if any.
+  const shownReviews = useMemo(
+    () => reviews.filter((r) => variantMatches(r.variant, option)),
+    [reviews, option],
+  );
+
   return (
     <div className="space-y-5">
       {/* ---------- breadcrumb ---------- */}
-      <nav className="flex items-center gap-1.5 text-[12.5px] font-semibold text-muted">
+      <nav className="flex flex-wrap items-center gap-1.5 text-[12.5px] font-semibold text-muted">
         <Link href="/" className="text-[var(--dw-green-mid)] hover:underline">
           Home
         </Link>
@@ -153,8 +169,19 @@ export function ProductDetail({
         <Link href="/deals" className="text-[var(--dw-green-mid)] hover:underline">
           Deals
         </Link>
+        {product.category ? (
+          <>
+            <ChevronRight className="h-3.5 w-3.5" />
+            <Link
+              href={`/deals?category=${encodeURIComponent(product.category)}`}
+              className="text-[var(--dw-green-mid)] hover:underline"
+            >
+              {product.category}
+            </Link>
+          </>
+        ) : null}
         <ChevronRight className="h-3.5 w-3.5" />
-        <span className="truncate">{product.title}</span>
+        <span className="line-clamp-1 min-w-0">{product.title}</span>
       </nav>
 
       {/* ---------- the strip ---------- */}
@@ -170,17 +197,12 @@ export function ProductDetail({
       />
 
       {/* ---------- gallery + price panel ---------- */}
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)_320px]">
-        <div className="lg:sticky lg:top-20 lg:self-start">
-          <ProductGallery
-            images={gallery}
-            alt={product.title}
-          />
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)_320px]">
+        <div className="min-w-0 lg:sticky lg:top-20 lg:self-start">
+          <ProductGallery images={gallery} alt={product.title} />
         </div>
 
-        <div className="space-y-5">
-          <StatCards cards={statCards} />
-
+        <div className="min-w-0 space-y-5">
           <BuyVerdictCard
             verdict={result.verdict ?? null}
             evidence={bundle?.evidence ?? []}
@@ -189,9 +211,17 @@ export function ProductDetail({
             trackingDays={trackingDays}
             potentialSaving={potentialSaving}
           />
+
+          {/* the price history, right under the verdict */}
+          <PriceHistoryPanel
+            series={series}
+            events={events}
+            currentPrice={current}
+            stats={chartStats}
+          />
         </div>
 
-        <div className="space-y-5">
+        <div className="min-w-0 space-y-4">
           {/* the buy button */}
           <a
             href={listing.affiliateUrl}
@@ -204,6 +234,25 @@ export function ProductDetail({
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
           </a>
+
+          {/* compare across stores — compact, up top */}
+          {comparison && comparison.offers.length > 0 ? (
+            <StoreComparisonPanel
+              comparison={comparison}
+              primaryListingId={listing.id}
+              compact
+            />
+          ) : null}
+
+          {/* the options this product actually comes in */}
+          {options.dimensions.length > 0 ? (
+            <ProductOptions
+              options={options}
+              slug={slug}
+              active={option}
+              matched={shownReviews.length}
+            />
+          ) : null}
 
           {listing.price !== null && (
             <LandedPriceCard base={listing.price} merchant={listing.merchant} />
@@ -233,38 +282,33 @@ export function ProductDetail({
       </div>
 
       {/* ---------- the big price history ---------- */}
-      <PriceHistoryPanel
-        series={series}
-        events={events}
-        forecast={forecast}
-        intensity={intensity}
-        currentPrice={current}
-        stats={chartStats}
-      />
 
-      {/* ---------- insights, analysis, recommendation ---------- */}
+      {/* ---------- insights ---------- */}
       <AnalysisCards
         bullets={bullets}
         recommendation={rec.recommendation}
         headline={rec.headline}
         sub={rec.sub}
+        showRecommendation={false}
       />
 
-      {/* ---------- compare stores ---------- */}
-      {comparison && comparison.offers.length > 0 ? (
-        <StoreComparisonPanel
-          comparison={comparison}
-          primaryListingId={listing.id}
-        />
-      ) : null}
+      {/* ---------- compare stores is up in the right rail ---------- */}
 
       {/* ---------- reviews ---------- */}
       {reviews.length > 0 || listing.reviewCount ? (
-        <ReviewsPanel
-          reviews={reviews}
-          storeRating={listing.rating}
-          storeReviewCount={listing.reviewCount}
-        />
+        <div id="reviews">
+          {option ? (
+            <p className="mb-3 rounded-xl border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-4 py-2.5 text-[12.5px] font-semibold text-[var(--dw-green-bot)]">
+              Showing reviews for the selected option only —{" "}
+              {shownReviews.length} of {reviews.length} reviews.
+            </p>
+          ) : null}
+          <ReviewsPanel
+            reviews={shownReviews}
+            storeRating={listing.rating}
+            storeReviewCount={listing.reviewCount}
+          />
+        </div>
       ) : null}
 
       {/* ---------- similar ---------- */}

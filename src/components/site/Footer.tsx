@@ -1,9 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
-import { StoreLogo } from "@/components/ui/StoreLogo";
+import { StoreWordmark } from "@/components/ui/StoreWordmark";
+import { trackedStores } from "@/lib/config";
 
-const STORES = ["amazon", "flipkart", "myntra", "tatacliq"];
+const STORES = trackedStores.map((s) => s.key);
+const STORE_NAMES = trackedStores.map((s) => s.name);
 
 const COLUMNS: { title: string; links: { href: string; label: string }[] }[] = [
   {
@@ -62,21 +64,6 @@ export function Footer() {
               India&apos;s shopping decision engine. We read the price straight off the store,
               keep every price we see, and tell you whether now is a good time to buy.
             </p>
-
-            <div className="mt-5 flex items-center gap-2">
-              {STORES.map((s) => (
-                <span
-                  key={s}
-                  title={s}
-                  className="grid h-9 w-9 place-items-center rounded-xl border border-white/10 bg-white/[0.06]"
-                >
-                  <StoreLogo merchant={s} size={20} />
-                </span>
-              ))}
-            </div>
-            <p className="mt-2.5 text-[11.5px]">
-              We track these stores and compare them side by side.
-            </p>
           </div>
 
           {/* link columns */}
@@ -99,6 +86,27 @@ export function Footer() {
               </ul>
             </div>
           ))}
+        </div>
+
+        {/* what we track — the real store marks, in one clean row */}
+        <div className="mt-10 rounded-2xl bg-white px-5 py-4 sm:px-6 sm:py-5">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div className="shrink-0">
+              <div className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-slate-500">
+                We track
+              </div>
+              <p className="mt-1 max-w-md text-[12.5px] leading-relaxed text-slate-600">
+                Price history across {STORE_NAMES.slice(0, -1).join(", ")} and{" "}
+                {STORE_NAMES[STORE_NAMES.length - 1]} — compared side by side, with free
+                price-drop alerts.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
+              {STORES.map((s) => (
+                <StoreWordmark key={s} merchant={s} height={24} className="opacity-90" />
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* disclosure */}

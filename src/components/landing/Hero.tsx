@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Bell, ChevronRight, Link2, Search, ShieldCheck } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { StoreLogo } from "@/components/ui/StoreLogo";
+import { StorePlaceholder } from "@/components/ui/StorePlaceholder";
 import { cn, formatINR } from "@/lib/utils";
 
 export interface FeaturedDeal {
@@ -37,8 +38,6 @@ const POPULAR = [
   { label: "Nike Shoes", q: "Nike shoes" },
   { label: "Watches", q: "smartwatch" },
 ];
-
-const STORE_ICONS = ["amazon", "flipkart", "myntra"];
 
 export function Hero({ featured }: { featured?: FeaturedDeal | null }) {
   const [url, setUrl] = useState("");
@@ -108,25 +107,18 @@ export function Hero({ featured }: { featured?: FeaturedDeal | null }) {
             >
               <span className="flex min-w-0 flex-1 items-center gap-2 pl-[10px] pr-1">
                 <Link2 className="h-[18px] w-[18px] shrink-0 text-muted" />
-                <span className="hidden items-center gap-[5px] rounded-full border border-hairline bg-subtle px-[7px] py-[3px] sm:flex">
-                  {STORE_ICONS.map((s) => (
-                    <span
-                      key={s}
-                      className="flex h-5 w-5 items-center justify-center rounded-full border border-hairline bg-card"
-                    >
-                      <StoreLogo merchant={s} size={14} rounded={false} />
-                    </span>
-                  ))}
+                <span className="relative flex min-w-0 flex-1 items-center">
+                  <StorePlaceholder hidden={url.length > 0} className="px-3" />
+                  <input
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                    placeholder=""
+                    aria-label="Search products or paste a product link"
+                    className="h-[46px] w-full min-w-0 flex-1 bg-transparent px-3 text-[14px] text-headline placeholder:text-[13.5px] placeholder:text-muted focus:outline-none"
+                    autoComplete="off"
+                    spellCheck={false}
+                  />
                 </span>
-                <span className="ml-1 mr-0.5 hidden h-6 w-px shrink-0 bg-hairline sm:block" />
-                <input
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  placeholder="Paste any product link (Amazon, Flipkart, etc.) or search"
-                  className="h-[46px] w-full min-w-0 flex-1 bg-transparent px-3 text-[14px] text-headline placeholder:text-[13.5px] placeholder:text-muted focus:outline-none"
-                  autoComplete="off"
-                  spellCheck={false}
-                />
               </span>
 
               <button

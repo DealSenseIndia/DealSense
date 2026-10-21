@@ -3,12 +3,12 @@
 import { useMemo, useState } from "react";
 import { Expand, LineChart } from "lucide-react";
 import type { PricePoint } from "@/lib/types";
-import type { DealEvent, IntensityBucket, PriceForecast } from "@/lib/engine/insights";
+import type { DealEvent } from "@/lib/engine/insights";
 import { cn, formatINR } from "@/lib/utils";
 
 const W = 1100;
 const H = 320;
-const PAD = { top: 22, right: 24, bottom: 40, left: 66 };
+const PAD = { top: 20, right: 22, bottom: 38, left: 66 };
 
 const RANGES = [
   { key: "1M", days: 30 },
@@ -21,10 +21,14 @@ const RANGES = [
 
 type RangeKey = (typeof RANGES)[number]["key"];
 
-/** The two series colours — the site's emerald and sky, matching the stat cards. */
+/** The line is coloured by what the price just did. */
+const UP = "#10b981";
+const DOWN = "#f43f5e";
+const FLAT = "#94a3b8";
+
 const SERIES = [
-  { key: "a", stroke: "#10b981", fill: "rgba(16,185,129,0.16)", label: "Store price" },
-  { key: "b", stroke: "#38bdf8", fill: "rgba(56,189,248,0.14)", label: "Other store" },
+  { key: "a", stroke: UP, fill: "rgba(16,185,129,0.14)", label: "Store price" },
+  { key: "b", stroke: "#38bdf8", fill: "rgba(56,189,248,0.12)", label: "Other store" },
 ];
 
 export interface StoreSeries {
@@ -42,28 +46,26 @@ export interface ChartStat {
 /**
  * The price history, kept simple.
  *
- * Sale and deal markers sit on the line in that store's colour. Their details
- * only appear when you point at them, so the chart stays readable.
+ * The line is coloured by direction — green where the price rose, red where
+ * it fell — so you can see the shape of the history at a glance. Point at
+ * any spot to read the price we recorded for that day.
  */
 export function PriceHistoryPanel({
   series,
   events,
-  forecast,
-  intensity,
   currentPrice,
   stats = [],
   className,
 }: {
   series: StoreSeries[];
   events: DealEvent[];
-  forecast: PriceForecast | null;
-  intensity: IntensityBucket[];
   currentPrice: number | null;
   stats?: ChartStat[];
   className?: string;
 }) {
   const [range, setRange] = useState<RangeKey>("1Y");
   const [hidden, setHidden] = useState<string[]>([]);
+  const [hover, setHover] = useState<{ x: number; p: PricePoint; merchant: string } | null>(null);
   const [hoverEvent, setHoverEvent] = useState<string | null>(null);
   const [expanded, setExpanded] = useState(false);
 
@@ -83,24 +85,22 @@ export function PriceHistoryPanel({
   const minP = all.length ? Math.min(...all.map((p) => p.price)) : 0;
   const maxP = all.length ? Math.max(...all.map((p) => p.price)) : 1;
 
-  const horizon = forecast ? forecast.horizonDays * 86400000 : 0;
-  const chartMaxT = maxT + horizon;
-
   const x = (t: number) =>
-    PAD.left + ((t - minT) / Math.max(1, chartMaxT - minT)) * (W - PAD.left - PAD.right);
+    PAD.left + ((t - minT) / Math.max(1, maxT - minT)) * (W - PAD.left - PAD.right);
   const y = (p: number) =>
     PAD.top + (1 - (p - minP) / Math.max(1, maxP - minP)) * (H - PAD.top - PAD.bottom);
 
+  /** Only the events inside the visible window. */
   const shownEvents = useMemo(() => {
     const cfg = RANGES.find((r) => r.key === range)!;
     const cut = cfg.days ? Date.now() - cfg.days * 86400000 : 0;
     return events.filter((e) => e.at >= cut);
   }, [events, range]);
 
-  // Which store does each event belong to? The one whose series contains it.
+  /** Which store does each event belong to? The one whose series contains it. */
   const eventStore = useMemo(() => {
     const map = new Map<string, number>();
-    for (const e of shownEvents) {
+    for (const e of events) {
       let best = 0;
       let bestDist = Infinity;
       windowed.forEach((s, si) => {
@@ -115,7 +115,7 @@ export function PriceHistoryPanel({
       map.set(`${e.kind}-${e.at}`, best);
     }
     return map;
-  }, [shownEvents, windowed]);
+  }, [events, windowed]);
 
   const yTicks = 5;
   const ticks = Array.from({ length: yTicks }, (_, i) => {
@@ -134,21 +134,37 @@ export function PriceHistoryPanel({
     xLabels.push({ x: x(t), label });
   }
 
-  const forecastPoint = useMemo(() => {
-    if (!forecast || !currentPrice) return null;
-    const to = maxT + forecast.horizonDays * 86400000;
-    const fx2 = x(to);
-    const fy2 = y(forecast.predicted);
-    return {
-      x1: x(maxT),
-      y1: y(currentPrice),
-      x2: fx2,
-      y2: fy2,
-      lx: Math.max(PAD.left, Math.min(fx2 - 68, W - PAD.right - 140)),
-      ly: Math.max(PAD.top + 2, Math.min(fy2 + 12, H - PAD.bottom - 40)),
-      price: forecast.predicted,
-    };
-  }, [forecast, currentPrice, maxT, minT, minP, maxP]);
+  /** Split the line into runs so each stretch gets the colour of its move. */
+  const runs = useMemo(() => {
+    return windowed.map((s, si) => {
+      const out: { d: string; colour: string; from: PricePoint; to: PricePoint }[] = [];
+      for (let i = 1; i < s.points.length; i++) {
+        const a = s.points[i - 1];
+        const b = s.points[i];
+        const colour = b.price > a.price ? UP : b.price < a.price ? DOWN : FLAT;
+        out.push({
+          d: `M ${x(a.t).toFixed(1)},${y(a.price).toFixed(1)} L ${x(b.t).toFixed(1)},${y(b.price).toFixed(1)}`,
+          colour,
+          from: a,
+          to: b,
+        });
+      }
+      return { merchant: s.merchant, si, out };
+    });
+  }, [windowed, minT, maxT, minP, maxP]);
+
+  /** The price we recorded for the day the pointer is nearest. */
+  const readAt = (clientX: number, rect: DOMRect): { p: PricePoint; merchant: string } | null => {
+    const relX = ((clientX - rect.left) / rect.width) * W;
+    let best: { p: PricePoint; merchant: string; d: number } | null = null;
+    for (const s of windowed) {
+      for (const p of s.points) {
+        const d = Math.abs(x(p.t) - relX);
+        if (!best || d < best.d) best = { p, merchant: s.merchant, d };
+      }
+    }
+    return best ? { p: best.p, merchant: best.merchant } : null;
+  };
 
   return (
     <section
@@ -168,7 +184,7 @@ export function PriceHistoryPanel({
               Price history
             </h2>
             <p className="mt-0.5 text-[12.5px] text-muted">
-              Every price we recorded. Hover a marker to see what happened.
+              Every price we recorded. Point anywhere on the line to read that day.
             </p>
           </div>
         </div>
@@ -260,22 +276,19 @@ export function PriceHistoryPanel({
       ) : null}
 
       {/* ---------- chart ---------- */}
-      <div className="overflow-x-auto px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="max-w-full overflow-x-auto px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <svg
           viewBox={`0 0 ${W} ${H}`}
           className="h-auto w-full min-w-[680px]"
           role="img"
           aria-label="Recorded price history"
+          onMouseMove={(e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const r = readAt(e.clientX, rect);
+            if (r) setHover({ x: x(r.p.t), ...r });
+          }}
+          onMouseLeave={() => setHover(null)}
         >
-          <defs>
-            {SERIES.map((s, i) => (
-              <linearGradient key={s.key} id={`phg-${i}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={s.stroke} stopOpacity="0.24" />
-                <stop offset="100%" stopColor={s.stroke} stopOpacity="0" />
-              </linearGradient>
-            ))}
-          </defs>
-
           {/* gridlines */}
           {ticks.map((t, i) => (
             <g key={i}>
@@ -318,66 +331,71 @@ export function PriceHistoryPanel({
             </text>
           ))}
 
-          {/* series */}
-          {windowed.map((s, si) => {
-            const colour = SERIES[si % SERIES.length];
-            const d = s.points
-              .map(
-                (p, i) =>
-                  `${i === 0 ? "M" : "L"} ${x(p.t).toFixed(1)},${y(p.price).toFixed(1)}`,
-              )
-              .join(" ");
-            const area = `${d} L ${x(s.points[s.points.length - 1].t).toFixed(1)},${H - PAD.bottom} L ${x(s.points[0].t).toFixed(1)},${H - PAD.bottom} Z`;
-            return (
-              <g key={s.merchant}>
-                <path d={area} fill={`url(#phg-${si})`} />
+          {/* the line, coloured by direction */}
+          {runs.map((r) => (
+            <g key={r.merchant}>
+              {r.out.map((seg, i) => (
                 <path
-                  d={d}
+                  key={i}
+                  d={seg.d}
                   fill="none"
-                  stroke={colour.stroke}
+                  stroke={seg.colour}
                   strokeWidth="2.4"
                   strokeLinecap="round"
-                  strokeLinejoin="round"
                 />
-              </g>
-            );
-          })}
+              ))}
+            </g>
+          ))}
 
-          {/* forecast projection */}
-          {forecastPoint ? (
+          {/* the point we are pointing at */}
+          {hover ? (
             <g>
               <line
-                x1={forecastPoint.x1}
-                y1={forecastPoint.y1}
-                x2={forecastPoint.x2}
-                y2={forecastPoint.y2}
+                x1={hover.x}
+                y1={PAD.top}
+                x2={hover.x}
+                y2={H - PAD.bottom}
                 stroke="currentColor"
-                strokeOpacity="0.3"
-                strokeWidth="2"
-                strokeDasharray="5 5"
+                strokeOpacity="0.25"
+                strokeWidth="1"
+                strokeDasharray="4 4"
                 className="text-slate-500"
               />
               <circle
-                cx={forecastPoint.x2}
-                cy={forecastPoint.y2}
-                r="4.5"
-                fill="currentColor"
-                fillOpacity="0.35"
-                className="text-slate-500"
+                cx={hover.x}
+                cy={y(hover.p.price)}
+                r="6"
+                fill="var(--bg-card)"
+                stroke={UP}
+                strokeWidth="3"
               />
-              <text
-                x={forecastPoint.lx}
-                y={forecastPoint.ly}
-                fontSize="11.5"
-                fontWeight="700"
-                className="fill-muted"
+              <g
+                transform={`translate(${Math.max(PAD.left, Math.min(hover.x - 62, W - PAD.right - 124))}, ${Math.max(PAD.top, y(hover.p.price) - 58)})`}
               >
-                may reach {formatINR(forecastPoint.price)}
-              </text>
+                <rect
+                  width="124"
+                  height="42"
+                  rx="9"
+                  fill="var(--bg-card)"
+                  stroke="currentColor"
+                  strokeOpacity="0.2"
+                  className="text-slate-500"
+                />
+                <text x="10" y="17" fontSize="10.5" fontWeight="700" className="fill-muted">
+                  {new Date(hover.p.t).toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </text>
+                <text x="10" y="34" fontSize="13.5" fontWeight="800" className="tabular fill-headline">
+                  {formatINR(hover.p.price)}
+                </text>
+              </g>
             </g>
           ) : null}
 
-          {/* event markers — details on hover only */}
+          {/* sale and deal markers, in that store's colour */}
           {shownEvents.map((e) => {
             const key = `${e.kind}-${e.at}`;
             const si = eventStore.get(key) ?? 0;
@@ -392,31 +410,31 @@ export function PriceHistoryPanel({
                 onMouseLeave={() => setHoverEvent(null)}
                 className="cursor-pointer"
               >
-                {/* generous hit area */}
-                <circle cx={ex} cy={ey} r="12" fill="transparent" />
+                <circle cx={ex} cy={ey} r="11" fill="transparent" />
                 <circle
                   cx={ex}
                   cy={ey}
-                  r={active ? 6 : 4}
+                  r={active ? 5.5 : 3.5}
                   fill={colour}
-                  stroke="currentColor"
-                  strokeWidth={active ? 2.5 : 2}
-                  className="text-card transition-all"
+                  stroke="var(--bg-card)"
+                  strokeWidth="2"
                 />
                 {active ? (
-                  <g transform={`translate(${Math.max(PAD.left, Math.min(ex - 62, W - PAD.right - 124))}, ${Math.max(PAD.top, ey - 56)})`}>
+                  <g
+                    transform={`translate(${Math.max(PAD.left, Math.min(ex - 62, W - PAD.right - 124))}, ${Math.max(PAD.top, ey - 58)})`}
+                  >
                     <rect
                       width="124"
-                      height="40"
+                      height="42"
                       rx="9"
                       fill="var(--bg-card)"
                       stroke={colour}
-                      strokeOpacity="0.4"
+                      strokeOpacity="0.45"
                     />
-                    <text x="10" y="16" fontSize="10.5" fontWeight="700" className="fill-muted">
+                    <text x="10" y="17" fontSize="10.5" fontWeight="700" className="fill-muted">
                       {e.label}
                     </text>
-                    <text x="10" y="32" fontSize="13" fontWeight="800" className="tabular fill-headline">
+                    <text x="10" y="34" fontSize="13.5" fontWeight="800" className="tabular fill-headline">
                       {formatINR(e.price)}
                     </text>
                   </g>
@@ -439,64 +457,19 @@ export function PriceHistoryPanel({
                 className="h-2 w-2 rounded-full"
                 style={{ background: SERIES[si % SERIES.length].stroke }}
               />
-              {s.merchant === series[0]?.merchant ? "This store" : s.merchant}
+              {si === 0 ? "This store" : s.merchant}
             </span>
           ))}
-          {shownEvents.length > 0 ? (
-            <span className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-muted">
-              <span className="h-2 w-2 rounded-full border-2 border-emerald-500" />
-              {shownEvents.length} sale{shownEvents.length === 1 ? "" : "s"} &amp; deal
-              {shownEvents.length === 1 ? "" : "s"} found
-            </span>
-          ) : null}
         </div>
-        {forecast ? (
-          <span className="text-[11.5px] font-semibold text-muted">
-            {forecast.basis} · {forecast.confidence.toLowerCase()} confidence
+        <div className="flex flex-wrap items-center gap-3.5">
+          <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold text-muted">
+            <span className="h-0.5 w-4 rounded bg-emerald-500" /> price rose
           </span>
-        ) : null}
-      </div>
-
-      {/* ---------- deal intensity ---------- */}
-      {intensity.length > 1 ? (
-        <div className="border-t border-hairline px-5 py-4">
-          <div className="flex items-center justify-between gap-3">
-            <span className="text-[13px] font-extrabold text-headline">Deal intensity</span>
-            <span className="flex items-center gap-3 text-[11px] font-semibold text-muted">
-              {(["LOW", "MEDIUM", "HIGH"] as const).map((l) => (
-                <span key={l} className="inline-flex items-center gap-1.5">
-                  <span
-                    className={cn(
-                      "h-2.5 w-2.5 rounded-full",
-                      l === "LOW" && "bg-emerald-700",
-                      l === "MEDIUM" && "bg-emerald-500",
-                      l === "HIGH" && "bg-emerald-400",
-                    )}
-                  />
-                  {l[0] + l.slice(1).toLowerCase()}
-                </span>
-              ))}
-            </span>
-          </div>
-          <div className="mt-2 flex h-8 items-end gap-[2px]">
-            {intensity.map((b, i) => (
-              <div
-                key={i}
-                title={`${new Date(b.from).toLocaleDateString("en-IN", { day: "numeric", month: "short" })} — ${b.drops} price falls`}
-                className={cn(
-                  "flex-1 rounded-t-[2px] transition-all",
-                  b.level === "LOW" && "bg-emerald-700/50",
-                  b.level === "MEDIUM" && "bg-emerald-500/70",
-                  b.level === "HIGH" && "bg-emerald-400",
-                )}
-                style={{
-                  height: `${Math.max(12, (b.drops / Math.max(1, ...intensity.map((x) => x.drops))) * 100)}%`,
-                }}
-              />
-            ))}
-          </div>
+          <span className="inline-flex items-center gap-1.5 text-[11.5px] font-semibold text-muted">
+            <span className="h-0.5 w-4 rounded bg-rose-500" /> price fell
+          </span>
         </div>
-      ) : null}
+      </div>
     </section>
   );
 }

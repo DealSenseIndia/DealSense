@@ -46,12 +46,19 @@ export function ReviewsPanel({
   storeReviewCount: number | null;
 }) {
   const [sort, setSort] = useState<(typeof SORTS)[number]["key"]>("helpful");
+  const [stars, setStars] = useState<number | null>(null);
   const [showAll, setShowAll] = useState(false);
 
   const { buckets, rated } = useMemo(() => distribution(reviews), [reviews]);
 
+  /** Only the reviews that match the chosen star rating. */
+  const starFiltered = useMemo(
+    () => (stars === null ? reviews : reviews.filter((r) => Math.round(r.stars ?? 0) === stars)),
+    [reviews, stars],
+  );
+
   const sorted = useMemo(() => {
-    const list = [...reviews];
+    const list = [...starFiltered];
     switch (sort) {
       case "recent":
         return list.sort((a, b) => (b.reviewedAt ?? "").localeCompare(a.reviewedAt ?? ""));
@@ -62,7 +69,7 @@ export function ReviewsPanel({
       default:
         return list.sort((a, b) => (b.helpful ?? 0) - (a.helpful ?? 0));
     }
-  }, [reviews, sort]);
+  }, [starFiltered, sort]);
 
   const visible = showAll ? sorted : sorted.slice(0, 6);
   const max = Math.max(1, ...buckets.map((b) => b.count));
@@ -100,6 +107,55 @@ export function ReviewsPanel({
           </div>
         )}
       </div>
+
+      {/* ---------- star filter ---------- */}
+      {reviews.length > 0 ? (
+        <div className="flex flex-wrap items-center gap-2 border-b border-hairline px-5 py-3">
+          <span className="text-[11.5px] font-extrabold uppercase tracking-wider text-muted">
+            Rating
+          </span>
+          <button
+            onClick={() => setStars(null)}
+            className={cn(
+              "rounded-lg border px-2.5 py-1 text-[11.5px] font-bold transition-colors",
+              stars === null
+                ? "border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] text-[var(--dw-green-bot)]"
+                : "border-hairline text-muted hover:bg-elevated hover:text-headline",
+            )}
+          >
+            All <span className="tabular text-[10px] font-extrabold">{reviews.length}</span>
+          </button>
+          {[5, 4, 3, 2, 1].map((s) => {
+            const count = reviews.filter((r) => Math.round(r.stars ?? 0) === s).length;
+            const on = stars === s;
+            return (
+              <button
+                key={s}
+                onClick={() => setStars(on ? null : s)}
+                disabled={count === 0}
+                className={cn(
+                  "inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-[11.5px] font-bold transition-colors",
+                  on
+                    ? "border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] text-[var(--dw-green-bot)]"
+                    : "border-hairline text-muted hover:bg-elevated hover:text-headline",
+                  count === 0 && "cursor-not-allowed opacity-40 hover:bg-transparent hover:text-muted",
+                )}
+              >
+                {s}
+                <Star
+                  className={cn("h-3 w-3", s >= 4 ? "fill-amber-500 text-amber-500" : "fill-amber-500/30 text-amber-500/30")}
+                />
+                <span className="tabular text-[10px] font-extrabold">{count}</span>
+              </button>
+            );
+          })}
+          {stars !== null ? (
+            <span className="ml-auto text-[11.5px] font-bold text-[var(--dw-green-mid)]">
+              Showing {starFiltered.length} of {reviews.length} reviews
+            </span>
+          ) : null}
+        </div>
+      ) : null}
 
       <div className="grid gap-6 p-5 lg:grid-cols-[260px_1fr]">
         {/* ---- score + distribution ---- */}
@@ -157,10 +213,13 @@ export function ReviewsPanel({
         <div>
           {visible.length === 0 ? (
             <div className="rounded-xl border border-dashed border-hairline bg-subtle p-10 text-center">
-              <p className="text-[13px] font-bold text-headline">No reviews read yet</p>
+              <p className="text-[13px] font-bold text-headline">
+                {stars !== null ? `No ${stars}-star reviews` : "No reviews read yet"}
+              </p>
               <p className="mx-auto mt-1.5 max-w-sm text-[12.5px] leading-relaxed text-body">
-                We only show reviews we actually read off the store&apos;s product page. Open this
-                product once and we will pull them.
+                {stars !== null
+                  ? "Nobody we read rated it that way. Try another rating."
+                  : "We only show reviews we actually read off the store's product page. Open this product once and we will pull them."}
               </p>
             </div>
           ) : (

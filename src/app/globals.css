@@ -277,6 +277,13 @@ body {
 
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
+/* The search field cycles the store name it accepts. */
+@keyframes storeNameIn {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.store-name-slot { animation: storeNameIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
 /* --------------------------------------------------------------------------
    Hero floating cards — the DealSense 1.0 float loop, verbatim.
    -------------------------------------------------------------------------- */

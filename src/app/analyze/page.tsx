@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
 import { AnalyzeClient } from "@/components/analyzer/AnalyzeClient";
-import { StoreLogoRow } from "@/components/ui/StoreLogo";
-import { SUPPORTED_STORES } from "@/lib/db/shelves";
+import { StoreWordmarkRow } from "@/components/ui/StoreWordmark";
+import { trackedStores } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Check a deal",
@@ -64,10 +64,14 @@ export default async function AnalyzePage({
             <div className="rounded-2xl border border-hairline bg-card p-5 shadow-card">
               <h2 className="text-[13.5px] font-extrabold text-headline">We track</h2>
               <div className="mt-3">
-                <StoreLogoRow merchants={SUPPORTED_STORES.slice(0, 8)} size={30} />
+                <StoreWordmarkRow
+                  merchants={trackedStores.map((s) => s.key)}
+                  height={22}
+                />
               </div>
               <p className="mt-3 text-[11.5px] leading-snug text-muted">
-                +2,000 more stores via Cuelinks. Every product we list has real recorded price history.
+                Every product we list has real recorded price history. We compare the stores
+                side by side and tell you the cheapest place to buy.
               </p>
             </div>
 

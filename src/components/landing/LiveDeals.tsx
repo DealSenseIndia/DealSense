@@ -63,7 +63,7 @@ export function LiveDeals({
           {/* rows */}
           <ul className="divide-y divide-hairline">
             {rows.map((d) => (
-              <li key={`${d.slug}-${d.merchant}`}>
+              <li key={d.listingId ?? `${d.slug}-${d.merchant}`}>
                 <Link
                   href={`/product/${d.slug}`}
                   className="group grid grid-cols-[auto_1fr] items-center gap-3 px-3 py-2.5 transition-colors hover:bg-subtle sm:grid-cols-[auto_minmax(0,1fr)_auto_auto_auto_auto] sm:gap-4 sm:px-5"

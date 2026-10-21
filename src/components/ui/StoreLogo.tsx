@@ -6,19 +6,27 @@ import { cn } from "@/lib/utils";
  * No wordmarks — icons read cleanly at every size.
  */
 const ICONS: Record<string, string> = {
-  amazon: "/brand/stores/icons/amazon.png",
-  flipkart: "/brand/stores/icons/flipkart.png",
-  myntra: "/brand/stores/icons/myntra.png",
   tatacliq: "/brand/stores/icons/tatacliq.png",
   croma: "/brand/stores/icons/croma.png",
   reliancedigital: "/brand/stores/icons/reliancedigital.png",
   meesho: "/brand/stores/icons/meesho.png",
-  nykaa: "/brand/stores/icons/nykaa.png",
   firstcry: "/brand/stores/icons/firstcry.png",
   biba: "/brand/stores/icons/biba.png",
   ajio: "/brand/stores/icons/ajio.png",
   libas: "/brand/stores/icons/libas.png",
   shopsy: "/brand/stores/icons/shopsy.png",
+};
+
+/**
+ * The stores whose real brand mark is a transparent logo rather than an
+ * app tile — these are drawn by the store itself and read better than any
+ * square we could fake.
+ */
+const MARKS: Record<string, string> = {
+  amazon: "/brand/stores/phai/amazon.png",
+  flipkart: "/brand/stores/phai/flipkart.png",
+  myntra: "/brand/stores/phai/myntra.png",
+  nykaa: "/brand/stores/phai/nykaa.png",
 };
 
 const FALLBACK: Record<string, { short: string; color: string }> = {
@@ -49,7 +57,8 @@ export function StoreLogo({
   rounded?: boolean;
 }) {
   const key = merchant.toLowerCase().replace(/[^a-z]/g, "");
-  const src = ICONS[key];
+  const mark = MARKS[key];
+  const src = mark ?? ICONS[key];
 
   if (src) {
     return (
@@ -59,7 +68,11 @@ export function StoreLogo({
         alt={merchant}
         width={size}
         height={size}
-        className={cn("shrink-0 object-contain", rounded && "rounded-[22%]", className)}
+        className={cn(
+          "shrink-0 object-contain",
+          !mark && rounded && "rounded-[22%]",
+          className,
+        )}
         style={{ width: size, height: size }}
       />
     );
@@ -117,7 +130,6 @@ export function StoreLogoFill({
 }) {
   const key = merchant.toLowerCase().replace(/[^a-z]/g, "");
   const src = ICONS[key];
-
   if (src) {
     return (
       // eslint-disable-next-line @next/next/no-img-element

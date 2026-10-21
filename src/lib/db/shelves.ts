@@ -7,6 +7,7 @@ export interface ShelfProduct {
   title: string;
   imageUrl: string | null;
   merchant: string;
+  listingId: string;
   price: number;
   mrp: number | null;
   discountPct: number;
@@ -92,6 +93,7 @@ export async function getShelves(perCategory = 8, maxCategories = 0): Promise<Sh
       imageUrl: products.imageUrl,
       brand: products.brand,
       merchant: listings.merchant,
+      listingId: listings.id,
       price: listings.price,
       mrp: listings.mrp,
       rating: listings.rating,
@@ -124,6 +126,7 @@ export async function getShelves(perCategory = 8, maxCategories = 0): Promise<Sh
       title: r.title,
       imageUrl: r.imageUrl,
       merchant: r.merchant,
+      listingId: r.listingId,
       price,
       mrp,
       discountPct,

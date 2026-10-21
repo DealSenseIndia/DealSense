@@ -67,6 +67,7 @@ const PLATFORM_MERCHANTS: Record<string, string> = {
   biba: "biba",
   tatacliq: "tatacliq",
   reliancedigital: "reliancedigital",
+  nykaa: "nykaa",
 };
 
 async function main() {

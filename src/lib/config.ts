@@ -63,8 +63,7 @@ export const merchantMeta: Record<
 /**
  * Never-throw lookup for a store name that may not be in the table above
  * (a listing can name a store we have not seen before).
- */
-export function storeMeta(merchant: string): {
+ */export function storeMeta(merchant: string): {
   name: string;
   color: string;
   short: string;
@@ -78,6 +77,23 @@ export function storeMeta(merchant: string): {
     short: merchant.slice(0, 2).toUpperCase(),
   };
 }
+
+/**
+ * The stores we track, in the order we show them. Same list we publish in
+ * the footer and cycle through the search bar.
+ */
+export const trackedStores = [
+  { key: "amazon", name: "Amazon" },
+  { key: "flipkart", name: "Flipkart" },
+  { key: "myntra", name: "Myntra" },
+  { key: "nykaa", name: "Nykaa" },
+  { key: "firstcry", name: "FirstCry" },
+  { key: "reliancedigital", name: "Reliance Digital" },
+  { key: "biba", name: "Biba" },
+  { key: "libas", name: "Libas" },
+  { key: "tatacliq", name: "Tata CLiQ" },
+  { key: "ajio", name: "AJIO" },
+] as const;
 
 /** Freshness thresholds (ms). Drives the trust badges. */
 export const freshness = {

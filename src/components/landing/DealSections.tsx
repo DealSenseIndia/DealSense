@@ -65,7 +65,7 @@ export function DealsMovingNow({
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
           {deals.slice(0, 14).map((d) => (
             <Link
-              key={`${d.slug}-${d.merchant}`}
+              key={d.listingId ?? `${d.slug}-${d.merchant}`}
               href={`/product/${d.slug}`}
               className="group overflow-hidden rounded-2xl border border-hairline bg-card p-3 shadow-card transition-all hover:-translate-y-1 hover:border-emerald-400/50 hover:shadow-[0_18px_40px_-20px_rgba(16,185,129,0.55)]"
             >
@@ -146,7 +146,7 @@ export function AllTimeLows({ deals }: { deals: DealRow[] }) {
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
           {deals.slice(0, 12).map((d) => (
             <Link
-              key={`${d.slug}-${d.merchant}`}
+              key={d.listingId ?? `${d.slug}-${d.merchant}`}
               href={`/product/${d.slug}`}
               className="group overflow-hidden rounded-2xl border-2 border-red-400/40 bg-card p-3 shadow-card transition-all hover:-translate-y-1 hover:border-red-400"
             >
@@ -205,7 +205,7 @@ export function PlatformShelves({
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
                 {s.deals.map((d) => (
                   <Link
-                    key={`${d.slug}-${d.merchant}`}
+                    key={d.listingId ?? `${d.slug}-${d.merchant}`}
                     href={`/product/${d.slug}`}
                     className="group overflow-hidden rounded-2xl border border-hairline bg-card p-3 shadow-card transition-all hover:-translate-y-1 hover:border-emerald-400/50"
                   >

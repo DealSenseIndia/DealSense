@@ -4,13 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ClipboardPaste, Link2, Mic, Search } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { StorePlaceholder } from "@/components/ui/StorePlaceholder";
 import { cn } from "@/lib/utils";
-
-const STORES = [
-  { label: "Amazon", short: "a", bg: "#FF9900", fg: "#000" },
-  { label: "Flipkart", short: "f", bg: "#2874F0", fg: "#fff" },
-  { label: "Myntra", short: "M", bg: "#FF3F6C", fg: "#fff" },
-];
 
 const EXAMPLES = [
   "https://www.amazon.in/dp/B0DSKNKCYX",
@@ -68,26 +63,18 @@ export function UrlForm({
         <span className="pl-2.5 text-muted">
           <Link2 className="h-4.5 w-4.5" />
         </span>
-        <span className="hidden shrink-0 items-center gap-1 sm:flex">
-          {STORES.map((s) => (
-            <span
-              key={s.label}
-              title={s.label}
-              className="grid h-6 w-6 place-items-center rounded-md text-[9px] font-black"
-              style={{ background: s.bg, color: s.fg }}
-            >
-              {s.short}
-            </span>
-          ))}
+        <span className="relative flex min-w-0 flex-1 items-center">
+          <StorePlaceholder hidden={url.length > 0} className="px-1" />
+          <input
+            value={url}
+            onChange={(e) => update(e.target.value)}
+            placeholder=""
+            aria-label="Paste a product link or search for a product"
+            className="h-full min-w-0 flex-1 bg-transparent text-[14.5px] text-headline placeholder:text-muted focus:outline-none"
+            autoComplete="off"
+            spellCheck={false}
+          />
         </span>
-        <input
-          value={url}
-          onChange={(e) => update(e.target.value)}
-          placeholder="Paste a product link (Amazon, Flipkart, Myntra…)"
-          className="h-full min-w-0 flex-1 bg-transparent text-[14.5px] text-headline placeholder:text-muted focus:outline-none"
-          autoComplete="off"
-          spellCheck={false}
-        />
         <span className="hidden h-5 w-px bg-hairline sm:block" />
         <button
           type="button"

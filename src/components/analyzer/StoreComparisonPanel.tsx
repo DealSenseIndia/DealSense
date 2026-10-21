@@ -13,13 +13,67 @@ import { cn, formatINR, timeAgo } from "@/lib/utils";
 export function StoreComparisonPanel({
   comparison,
   primaryListingId,
+  compact = false,
 }: {
   comparison: StoreComparison;
   primaryListingId: string;
+  compact?: boolean;
 }) {
   const { offers, best, spread, storesCompared } = comparison;
 
   if (offers.length < 1) return null;
+
+  if (compact) {
+    return (
+      <div className="rounded-2xl border border-hairline bg-card p-3.5 shadow-card">
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-[11.5px] font-extrabold uppercase tracking-wider text-muted">
+            Compare stores
+          </span>
+          {best && storesCompared > 1 ? (
+            <span className="text-[11px] font-extrabold text-[var(--dw-green-mid)]">
+              save {formatINR(spread)} at {best.merchantName}
+            </span>
+          ) : null}
+        </div>
+
+        <div className="mt-2.5 space-y-1.5">
+          {offers.map((o) => (
+            <div
+              key={o.listingId}
+              className={cn(
+                "flex items-center gap-2 rounded-xl border px-2.5 py-2",
+                o.isBest
+                  ? "border-[var(--dw-green-border)] bg-[var(--dw-green-surface)]"
+                  : "border-hairline",
+              )}
+            >
+              <StoreLogo merchant={o.merchant} size={17} />
+              <span className="min-w-0 flex-1 truncate text-[12px] font-bold capitalize text-body">
+                {o.merchantName}
+              </span>
+              <span className="tabular shrink-0 text-[13px] font-extrabold text-headline">
+                {formatINR(o.landed)}
+              </span>
+              <a
+                href={o.affiliateUrl}
+                target="_blank"
+                rel="noopener noreferrer sponsored"
+                className={cn(
+                  "shrink-0 rounded-lg px-2.5 py-1 text-[11px] font-extrabold transition-colors",
+                  o.isBest
+                    ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                    : "border border-hairline text-secondary hover:border-emerald-400/60",
+                )}
+              >
+                Buy
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <section className="overflow-hidden rounded-2xl border border-hairline bg-card shadow-card">
