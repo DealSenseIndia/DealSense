@@ -55,6 +55,15 @@ site the user liked. One row per product:
 It is deliberately small — four rows collapsed, with a "Show N more" toggle to expand in
 place, and "View All" opening `/deals` (filter sidebar + 48-per-page "Show more").
 
+## Catalogue as it stands
+
+- **235 products / 313 listings / 32,805 recorded price points** across Amazon, Flipkart,
+  Myntra and Tata CLiQ.
+- **24 products are tracked on 2+ stores** (was 3) — those are the ones the compare panel
+  can price side by side.
+- `npm run merge` removes duplicate and empty product rows; `npm run compare` grows the
+  cross-store coverage; `npm run cleanup-orphans` drops rows left empty by a move.
+
 ## Cross-store price comparison
 
 `src/lib/db/compare.ts` prices the same product across every store we track it in, end to end:

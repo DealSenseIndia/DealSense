@@ -156,6 +156,41 @@ async function main() {
   }
 
   console.log(`\npaired ${paired} of ${tried} products across stores.`);
+
+  // Moving a listing leaves the product row it came from empty. Those rows
+  // would 404 and, worse, hold an identity key that could attract a new
+  // listing and split the history again. Hand the key to the survivor and
+  // delete the empty row.
+  const all = await db
+    .select({ id: products.id, slug: products.slug, identityKey: products.identityKey })
+    .from(products);
+  const withListings = new Set(
+    (
+      await db.select({ productId: listings.productId }).from(listings)
+    ).map((l) => l.productId),
+  );
+
+  let removed = 0;
+  for (const p of all) {
+    if (withListings.has(p.id)) continue;
+
+    // Give the identity key to a product that still has listings.
+    if (p.identityKey) {
+      const heir = all.find(
+        (o) => o.id !== p.id && o.identityKey === p.identityKey && withListings.has(o.id),
+      );
+      if (heir) {
+        await db
+          .update(products)
+          .set({ identityKey: p.identityKey })
+          .where(eq(products.id, heir.id));
+      }
+    }
+    await db.delete(products).where(eq(products.id, p.id));
+    removed++;
+  }
+  console.log(`removed ${removed} empty product row(s).`);
+
   await closePlaywright();
 }
 
