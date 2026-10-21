@@ -64,6 +64,43 @@ place, and "View All" opening `/deals` (filter sidebar + 48-per-page "Show more"
 - `npm run merge` removes duplicate and empty product rows; `npm run compare` grows the
   cross-store coverage; `npm run cleanup-orphans` drops rows left empty by a move.
 
+## The product page, rebuilt
+
+`src/components/analyzer/ProductDetail.tsx` assembles it:
+
+1. **ProductHeaderStrip** — image, title, the store's rating, tag chips, a green "Lowest Price
+   Ever" card, the current price with the discount, and a **dark DealSense Score card** with an
+   arc gauge (score/10 + a label). Stacks cleanly on a phone.
+2. Stat cards, the verdict panel, landed price, price-drop alert, market context.
+3. **PriceHistoryPanel** — the dark chart: one line per store (Amazon orange, Flipkart blue),
+   1M/3M/6M/1Y/2Y/ALL ranges, per-store toggles, **event callouts** placed in collision-free
+   lanes, a **dashed 30-day projection**, a **Deal Intensity** strip and a **Key Deal Events**
+   row. Scrolls sideways on a phone so it stays readable.
+4. **AnalysisCards** — Price Insights (highest, lowest, average, drop from the peak),
+   DealSense Analysis (plain-English findings), Our Recommendation (Buy Now / Hold Off / Skip
+   It) in a green gradient card.
+5. Compare store prices, customer reviews, similar products, and the evidence list.
+
+### The intelligence — `src/lib/engine/insights.ts`
+
+Everything is derived from the recorded points. Nothing is invented.
+
+- **Events** — launch price, lowest ever, biggest drop, biggest rise, and sale dips that sit
+  inside a real sale window (Big Billion Days, Great Indian Festival, Republic Day, Summer
+  Sale, Prime Day). A sale event is only claimed when the data shows a dip of at least 1.5%.
+- **Forecast** — find every past moment the price sat within 5% of today's, look at what it
+  did 30 days later, and take the median. Fewer than three past moments and we do not
+  forecast at all.
+- **Deal intensity** — how often the price fell in each stretch of the record, banded
+  low / medium / high.
+- **Findings** — against the 3-month average, distance from the 1-year low, whether prices
+  really do climb back up after a sale, what history says about the next 30 days, and the
+  current trend.
+- **Recommendation** — from the verdict and the score.
+
+The chart, the events, the insights and the forecast all read the **same** series, so the
+numbers on the page always agree with each other.
+
 ## Cross-store price comparison
 
 `src/lib/db/compare.ts` prices the same product across every store we track it in, end to end:

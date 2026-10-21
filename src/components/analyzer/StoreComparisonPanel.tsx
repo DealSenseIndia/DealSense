@@ -100,7 +100,7 @@ function OfferRow({ offer, primary }: { offer: StoreOffer; primary: boolean }) {
             ) : null}
             {offer.extraListings > 0 ? (
               <span className="rounded-full border border-hairline bg-card px-2 py-0.5 text-[9.5px] font-bold text-muted">
-                +{offer.extraListings} more here
+                {offer.extraListings} other listing{offer.extraListings === 1 ? "" : "s"} here
               </span>
             ) : null}
           </div>

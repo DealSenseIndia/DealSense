@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
-import { AnalysisView } from "@/components/analyzer/AnalysisView";
+import { ProductDetail } from "@/components/analyzer/ProductDetail";
 import { loadAnalysisBySlug } from "@/lib/engine/load";
 import { getReviewsForProduct } from "@/lib/db/queries";
 import { getSimilarProducts } from "@/lib/db/similar";
@@ -92,16 +92,15 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   };
 
   return (
-    <section className="relative py-10 sm:py-14">
+    <section className="relative py-8 sm:py-10">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
-      <Container>
-        <AnalysisView
+      <Container size="wide">
+        <ProductDetail
           result={result}
           reviews={reviews}
           similar={similar}
           comparison={comparison}
-          storeReviewCount={listing.reviewCount}
         />
       </Container>
     </section>

@@ -1,4 +1,4 @@
-import { and, desc, eq, isNotNull } from "drizzle-orm";
+import { and, asc, desc, eq, isNotNull } from "drizzle-orm";
 import { db, ensureSchema } from "./client";
 import { listings, observations, products } from "./schema";
 import { sameVariant, titleSimilarity, isSameProduct } from "../engine/identity";
@@ -6,6 +6,7 @@ import { computeLandedPrice } from "../engine/landedPrice";
 import { offerDiscount, offersFor } from "../engine/bankOffers";
 import { storeMeta, type Merchant, affiliate } from "../config";
 import { affiliateUrl } from "../merchants/resolve";
+import type { PricePoint } from "../types";
 
 export interface StoreOffer {
   listingId: string;
@@ -33,6 +34,8 @@ export interface StoreOffer {
   isBest: boolean;
   /** How many more listings this store has for the same product. */
   extraListings: number;
+  /** This store's own recorded price series, oldest -> newest. */
+  series: PricePoint[];
 }
 
 export interface StoreComparison {
@@ -42,6 +45,8 @@ export interface StoreComparison {
   spread: number;
   /** Which stores we actually hold a verified price for. */
   storesCompared: number;
+  /** Each store's own price series, so the chart can plot them side by side. */
+  seriesByStore: Record<string, PricePoint[]>;
 }
 
 /**
@@ -92,6 +97,24 @@ export async function getStoreComparison(
 
   const pool = sameVariantOnly.length ? sameVariantOnly : priced;
 
+  // Each listing's own recorded price series — this is what the chart draws.
+  const seriesRows = await db
+    .select({
+      listingId: observations.listingId,
+      price: observations.price,
+      at: observations.observedAt,
+    })
+    .from(observations)
+    .where(isNotNull(observations.price))
+    .orderBy(asc(observations.observedAt));
+  const seriesByListing = new Map<string, PricePoint[]>();
+  for (const s of seriesRows) {
+    if (!s.price || s.price <= 0) continue;
+    const list = seriesByListing.get(s.listingId) ?? [];
+    list.push({ t: s.at, price: s.price });
+    seriesByListing.set(s.listingId, list);
+  }
+
   const offers: StoreOffer[] = [];
 
   for (const l of pool) {
@@ -138,11 +161,12 @@ export async function getStoreComparison(
       observations: 0,
       isBest: false,
       extraListings: 0,
+      series: seriesByListing.get(l.id) ?? [],
     });
   }
 
   if (!offers.length) {
-    return { offers: [], best: null, spread: 0, storesCompared: 0 };
+    return { offers: [], best: null, spread: 0, storesCompared: 0, seriesByStore: {} };
   }
 
   // One row per store — the cheapest listing we hold there. A store can file
@@ -169,11 +193,18 @@ export async function getStoreComparison(
     o.savingVsWorst = Math.max(0, worst - o.landed);
   });
 
+  // The chart plots one line per store, using the longest series we hold.
+  const seriesByStore: Record<string, PricePoint[]> = {};
+  for (const o of rows) {
+    if (o.series.length > 1) seriesByStore[o.merchant] = o.series;
+  }
+
   return {
     offers: rows,
     best: rows[0],
     spread: Math.max(0, worst - rows[0].landed),
     storesCompared: rows.length,
+    seriesByStore,
   };
 }
 

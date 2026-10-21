@@ -35,7 +35,7 @@ export function Rating({
       </span>
       {showCount && reviewCount !== null && reviewCount !== undefined ? (
         <span className={cn("text-muted", size === "md" ? "text-[12px]" : "text-[10.5px]")}>
-          ({reviewCount.toLocaleString("en-IN")})
+          ({reviewCount >= 1000 ? `${(reviewCount / 1000).toFixed(1)}K` : reviewCount.toLocaleString("en-IN")})
         </span>
       ) : null}
     </span>
