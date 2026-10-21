@@ -19,3 +19,5 @@ tsconfig.tsbuildinfo
 # local dev logs
 devlog.txt
 *.log
+run-compare.cmd
+compare-merge.log
