@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/Container";
 import { StoreLogo } from "@/components/ui/StoreLogo";
 import { ProductThumb } from "@/components/ui/ProductThumb";
 import { Rating } from "@/components/ui/Rating";
+import { StoreCompareBadge } from "@/components/ui/StoreCompareBadge";
 import type { DealRow } from "@/lib/db/deals";
 import { cn, formatINR, timeAgo } from "@/lib/utils";
 
@@ -89,6 +90,16 @@ export function DealsMovingNow({
               <div className="mt-1">
                 <Rating rating={d.rating} reviewCount={d.reviewCount} />
               </div>
+              {d.stores > 1 ? (
+                <div className="mt-1">
+                  <StoreCompareBadge
+                    stores={d.stores}
+                    bestStore={d.bestStore}
+                    saving={d.storeSaving}
+                    compact
+                  />
+                </div>
+              ) : null}
               <div className="mt-1.5 flex items-center gap-1.5">
                 <StoreLogo merchant={d.merchant} size={15} />
                 <span className="tabular text-[12.5px] font-extrabold text-headline">

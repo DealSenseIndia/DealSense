@@ -113,11 +113,16 @@ function decodeEntities(s: string): string {
     .replace(/&nbsp;/g, " ");
 }
 
-/** Search Flipkart via its own page API. */
+/**
+ * Search Flipkart.
+ *
+ * Their own page API no longer serves search results to us, so we fall back to
+ * PriceHistory.ai's catalogue — it carries the real Flipkart product URLs and
+ * the real price. Same product, same store, no guessing.
+ */
 export async function searchFlipkart(query: string, limit = 12): Promise<SearchHit[]> {
   const { fetchFlipkartJson } = await import("./flipkartApi");
   const json = await fetchFlipkartJson(`/search?q=${encodeURIComponent(query)}`);
-  if (!json) return [];
 
   const out: SearchHit[] = [];
   const seen = new Set<string>();
@@ -149,7 +154,34 @@ export async function searchFlipkart(query: string, limit = 12): Promise<SearchH
     }
     for (const v of Object.values(n)) walk(v, depth + 1);
   }
-  walk(json);
+  if (json) walk(json);
+  if (out.length) return out.slice(0, limit);
+
+  // Fallback: PriceHistory.ai's Flipkart catalogue.
+  try {
+    const { searchPriceHistoryAi } = await import("../engine/providers/pricehistoryAi");
+    const hits = await searchPriceHistoryAi(query, limit * 2);
+    for (const h of hits) {
+      if (h.platform !== "flipkart" || !h.url || !h.title) continue;
+      const pid = h.url.match(/[?&]pid=([A-Z0-9]+)/)?.[1] ?? h.asin;
+      if (!pid || seen.has(pid)) continue;
+      seen.add(pid);
+      out.push({
+        merchant: "flipkart",
+        merchantProductId: pid,
+        title: h.title.replace(/\s+/g, " ").trim(),
+        price: h.current_price,
+        mrp: h.original_price,
+        rating: h.rating,
+        reviewCount: null,
+        imageUrl: h.image_url,
+        url: h.url,
+        inStock: h.in_stock,
+      });
+    }
+  } catch {
+    /* no flipkart results is fine — amazon still answers */
+  }
 
   return out.slice(0, limit);
 }

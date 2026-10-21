@@ -9,6 +9,7 @@ import { ProductThumb } from "@/components/ui/ProductThumb";
 import { Rating } from "@/components/ui/Rating";
 import { PriceSpark } from "@/components/ui/PriceSpark";
 import { NextCheckCountdown } from "@/components/ui/NextCheckCountdown";
+import { StoreCompareBadge } from "@/components/ui/StoreCompareBadge";
 import type { DealRow } from "@/lib/db/deals";
 import { cn, formatINR, timeAgo } from "@/lib/utils";
 
@@ -94,6 +95,12 @@ export function LiveDeals({
                           dropped {timeAgo(d.lastDropAt)}
                         </span>
                       ) : null}
+                      <StoreCompareBadge
+                        stores={d.stores}
+                        bestStore={d.bestStore}
+                        saving={d.storeSaving}
+                        compact
+                      />
                     </div>
                   </div>
 

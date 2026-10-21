@@ -55,6 +55,41 @@ site the user liked. One row per product:
 It is deliberately small — four rows collapsed, with a "Show N more" toggle to expand in
 place, and "View All" opening `/deals` (filter sidebar + 48-per-page "Show more").
 
+## Cross-store price comparison
+
+`src/lib/db/compare.ts` prices the same product across every store we track it in, end to end:
+base price, delivery, coupon and the best card offer. The winner is the store where you
+actually pay least.
+
+- Only the **same variant** is compared (never a different size or colour), and only stores
+  where we have read a real price.
+- One row per store — the cheapest listing there — with a "+N more here" chip when a store
+  files the product more than once.
+- `StoreComparisonPanel` on the product page shows each store with its rating, delivery and
+  card offer, a "Best price" crown on the winner and a plain-English line:
+  "Buy it on Flipkart and you pay Rs 18,999 - Rs 6,601 less than the most expensive store."
+- `StoreCompareBadge` on every card and row: "3 stores - save Rs 1,500 at Flipkart".
+- A "Tracked on 2+ stores" filter on /deals.
+
+**Growing the coverage**: `npm run compare -- --limit N`. Flipkart's own search API no longer
+serves results, so the bridge is **PriceHistory.ai** — its catalogue lists the same product on
+every platform with the real store URL. We take that URL, read the price off the store's own
+page, and attach the listing to the SAME product row (a match on a different product row is
+what used to hide these pairs).
+
+Also fixed: `searchFlipkart` was returning **nothing** — the live search only ever showed
+Amazon. It now falls back to PriceHistory.ai's Flipkart catalogue, so /search returns real
+Flipkart products with real prices.
+
+## The price history card
+
+`src/components/analyzer/PriceHistoryCard.tsx` replaced the old terminal chart. A green chart
+icon and "Price history" on the left, a green dot and a range picker on the right, three stat
+columns with dividers (CURRENT PRICE / 6-MONTH LOW / 6-MONTH AVG), a green line with a soft
+mint area fill, dashed gridlines, rounded Y-axis ticks, month labels, a "Low Rs X" pill on the
+lowest point and a pill on the current price. A green insight pill ("8% below 6-month
+average") and a "View full history" link. Light in light mode, dark in dark mode.
+
 ## Product page
 
 Fixed a 500 on every Myntra/Tata CLiQ product page: `merchantMeta` only had Amazon and

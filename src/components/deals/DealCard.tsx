@@ -5,6 +5,7 @@ import { StoreLogo } from "@/components/ui/StoreLogo";
 import { ProductThumb } from "@/components/ui/ProductThumb";
 import { Rating } from "@/components/ui/Rating";
 import { PriceSpark } from "@/components/ui/PriceSpark";
+import { StoreCompareBadge } from "@/components/ui/StoreCompareBadge";
 import { cn, formatINR } from "@/lib/utils";
 
 export function DealCard({ deal }: { deal: DealRow }) {
@@ -56,6 +57,15 @@ export function DealCard({ deal }: { deal: DealRow }) {
           <span className="tabular text-[10px] font-bold text-muted">
             {deal.observations} pts tracked
           </span>
+        </div>
+
+        <div className="mt-1.5">
+          <StoreCompareBadge
+            stores={deal.stores}
+            bestStore={deal.bestStore}
+            saving={deal.storeSaving}
+            compact
+          />
         </div>
 
         <div className="mt-2 flex items-center justify-between gap-2">

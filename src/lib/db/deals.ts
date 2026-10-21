@@ -30,6 +30,12 @@ export interface DealRow {
   lastSeenAt: number | null;
   /** Recent recorded prices, oldest -> newest. Drives the mini price-history graph. */
   spark: number[];
+  /** How many stores we track this product in. */
+  stores: number;
+  /** The store where this product costs the least, right now. */
+  bestStore: string | null;
+  /** How much you save by buying it at the cheapest store instead of this one. */
+  storeSaving: number;
 }
 
 /** Full stats for every listing that has a price. */
@@ -41,6 +47,7 @@ async function baseRows() {
       title: products.title,
       imageUrl: products.imageUrl,
       category: products.category,
+      productId: products.id,
       merchant: listings.merchant,
       price: listings.price,
       mrp: listings.mrp,
@@ -52,6 +59,30 @@ async function baseRows() {
     .from(products)
     .innerJoin(listings, eq(listings.productId, products.id))
     .where(isNotNull(listings.price));
+
+  // How many DIFFERENT stores carry each product, and the cheapest one.
+  const storeRows = await db
+    .select({ productId: listings.productId, merchant: listings.merchant, price: listings.price })
+    .from(listings)
+    .where(isNotNull(listings.price));
+  const storeCount = new Map<
+    string,
+    { merchants: Set<string>; best: string | null; bestPrice: number }
+  >();
+  for (const s of storeRows) {
+    if (!s.price || s.price <= 0) continue;
+    const e = storeCount.get(s.productId) ?? {
+      merchants: new Set<string>(),
+      best: null,
+      bestPrice: Number.POSITIVE_INFINITY,
+    };
+    e.merchants.add(s.merchant);
+    if (s.price < e.bestPrice) {
+      e.bestPrice = s.price;
+      e.best = s.merchant;
+    }
+    storeCount.set(s.productId, e);
+  }
 
   const out: DealRow[] = [];
   for (const r of rows) {
@@ -69,6 +100,7 @@ async function baseRows() {
       short: r.merchant.slice(0, 2).toUpperCase(),
       color: "#64748B",
     };
+    const stores = storeCount.get(r.productId);
     out.push({
       slug: r.slug,
       title: r.title,
@@ -92,6 +124,10 @@ async function baseRows() {
       dropAmount: null,
       lastSeenAt: obs.length ? Math.max(...obs.map((o) => o.t)) : null,
       spark: sparkSeries(obs.map((o) => o.price)),
+      stores: stores?.merchants.size ?? 1,
+      bestStore: stores?.best ?? null,
+      storeSaving:
+        stores && stores.best && stores.bestPrice < price ? price - stores.bestPrice : 0,
     });
   }
   return out;
@@ -245,6 +281,8 @@ export interface DealFilters {
   discountMin?: number;
   store?: string;
   category?: string;
+  /** Only products we track on more than one store. */
+  multiStore?: boolean;
   sort?: "drop" | "allTimeLow" | "discount" | "history";
 }
 
@@ -255,6 +293,7 @@ export async function getFilteredDeals(f: DealFilters): Promise<DealRow[]> {
   if (f.priceMax) out = out.filter((r) => r.price <= f.priceMax!);
   if (f.discountMin) out = out.filter((r) => r.discountPct >= f.discountMin!);
   if (f.store) out = out.filter((r) => r.merchant === f.store);
+  if (f.multiStore) out = out.filter((r) => r.stores > 1);
   if (f.category) {
     // Match on the taxonomy leaf, so "Smartphones" also picks up the
     // "APPLE Mobiles" / "OnePlus Mobiles" shelves a store files them under.
@@ -319,6 +358,7 @@ export async function getFilterFacets() {
     priceCaps,
     discounts,
     stores: [...storeMap.entries()].map(([merchant, count]) => ({ merchant, count })),
+    multiStore: rows.filter((r) => r.stores > 1).length,
     categories: [...catMap.entries()]
       .map(([category, count]) => ({ category, count }))
       .sort((a, b) => b.count - a.count),

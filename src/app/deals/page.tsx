@@ -21,6 +21,7 @@ export default async function DealsPage({
     discountMin?: string;
     store?: string;
     category?: string;
+    multiStore?: string;
     sort?: string;
   }>;
 }) {
@@ -29,10 +30,11 @@ export default async function DealsPage({
   const discountMin = sp.discountMin ? Number(sp.discountMin) : undefined;
   const store = sp.store;
   const category = sp.category;
+  const multiStore = sp.multiStore === "1";
   const sort = sp.sort as "drop" | "allTimeLow" | "discount" | "history" | undefined;
 
   const [deals, facets] = await Promise.all([
-    getFilteredDeals({ priceMax, discountMin, store, category, sort }),
+    getFilteredDeals({ priceMax, discountMin, store, category, multiStore, sort }),
     getFilterFacets(),
   ]);
 
@@ -53,7 +55,7 @@ export default async function DealsPage({
         <DealGrid
           deals={deals}
           facets={facets}
-          active={{ priceMax, discountMin, store, category, sort }}
+          active={{ priceMax, discountMin, store, category, multiStore, sort }}
         />
       </Container>
     </section>

@@ -20,7 +20,8 @@
     "scrape": "tsx scripts/refresh.ts",
     "shot": "node scripts/shot.mjs",
     "capture": "node scripts/capture.mjs",
-    "reviews": "tsx scripts/seed-reviews.ts"
+    "reviews": "tsx scripts/seed-reviews.ts",
+    "compare": "tsx scripts/compare-merge.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",

@@ -14,6 +14,7 @@ export interface Facets {
   discounts: { min: number; count: number }[];
   stores: { merchant: string; count: number }[];
   categories: { category: string; count: number }[];
+  multiStore: number;
 }
 
 export function DealGrid({
@@ -28,6 +29,7 @@ export function DealGrid({
     discountMin?: number;
     store?: string;
     category?: string;
+    multiStore?: boolean;
     sort?: string;
   };
 }) {
@@ -41,13 +43,23 @@ export function DealGrid({
     setShown(PAGE);
   }, [deals]);
 
-  function go(params: Record<string, string | number | undefined>) {
+  function go(params: Record<string, string | number | boolean | undefined>) {
     const q = new URLSearchParams();
-    for (const [k, v] of Object.entries(params)) if (v !== undefined && v !== "") q.set(k, String(v));
+    for (const [k, v] of Object.entries(params)) {
+      if (v === undefined || v === "" || v === false) continue;
+      q.set(k, String(v));
+    }
     router.push(`/deals${q.toString() ? `?${q}` : ""}`);
   }
 
-  const hasFilter = !!(active.priceMax || active.discountMin || active.store || active.category || active.sort);
+  const hasFilter = !!(
+    active.priceMax ||
+    active.discountMin ||
+    active.store ||
+    active.category ||
+    active.multiStore ||
+    active.sort
+  );
 
   const groups: {
     label: string;
@@ -101,6 +113,18 @@ export function DealGrid({
           active: active.category === f.category,
           onClick: () => go({ ...active, category: active.category === f.category ? undefined : f.category }),
         })),
+    },
+    {
+      label: "Compare",
+      items: [
+        {
+          key: "multi",
+          label: "Tracked on 2+ stores",
+          count: facets.multiStore,
+          active: active.multiStore === true,
+          onClick: () => go({ ...active, multiStore: active.multiStore ? undefined : "1" }),
+        },
+      ],
     },
     {
       label: "Sort",

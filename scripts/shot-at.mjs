@@ -10,10 +10,10 @@ const browser = await chromium.launch({ channel: "chrome" });
 const page = await browser.newPage({ viewport: { width: w, height: h } });
 await page.goto("http://localhost:3000" + path, { waitUntil: "domcontentloaded" });
 await page.waitForTimeout(2500);
-if (scrollTo) {
-  await page.evaluate((y) => window.scrollTo(0, y), scrollTo);
-  await page.waitForTimeout(1500);
-}
+await page.evaluate((y) => window.scrollTo(0, y), scrollTo);
+await page.waitForTimeout(1500);
+await page.evaluate(() => window.scrollTo(0, 0));
+await page.waitForTimeout(600);
 await page.screenshot({ path: out });
 console.log("ok", out);
 await browser.close();
