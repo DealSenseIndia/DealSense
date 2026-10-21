@@ -110,6 +110,7 @@ export interface AnalysisResult {
     merchant: Merchant;
     merchantProductId: string;
     url: string;
+    title: string | null;
     price: number | null;
     mrp: number | null;
     inStock: boolean | null;

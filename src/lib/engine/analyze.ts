@@ -245,6 +245,7 @@ export async function analyzeUrl(rawUrl: string): Promise<AnalysisResult> {
       merchant,
       merchantProductId: p.merchantProductId,
       url: listing.url,
+      title: p.title,
       price: p.price,
       mrp: p.mrp,
       inStock: p.inStock,

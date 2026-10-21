@@ -20,15 +20,17 @@ import { FreshnessBadge, Tag } from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
 import { StoreLogo } from "@/components/ui/StoreLogo";
 import { ProductThumb } from "@/components/ui/ProductThumb";
-import { PriceChart } from "./PriceChart";
+import { PriceHistoryCard } from "./PriceHistoryCard";
 import { LandedPriceCard } from "./LandedPriceCard";
 import { AlertPanel } from "./AlertPanel";
 import { buildStatCards, StatCards } from "./StatCards";
 import { BuyVerdictCard } from "./BuyVerdictCard";
 import { ReviewsPanel } from "./ReviewsPanel";
 import { SimilarProducts } from "./SimilarProducts";
+import { StoreComparisonPanel } from "./StoreComparisonPanel";
 import type { ReviewRow } from "@/lib/db/queries";
 import type { SimilarProduct } from "@/lib/db/similar";
+import type { StoreComparison } from "@/lib/db/compare";
 
 function freshnessOf(ts: number | null) {
   if (!ts) return "UNKNOWN" as const;
@@ -43,11 +45,13 @@ export function AnalysisView({
   result,
   reviews = [],
   similar = [],
+  comparison = null,
   storeReviewCount = null,
 }: {
   result: AnalysisResult;
   reviews?: ReviewRow[];
   similar?: SimilarProduct[];
+  comparison?: StoreComparison | null;
   storeReviewCount?: number | null;
 }) {
   const listing = result.listing!;
@@ -220,38 +224,11 @@ export function AnalysisView({
           />
 
           {/* chart */}
-          <div className="rounded-2xl border border-hairline bg-card p-4 shadow-card">
-            <div className="mb-3 flex items-center justify-between gap-2">
-              <h2 className="text-[12px] font-extrabold uppercase tracking-wider text-secondary">
-                Price history
-              </h2>
-              {bundle && bundle.source !== "none" && (
-                <span className="text-[10.5px] font-bold text-muted">
-                  Source:{" "}
-                  {bundle.source === "external" ? (
-                    <a
-                      href="https://pricehistory.ai"
-                      target="_blank"
-                      rel="noopener noreferrer nofollow"
-                      className="underline decoration-dotted underline-offset-2 hover:text-[var(--dw-green-mid)]"
-                    >
-                      PriceHistory.ai
-                    </a>
-                  ) : (
-                    bundle.sourceLabel
-                  )}
-                </span>
-              )}
-            </div>
-            <PriceChart
-              primary={points}
-              rival={result.history.rival}
-              primaryLabel={meta.name}
-              rivalLabel={rivalMeta?.name}
-              primaryColor="#F59E0B"
-              rivalColor="#3B82F6"
-            />
-          </div>
+          <PriceHistoryCard
+            points={points}
+            currentPrice={listing.price}
+            viewAllHref={`/product/${product.slug}?tab=history`}
+          />
 
           {/* market context */}
           {bundle?.market && (
@@ -391,6 +368,14 @@ export function AnalysisView({
         ))}
       </div>
 
+      {/* ---------- compare across stores ---------- */}
+      {comparison && comparison.offers.length > 0 ? (
+        <StoreComparisonPanel
+          comparison={comparison}
+          primaryListingId={listing.id}
+        />
+      ) : null}
+
       {/* ---------- customer reviews ---------- */}
       {reviews.length > 0 || storeReviewCount ? (
         <ReviewsPanel
@@ -399,7 +384,6 @@ export function AnalysisView({
           storeReviewCount={storeReviewCount}
         />
       ) : null}
-
       {/* ---------- similar products ---------- */}
       {similar.length > 0 && <SimilarProducts products={similar} />}
     </div>

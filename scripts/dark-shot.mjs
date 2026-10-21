@@ -1,0 +1,12 @@
+﻿import { chromium } from "playwright";
+const b = await chromium.launch({ channel: "chrome" });
+const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } });
+await ctx.addInitScript(() => { try { localStorage.setItem("dealsense_theme", "dark"); } catch {} });
+const p = await ctx.newPage();
+await p.goto("http://localhost:3000/product/nike-men-running-shoes-5189", { waitUntil: "domcontentloaded" });
+await p.waitForTimeout(2500);
+await p.evaluate(() => window.scrollTo(0, 850));
+await p.waitForTimeout(1500);
+await p.screenshot({ path: "D:/Gursher/DealSense/ph-dark.png" });
+console.log("ok");
+await b.close();

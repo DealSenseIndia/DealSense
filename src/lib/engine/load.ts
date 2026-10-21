@@ -45,6 +45,7 @@ export async function buildResultForListing(
       merchant,
       merchantProductId: listing.merchantProductId,
       url: listing.url,
+      title: listing.title,
       price: listing.price,
       mrp: listing.mrp,
       inStock: listing.inStock,

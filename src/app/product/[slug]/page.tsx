@@ -5,6 +5,7 @@ import { AnalysisView } from "@/components/analyzer/AnalysisView";
 import { loadAnalysisBySlug } from "@/lib/engine/load";
 import { getReviewsForProduct } from "@/lib/db/queries";
 import { getSimilarProducts } from "@/lib/db/similar";
+import { getStoreComparison } from "@/lib/db/compare";
 import { site } from "@/lib/config";
 import { formatINR } from "@/lib/utils";
 
@@ -48,9 +49,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const product = result.product;
   const listing = result.listing;
 
-  const [reviews, similar] = await Promise.all([
+  const [reviews, similar, comparison] = await Promise.all([
     getReviewsForProduct(product.id),
     getSimilarProducts(product.id, 8),
+    getStoreComparison(product.id, listing.id, listing.title),
   ]);
 
   const jsonLd = {
@@ -98,6 +100,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           result={result}
           reviews={reviews}
           similar={similar}
+          comparison={comparison}
           storeReviewCount={listing.reviewCount}
         />
       </Container>
