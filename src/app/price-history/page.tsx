@@ -64,7 +64,7 @@ export default async function PriceHistoryPage() {
             <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
               {lows.map((d) => (
                 <Link
-                  key={`${d.slug}-${d.merchant}`}
+                  key={d.listingId ?? `${d.slug}-${d.merchant}`}
                   href={`/product/${d.slug}`}
                   className="group overflow-hidden rounded-2xl border border-hairline bg-card p-3 shadow-card transition-all hover:-translate-y-1 hover:border-emerald-400/50"
                 >
@@ -116,7 +116,7 @@ export default async function PriceHistoryPage() {
           <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
             {latest.map((d) => (
               <Link
-                key={`${d.slug}-${d.merchant}`}
+                key={d.listingId ?? `${d.slug}-${d.merchant}`}
                 href={`/product/${d.slug}`}
                 className="group overflow-hidden rounded-2xl border border-hairline bg-card p-3 shadow-card transition-all hover:-translate-y-1 hover:border-emerald-400/50"
               >

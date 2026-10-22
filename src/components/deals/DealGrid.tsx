@@ -211,7 +211,7 @@ export function DealGrid({
           <>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
               {visible.map((d) => (
-                <DealCard key={`${d.slug}-${d.merchant}`} deal={d} />
+                <DealCard key={d.listingId ?? `${d.slug}-${d.merchant}`} deal={d} />
               ))}
             </div>
 

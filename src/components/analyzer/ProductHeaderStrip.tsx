@@ -100,7 +100,7 @@ export function ProductHeaderStrip({
     <div className="rounded-2xl border border-hairline bg-card p-4 shadow-card sm:p-5">
       <div className="flex items-start gap-4">
         <div className="min-w-0 flex-1">
-          <h1 className="text-[19px] font-extrabold leading-tight tracking-[-0.02em] text-headline sm:text-[25px]">
+          <h1 className="line-clamp-5 text-[17px] font-extrabold leading-snug tracking-[-0.02em] text-headline sm:line-clamp-none sm:text-[25px] sm:leading-tight">
             {title}
           </h1>
 

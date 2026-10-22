@@ -270,9 +270,9 @@ export function ReviewsPanel({
                   ) : null}
                   {r.variant ? (
                     <div className="mt-2.5 flex flex-wrap gap-1.5">
-                      {r.variant.split(" · ").map((v) => (
+                      {r.variant.split(" · ").map((v, vi) => (
                         <span
-                          key={v}
+                          key={`${v}-${vi}`}
                           className="rounded-md border border-hairline bg-card px-1.5 py-0.5 text-[10px] font-semibold text-muted"
                         >
                           {v}

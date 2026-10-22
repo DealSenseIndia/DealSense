@@ -6,6 +6,7 @@ import { loadAnalysisBySlug } from "@/lib/engine/load";
 import { getReviewsForProduct } from "@/lib/db/queries";
 import { getSimilarProducts } from "@/lib/db/similar";
 import { getStoreComparison } from "@/lib/db/compare";
+import { getVariantSiblings } from "@/lib/db/variantSiblings";
 import { site } from "@/lib/config";
 import { formatINR } from "@/lib/utils";
 
@@ -67,10 +68,11 @@ export default async function ProductPage({
     return { key, value };
   })();
 
-  const [reviews, similar, comparison] = await Promise.all([
+  const [reviews, similar, comparison, siblings] = await Promise.all([
     getReviewsForProduct(product.id),
     getSimilarProducts(product.id, 8),
     getStoreComparison(product.id, listing.id, listing.title),
+    getVariantSiblings(product.id, 8),
   ]);
 
   const jsonLd = {
@@ -119,6 +121,7 @@ export default async function ProductPage({
           reviews={reviews}
           similar={similar}
           comparison={comparison}
+          siblings={siblings}
           option={opt}
           slug={slug}
         />

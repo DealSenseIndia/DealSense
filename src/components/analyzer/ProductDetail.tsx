@@ -5,6 +5,8 @@ import type { AnalysisResult } from "@/lib/types";
 import type { ReviewRow } from "@/lib/db/queries";
 import type { SimilarProduct } from "@/lib/db/similar";
 import type { StoreComparison } from "@/lib/db/compare";
+import type { VariantSibling } from "@/lib/db/variantSiblings";
+import { parseTitleVariant } from "@/lib/db/variantSiblings";
 import { storeMeta } from "@/lib/config";
 import { buildOptions, variantMatches } from "@/lib/db/variants";
 import { formatINR, timeAgo } from "@/lib/utils";
@@ -18,7 +20,7 @@ import {
 } from "@/lib/engine/insights";
 import { ProductHeaderStrip } from "./ProductHeaderStrip";
 import { ProductGallery } from "./ProductGallery";
-import { PriceHistoryPanel, type StoreSeries } from "./PriceHistoryPanel";
+import { PriceHistoryPanel } from "./PriceHistoryPanel";
 import { AnalysisCards } from "./AnalysisCards";
 import { StoreComparisonPanel } from "./StoreComparisonPanel";
 import { ReviewsPanel } from "./ReviewsPanel";
@@ -34,6 +36,7 @@ export function ProductDetail({
   reviews,
   similar,
   comparison,
+  siblings = [],
   option = null,
   slug = "",
 }: {
@@ -41,6 +44,7 @@ export function ProductDetail({
   reviews: ReviewRow[];
   similar: SimilarProduct[];
   comparison: StoreComparison | null;
+  siblings?: VariantSibling[];
   option?: { key: string; value: string } | null;
   slug?: string;
 }) {
@@ -82,16 +86,9 @@ export function ProductDetail({
     current,
   );
 
-  // One line per store. The primary line is the merged record we analysed
-  // (our observations plus imported history) so the chart, the events, the
-  // insights and the forecast are all reading the same numbers.
-  const series: StoreSeries[] = [{ merchant: listing.merchant, points }];
-  for (const [merchant, pts] of Object.entries(comparison?.seriesByStore ?? {})) {
-    if (merchant !== listing.merchant && pts.length > 1) {
-      series.push({ merchant, points: pts });
-    }
-  }
-
+  // The history we analysed for this listing — our own observations plus the
+  // imported series, so the chart, the events and the insights all read the
+  // same numbers.
   const statCards = buildStatCards({
     current: listing.price,
     low: bundle?.low ?? null,
@@ -151,6 +148,12 @@ export function ProductDetail({
   // The product's real options — colours, sizes, configurations — read off
   // the variant each reviewer actually bought.
   const options = useMemo(() => buildOptions(reviews), [reviews]);
+
+  /** The colour this listing is, as the store named it. */
+  const currentColour = useMemo(
+    () => parseTitleVariant(product.title).colour,
+    [product.title],
+  );
 
   // Reviews for the option the visitor picked, if any.
   const shownReviews = useMemo(
@@ -212,13 +215,18 @@ export function ProductDetail({
             potentialSaving={potentialSaving}
           />
 
-          {/* the price history, right under the verdict */}
-          <PriceHistoryPanel
-            series={series}
-            events={events}
-            currentPrice={current}
-            stats={chartStats}
-          />
+          {/* the options this product actually comes in */}
+          {(options.dimensions.length > 0 || siblings.length > 0) && (
+            <ProductOptions
+              options={options}
+              siblings={siblings}
+              slug={slug}
+              active={option}
+              matched={shownReviews.length}
+              currentImageUrl={gallery[0] ?? null}
+              currentColour={currentColour}
+            />
+          )}
         </div>
 
         <div className="min-w-0 space-y-4">
@@ -244,16 +252,6 @@ export function ProductDetail({
             />
           ) : null}
 
-          {/* the options this product actually comes in */}
-          {options.dimensions.length > 0 ? (
-            <ProductOptions
-              options={options}
-              slug={slug}
-              active={option}
-              matched={shownReviews.length}
-            />
-          ) : null}
-
           {listing.price !== null && (
             <LandedPriceCard base={listing.price} merchant={listing.merchant} />
           )}
@@ -264,25 +262,16 @@ export function ProductDetail({
             currentPrice={listing.price}
             productTitle={product.title}
           />
-
-          {bundle?.market ? (
-            <div className="rounded-2xl border border-hairline bg-subtle p-4">
-              <div className="text-[12px] font-extrabold uppercase tracking-wider text-secondary">
-                Market context
-              </div>
-              <p className="mt-2 text-[13px] leading-relaxed text-body">
-                <strong className="text-headline">{bundle.market.category}</strong> typically cost{" "}
-                {formatINR(bundle.market.low)}–{formatINR(bundle.market.high)} across{" "}
-                {bundle.market.sampleSize} verified listings (median{" "}
-                {formatINR(bundle.market.median)}).
-              </p>
-            </div>
-          ) : null}
         </div>
       </div>
 
-      {/* ---------- the big price history ---------- */}
-
+      {/* ---------- the price history, full width ---------- */}
+      <PriceHistoryPanel
+        storeName={meta.name}
+        points={points}
+        events={events}
+        stats={chartStats}
+      />
       {/* ---------- insights ---------- */}
       <AnalysisCards
         bullets={bullets}
