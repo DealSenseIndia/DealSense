@@ -24,7 +24,6 @@ export function StoreComparisonPanel({
   if (offers.length < 1) return null;
 
   if (compact) {
-    const anyOffer = offers.some((o) => o.bankDiscount > 0);
     return (
       <div className="rounded-2xl border border-hairline bg-card p-4 shadow-card">
         <div className="flex items-center justify-between gap-2">
@@ -43,7 +42,7 @@ export function StoreComparisonPanel({
             <div
               key={o.listingId}
               className={cn(
-                "rounded-xl border px-3 py-2.5",
+                "flex items-center gap-2 rounded-xl border px-3 py-2.5",
                 o.isBest
                   ? "border-[var(--dw-green-border)] bg-[var(--dw-green-surface)]"
                   : "border-hairline",
@@ -55,7 +54,7 @@ export function StoreComparisonPanel({
                   {o.merchantName}
                 </span>
                 <span className="tabular shrink-0 text-[14px] font-extrabold text-headline">
-                  {formatINR(o.landed)}
+                  {formatINR(o.price)}
                 </span>
                 <a
                   href={o.affiliateUrl}
@@ -71,43 +70,12 @@ export function StoreComparisonPanel({
                   Buy
                 </a>
               </div>
-
-              {/* what makes up that price */}
-              <div className="mt-1.5 flex flex-wrap items-center gap-x-1.5 gap-y-1 pl-[25px] text-[10.5px] font-semibold text-muted">
-                <span className="tabular">Store {formatINR(o.price)}</span>
-                {o.shipping > 0 ? (
-                  <>
-                    <span>·</span>
-                    <span className="tabular">delivery {formatINR(o.shipping)}</span>
-                  </>
-                ) : null}
-                {o.coupon > 0 ? (
-                  <>
-                    <span>·</span>
-                    <span className="tabular text-[var(--dw-green-mid)]">
-                      coupon −{formatINR(o.coupon)}
-                    </span>
-                  </>
-                ) : null}
-                {o.bankDiscount > 0 ? (
-                  <>
-                    <span>·</span>
-                    <span className="inline-flex items-center gap-1 rounded-md bg-[var(--dw-green-surface)] px-1.5 py-[1px] font-extrabold text-[var(--dw-green-bot)]">
-                      <Wallet className="h-2.5 w-2.5" />
-                      card offer −{formatINR(o.bankDiscount)}
-                      {o.bestBankOffer ? ` (${o.bestBankOffer})` : ""}
-                    </span>
-                  </>
-                ) : null}
-              </div>
             </div>
           ))}
         </div>
 
         <p className="mt-2.5 text-[10.5px] leading-snug text-muted">
-          {anyOffer
-            ? "Each price includes delivery, coupons and the best card offer we know of for that store."
-            : "Each price includes delivery and any coupon the store is running."}
+          Current market price per store, before any card offer.
         </p>
       </div>
     );

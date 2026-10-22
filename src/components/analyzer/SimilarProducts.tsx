@@ -20,7 +20,7 @@ export function SimilarProducts({ products }: { products: SimilarProduct[] }) {
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-hairline bg-subtle px-5 py-4">
         <div>
           <h2 className="text-[17px] font-extrabold tracking-tight text-headline">
-            Similar products
+            Similar to smartphones
           </h2>
           <p className="mt-0.5 text-[12.5px] text-muted">
             Same brand or same category — every one with a recorded price history.

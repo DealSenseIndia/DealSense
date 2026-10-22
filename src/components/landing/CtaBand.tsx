@@ -42,7 +42,7 @@ export function CtaBand() {
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <Link
                 href="/analyze"
-                className="inline-flex h-12 items-center gap-2 rounded-xl bg-emerald-600 px-6 text-[13.5px] font-extrabold text-white shadow-[0_10px_26px_-12px_rgba(5,150,105,0.95)] transition-all hover:-translate-y-0.5 hover:bg-emerald-700"
+                className="inline-flex h-12 items-center gap-2 rounded-xl bg-gradient-brand px-6 text-[#04140d] font-extrabold shadow-[0_10px_26px_-12px_rgba(16,185,129,0.85)] transition-all hover:-translate-y-0.5 hover:brightness-105"
               >
                 Analyze a product link
                 <ArrowRight className="h-4 w-4" />

@@ -19,8 +19,7 @@ import {
   recommendation,
 } from "@/lib/engine/insights";
 import { ProductHeaderStrip } from "./ProductHeaderStrip";import { ProductGallery } from "./ProductGallery";
-import { PriceHistoryPanel } from "./PriceHistoryPanel";
-import type { StoreHistory } from "./PriceHistoryChart";
+import { PriceHistoryPanel, type StoreSeries } from "./PriceHistoryPanel";
 import { AnalysisCards } from "./AnalysisCards";
 import { StoreComparisonPanel } from "./StoreComparisonPanel";
 import { ReviewsPanel } from "./ReviewsPanel";
@@ -31,8 +30,6 @@ import { BuyVerdictCard } from "./BuyVerdictCard";
 import { LandedPriceCard } from "./LandedPriceCard";
 import { AlertPanel } from "./AlertPanel";
 
-/** The chart palette — emerald first, then a few friends that sit beside it. */
-const CHART_COLORS = ["#10b981", "#38bdf8", "#f59e0b", "#a78bfa", "#f43f5e", "#14b8a6"];
 
 export function ProductDetail({
   result,
@@ -104,32 +101,15 @@ export function ProductDetail({
   const scoreOutOfTen = result.verdict?.score ?? null;
   const lowestEver = insights.lowest;
 
-  // One series per store we hold a real history for. The store we analysed
-  // comes first and carries our merged record; the rest are the other
-  // stores' own series.
-  const chartStores: StoreHistory[] = useMemo(() => {
-    const out: StoreHistory[] = [
-      {
-        merchant: listing.merchant,
-        name: meta.name,
-        color: CHART_COLORS[0],
-        points,
-      },
-    ];
-    let i = 1;
-    for (const [merchant, pts] of Object.entries(comparison?.seriesByStore ?? {})) {
-      if (merchant === listing.merchant || pts.length < 2) continue;
-      const m = storeMeta(merchant);
-      out.push({
-        merchant,
-        name: m.name,
-        color: CHART_COLORS[i % CHART_COLORS.length],
-        points: pts,
-      });
-      i += 1;
+  // One line per store. The primary line is the merged record we analysed
+  // (our observations plus imported history) so the chart, the events, the
+  // insights and the forecast are all reading the same numbers.
+  const series: StoreSeries[] = [{ merchant: listing.merchant, points }];
+  for (const [merchant, pts] of Object.entries(comparison?.seriesByStore ?? {})) {
+    if (merchant !== listing.merchant && pts.length > 1) {
+      series.push({ merchant, points: pts });
     }
-    return out;
-  }, [points, listing.merchant, meta.name, comparison]);
+  }
 
   // The numbers that used to sit in their own boxes, now on the chart.
   const chartStats = [
@@ -265,7 +245,7 @@ export function ProductDetail({
             href={listing.affiliateUrl}
             target="_blank"
             rel="noopener noreferrer sponsored"
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 text-[14px] font-extrabold text-white shadow-[0_10px_26px_-12px_rgba(5,150,105,0.95)] transition-all hover:-translate-y-0.5 hover:bg-emerald-700"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-brand px-5 text-[#04140d] font-extrabold shadow-[0_10px_26px_-12px_rgba(16,185,129,0.85)] transition-all hover:-translate-y-0.5 hover:brightness-105"
           >
             View deal on {meta.name}
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
@@ -297,8 +277,11 @@ export function ProductDetail({
 
       {/* ---------- the price history, full width ---------- */}
       <PriceHistoryPanel
-        stores={chartStores}
+        series={series}
         events={events}
+        forecast={forecast}
+        intensity={intensity}
+        currentPrice={current}
         stats={chartStats}
       />
       {/* ---------- insights ---------- */}

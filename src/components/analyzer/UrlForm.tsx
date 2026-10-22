@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ClipboardPaste, Link2, Mic, Search } from "lucide-react";
+import { ClipboardPaste, Link2, Mic, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { StorePlaceholder } from "@/components/ui/StorePlaceholder";
 import { cn } from "@/lib/utils";
@@ -91,9 +91,22 @@ export function UrlForm({
         >
           <Mic className="h-4 w-4" />
         </button>
-        <Button type="submit" size={size === "lg" ? "md" : "sm"} variant="gradient" disabled={loading}>
-          {loading ? <span className="h-4 w-4 animate-pulse" /> : <Search className="h-4 w-4" />}
-          Analyse
+        <Button type="submit" size={size === "lg" ? "md" : "sm"} variant="gradient" disabled={loading} className="relative overflow-hidden">
+          {loading ? (
+            <>
+              <span className="mr-2 animate-pulse flex items-center gap-1.5">
+                <Sparkles className="h-4 w-4 text-white" /> Analysing
+              </span>
+              <span className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/40 to-transparent animate-[shimmer_2s_infinite]"></span>
+            </>
+          ) : (
+            <>
+              <span className="mr-2 inline-flex items-center gap-1.5">
+                <Sparkles className="h-4 w-4" />
+                Analyse
+              </span>
+            </>
+          )}
         </Button>
       </form>
 
