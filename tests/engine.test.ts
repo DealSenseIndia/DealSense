@@ -110,6 +110,20 @@ test("sameVariant rejects different capacities", () => {
   assert.equal(sameVariant("Sony WH-1000XM5", "Sony WH-1000XM5"), true);
 });
 
+test("sameVariant survives a store title that got cut short", () => {
+  // Flipkart truncates: "(12 GB ...more" leaves a bare 12 GB where the RAM is.
+  const amazon =
+    "Samsung Galaxy S25 Ultra 5G AI Smartphone (Titanium Silverblue, 12GB RAM, 256GB Storage), 200MP Camera";
+  const flipkart = "Samsung Galaxy S25 Ultra 5G (Titanium Silverblue, 256 GB) (12 GB ...more";
+  assert.equal(sameVariant(amazon, flipkart), true);
+});
+
+test("sameVariant still rejects a genuinely different size", () => {
+  const a = "Samsung Galaxy S25 Ultra (Titanium Silverblue, 12GB RAM, 256GB Storage)";
+  const b = "Samsung Galaxy S25 Ultra (Titanium Silverblue, 12GB RAM, 512GB Storage)";
+  assert.equal(sameVariant(a, b), false);
+});
+
 test("variantTokens extracts capacity and connectivity", () => {
   const t = variantTokens("Redmi Note 13 Pro 5G 8GB RAM 256GB");
   assert.ok(t.includes("256gb"));

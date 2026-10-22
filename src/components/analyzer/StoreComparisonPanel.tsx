@@ -24,8 +24,9 @@ export function StoreComparisonPanel({
   if (offers.length < 1) return null;
 
   if (compact) {
+    const anyOffer = offers.some((o) => o.bankDiscount > 0);
     return (
-      <div className="rounded-2xl border border-hairline bg-card p-3.5 shadow-card">
+      <div className="rounded-2xl border border-hairline bg-card p-4 shadow-card">
         <div className="flex items-center justify-between gap-2">
           <span className="text-[11.5px] font-extrabold uppercase tracking-wider text-muted">
             Compare stores
@@ -37,40 +38,77 @@ export function StoreComparisonPanel({
           ) : null}
         </div>
 
-        <div className="mt-2.5 space-y-1.5">
+        <div className="mt-3 space-y-2">
           {offers.map((o) => (
             <div
               key={o.listingId}
               className={cn(
-                "flex items-center gap-2 rounded-xl border px-2.5 py-2",
+                "rounded-xl border px-3 py-2.5",
                 o.isBest
                   ? "border-[var(--dw-green-border)] bg-[var(--dw-green-surface)]"
                   : "border-hairline",
               )}
             >
-              <StoreLogo merchant={o.merchant} size={17} />
-              <span className="min-w-0 flex-1 truncate text-[12px] font-bold capitalize text-body">
-                {o.merchantName}
-              </span>
-              <span className="tabular shrink-0 text-[13px] font-extrabold text-headline">
-                {formatINR(o.landed)}
-              </span>
-              <a
-                href={o.affiliateUrl}
-                target="_blank"
-                rel="noopener noreferrer sponsored"
-                className={cn(
-                  "shrink-0 rounded-lg px-2.5 py-1 text-[11px] font-extrabold transition-colors",
-                  o.isBest
-                    ? "bg-emerald-600 text-white hover:bg-emerald-700"
-                    : "border border-hairline text-secondary hover:border-emerald-400/60",
-                )}
-              >
-                Buy
-              </a>
+              <div className="flex items-center gap-2">
+                <StoreLogo merchant={o.merchant} size={17} />
+                <span className="min-w-0 flex-1 truncate text-[12.5px] font-bold text-body">
+                  {o.merchantName}
+                </span>
+                <span className="tabular shrink-0 text-[14px] font-extrabold text-headline">
+                  {formatINR(o.landed)}
+                </span>
+                <a
+                  href={o.affiliateUrl}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className={cn(
+                    "shrink-0 rounded-lg px-2.5 py-1 text-[11px] font-extrabold transition-colors",
+                    o.isBest
+                      ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                      : "border border-hairline text-secondary hover:border-emerald-400/60",
+                  )}
+                >
+                  Buy
+                </a>
+              </div>
+
+              {/* what makes up that price */}
+              <div className="mt-1.5 flex flex-wrap items-center gap-x-1.5 gap-y-1 pl-[25px] text-[10.5px] font-semibold text-muted">
+                <span className="tabular">Store {formatINR(o.price)}</span>
+                {o.shipping > 0 ? (
+                  <>
+                    <span>·</span>
+                    <span className="tabular">delivery {formatINR(o.shipping)}</span>
+                  </>
+                ) : null}
+                {o.coupon > 0 ? (
+                  <>
+                    <span>·</span>
+                    <span className="tabular text-[var(--dw-green-mid)]">
+                      coupon −{formatINR(o.coupon)}
+                    </span>
+                  </>
+                ) : null}
+                {o.bankDiscount > 0 ? (
+                  <>
+                    <span>·</span>
+                    <span className="inline-flex items-center gap-1 rounded-md bg-[var(--dw-green-surface)] px-1.5 py-[1px] font-extrabold text-[var(--dw-green-bot)]">
+                      <Wallet className="h-2.5 w-2.5" />
+                      card offer −{formatINR(o.bankDiscount)}
+                      {o.bestBankOffer ? ` (${o.bestBankOffer})` : ""}
+                    </span>
+                  </>
+                ) : null}
+              </div>
             </div>
           ))}
         </div>
+
+        <p className="mt-2.5 text-[10.5px] leading-snug text-muted">
+          {anyOffer
+            ? "Each price includes delivery, coupons and the best card offer we know of for that store."
+            : "Each price includes delivery and any coupon the store is running."}
+        </p>
       </div>
     );
   }

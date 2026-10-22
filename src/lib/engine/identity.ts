@@ -141,12 +141,20 @@ export function buildIdentityKey(title: string): string {
 
 /** True unless the two titles state the same spec with different values. */
 export function sameVariant(a: string, b: string): boolean {
-  const sa = storageOf(a);
-  const sb = storageOf(b);
-  if (sa.length && sb.length && sa.join("|") !== sb.join("|")) return false;
-
   const ra = ramOf(a);
   const rb = ramOf(b);
+  const sa = storageOf(a);
+  const sb = storageOf(b);
+
+  // A store title that got cut short can leave a bare "12 GB" sitting in the
+  // storage list when it is really the RAM ("(12 GB ...more"). If the other
+  // side calls that number its RAM, treat it as RAM on both sides — otherwise
+  // the same phone looks like a different variant and drops out of the
+  // comparison.
+  const sa2 = sa.filter((t) => !rb.includes(t) || ra.includes(t));
+  const sb2 = sb.filter((t) => !ra.includes(t) || rb.includes(t));
+
+  if (sa2.length && sb2.length && sa2.join("|") !== sb2.join("|")) return false;
   if (ra.length && rb.length && ra.join("|") !== rb.join("|")) return false;
 
   return true;

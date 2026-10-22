@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { Receipt, Sparkles } from "lucide-react";
 import type { LandedPrice, Merchant } from "@/lib/types";
-import { offersFor } from "@/lib/engine/bankOffers";
+import { offerDiscount, offersFor } from "@/lib/engine/bankOffers";
 import { computeLandedPrice } from "@/lib/engine/landedPrice";
 import { cn, formatINR } from "@/lib/utils";
 
@@ -20,14 +20,28 @@ export function LandedPriceCard({
   // null = no offer applied. Nothing is discounted until the shopper asks for it.
   const [selected, setSelected] = useState<string | null>(null);
 
+  /** The card that gives the most off, and by how much. */
+  const { bestId, bestBank, bestDiscount } = useMemo(() => {
+    const ranked = offers
+      .map((o) => ({ o, d: offerDiscount(o, base) }))
+      .filter((x) => x.d > 0)
+      .sort((a, b) => b.d - a.d);
+    const top = ranked[0];
+    return {
+      bestId: top?.o.id ?? null,
+      bestBank: top?.o.bank ?? "",
+      bestDiscount: top?.d ?? 0,
+    };
+  }, [offers, base]);
+
   const landed: LandedPrice = useMemo(
     () =>
       computeLandedPrice({
         base,
         shipping,
         merchant: merchant as never,
-        selectedOfferId: selected && selected !== "best" ? selected : undefined,
-        autoBestOffer: selected === "best",
+        selectedOfferId: selected,
+        autoBestOffer: false,
       }),
     [base, shipping, merchant, selected],
   );
@@ -91,42 +105,52 @@ export function LandedPriceCard({
           >
             No offer
           </button>
-          {offers.length > 0 ? (
-            <button
-              onClick={() => setSelected("best")}
-              title="The biggest discount we know of for this card"
-              className={cn(
-                "rounded-full border px-2.5 py-1 text-[11.5px] font-bold transition-colors",
-                selected === "best"
-                  ? "border-emerald-accent bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]"
-                  : "border-hairline text-secondary hover:border-hairline-strong",
-              )}
-            >
-              Best offer
-            </button>
-          ) : null}
-          {offers.map((o) => (
-            <button
-              key={o.id}
-              onClick={() => setSelected(o.id)}
-              title={`${o.card} · ${o.label}`}
-              className={cn(
-                "rounded-full border px-2.5 py-1 text-[11.5px] font-bold transition-colors",
-                selected === o.id
-                  ? "border-emerald-accent bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]"
-                  : "border-hairline text-secondary hover:border-hairline-strong",
-              )}
-            >
-              {o.bank}
-            </button>
-          ))}
+          {offers.map((o) => {
+            const d = offerDiscount(o, base);
+            const on = selected === o.id;
+            return (
+              <button
+                key={o.id}
+                onClick={() => setSelected(o.id)}
+                title={`${o.card} · ${o.label}${d > 0 ? ` — saves ${formatINR(d)}` : " — no discount on this price"}`}
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11.5px] font-bold transition-colors",
+                  on
+                    ? "border-emerald-accent bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]"
+                    : "border-hairline text-secondary hover:border-hairline-strong",
+                )}
+              >
+                {o.bank}
+                {d > 0 ? (
+                  <span className="tabular text-[10px] font-extrabold text-[var(--dw-green-mid)]">
+                    −{formatINR(d)}
+                  </span>
+                ) : null}
+                {bestId === o.id ? (
+                  <span className="rounded bg-emerald-500/15 px-1 py-[1px] text-[9px] font-black uppercase tracking-wide text-[var(--dw-green-mid)]">
+                    Best
+                  </span>
+                ) : null}
+              </button>
+            );
+          })}
         </div>
         {selected === null ? (
           <p className="mt-2 text-[11px] leading-snug text-muted">
             We do not apply a card offer unless you pick one. The price above is what the store is
             showing.
           </p>
-        ) : null}
+        ) : bestId === selected ? (
+          <p className="mt-2 text-[11px] leading-snug text-[var(--dw-green-mid)]">
+            That is the best offer we know of for this price — nothing else beats it.
+          </p>
+        ) : (
+          <p className="mt-2 text-[11px] leading-snug text-muted">
+            {bestId
+              ? `${bestBank} gives more — ${formatINR(bestDiscount)} off instead.`
+              : "Pick a card to see what it saves."}
+          </p>
+        )}
       </div>
     </div>
   );

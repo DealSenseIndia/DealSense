@@ -52,6 +52,14 @@ export function ProductOptions({
       <div key={dim.key}>
         <div className="flex items-baseline gap-1.5">
           <span className="text-[12.5px] font-extrabold text-headline">{dim.label}:</span>
+          {dim.key === "styleName" ? (
+            <span
+              title="The name the store gives this version of the product — the pack, bundle or offer it comes with."
+              className="text-[10.5px] font-semibold text-muted"
+            >
+              as the store names it
+            </span>
+          ) : null}
         </div>
         <div className="mt-1.5 flex flex-wrap gap-2">
           {shown.map((v) => {

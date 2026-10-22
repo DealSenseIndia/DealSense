@@ -18,9 +18,9 @@ import {
   priceInsights,
   recommendation,
 } from "@/lib/engine/insights";
-import { ProductHeaderStrip } from "./ProductHeaderStrip";
-import { ProductGallery } from "./ProductGallery";
+import { ProductHeaderStrip } from "./ProductHeaderStrip";import { ProductGallery } from "./ProductGallery";
 import { PriceHistoryPanel } from "./PriceHistoryPanel";
+import type { StoreHistory } from "./PriceHistoryChart";
 import { AnalysisCards } from "./AnalysisCards";
 import { StoreComparisonPanel } from "./StoreComparisonPanel";
 import { ReviewsPanel } from "./ReviewsPanel";
@@ -30,6 +30,9 @@ import { StatCards, buildStatCards } from "./StatCards";
 import { BuyVerdictCard } from "./BuyVerdictCard";
 import { LandedPriceCard } from "./LandedPriceCard";
 import { AlertPanel } from "./AlertPanel";
+
+/** The chart palette — emerald first, then a few friends that sit beside it. */
+const CHART_COLORS = ["#10b981", "#38bdf8", "#f59e0b", "#a78bfa", "#f43f5e", "#14b8a6"];
 
 export function ProductDetail({
   result,
@@ -100,6 +103,33 @@ export function ProductDetail({
 
   const scoreOutOfTen = result.verdict?.score ?? null;
   const lowestEver = insights.lowest;
+
+  // One series per store we hold a real history for. The store we analysed
+  // comes first and carries our merged record; the rest are the other
+  // stores' own series.
+  const chartStores: StoreHistory[] = useMemo(() => {
+    const out: StoreHistory[] = [
+      {
+        merchant: listing.merchant,
+        name: meta.name,
+        color: CHART_COLORS[0],
+        points,
+      },
+    ];
+    let i = 1;
+    for (const [merchant, pts] of Object.entries(comparison?.seriesByStore ?? {})) {
+      if (merchant === listing.merchant || pts.length < 2) continue;
+      const m = storeMeta(merchant);
+      out.push({
+        merchant,
+        name: m.name,
+        color: CHART_COLORS[i % CHART_COLORS.length],
+        points: pts,
+      });
+      i += 1;
+    }
+    return out;
+  }, [points, listing.merchant, meta.name, comparison]);
 
   // The numbers that used to sit in their own boxes, now on the chart.
   const chartStats = [
@@ -206,15 +236,6 @@ export function ProductDetail({
         </div>
 
         <div className="min-w-0 space-y-5">
-          <BuyVerdictCard
-            verdict={result.verdict ?? null}
-            evidence={bundle?.evidence ?? []}
-            currentPrice={listing.price}
-            median={bundle?.median90 ?? bundle?.median ?? null}
-            trackingDays={trackingDays}
-            potentialSaving={potentialSaving}
-          />
-
           {/* the options this product actually comes in */}
           {(options.dimensions.length > 0 || siblings.length > 0) && (
             <ProductOptions
@@ -227,6 +248,15 @@ export function ProductDetail({
               currentColour={currentColour}
             />
           )}
+
+          <BuyVerdictCard
+            verdict={result.verdict ?? null}
+            evidence={bundle?.evidence ?? []}
+            currentPrice={listing.price}
+            median={bundle?.median90 ?? bundle?.median ?? null}
+            trackingDays={trackingDays}
+            potentialSaving={potentialSaving}
+          />
         </div>
 
         <div className="min-w-0 space-y-4">
@@ -267,8 +297,7 @@ export function ProductDetail({
 
       {/* ---------- the price history, full width ---------- */}
       <PriceHistoryPanel
-        storeName={meta.name}
-        points={points}
+        stores={chartStores}
         events={events}
         stats={chartStats}
       />
