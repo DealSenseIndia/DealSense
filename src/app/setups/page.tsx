@@ -13,7 +13,7 @@ import {
 import { Container } from "@/components/ui/Container";
 import { GeminiIcon } from "@/components/ui/GeminiIcon";
 import { SetupsClient } from "@/components/setups/SetupsClient";
-import { buildSetup } from "@/lib/setups/engine";
+import { buildSetupCached } from "@/lib/setups/cached";
 import { getSetupMeta } from "@/lib/setups/meta";
 import {
   isSetupSpace,
@@ -97,12 +97,7 @@ export default async function SetupsPage({
       ? rawBudget
       : chosenTemplate?.budget ?? template?.budget ?? space.budgetDefault;
 
-  const initial = await buildSetup({
-    space: spaceKey,
-    budget: requestedBudget,
-    owned,
-    style,
-  }).catch(() => null);
+  const initial = await buildSetupCached(spaceKey, requestedBudget, style, owned).catch(() => null);
 
   const initialTier = SETUP_TIERS.some((t) => t.key === sp.tier) ? sp.tier! : "value";
   const showcaseTier =
