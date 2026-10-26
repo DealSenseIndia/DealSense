@@ -1,32 +1,35 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AlertCircle } from "lucide-react";
 import type { AnalysisResult } from "@/lib/types";
+import type { AnalyzePhase } from "@/components/ui/AnalyzingButton";
 import { AnalysisView } from "./AnalysisView";
 import { UrlForm } from "./UrlForm";
-
-const LOADING_STEPS = [
-  "Resolving the link…",
-  "Reading the live price…",
-  "Loading the price history…",
-  "Comparing stores…",
-  "Scoring the deal…",
-];
 
 export function AnalyzeClient({ initialUrl }: { initialUrl?: string }) {
   const [url, setUrl] = useState(initialUrl ?? "");
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState(0);
+  const [phase, setPhase] = useState<AnalyzePhase>("idle");
+  const [shakeKey, setShakeKey] = useState(0);
+  const resultTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (resultTimer.current) clearTimeout(resultTimer.current);
+    };
+  }, []);
 
   const run = useCallback(async (target: string) => {
-    setLoading(true);
+    if (resultTimer.current) {
+      clearTimeout(resultTimer.current);
+      resultTimer.current = null;
+    }
+    setPhase("loading");
     setError(null);
     setResult(null);
-    setStep(0);
-    const timer = setInterval(() => setStep((s) => (s + 1) % LOADING_STEPS.length), 1400);
+
     try {
       const res = await fetch("/api/analyze", {
         method: "POST",
@@ -35,15 +38,23 @@ export function AnalyzeClient({ initialUrl }: { initialUrl?: string }) {
       });
       const data: AnalysisResult = await res.json();
       if (!data.ok) {
+        setPhase("idle");
         setError(data.message || "We could not analyse that link.");
+        setShakeKey((k) => k + 1);
       } else {
-        setResult(data);
+        // Let the button finish its check animation before swapping in the
+        // analysis — the result appears under the form it was submitted from.
+        setPhase("success");
+        resultTimer.current = setTimeout(() => {
+          setResult(data);
+          setPhase("idle");
+          resultTimer.current = null;
+        }, 800);
       }
     } catch {
+      setPhase("idle");
       setError("Network error. Please try again.");
-    } finally {
-      clearInterval(timer);
-      setLoading(false);
+      setShakeKey((k) => k + 1);
     }
   }, []);
 
@@ -56,19 +67,23 @@ export function AnalyzeClient({ initialUrl }: { initialUrl?: string }) {
 
   return (
     <div className="space-y-6">
-      <UrlForm defaultValue={url} onValue={setUrl} />
+      <div>
+        <UrlForm
+          defaultValue={url}
+          onValue={setUrl}
+          onAnalyse={run}
+          phase={phase}
+          shakeKey={shakeKey}
+        />
+        {phase === "loading" ? (
+          <p className="mt-3 flex items-center gap-2 text-[11.5px] font-semibold text-muted" aria-live="polite">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+            Reading the real store page. We never guess a price.
+          </p>
+        ) : null}
+      </div>
 
-      {loading && (
-        <div className="rounded-2xl border border-hairline bg-card p-10 text-center shadow-card">
-          <Loader2 className="mx-auto h-7 w-7 animate-spin text-emerald-500" />
-          <p className="mt-4 text-[13.5px] font-bold text-headline">{LOADING_STEPS[step]}</p>
-          <div className="mx-auto mt-6 h-1.5 w-64 overflow-hidden rounded-full bg-elevated">
-            <div className="h-full w-1/2 animate-marquee rounded-full bg-gradient-to-r from-emerald-500 to-teal-400" />
-          </div>
-        </div>
-      )}
-
-      {error && !loading && (
+      {error && phase === "idle" && (
         <div className="flex items-start gap-3 rounded-2xl border border-amber-400/30 bg-amber-500/10 p-5 text-amber-700 dark:text-amber-300">
           <AlertCircle className="mt-0.5 h-4.5 w-4.5 shrink-0" />
           <div>
@@ -82,7 +97,7 @@ export function AnalyzeClient({ initialUrl }: { initialUrl?: string }) {
         </div>
       )}
 
-      {result && !loading && <AnalysisView result={result} />}
+      {result && phase === "idle" && <AnalysisView result={result} />}
     </div>
   );
 }

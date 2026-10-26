@@ -117,7 +117,7 @@ export async function getSimilarProducts(
       reason = "Same brand";
     } else {
       score = 50;
-      reason = `Similar to ${myLeaf ?? me.category ?? "this product"}`;
+      reason = "Same category";
     }
 
     // Prefer products we have actually tracked more of.

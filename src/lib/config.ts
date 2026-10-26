@@ -7,7 +7,7 @@ export const site = {
   name: "DealSense",
   tagline: "Know if it's actually a good deal.",
   description:
-    "Paste any Amazon or Flipkart link and DealSense tells you whether to BUY, WAIT or AVOID — with real price history, true landed cost and cross-store comparison.",
+    "Paste a product link from Amazon, Flipkart, Myntra, Nykaa and more — DealSense tells you whether to BUY, WAIT or AVOID, with real price history and cross-store comparison.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://dealsense.in",
   locale: "en_IN",
   twitter: "@dealsense",
@@ -39,6 +39,23 @@ export const supportedMerchants = [
   "shopsy",
 ] as const;
 export type Merchant = (typeof supportedMerchants)[number];
+
+/**
+ * Stores whose price series the public tracker publishes. Every one of these
+ * can appear in deals, shelves, search and Smart Setups.
+ */
+export const priceTrackedMerchants = [
+  "amazon",
+  "flipkart",
+  "myntra",
+  "nykaa",
+  "firstcry",
+  "reliancedigital",
+  "biba",
+  "libas",
+  "tatacliq",
+  "ajio",
+] as const;
 
 /** Store display details. Lookup is always safe — see `storeMeta()`. */
 export const merchantMeta: Record<

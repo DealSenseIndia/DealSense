@@ -11,6 +11,7 @@ import { PriceSpark } from "@/components/ui/PriceSpark";
 import { NextCheckCountdown } from "@/components/ui/NextCheckCountdown";
 import { StoreCompareBadge } from "@/components/ui/StoreCompareBadge";
 import type { DealRow } from "@/lib/db/deals";
+import { storeMeta } from "@/lib/config";
 import { cn, formatINR, timeAgo } from "@/lib/utils";
 
 /**
@@ -95,6 +96,12 @@ export function LiveDeals({
                           dropped {timeAgo(d.lastDropAt)}
                         </span>
                       ) : null}
+                      {/* On mobile the dedicated store column is hidden, so the
+                          store still needs to be visible here. */}
+                      <span className="inline-flex items-center gap-1 text-[10.5px] font-semibold text-muted sm:hidden">
+                        <StoreLogo merchant={d.merchant} size={12} />
+                        <span>{storeMeta(d.merchant).name}</span>
+                      </span>
                       <StoreCompareBadge
                         stores={d.stores}
                         bestStore={d.bestStore}
@@ -102,6 +109,15 @@ export function LiveDeals({
                         compact
                       />
                     </div>
+                    {/* the recorded line, visible on phones too */}
+                    {d.spark.length > 1 ? (
+                      <div className="mt-1.5 flex items-center gap-2 sm:hidden">
+                        <PriceSpark series={d.spark} width={132} height={24} />
+                        <span className="text-[9px] font-extrabold uppercase tracking-wider text-muted">
+                          price line
+                        </span>
+                      </div>
+                    ) : null}
                   </div>
 
                   {/* price history graph */}
@@ -112,7 +128,9 @@ export function LiveDeals({
                   {/* store */}
                   <div className="hidden items-center gap-1.5 sm:flex">
                     <StoreLogo merchant={d.merchant} size={16} />
-                    <span className="text-[11.5px] font-bold capitalize text-body">{d.merchant}</span>
+                    <span className="text-[11.5px] font-bold text-body">
+                      {storeMeta(d.merchant).name}
+                    </span>
                   </div>
 
                   {/* price */}

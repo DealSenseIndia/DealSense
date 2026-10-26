@@ -87,7 +87,7 @@
   --bg-card: #ffffff;
   --bg-elevated: #f1f5f9;
   --bg-terminal: #0f172a;
-  --bg-header: rgba(255, 255, 255, 0.88);
+  --bg-header: rgba(255, 255, 255, 0.96);
 
   --text-headline: #0f172a;
   --text-body: #334155;
@@ -125,7 +125,7 @@
   --bg-card: #0d1424;
   --bg-elevated: #131c2e;
   --bg-terminal: #060a13;
-  --bg-header: rgba(5, 7, 13, 0.82);
+  --bg-header: rgba(5, 7, 13, 0.93);
 
   --text-headline: #f8fafc;
   --text-body: #cbd5e1;
@@ -227,7 +227,7 @@ body {
 /* Signature gradients (PriceHistory.ai inspired)                        */
 /* ------------------------------------------------------------------ */
 @utility bg-gradient-brand {
-  background-image: linear-gradient(100deg, #047857 0%, #10b981 42%, #2dd4bf 100%);
+  background-image: linear-gradient(135deg, #10b981 0%, #059669 100%);
 }
 @utility bg-gradient-iris {
   background-image: linear-gradient(100deg, #059669 0%, #10b981 50%, #5eead4 100%);
@@ -249,6 +249,191 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* ------------------------------------------------------------------ */
+/* The one emerald action button.                                      */
+/* The gradient, border and glow are shared by every primary CTA so a   */
+/* "Buy", "Analyse" or "Set alert" always looks like the same brand.    */
+/* ------------------------------------------------------------------ */
+.btn-cta {
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  background-image: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow:
+    0 4px 14px rgba(16, 185, 129, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background-image 180ms ease,
+    border-color 180ms ease;
+}
+.btn-cta:hover {
+  background-image: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
+  border-color: rgba(74, 222, 128, 0.6);
+  box-shadow:
+    0 6px 20px rgba(34, 197, 94, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+.btn-cta:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+}
+.btn-cta:focus-visible {
+  outline: 2px solid rgba(52, 211, 153, 0.65);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Smart Setups budget slider. The emerald fill is driven by --pct so   */
+/* it repaints instantly as the number moves — no extra layers.         */
+/* ------------------------------------------------------------------ */
+.setup-range {
+  --pct: 0%;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.setup-range::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border-card);
+  background:
+    linear-gradient(90deg, #10b981 0%, #047857 100%) 0 / var(--pct) 100% no-repeat,
+    var(--bg-elevated);
+}
+.setup-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 20px;
+  width: 20px;
+  margin-top: -7px;
+  border-radius: 999px;
+  border: 3px solid var(--bg-card);
+  background-image: linear-gradient(135deg, #10b981 0%, #047857 100%);
+  box-shadow: 0 2px 9px rgba(16, 185, 129, 0.5);
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.setup-range:hover::-webkit-slider-thumb {
+  transform: scale(1.08);
+}
+.setup-range:active::-webkit-slider-thumb {
+  transform: scale(1.16);
+  box-shadow: 0 2px 14px rgba(16, 185, 129, 0.65);
+}
+.setup-range:focus-visible {
+  outline: 2px solid rgba(52, 211, 153, 0.65);
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+.setup-range::-moz-range-track {
+  height: 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border-card);
+  background: var(--bg-elevated);
+}
+.setup-range::-moz-range-progress {
+  height: 8px;
+  border-radius: 999px;
+  background-image: linear-gradient(90deg, #10b981 0%, #047857 100%);
+}
+.setup-range::-moz-range-thumb {
+  height: 14px;
+  width: 14px;
+  border-radius: 999px;
+  border: 3px solid var(--bg-card);
+  background-image: linear-gradient(135deg, #10b981 0%, #047857 100%);
+  box-shadow: 0 2px 9px rgba(16, 185, 129, 0.5);
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Analyse button — the 1.0 morph: analyse -> checking store -> done.   */
+/* ------------------------------------------------------------------ */
+.analyze-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 148px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.analyze-btn:disabled {
+  opacity: 1;
+  cursor: wait;
+}
+.analyze-btn[data-phase="loading"] {
+  border-color: rgba(74, 222, 128, 0.55);
+}
+.analyze-btn[data-phase="success"] {
+  background-image: linear-gradient(135deg, #10b981 0%, #047857 100%);
+  border-color: #34d399;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+}
+.analyze-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  animation: analyze-in 180ms ease-out both;
+}
+.analyze-progress {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+.analyze-btn[data-phase="loading"] .analyze-progress,
+.analyze-btn[data-phase="success"] .analyze-progress {
+  opacity: 1;
+}
+.analyze-progress-rect {
+  stroke-dasharray: 410;
+  stroke-dashoffset: 410;
+}
+.analyze-btn[data-phase="loading"] .analyze-progress-rect {
+  animation: analyze-trace 2200ms ease-in-out forwards;
+}
+.analyze-btn[data-phase="success"] .analyze-progress-rect {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 200ms ease-out;
+}
+.analyze-check {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: analyze-check 320ms 60ms ease-out forwards;
+}
+.analyze-shake {
+  animation: analyze-shake 380ms ease-in-out;
+}
+@keyframes analyze-in {
+  from { opacity: 0; transform: translateY(4px) scale(0.94); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes analyze-trace {
+  from { stroke-dashoffset: 410; }
+  to { stroke-dashoffset: 80; }
+}
+@keyframes analyze-check {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes analyze-shake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-8px); }
+  32% { transform: translateX(7px); }
+  49% { transform: translateX(-5px); }
+  66% { transform: translateX(4px); }
+  82% { transform: translateX(-2px); }
 }
 @utility bg-wash {
   background-image:
@@ -306,6 +491,19 @@ body {
 .float-anim-c { animation: floatCardMotionC 4.6s ease-in-out infinite 1.2s; }
 
 .floating-overlay-card:hover { animation-play-state: paused !important; }
+
+/* --------------------------------------------------------------------------
+   Hero artwork on the dark theme.
+
+   The illustration ships with its own pale mint halo. On the light hero that
+   halo is the background, so it disappears. On the dark hero it reads as a
+   pasted rectangle, so the outer edge is feathered away — the centre, the
+   girl and the floating cards stay untouched.
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] .hero-art {
+  -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 48%, #000 55%, transparent 90%);
+  mask-image: radial-gradient(ellipse 90% 90% at 50% 48%, #000 55%, transparent 90%);
+}
 
 @media (prefers-reduced-motion: reduce) {
   .float-anim-a, .float-anim-b, .float-anim-c { animation: none !important; }

@@ -4,8 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Bell, ChevronRight, Link2, Search, ShieldCheck } from "lucide-react";
+import { Bell, ChevronRight, Link2, ShieldCheck } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { AnalyzingButton } from "@/components/ui/AnalyzingButton";
 import { StoreLogo } from "@/components/ui/StoreLogo";
 import { StorePlaceholder } from "@/components/ui/StorePlaceholder";
 import { cn, formatINR } from "@/lib/utils";
@@ -41,13 +42,18 @@ const POPULAR = [
 
 export function Hero({ featured }: { featured?: FeaturedDeal | null }) {
   const [url, setUrl] = useState("");
+  const [pending, setPending] = useState(false);
   const router = useRouter();
 
   function go(value: string) {
     const v = value.trim();
-    if (!v) return;
-    if (/^https?:\/\//i.test(v)) router.push(`/analyze?url=${encodeURIComponent(v)}`);
-    else router.push(`/search?q=${encodeURIComponent(v)}`);
+    if (!v || pending) return;
+    if (/^https?:\/\//i.test(v)) {
+      setPending(true);
+      window.setTimeout(() => router.push(`/analyze?url=${encodeURIComponent(v)}`), 350);
+    } else {
+      router.push(`/search?q=${encodeURIComponent(v)}`);
+    }
   }
 
   return (
@@ -121,13 +127,11 @@ export function Hero({ featured }: { featured?: FeaturedDeal | null }) {
                 </span>
               </span>
 
-              <button
-                type="submit"
-                className="inline-flex h-[42px] w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-brand px-5 text-[#04140d] font-bold shadow-[0_8px_22px_-10px_rgba(16,185,129,0.85)] transition-all hover:-translate-y-0.5 hover:brightness-105 sm:w-auto"
-              >
-                <Search className="h-4 w-4" />
-                Analyze Deal
-              </button>
+              <AnalyzingButton
+                phase={pending ? "loading" : "idle"}
+                idleLabel="Analyze deal"
+                className="h-[42px] w-full shrink-0 px-5 text-[13.5px] sm:w-auto"
+              />
             </form>
 
             {/* popular */}
@@ -157,7 +161,7 @@ export function Hero({ featured }: { featured?: FeaturedDeal | null }) {
               width={1672}
               height={941}
               priority
-              className="relative z-[2] mx-auto block h-auto w-full max-w-[500px] shrink-0 object-contain max-sm:max-w-[290px]"
+              className="hero-art relative z-[2] mx-auto block h-auto w-full max-w-[500px] shrink-0 object-contain max-sm:max-w-[290px]"
             />
 
             {/* FLOAT 1 — Price History */}

@@ -1,6 +1,9 @@
-import { getDueListings } from "../db/queries";
+import { getDueListings, updateListingState } from "../db/queries";
 import { analyzeUrl } from "./analyze";
 import { workerConfig } from "../config";
+
+const RETRY_BASE_MS = 30 * 60 * 1000;
+const RETRY_MAX_MS = 24 * 60 * 60 * 1000;
 
 export interface RefreshReport {
   startedAt: number;
@@ -20,7 +23,8 @@ function spacing(merchant: string): number {
 
 /**
  * One controlled refresh cycle. Sequential by design — never hammers a merchant.
- * A failed scrape produces no observation; the listing is simply rescheduled.
+ * A failed scrape produces no observation and the listing backs off, so one
+ * blocked product can never sit at the front of every queue forever.
  */
 export async function runRefreshCycle(limit = 5): Promise<RefreshReport> {
   const startedAt = Date.now();
@@ -38,10 +42,13 @@ export async function runRefreshCycle(limit = 5): Promise<RefreshReport> {
       } else {
         failed++;
         results.push({ listingId: listing.id, url: listing.url, status: res.status });
+        await rescheduleFailed(listing, res.status);
       }
     } catch (err) {
       failed++;
-      results.push({ listingId: listing.id, url: listing.url, status: `ERROR: ${(err as Error).message}` });
+      const message = `ERROR: ${(err as Error).message}`;
+      results.push({ listingId: listing.id, url: listing.url, status: message });
+      await rescheduleFailed(listing, message);
     }
     await sleep(spacing(listing.merchant));
   }
@@ -54,4 +61,14 @@ export async function runRefreshCycle(limit = 5): Promise<RefreshReport> {
     failed,
     results,
   };
+}
+
+async function rescheduleFailed(listing: { id: string; failureCount: number }, message: string) {
+  const failures = (listing.failureCount ?? 0) + 1;
+  const wait = Math.min(RETRY_MAX_MS, RETRY_BASE_MS * 2 ** Math.min(5, failures - 1));
+  await updateListingState(listing.id, {
+    nextCheckAt: Date.now() + wait,
+    failureCount: failures,
+    lastError: message.slice(0, 500),
+  });
 }

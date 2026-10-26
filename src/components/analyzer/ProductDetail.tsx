@@ -9,10 +9,9 @@ import type { VariantSibling } from "@/lib/db/variantSiblings";
 import { parseTitleVariant } from "@/lib/db/variantSiblings";
 import { storeMeta } from "@/lib/config";
 import { buildOptions, variantMatches } from "@/lib/db/variants";
-import { formatINR, timeAgo } from "@/lib/utils";
+import { timeAgo } from "@/lib/utils";
 import {
   analysisBullets,
-  dealIntensity,
   findEvents,
   forecastNext,
   priceInsights,
@@ -67,7 +66,6 @@ export function ProductDetail({
   const current = listing.price ?? points[points.length - 1]?.price ?? null;
   const events = findEvents(points);
   const forecast = forecastNext(points, current);
-  const intensity = dealIntensity(points);
   const insights = priceInsights(points);
   const bullets = analysisBullets({
     points,
@@ -98,9 +96,6 @@ export function ProductDetail({
     hasHistory,
   });
 
-  const scoreOutOfTen = result.verdict?.score ?? null;
-  const lowestEver = insights.lowest;
-
   // One line per store. The primary line is the merged record we analysed
   // (our observations plus imported history) so the chart, the events, the
   // insights and the forecast are all reading the same numbers.
@@ -110,43 +105,6 @@ export function ProductDetail({
       series.push({ merchant, points: pts });
     }
   }
-
-  // The numbers that used to sit in their own boxes, now on the chart.
-  const chartStats = [
-    {
-      label: "Now",
-      value: current !== null ? formatINR(current) : "—",
-      tone: "plain" as const,
-    },
-    {
-      label: "Lowest ever",
-      value: insights.lowest ? formatINR(insights.lowest.price) : "—",
-      note: insights.lowest
-        ? new Date(insights.lowest.at).toLocaleDateString("en-IN", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-          })
-        : undefined,
-      tone: "good" as const,
-    },
-    {
-      label: "Average",
-      value: insights.average ? formatINR(insights.average) : "—",
-      note: insights.highest ? `peak ${formatINR(insights.highest.price)}` : undefined,
-      tone: "muted" as const,
-    },
-    {
-      label: "From peak",
-      value:
-        insights.dropFromHighPct !== null ? `${insights.dropFromHighPct}%` : "—",
-      note:
-        insights.dropFromHighAmount && insights.dropFromHighAmount > 0
-          ? `${formatINR(insights.dropFromHighAmount)} off the top`
-          : undefined,
-      tone: "good" as const,
-    },
-  ];
 
   // Every photo the store published for this product.
   const gallery = useMemo(() => {
@@ -245,7 +203,7 @@ export function ProductDetail({
             href={listing.affiliateUrl}
             target="_blank"
             rel="noopener noreferrer sponsored"
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-brand px-5 text-[#04140d] font-extrabold shadow-[0_10px_26px_-12px_rgba(16,185,129,0.85)] transition-all hover:-translate-y-0.5 hover:brightness-105"
+            className="btn-cta flex h-12 w-full items-center justify-center gap-2 rounded-xl px-5 font-extrabold"
           >
             View deal on {meta.name}
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
@@ -276,14 +234,7 @@ export function ProductDetail({
       </div>
 
       {/* ---------- the price history, full width ---------- */}
-      <PriceHistoryPanel
-        series={series}
-        events={events}
-        forecast={forecast}
-        intensity={intensity}
-        currentPrice={current}
-        stats={chartStats}
-      />
+      <PriceHistoryPanel series={series} events={events} />
       {/* ---------- insights ---------- */}
       <AnalysisCards
         bullets={bullets}
@@ -296,24 +247,29 @@ export function ProductDetail({
       {/* ---------- compare stores is up in the right rail ---------- */}
 
       {/* ---------- reviews ---------- */}
-      {reviews.length > 0 || listing.reviewCount ? (
-        <div id="reviews">
-          {option ? (
-            <p className="mb-3 rounded-xl border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-4 py-2.5 text-[12.5px] font-semibold text-[var(--dw-green-bot)]">
-              Showing reviews for the selected option only —{" "}
-              {shownReviews.length} of {reviews.length} reviews.
-            </p>
-          ) : null}
-          <ReviewsPanel
-            reviews={shownReviews}
-            storeRating={listing.rating}
-            storeReviewCount={listing.reviewCount}
-          />
-        </div>
-      ) : null}
+      {/* Always rendered: an honest empty state with a store link beats a
+          section that silently vanishes and looks like a broken page. */}
+      <div id="reviews">
+        {option ? (
+          <p className="mb-3 rounded-xl border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-4 py-2.5 text-[12.5px] font-semibold text-[var(--dw-green-bot)]">
+            Showing reviews for the selected option only —{" "}
+            {shownReviews.length} of {reviews.length} reviews.
+          </p>
+        ) : null}
+        <ReviewsPanel
+          reviews={shownReviews}
+          storeRating={listing.rating}
+          storeReviewCount={listing.reviewCount}
+          productId={product.id}
+          storeHref={`/go/${listing.id}`}
+          storeName={meta.name}
+        />
+      </div>
 
       {/* ---------- similar ---------- */}
-      {similar.length > 0 ? <SimilarProducts products={similar} /> : null}
+      {similar.length > 0 ? (
+        <SimilarProducts products={similar} category={product.category} />
+      ) : null}
 
       {/* ---------- how we know ---------- */}
       <div className="rounded-2xl border border-hairline bg-card p-5 shadow-card">
@@ -342,10 +298,33 @@ export function ProductDetail({
             </li>
           ))}
         </ul>
-        <p className="mt-4 border-t border-hairline pt-3 text-[11px] text-muted">
-          Last checked on {listing.lastCheckedAt ? timeAgo(listing.lastCheckedAt) : "the store"} ·{" "}
-          {meta.name} · {points.length} price points on record
-        </p>
+        {bundle?.importedPoints ? (
+          <p className="mt-3 text-[11px] leading-relaxed text-muted">
+            {bundle.importedPoints} of these points come from DealSense&apos;s tracked price record.
+            New direct store readings keep extending the series.
+          </p>
+        ) : null}
+        {(() => {
+          // The newest recorded price is the only date we can honestly stand
+          // behind. `lastCheckedAt` moves whenever we refresh, even when the
+          // store had nothing new to say; the series' last point is the price.
+          const latestPoint = points.length ? points[points.length - 1].t : null;
+          const ageDays = latestPoint ? Math.floor((Date.now() - latestPoint) / 86400000) : null;
+          const stale = ageDays !== null && ageDays >= 3;
+          return (
+            <p
+              className={`mt-4 border-t border-hairline pt-3 text-[11px] leading-relaxed ${
+                stale ? "font-semibold text-amber-700 dark:text-amber-300" : "text-muted"
+              }`}
+            >
+              {stale
+                ? `Newest price on record is ${ageDays} days old — it may have moved since. `
+                : `Price last recorded ${latestPoint ? timeAgo(latestPoint) : "—"}. `}
+              {points.length} points from {meta.name}
+              {listing.lastCheckedAt ? ` · refreshed ${timeAgo(listing.lastCheckedAt)}` : ""}
+            </p>
+          );
+        })()}
       </div>
     </div>
   );

@@ -65,7 +65,7 @@ export default async function TrackPage() {
             </p>
             <Link
               href="/deals"
-              className="mt-6 inline-flex h-10 items-center gap-1.5 rounded-xl bg-gradient-brand px-5 text-[12.5px] font-extrabold text-white"
+              className="btn-cta mt-6 inline-flex h-10 items-center gap-1.5 rounded-xl px-5 text-[12.5px] font-extrabold"
             >
               <Plus className="h-3.5 w-3.5" /> Browse products
             </Link>

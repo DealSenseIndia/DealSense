@@ -8,9 +8,8 @@ const base =
   "relative inline-flex items-center justify-center gap-2 rounded-btn font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/50 disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-brand-500 text-white hover:bg-brand-600",
-  gradient:
-    "bg-gradient-brand text-[#04140d] shadow-[0_10px_30px_-12px_rgba(16,185,129,0.85)] hover:shadow-[0_16px_40px_-12px_rgba(34,211,238,0.9)] hover:-translate-y-0.5 hover:brightness-105",
+  primary: "btn-cta",
+  gradient: "btn-cta",
   iris: "bg-gradient-iris text-white shadow-[0_10px_30px_-12px_rgba(99,102,241,0.9)] hover:-translate-y-0.5 hover:brightness-105",
   secondary: "bg-terminal text-white hover:opacity-90",
   outline:

@@ -48,7 +48,7 @@ export async function fetchProduct(rawUrl: string): Promise<FetchOutcome> {
       status: merchant ? "INVALID_URL" : "UNSUPPORTED_MERCHANT",
       message: merchant
         ? "Could not find a product id in that link."
-        : "Only Amazon.in and Flipkart links are supported right now.",
+        : "We can read Amazon.in and Flipkart links directly today. For Myntra, Nykaa, FirstCry, Tata CLiQ and the rest, search the product by name instead.",
     };
   }
 

@@ -72,6 +72,7 @@ export function ProductOptions({
                 key={v.value}
                 href={href}
                 scroll={false}
+                title={`${v.value} — ${v.count} review${v.count === 1 ? "" : "s"}`}
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[12px] font-bold transition-all",
                   on
@@ -186,6 +187,7 @@ export function ProductOptions({
                     key={v.value}
                     href={href}
                     scroll={false}
+                    title={`${v.value} — ${v.count} review${v.count === 1 ? "" : "s"}`}
                     className={cn(
                       "inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[12px] font-bold transition-all",
                       on

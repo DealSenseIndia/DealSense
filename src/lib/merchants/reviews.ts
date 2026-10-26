@@ -115,9 +115,232 @@ export function extractAmazonReviews(html: string): StoreReview[] {
   return out;
 }
 
-/** Flipkart product pages carry ratings but rarely review text. */
+/**
+ * Turn whatever date format a store gives us into the one we display.
+ * ISO dates and epoch timestamps become "26 October 2026"; dates that are
+ * already human-readable are left as they are.
+ */
+export function formatReviewDate(raw: string | null | undefined): string | null {
+  if (raw === null || raw === undefined) return null;
+  const value = String(raw).trim();
+  if (!value) return null;
+
+  let date: Date | null = null;
+  if (/^\d{10,13}$/.test(value)) {
+    const n = Number(value);
+    date = new Date(value.length === 10 ? n * 1000 : n);
+  } else if (/^\d{4}-\d{2}-\d{2}/.test(value)) {
+    date = new Date(value.slice(0, 10));
+  }
+  if (!date || Number.isNaN(date.getTime())) return value;
+
+  return date.toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+}
+
+/** A review node as it appears inside a store's JSON-LD payload. */
+type JsonLdNode = Record<string, unknown>;
+
+function asNode(value: unknown): JsonLdNode | null {
+  return value && typeof value === "object" && !Array.isArray(value) ? (value as JsonLdNode) : null;
+}
+
+function nodeType(node: JsonLdNode): string {
+  const t = node["@type"];
+  if (Array.isArray(t)) return t.join(",");
+  return typeof t === "string" ? t : "";
+}
+
+function authorName(value: unknown): string | null {
+  if (typeof value === "string" && value.trim()) return value.replace(/\s+/g, " ").trim();
+  const node = asNode(value);
+  if (!node) return null;
+  const name = node.name;
+  return typeof name === "string" && name.trim() ? name.replace(/\s+/g, " ").trim() : null;
+}
+
+function textValue(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const t = value.replace(/\s+/g, " ").trim();
+  return t.length ? t : null;
+}
+
+/**
+ * Real reviews out of any store that publishes schema.org Review objects
+ * (Flipkart and several fashion sites do). Nothing is invented: if the page
+ * has no review array we return an empty list.
+ */
+export function extractJsonLdReviews(html: string): StoreReview[] {
+  if (!html) return [];
+  const $ = cheerio.load(html);
+  const out: StoreReview[] = [];
+  const seen = new Set<string>();
+
+  const visitNode = (node: JsonLdNode, depth: number) => {
+    if (depth > 6) return;
+    if (nodeType(node) === "Review") return; // handled by its parent
+    const raw = node.review;
+    const list = Array.isArray(raw) ? raw : raw ? [raw] : [];
+    for (const entry of list) {
+      const review = asNode(entry);
+      if (!review) continue;
+      const body = textValue(review.reviewBody) ?? textValue(review.description);
+      const title = textValue(review.name) ?? textValue(review.headline);
+      if (!body && !title) continue;
+
+      const rating = asNode(review.reviewRating);
+      const starsRaw = rating?.ratingValue;
+      const stars =
+        typeof starsRaw === "number"
+          ? starsRaw
+          : typeof starsRaw === "string"
+            ? Number(starsRaw)
+            : null;
+
+      const author = authorName(review.author);
+      const key = `${author ?? ""}|${title ?? ""}|${(body ?? "").slice(0, 80)}`.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+
+      out.push({
+        author,
+        stars: stars !== null && Number.isFinite(stars) ? stars : null,
+        title,
+        body,
+        date: formatReviewDate(
+          typeof review.datePublished === "string" ? review.datePublished : null,
+        ),
+        verified: review.verified === true,
+        variant: null,
+        helpful: null,
+      });
+    }
+    for (const key of ["@graph", "mainEntity", "itemListElement"]) {
+      const child = node[key];
+      if (Array.isArray(child)) {
+        for (const c of child) {
+          const n = asNode(c);
+          if (n) visitNode(n, depth + 1);
+        }
+      } else {
+        const n = asNode(child);
+        if (n) visitNode(n, depth + 1);
+      }
+    }
+  };
+
+  $('script[type="application/ld+json"]').each((_, el) => {
+    const raw = $(el).contents().text();
+    if (!raw.trim()) return;
+    let data: unknown;
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      return;
+    }
+    const nodes = Array.isArray(data) ? data : [data];
+    for (const node of nodes) {
+      const n = asNode(node);
+      if (n) visitNode(n, 0);
+    }
+  });
+
+  return out;
+}
+
+/**
+ * Myntra embeds the product page state in `window.__myx`. Its
+ * `topReviews` array contains the same reviews the site renders.
+ */
+export function extractMyntraReviews(html: string): StoreReview[] {
+  if (!html) return [];
+  const marker = html.indexOf("window.__myx");
+  if (marker < 0) return [];
+
+  const start = html.indexOf("{", marker);
+  if (start < 0) return [];
+
+  // Walk the object to its matching brace, respecting strings and escapes.
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  let end = -1;
+  for (let i = start; i < html.length; i++) {
+    const ch = html[i];
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (ch === "\\") escaped = true;
+      else if (ch === '"') inString = false;
+      continue;
+    }
+    if (ch === '"') inString = true;
+    else if (ch === "{") depth++;
+    else if (ch === "}") {
+      depth--;
+      if (depth === 0) {
+        end = i + 1;
+        break;
+      }
+    }
+  }
+  if (end < 0) return [];
+
+  let data: Record<string, unknown>;
+  try {
+    data = JSON.parse(html.slice(start, end)) as Record<string, unknown>;
+  } catch {
+    return [];
+  }
+
+  const pdpData = asNode(data.pdpData);
+  const ratings = asNode(pdpData?.ratings);
+  const reviewInfo = asNode(ratings?.reviewInfo);
+  const top = reviewInfo?.topReviews;
+  if (!Array.isArray(top)) return [];
+
+  const out: StoreReview[] = [];
+  for (const entry of top) {
+    const review = asNode(entry);
+    if (!review) continue;
+    const body = textValue(review.reviewText);
+    if (!body) continue;
+    const starsRaw = review.userRating;
+    const stars =
+      typeof starsRaw === "number" ? starsRaw : typeof starsRaw === "string" ? Number(starsRaw) : null;
+    const helpfulRaw = review.upvotes;
+    const helpful =
+      typeof helpfulRaw === "number"
+        ? helpfulRaw
+        : typeof helpfulRaw === "string" && helpfulRaw.trim()
+          ? Number(helpfulRaw) || null
+          : null;
+
+    out.push({
+      author: textValue(review.userName),
+      stars: stars !== null && Number.isFinite(stars) ? stars : null,
+      title: null,
+      body,
+      date: formatReviewDate(
+        typeof review.timestamp === "string" || typeof review.timestamp === "number"
+          ? String(review.timestamp)
+          : null,
+      ),
+      verified: false,
+      variant: null,
+      helpful,
+    });
+  }
+  return out;
+}
+
+/**
+ * Flipkart's product pages publish a handful of genuine reviews as
+ * schema.org Review objects. Older markup gets a loose DOM fallback.
+ */
 export function extractFlipkartReviews(html: string): StoreReview[] {
   if (!html) return [];
+  const fromJsonLd = extractJsonLdReviews(html);
+  if (fromJsonLd.length) return fromJsonLd;
+
   const $ = cheerio.load(html);
   const out: StoreReview[] = [];
 
@@ -139,4 +362,19 @@ export function extractFlipkartReviews(html: string): StoreReview[] {
   });
 
   return out.slice(0, 20);
+}
+
+/**
+ * Pick the right review parser for a store, falling back to generic
+ * schema.org reviews wherever a site publishes them.
+ */
+export function extractStoreReviews(merchant: string, html: string): StoreReview[] {
+  if (!html) return [];
+  if (merchant === "amazon") return extractAmazonReviews(html);
+  if (merchant === "myntra") {
+    const myntra = extractMyntraReviews(html);
+    if (myntra.length) return myntra;
+  }
+  if (merchant === "flipkart") return extractFlipkartReviews(html);
+  return extractJsonLdReviews(html);
 }

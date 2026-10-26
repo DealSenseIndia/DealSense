@@ -1,7 +1,8 @@
+import { cache } from "react";
 import { and, asc, desc, eq, gte, isNotNull, sql } from "drizzle-orm";
 import { db, ensureSchema } from "./client";
 import { listings, observations, products } from "./schema";
-import { STORE_META } from "./shelves";
+import { storeMeta } from "../config";
 import { resolveLeaf } from "./taxonomy";
 
 export interface DealRow {
@@ -38,8 +39,13 @@ export interface DealRow {
   storeSaving: number;
 }
 
-/** Full stats for every listing that has a price. */
-async function baseRows() {
+/**
+ * Full stats for every listing that has a price.
+ *
+ * Wrapped in `cache` so the several homepage queries that all need the
+ * catalogue do the heavy read once per request, not once per section.
+ */
+const baseRows = cache(async () => {
   await ensureSchema();
   const rows = await db
     .select({
@@ -84,22 +90,43 @@ async function baseRows() {
     storeCount.set(s.productId, e);
   }
 
+  // One bulk read of the whole price history, grouped in memory. A per-listing
+  // query here turns into hundreds of round trips once the catalogue grows,
+  // which is exactly what made the homepage slow after the multi-store import.
+  const allObs = await db
+    .select({
+      listingId: observations.listingId,
+      price: observations.price,
+      t: observations.observedAt,
+    })
+    .from(observations)
+    .orderBy(asc(observations.observedAt));
+  const obsByListing = new Map<string, { price: number | null; t: number }[]>();
+  for (const o of allObs) {
+    const list = obsByListing.get(o.listingId) ?? [];
+    list.push({ price: o.price, t: o.t });
+    obsByListing.set(o.listingId, list);
+  }
+
   const out: DealRow[] = [];
   for (const r of rows) {
     const price = r.price ?? 0;
     if (price <= 0) continue;
-    const obs = await db
-      .select({ price: observations.price, t: observations.observedAt })
-      .from(observations)
-      .where(eq(observations.listingId, r.listingId))
-      .orderBy(asc(observations.observedAt));
-    const prices = obs.map((o) => o.price).filter((p): p is number => p !== null && p > 0);
+    const obs = obsByListing.get(r.listingId) ?? [];
+    const clean = obs.filter((o): o is { price: number; t: number } => o.price !== null && o.price > 0);
+    const prices = clean.map((o) => o.price);
+    // The most recent real drop in this listing's own series.
+    let lastDropAt: number | null = null;
+    let dropAmount: number | null = null;
+    for (let i = clean.length - 1; i > 0; i--) {
+      if (clean[i].price < clean[i - 1].price) {
+        lastDropAt = clean[i].t;
+        dropAmount = clean[i - 1].price - clean[i].price;
+        break;
+      }
+    }
     const mrp = r.mrp && r.mrp > price ? r.mrp : null;
-    const meta = STORE_META[r.merchant] ?? {
-      name: r.merchant,
-      short: r.merchant.slice(0, 2).toUpperCase(),
-      color: "#64748B",
-    };
+    const meta = storeMeta(r.merchant);
     const stores = storeCount.get(r.productId);
     out.push({
       slug: r.slug,
@@ -120,8 +147,8 @@ async function baseRows() {
       low: prices.length ? Math.min(...prices) : null,
       high: prices.length ? Math.max(...prices) : null,
       median: prices.length ? [...prices].sort((a, b) => a - b)[Math.floor(prices.length / 2)] : null,
-      lastDropAt: null,
-      dropAmount: null,
+      lastDropAt,
+      dropAmount,
       lastSeenAt: obs.length ? Math.max(...obs.map((o) => o.t)) : null,
       spark: sparkSeries(obs.map((o) => o.price)),
       stores: stores?.merchants.size ?? 1,
@@ -131,6 +158,11 @@ async function baseRows() {
     });
   }
   return out;
+});
+
+/** The full priced catalogue, with recorded history for every row. */
+export async function getCatalogueRows(): Promise<DealRow[]> {
+  return baseRows();
 }
 
 /** Last 24 recorded prices, oldest -> newest. Drives the mini price-history graph. */
@@ -243,7 +275,9 @@ export async function getDiscountTiers(): Promise<{ min: number; count: number }
 }
 
 /** Per-store shelves — "top deals by platform". */
-export async function getPlatformShelves(limit = 8): Promise<{ merchant: string; meta: (typeof STORE_META)[string]; deals: DealRow[] }[]> {
+export async function getPlatformShelves(
+  limit = 8,
+): Promise<{ merchant: string; meta: { name: string; short: string; color: string }; deals: DealRow[] }[]> {
   const rows = await baseRows();
   const byMerchant = new Map<string, DealRow[]>();
   for (const r of rows) {
@@ -254,11 +288,7 @@ export async function getPlatformShelves(limit = 8): Promise<{ merchant: string;
   return [...byMerchant.entries()]
     .map(([merchant, deals]) => ({
       merchant,
-      meta: STORE_META[merchant] ?? {
-        name: merchant,
-        short: merchant.slice(0, 2).toUpperCase(),
-        color: "#64748B",
-      },
+      meta: storeMeta(merchant),
       deals: deals
         .sort((a, b) => b.discountPct - a.discountPct || b.observations - a.observations)
         .slice(0, limit),
@@ -363,4 +393,98 @@ export async function getFilterFacets() {
       .map(([category, count]) => ({ category, count }))
       .sort((a, b) => b.count - a.count),
   };
+}
+
+/* ------------------------------------------------------------------ */
+/* Smart budget rails — cheap, well-rated, genuinely-discounted stuff  */
+/* across every store we track                                          */
+/* ------------------------------------------------------------------ */
+
+export interface BudgetBand {
+  id: string;
+  label: string;
+  min: number;
+  max: number | null;
+  /** How many tracked products fall in this band. */
+  count: number;
+  deals: DealRow[];
+}
+
+/**
+ * How strong a buy this row is right now: cheap against its own recorded
+ * median, discounted against MRP, well rated, and backed by evidence.
+ * Used to rank budget rails and category shelves — not shown as a number.
+ */
+export function dealQuality(r: DealRow): number {
+  const median = r.median && r.median > 0 ? r.median : r.price;
+  const vsMedian = median > 0 ? clamp((median - r.price) / median, 0, 0.6) / 0.6 : 0;
+  const discount = clamp(r.discountPct, 0, 80) / 80;
+  const rating = r.rating !== null ? clamp(r.rating / 5, 0, 1) : 0.5;
+  const reviews = clamp(Math.log10(1 + (r.reviewCount ?? 0)) / 4, 0, 1);
+  const quality = rating * 0.7 + reviews * 0.3;
+  const evidence = clamp(r.observations / 24, 0, 1);
+  const atLow =
+    r.low !== null && r.observations >= 3 && r.price <= r.low * 1.01 ? 0.1 : 0;
+  return 0.35 * vsMedian + 0.28 * discount + 0.17 * quality + 0.1 * evidence + atLow;
+}
+
+function clamp(n: number, min: number, max: number): number {
+  return Math.min(Math.max(n, min), max);
+}
+
+/**
+ * The homepage "smart picks" rail: five live price bands, each filled with
+ * the best current buys across all stores. Deliberately spread across
+ * categories and merchants so a single storefront cannot take over a band.
+ */
+export async function getBudgetPicks(perBand = 8): Promise<BudgetBand[]> {
+  const rows = (await baseRows()).filter((r) => r.observations >= 3);
+  const bands: { id: string; label: string; min: number; max: number | null }[] = [
+    { id: "under-499", label: "Under ₹499", min: 0, max: 499 },
+    { id: "500-1999", label: "₹500 – ₹1,999", min: 500, max: 1999 },
+    { id: "2000-4999", label: "₹2,000 – ₹4,999", min: 2000, max: 4999 },
+    { id: "5000-9999", label: "₹5,000 – ₹9,999", min: 5000, max: 9999 },
+    { id: "10000-plus", label: "₹10,000+", min: 10000, max: null },
+  ];
+
+  return bands.map((band) => {
+    const inBand = rows.filter(
+      (r) => r.price >= band.min && (band.max === null || r.price <= band.max!),
+    );
+    const ranked = [...inBand].sort((a, b) => dealQuality(b) - dealQuality(a));
+
+    const chosen: DealRow[] = [];
+    const byStore = new Map<string, number>();
+    const byCategory = new Map<string, number>();
+    const seen = new Set<string>();
+    const keyOf = (r: DealRow) => r.title.slice(0, 26).toLowerCase();
+
+    // First pass: a strict diversity budget (3 per store, 2 per category).
+    for (const r of ranked) {
+      if (chosen.length >= perBand) break;
+      if ((byStore.get(r.merchant) ?? 0) >= 3) continue;
+      const cat = r.category ?? "Other";
+      if ((byCategory.get(cat) ?? 0) >= 2) continue;
+      if (seen.has(keyOf(r))) continue;
+      chosen.push(r);
+      seen.add(keyOf(r));
+      byStore.set(r.merchant, (byStore.get(r.merchant) ?? 0) + 1);
+      byCategory.set(cat, (byCategory.get(cat) ?? 0) + 1);
+    }
+    // Second pass: fill the rest with the best remaining, still unique.
+    if (chosen.length < perBand) {
+      for (const r of ranked) {
+        if (chosen.length >= perBand) break;
+        if (seen.has(keyOf(r))) continue;
+        chosen.push(r);
+        seen.add(keyOf(r));
+      }
+    }
+
+    return {
+      ...band,
+      count: inBand.length,
+      deals: chosen,
+    };
+  });
 }

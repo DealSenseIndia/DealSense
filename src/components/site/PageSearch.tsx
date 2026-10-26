@@ -44,7 +44,7 @@ export function PageSearch({
         </span>
         <button
           type="submit"
-          className="h-8 shrink-0 rounded-lg bg-gradient-brand px-3.5 text-[12px] font-extrabold text-white"
+          className="btn-cta h-8 shrink-0 rounded-lg px-3.5 text-[12px] font-extrabold"
         >
           Search
         </button>

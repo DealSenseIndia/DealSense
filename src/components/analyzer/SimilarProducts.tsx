@@ -6,13 +6,20 @@ import { ProductThumb } from "@/components/ui/ProductThumb";
 import { Rating } from "@/components/ui/Rating";
 import { PriceSpark } from "@/components/ui/PriceSpark";
 import type { SimilarProduct } from "@/lib/db/similar";
+import { storeMeta } from "@/lib/config";
 import { formatINR } from "@/lib/utils";
 
 /**
  * Products close to this one, from our own catalogue — same brand, same
  * category, and every one of them has real recorded price history.
  */
-export function SimilarProducts({ products }: { products: SimilarProduct[] }) {
+export function SimilarProducts({
+  products,
+  category,
+}: {
+  products: SimilarProduct[];
+  category?: string | null;
+}) {
   if (!products.length) return null;
 
   return (
@@ -20,7 +27,7 @@ export function SimilarProducts({ products }: { products: SimilarProduct[] }) {
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-hairline bg-subtle px-5 py-4">
         <div>
           <h2 className="text-[17px] font-extrabold tracking-tight text-headline">
-            Similar to smartphones
+            Similar to {category?.trim() || "these products"}
           </h2>
           <p className="mt-0.5 text-[12.5px] text-muted">
             Same brand or same category — every one with a recorded price history.
@@ -50,10 +57,15 @@ export function SimilarProducts({ products }: { products: SimilarProduct[] }) {
                 padding="p-3"
                 imageClassName="transition-transform duration-500 group-hover:scale-105"
               />
-              <span className="absolute left-1.5 top-1.5 inline-flex items-center gap-1 rounded-full bg-[var(--dw-green-surface)] px-1.5 py-0.5 text-[8.5px] font-extrabold uppercase tracking-wider text-[var(--dw-green-mid)]">
-                <Sparkles className="h-2.5 w-2.5" />
-                {p.reason}
-              </span>
+              {/* Only label what the card adds. The section heading already
+                  says the category, so repeating “same category” or “same
+                  brand & category” on every card would just be noise. */}
+              {p.reason === "Same brand" ? (
+                <span className="absolute left-1.5 top-1.5 inline-flex items-center gap-1 rounded-full bg-[var(--dw-green-surface)] px-1.5 py-0.5 text-[8.5px] font-extrabold uppercase tracking-wider text-[var(--dw-green-mid)]">
+                  <Sparkles className="h-2.5 w-2.5" />
+                  {p.reason}
+                </span>
+              ) : null}
             </div>
 
             <div className="flex flex-1 flex-col p-3">
@@ -92,8 +104,8 @@ export function SimilarProducts({ products }: { products: SimilarProduct[] }) {
                 </div>
                 <div className="mt-1.5 flex items-center gap-1.5">
                   <StoreLogo merchant={p.merchant} size={14} />
-                  <span className="text-[10.5px] font-semibold capitalize text-muted">
-                    {p.merchant}
+                  <span className="text-[10.5px] font-semibold text-muted">
+                    {storeMeta(p.merchant).name}
                   </span>
                 </div>
               </div>

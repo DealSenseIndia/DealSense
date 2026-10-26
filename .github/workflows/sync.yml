@@ -1,0 +1,31 @@
+name: DealSense price sync
+
+# The freshness loop. Every run asks the app to top up a small batch of the
+# listings whose price was checked longest ago, so the whole catalogue is
+# re-read on a rolling basis instead of all at once.
+#
+# Cadence vs. coverage: 10 listings per run × 3 runs an hour = 720 a day, which
+# sweeps the ~1,500 tracked listings in about two days. GitHub's free Actions
+# minutes cover this for a private repo (roughly 50 minutes a day); a public
+# repo is free regardless. Do not shorten the cron without checking both the
+# Actions minutes and the provider's tolerance for the extra requests.
+#
+# Repository secrets: DEALSENSE_URL (e.g. https://dealsense.in) and CRON_SECRET.
+on:
+  schedule:
+    - cron: "*/20 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: dealsense-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Sync a batch of the oldest-checked listings
+        run: |
+          curl -fsS --max-time 120 --retry 2 --retry-delay 10 \
+            "${{ secrets.DEALSENSE_URL }}/api/cron/sync?limit=10&secret=${{ secrets.CRON_SECRET }}"

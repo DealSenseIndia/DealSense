@@ -202,7 +202,7 @@ export function DealGrid({
             </p>
             <button
               onClick={() => go({})}
-              className="mt-5 inline-flex h-10 items-center gap-1.5 rounded-xl bg-gradient-brand px-5 text-[12.5px] font-extrabold text-white"
+              className="btn-cta mt-5 inline-flex h-10 items-center gap-1.5 rounded-xl px-5 text-[12.5px] font-extrabold"
             >
               Clear filters
             </button>

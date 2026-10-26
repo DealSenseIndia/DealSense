@@ -59,12 +59,15 @@ The product page embeds a server-rendered Next.js flight payload containing:
 1. **Exact match only.** We match on the merchant product id (ASIN / PID). A near-match would
    attach the wrong product's history — far worse than no history. If there is no exact match we
    return nothing.
-2. **Fetch once, then we own it.** The imported series is written into our own
-   `observations` table with `source = "imported"`. The provider is never contacted again for
-   that product.
-3. **On demand only.** We fetch a series when a user analyses a product we have not tracked
-   before — one request, throttled to 1.5s, cached permanently. No bulk harvesting.
-4. **Always attributed.** The product page shows `Source: PriceHistory.ai` with a link.
+2. **We own the record.** Every imported point is written into our own `observations` table
+   (`source = "imported:pricehistory.ai"`, legacy rows `"imported"`). We never rewrite or delete
+   a point we already stored.
+3. **Top-up, never bulk.** New listings get one full backfill when a user analyses them. After
+   that, a controlled hourly sync (`/api/cron/sync`) re-reads **5 listings per run**, appends
+   only points newer than our latest observation, and refreshes the listing price. Each listing
+   is revisited at most once every ~20 hours. Throttled to 1.5s between provider requests.
+4. **Always attributed.** Charts and the product page show a visible `PriceHistory.ai` link
+   wherever imported points are used.
 5. **Our affiliate links, not theirs.** The buy button always routes through our Cuelinks /
    Amazon Associates tag. We never use the provider's affiliate link.
 
@@ -115,12 +118,20 @@ The moment a provider gives us a key (Keepa, PriceHistory.app, DataYuge), drop i
 ## Usage
 
 ```bash
-# Import history for products we already track (one fetch each, cached forever)
+# Backfill history for products we already track (one full fetch each)
 npm run history
 npm run history -- --limit 30
 
+# Top up the newest points + current prices (safe to run repeatedly)
+npm run sync
+npm run sync -- --limit 10
+
 # Or let the analyser do it automatically when someone analyses an untracked product
 ```
+
+The hourly GitHub Actions workflow calls `/api/cron/sync?limit=5` and then
+`/api/cron/refresh?limit=2`. Vercel's daily cron runs both as a fallback if the workflow is
+disabled.
 
 The flow is automatic: analyse → no history yet → provider fetch → persisted → chart + verdict
 with HIGH confidence, in one request.

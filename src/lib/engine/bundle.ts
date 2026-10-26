@@ -8,12 +8,15 @@ import { evaluateDeal } from "./verdict";
 import { fetchExternalHistory } from "./providers";
 import {
   buildEvidence,
+  importedProvider,
+  isImportedSource,
   mergeExternal,
   statsFrom,
   type Evidence,
   type HistoryBundle,
 } from "./history";
 import { isSameProduct, sameVariant, titleSimilarity } from "./identity";
+import { goPath } from "../affiliate";
 
 /**
  * Assemble everything a product page needs: history (ours + external + proxy),
@@ -48,40 +51,45 @@ export async function buildBundle(input: {
   let points = ownPoints;
   let source: HistoryBundle["source"] = ownPoints.length ? "own" : "none";
   let sourceLabel = "DealSense observations";
+  let importedCount = 0;
+  let externalProvider: string | null = null;
 
-  const imported = ownObs.filter((o) => o.source === "imported");
+  const imported = ownObs.filter((o) => isImportedSource(o.source));
   if (imported.length) {
     const importedPoints = priceSeries(imported);
+    importedCount = importedPoints.length;
+    externalProvider = importedProvider(imported[0].source);
     points = mergeExternal(ownPoints, {
       points: importedPoints.map((p) => ({ t: p.t, price: p.price })),
-      provider: "imported",
+      provider: externalProvider,
     });
     source = ownPoints.length ? "own" : "external";
-    sourceLabel = ownPoints.length
-      ? "DealSense observations + imported history"
-      : "imported price history";
+    sourceLabel = ownPoints.length ? "DealSense tracked history" : "tracked price history";
   } else if (ownPoints.length < EXTERNAL_BOOTSTRAP_LIMIT) {
     // We only have a thin record of our own. Pull the provider's longer
     // history once (it is cached permanently in our observation table).
     const ext = await fetchExternalHistory(
-      listing.merchant as "amazon" | "flipkart",
+      listing.merchant,
       listing.merchantProductId,
       listing.title ?? product.title,
     );
     if (ext?.points.length) {
-      // Persist the imported series so we never fetch this product again.
+      // Persist the imported series so we never need a full backfill again.
+      // The source records exactly who observed these prices.
       for (const p of ext.points) {
         await addObservation({
           listingId: listing.id,
           price: p.price,
           mrp: null,
-          source: "imported",
+          source: `imported:${ext.provider}`,
           observedAt: p.t,
         });
       }
+      importedCount = ext.points.length;
+      externalProvider = ext.provider;
       points = mergeExternal(ownPoints, ext);
       source = "external";
-      sourceLabel = `${ext.provider} price history`;
+      sourceLabel = "tracked price history";
     }
   }
 
@@ -135,7 +143,7 @@ export async function buildBundle(input: {
       price: rivalListing.price ?? (rivalPoints.length ? rivalPoints[rivalPoints.length - 1].price : null),
       effectivePrice: rivalListing.price ?? null,
       url: rivalListing.url,
-      affiliateUrl: rivalListing.url,
+      affiliateUrl: goPath(rivalListing.id, "compare"),
       lastCheckedAt: rivalListing.lastCheckedAt,
     };
   }
@@ -165,7 +173,10 @@ export async function buildBundle(input: {
 
   const bundle: HistoryBundle = {
     points,
-    source,    sourceLabel,
+    source,
+    sourceLabel,
+    importedPoints: importedCount,
+    externalProvider,
     observationCount: stats.count,
     low: stats.low,
     high: stats.high,

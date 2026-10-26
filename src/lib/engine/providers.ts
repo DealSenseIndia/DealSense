@@ -3,8 +3,9 @@
  *
  * Competitors like PriceHistory.ai, Keepa and PriceHistory.app have years of
  * historical price data. We use them as a **bootstrap**: when a user analyses
- * a product we have never tracked, we pull the real series once, cache it
- * permanently in our own database, and never fetch it again.
+ * a product we have never tracked, we pull the real series once and cache it
+ * in our own database. From then on a controlled top-up sync
+ * (src/lib/engine/sync.ts) only appends points newer than ours.
  *
  * Our own observations remain the source of truth — external series are
  * labelled with their provider so the user always knows where the data
@@ -65,7 +66,7 @@ export async function fetchKeepaHistory(asin: string): Promise<ExternalHistory |
  * Endpoint shape is configurable because their API is partner-scoped.
  */
 export async function fetchPriceHistoryApi(
-  merchant: "amazon" | "flipkart",
+  merchant: string,
   merchantProductId: string,
 ): Promise<ExternalHistory | null> {
   const key = process.env.PRICEHISTORY_API_KEY;
@@ -94,7 +95,7 @@ export async function fetchPriceHistoryApi(
 
 /** Try every configured provider in order of preference. */
 export async function fetchExternalHistory(
-  merchant: "amazon" | "flipkart",
+  merchant: string,
   merchantProductId: string,
   titleHint?: string,
 ): Promise<ExternalHistory | null> {

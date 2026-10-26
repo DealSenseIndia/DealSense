@@ -55,11 +55,14 @@ export function PriceHistoryCard({
   currentPrice,
   className,
   viewAllHref = "/price-history",
+  attribution = null,
 }: {
   points: PricePoint[];
   currentPrice: number | null;
   className?: string;
   viewAllHref?: string;
+  /** Shown when part of the series was imported from a public tracker. */
+  attribution?: { label: string; href: string } | null;
 }) {
   const [range, setRange] = useState<HistoryRange>("6M");
   const [open, setOpen] = useState(false);
@@ -223,6 +226,21 @@ export function PriceHistoryCard({
           <span aria-hidden>→</span>
         </Link>
       </div>
+
+      {attribution ? (
+        <p className="border-t border-hairline px-5 py-3 text-[10.5px] font-semibold leading-relaxed text-muted">
+          Includes{" "}
+          <a
+            href={attribution.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-bold text-[var(--dw-green-mid)] underline decoration-dotted underline-offset-2"
+          >
+            {attribution.label}
+          </a>{" "}
+          public price records — DealSense keeps adding its own store readings.
+        </p>
+      ) : null}
     </div>
   );
 }

@@ -1,7 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { BadgeCheck, Star, ThumbsUp } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { BadgeCheck, ExternalLink, Loader2, RefreshCw, Star, ThumbsUp } from "lucide-react";
 import type { ReviewRow } from "@/lib/db/queries";
 import { cn } from "@/lib/utils";
 
@@ -40,14 +42,44 @@ export function ReviewsPanel({
   reviews,
   storeRating,
   storeReviewCount,
+  productId,
+  storeHref,
+  storeName,
 }: {
   reviews: ReviewRow[];
   storeRating: number | null;
   storeReviewCount: number | null;
+  /** When present, the empty state can offer to read the store page once. */
+  productId?: string;
+  /** Internal affiliate redirect for the primary store listing. */
+  storeHref?: string | null;
+  storeName?: string;
 }) {
+  const router = useRouter();
   const [sort, setSort] = useState<(typeof SORTS)[number]["key"]>("helpful");
   const [stars, setStars] = useState<number | null>(null);
   const [showAll, setShowAll] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [note, setNote] = useState<string | null>(null);
+
+  async function loadFromStore() {
+    if (!productId || loading) return;
+    setLoading(true);
+    setNote(null);
+    try {
+      const res = await fetch(`/api/reviews/${productId}`, { method: "POST" });
+      const data = (await res.json()) as { added?: number; message?: string };
+      setNote(data.message ?? "Checked the store page.");
+      if ((data.added ?? 0) > 0) {
+        setShowAll(false);
+        router.refresh();
+      }
+    } catch {
+      setNote("Could not reach the store just now. Please try again in a moment.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const { buckets, rated } = useMemo(() => distribution(reviews), [reviews]);
 
@@ -73,6 +105,9 @@ export function ReviewsPanel({
 
   const visible = showAll ? sorted : sorted.slice(0, 6);
   const max = Math.max(1, ...buckets.map((b) => b.count));
+  const headlineRating = rated
+    ? reviews.reduce((s, r) => s + (r.stars ?? 0), 0) / rated
+    : storeRating;
 
   return (
     <section className="overflow-hidden rounded-2xl border border-hairline bg-card shadow-card">
@@ -85,7 +120,9 @@ export function ReviewsPanel({
           <p className="mt-0.5 text-[12.5px] text-muted">
             {reviews.length > 0
               ? `${reviews.length} real review${reviews.length === 1 ? "" : "s"} read from the store's own page.`
-              : "We have not read the store's reviews for this product yet."}
+              : storeReviewCount
+                ? `${storeReviewCount.toLocaleString("en-IN")} ratings on the store. We have not read written reviews for this product yet.`
+                : "We have not read this store's reviews for this product yet."}
           </p>
         </div>
         {reviews.length > 0 && (
@@ -161,11 +198,21 @@ export function ReviewsPanel({
         {/* ---- score + distribution ---- */}
         <div>
           <div className="flex items-end gap-3">
-            <div className="tabular text-[44px] font-black leading-none tracking-tight text-headline">
-              {(rated ? reviews.reduce((s, r) => s + (r.stars ?? 0), 0) / rated : storeRating ?? 0).toFixed(1)}
-            </div>
+            {headlineRating !== null ? (
+              <div className="tabular text-[44px] font-black leading-none tracking-tight text-headline">
+                {headlineRating.toFixed(1)}
+              </div>
+            ) : (
+              <div className="text-[38px] font-black leading-none tracking-tight text-muted/60">
+                —
+              </div>
+            )}
             <div className="pb-1.5">
-              <Stars value={rated ? reviews.reduce((s, r) => s + (r.stars ?? 0), 0) / rated : storeRating ?? 0} />
+              {headlineRating !== null ? (
+                <Stars value={headlineRating} />
+              ) : (
+                <span className="text-[12px] font-bold text-muted">Not rated yet</span>
+              )}
               {storeReviewCount ? (
                 <div className="mt-1 text-[11.5px] font-semibold text-muted">
                   {storeReviewCount.toLocaleString("en-IN")} ratings on the store
@@ -201,10 +248,11 @@ export function ReviewsPanel({
             ))}
           </div>
 
-          {storeRating !== null && rated > 0 ? (
+          {storeRating !== null ? (
             <p className="mt-4 border-t border-hairline pt-3 text-[11px] leading-relaxed text-muted">
-              We show the store&apos;s rating as the headline number because it covers every buyer.
-              The bars are only the reviews we could read.
+              {rated > 0
+                ? "We show the store's rating as the headline number because it covers every buyer. The bars are only the reviews we could read."
+                : "The headline is the store's own rating. Its written reviews are not in our record yet, so the bars stay empty."}
             </p>
           ) : null}
         </div>
@@ -214,13 +262,48 @@ export function ReviewsPanel({
           {visible.length === 0 ? (
             <div className="rounded-xl border border-dashed border-hairline bg-subtle p-10 text-center">
               <p className="text-[13px] font-bold text-headline">
-                {stars !== null ? `No ${stars}-star reviews` : "No reviews read yet"}
+                {stars !== null ? `No ${stars}-star reviews` : "No written reviews yet"}
               </p>
-              <p className="mx-auto mt-1.5 max-w-sm text-[12.5px] leading-relaxed text-body">
+              <p className="mx-auto mt-1.5 max-w-md text-[12.5px] leading-relaxed text-body">
                 {stars !== null
                   ? "Nobody we read rated it that way. Try another rating."
-                  : "We only show reviews we actually read off the store's product page. Open this product once and we will pull them."}
+                  : storeReviewCount
+                    ? `The store lists ${storeReviewCount.toLocaleString("en-IN")} ratings${storeName ? ` for ${storeName}` : ""} but has not exposed the written review text to us yet. You can check the store page or ask us to read it again.`
+                    : `We have not read any written reviews for this product${storeName ? ` on ${storeName}` : ""} yet. We only show reviews we actually read off a store's product page — nothing here is generated.`}
               </p>
+
+              {stars === null ? (
+                <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+                  {productId ? (
+                    <button
+                      onClick={loadFromStore}
+                      disabled={loading}
+                      className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-[var(--dw-green-surface)] px-3.5 text-[12px] font-extrabold text-[var(--dw-green-bot)] ring-1 ring-[var(--dw-green-border)] transition-opacity hover:opacity-90 disabled:cursor-wait disabled:opacity-60"
+                    >
+                      {loading ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <RefreshCw className="h-3.5 w-3.5" />
+                      )}
+                      {loading ? "Reading the store page…" : "Read the store page"}
+                    </button>
+                  ) : null}
+                  {storeHref ? (
+                    <Link
+                      href={storeHref}
+                      className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-hairline bg-card px-3.5 text-[12px] font-extrabold text-headline transition-colors hover:border-emerald-400/50"
+                    >
+                      See it on the store <ExternalLink className="h-3 w-3" />
+                    </Link>
+                  ) : null}
+                </div>
+              ) : null}
+
+              {note ? (
+                <p className="mx-auto mt-3 max-w-md text-[11.5px] font-semibold leading-relaxed text-muted">
+                  {note}
+                </p>
+              ) : null}
             </div>
           ) : (
             <ul className="space-y-3">

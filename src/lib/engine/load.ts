@@ -1,8 +1,8 @@
-import { affiliate, type Merchant } from "../config";
+import { type Merchant } from "../config";
 import type { AnalysisResult } from "../types";
 import { getListingsByProduct, getObservations, getProductById, getProductBySlug } from "../db/queries";
 import type { ListingRow, ProductRow } from "../db/queries";
-import { affiliateUrl } from "../merchants/resolve";
+import { goPath } from "../affiliate";
 import { buildBundle, findRivalListing } from "./bundle";
 import { buildIdentityKey } from "./identity";
 
@@ -18,15 +18,6 @@ export async function buildResultForListing(
     listing,
     rivalListing,
   });
-
-  if (rival) {
-    rival.affiliateUrl = affiliateUrl(
-      rival.merchant,
-      rival.url,
-      affiliate.amazonTag,
-      affiliate.cuelinksChannel,
-    );
-  }
 
   return {
     ok: true,
@@ -53,7 +44,7 @@ export async function buildResultForListing(
       reviewCount: listing.reviewCount,
       seller: listing.seller,
       imageUrl: listing.imageUrl,
-      affiliateUrl: affiliateUrl(merchant, listing.url, affiliate.amazonTag, affiliate.cuelinksChannel),
+      affiliateUrl: goPath(listing.id, "pdp"),
       lastCheckedAt: listing.lastCheckedAt,
     },
     rival,

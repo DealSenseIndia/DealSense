@@ -2,9 +2,9 @@
  * Import historical price series for products we already track.
  *
  * For every listing that has no imported history yet, pull the provider's
- * real price series once and store it permanently in our own observation
- * table (source = "imported"). After that the product never needs the
- * provider again — we own the data.
+ * real price series once and store it in our own observation table
+ * (source = "imported:pricehistory.ai"). After that, `npm run sync` only
+ * appends points newer than ours — the record is ours.
  *
  *   npm run history
  *   npm run history -- --limit 20
@@ -44,7 +44,7 @@ async function main() {
       .select({ source: observations.source })
       .from(observations)
       .where(eq(observations.listingId, r.id));
-    if (existing.some((o) => o.source === "imported")) continue;
+    if (existing.some((o) => o.source.startsWith("imported"))) continue;
     candidates.push(r);
   }
 
@@ -68,7 +68,7 @@ async function main() {
         await addObservation({
           listingId: c.id,
           price: p.price,
-          source: "imported",
+          source: `imported:${ext.provider}`,
           observedAt: p.t,
         });
       }

@@ -18,11 +18,14 @@
     "history": "tsx scripts/seed-history.ts",
     "merge": "tsx scripts/merge-products.ts",
     "scrape": "tsx scripts/refresh.ts",
+    "sync": "tsx scripts/sync-history.ts",
     "shot": "node scripts/shot.mjs",
     "capture": "node scripts/capture.mjs",
     "reviews": "tsx scripts/seed-reviews.ts",
     "compare": "tsx scripts/compare-merge.ts",
-    "gallery": "tsx scripts/backfill-gallery.ts"
+    "gallery": "tsx scripts/backfill-gallery.ts",
+    "setups:seed": "tsx scripts/seed-setups.ts",
+    "setups:report": "tsx scripts/setups-report.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",

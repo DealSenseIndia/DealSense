@@ -3,13 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Bell, Menu, Search, Sparkles, X } from "lucide-react";
+import { Bell, Menu, X } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { GeminiIcon } from "@/components/ui/GeminiIcon";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/deals", label: "Deals" },
+  { href: "/setups", label: "Smart Setups" },
   { href: "/categories", label: "Categories" },
   { href: "/price-history", label: "History" },
   { href: "/track", label: "Track" },
@@ -71,11 +73,11 @@ export function Nav() {
           <div className="ml-auto flex items-center gap-1.5">
             <Link
               href="/analyze"
-              aria-label="Analyse a link"
-              title="Analyse a link"
+              aria-label="Analyze a link"
+              title="Analyze a link"
               className="grid h-9 w-9 place-items-center rounded-lg border border-hairline text-body transition-colors hover:border-emerald-400/50 hover:text-headline"
             >
-              <Search className="h-4 w-4" />
+              <GeminiIcon className="h-4 w-4" />
             </Link>
             <Link
               href="/track"
@@ -89,10 +91,10 @@ export function Nav() {
             <ThemeToggle />
             <Link
               href="/analyze"
-              className="hidden h-9 items-center gap-1.5 rounded-lg bg-gradient-brand px-4 text-[12.5px] font-extrabold text-white shadow-[0_8px_20px_-10px_rgba(5,150,105,0.9)] transition-transform hover:-translate-y-0.5 sm:inline-flex"
+              className="btn-cta hidden h-9 items-center gap-1.5 rounded-lg px-4 text-[12.5px] font-extrabold sm:inline-flex"
             >
-              <Sparkles className="h-3.5 w-3.5" />
-              Analyse
+              <GeminiIcon className="h-3.5 w-3.5" />
+              Analyze
             </Link>
             <button
               className="grid h-9 w-9 place-items-center rounded-lg border border-hairline text-body lg:hidden"

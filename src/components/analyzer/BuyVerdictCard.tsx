@@ -61,7 +61,7 @@ export function BuyVerdictCard({
               </span>
               <span className="text-[10.5px] font-bold text-slate-300">{l.text}</span>
               <span className="tabular text-[30px] font-extrabold leading-none" style={{ color: l.color }}>
-                {score === null ? "ΓÇö" : `${score}%`}
+                {score === null ? "—" : `${score}%`}
               </span>
             </div>
 
@@ -76,7 +76,7 @@ export function BuyVerdictCard({
                   <TrendingUp className="h-3.5 w-3.5 text-amber-400" />
                 )}
                 {verdict?.stats.trendPct === null || verdict?.stats.trendPct === undefined
-                  ? "ΓÇö"
+                  ? "—"
                   : `${verdict.stats.trendPct > 0 ? "+" : ""}${verdict.stats.trendPct.toFixed(1)}%`}
               </span>
             </div>
@@ -153,13 +153,13 @@ export function BuyVerdictCard({
           </div>
         </div>
 
-        {/* right rail ΓÇö a row on small screens, a rail on large */}
+        {/* right rail — a row on small screens, a rail on large */}
         <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-4 sm:grid-cols-4 lg:block lg:space-y-4 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
           <Rail label="Tracking" value={`${trackingDays}d`} />
-          <Rail label="Typical price" value={median !== null ? formatINR(median) : "ΓÇö"} />
+          <Rail label="Typical price" value={median !== null ? formatINR(median) : "—"} />
           <Rail
             label="Potential saving"
-            value={potentialSaving !== null ? formatINR(potentialSaving) : "ΓÇö"}
+            value={potentialSaving !== null ? formatINR(potentialSaving) : "—"}
             accent
           />
           <div className="col-span-2 rounded-xl border border-white/10 bg-white/[0.04] p-3 sm:col-span-1">
@@ -167,7 +167,7 @@ export function BuyVerdictCard({
               Current price
             </div>
             <div className="tabular mt-1 text-[20px] font-extrabold text-white">
-              {currentPrice !== null ? formatINR(currentPrice) : "ΓÇö"}
+              {currentPrice !== null ? formatINR(currentPrice) : "—"}
             </div>
           </div>
         </div>

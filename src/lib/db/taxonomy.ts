@@ -28,11 +28,11 @@ export const TAXONOMY: TaxonomyGroup[] = [
     description: "Laptops, desktops, monitors, keyboards, mice, printers, storage and PC parts.",
     children: [
       { name: "Laptops & Desktops", leaves: ["Laptops", "Gaming Laptops", "All in One PCs", "Traditional Laptops"] },
-      { name: "Computer Accessories", leaves: ["Computers & Accessories", "Computer Keyboards", "Computer Mice", "Keyboards", "Mice", "Laptop Bags", "Laptop Stands"] },
+      { name: "Computer Accessories", leaves: ["Computers & Accessories", "Computer Keyboards", "Computer Mice", "Keyboards", "Mice", "Laptop Bags", "Laptop Stands", "Desk Accessories", "Keyboard & Mouse Sets", "Monitor Arms", "Headphone Stands"] },
       { name: "Monitors & Displays", leaves: ["Monitors", "Smart TVs", "Televisions"] },
       { name: "Printers & Scanners", leaves: ["Printers", "Ink Cartridges", "Laser Toner", "Photo Paper"] },
       { name: "Networking", leaves: ["Wi-fi Routers", "Routers", "Networking"] },
-      { name: "Storage & Parts", leaves: ["RAM", "Processors", "Graphics Cards", "Motherboards", "Power Supplies", "Storage"] },
+      { name: "Storage & Parts", leaves: ["RAM", "Processors", "Graphics Cards", "Motherboards", "Power Supplies", "Storage", "CPU Coolers", "PC Cases", "Capture Cards", "UPS", "Memory"] },
     ],
   },
   {
@@ -43,8 +43,8 @@ export const TAXONOMY: TaxonomyGroup[] = [
     children: [
       { name: "Mobiles & Tablets", leaves: ["Smartphones", "Tablets", "Mobile Accessories", "Cases & Covers", "Chargers", "Power Banks", "Mobiles & Gadgets"] },
       { name: "TV & Home Entertainment", leaves: ["Smart TVs", "Televisions", "Streaming Devices", "Soundbars", "Soundbar Speakers", "Home Theater", "Projectors"] },
-      { name: "Audio", leaves: ["Headphones", "Earbuds", "Speakers", "Microphones", "In-Ear", "Over-Ear", "Bluetooth Speakers"] },
-      { name: "Cameras & Photography", leaves: ["DSLR Cameras", "Digital Cameras", "Mirrorless", "Lenses", "Action Cameras", "Tripods", "Drones"] },
+      { name: "Audio", leaves: ["Headphones", "Earbuds", "Speakers", "Microphones", "In-Ear", "Over-Ear", "Bluetooth Speakers", "Headsets"] },
+      { name: "Cameras & Photography", leaves: ["DSLR Cameras", "Digital Cameras", "Mirrorless", "Lenses", "Action Cameras", "Tripods", "Drones", "Camera Accessories", "Gimbals", "Webcams"] },
       { name: "Wearables", leaves: ["Smartwatches", "Fitness Bands", "Wearable Accessories", "Watches", "Smart Watches", "Wrist Watches"] },
       { name: "Gaming", leaves: ["Gaming Consoles", "Controllers", "Gaming Chairs", "Gaming Monitors", "PC Gaming Components"] },
     ],
@@ -55,12 +55,12 @@ export const TAXONOMY: TaxonomyGroup[] = [
     icon: "🛋️",
     description: "Furniture, home decor, lighting, bedding, kitchen and cleaning appliances.",
     children: [
-      { name: "Furniture", leaves: ["Beds", "Mattresses", "Sofas", "Chairs", "Tables", "Desks", "Wardrobes", "Storage"] },
-      { name: "Home Decor", leaves: ["Wall Decor", "Lamps", "Rugs", "Curtains", "Plants", "Clocks"] },
+      { name: "Furniture", leaves: ["Beds", "Mattresses", "Sofas", "Chairs", "Tables", "Desks", "Wardrobes", "Storage", "Shelves", "Wall Shelves", "TV Units", "Dressers", "Outdoor Furniture", "Carpets"] },
+      { name: "Home Decor", leaves: ["Wall Decor", "Lamps", "Rugs", "Curtains", "Plants", "Clocks", "Home Decor", "Showpieces", "Wall Panels", "Vases", "Planters", "Flower Pots", "Garden Tools", "Gardening", "Cushions"] },
       { name: "Lighting", leaves: ["Ceiling Lights", "Table Lamps", "Floor Lamps", "LED Strips", "Smart Lighting"] },
-      { name: "Bedding & Linen", leaves: ["Bed Sheets", "Bedsheets", "Pillows", "Blankets", "Comforters", "Mattress Protectors"] },
-      { name: "Kitchen & Dining", leaves: ["Cookware", "Dinnerware", "Storage Containers", "Kitchen Tools", "Gas Stoves", "Air Fryers", "Refrigerators", "Washing Machines"] },
-      { name: "Home Appliances", leaves: ["Washing Machines", "Air Conditioners", "Air Purifiers", "Fans", "Heaters", "Mixer Grinders", "Induction Cooktop", "Induction Cooktops", "Electric Kettles", "Pop-up Toasters", "Juicers", "Microwave", "Dishwashers", "Water Purifiers"] },
+      { name: "Bedding & Linen", leaves: ["Bed Sheets", "Bedsheets", "Bed Linen", "Pillows", "Blankets", "Comforters", "Mattress Protectors"] },
+      { name: "Kitchen & Dining", leaves: ["Cookware", "Dinnerware", "Storage Containers", "Kitchen Tools", "Gas Stoves", "Air Fryers", "Refrigerators", "Washing Machines", "Jars & Containers", "Cups & Mugs", "Serveware", "Kitchen Appliances"] },
+      { name: "Home Appliances", leaves: ["Washing Machines", "Air Conditioners", "Air Purifiers", "Fans", "Heaters", "Geysers", "Mixer Grinders", "Induction Cooktop", "Induction Cooktops", "Electric Kettles", "Pop-up Toasters", "Juicers", "Microwave", "Dishwashers", "Water Purifiers"] },
       { name: "Bathroom", leaves: ["Bathroom Accessories", "Towels", "Mirrors", "Storage"] },
       { name: "Cleaning Appliances", leaves: ["Vacuum Cleaners", "Steam Cleaners", "Air Purifiers", "Water Purifiers"] },
     ],
@@ -71,12 +71,12 @@ export const TAXONOMY: TaxonomyGroup[] = [
     icon: "👗",
     description: "Men, women and kids fashion, footwear, watches, jewellery, bags and accessories.",
     children: [
-      { name: "Men", leaves: ["Clothing", "T-Shirts", "Shirts", "Jeans", "Trousers", "Ethnic Wear", "Sweatshirts", "Tshirts"] },
-      { name: "Women", leaves: ["Dresses", "Tops", "Sarees", "Kurtas", "Jeans", "Activewear", "Kurtas & Kurtis", "Salwar Suits"] },
+      { name: "Men", leaves: ["Clothing", "T-Shirts", "Shirts", "Jeans", "Trousers", "Ethnic Wear", "Sweatshirts", "Tshirts", "Shorts", "Innerwear", "Kurta Sets"] },
+      { name: "Women", leaves: ["Dresses", "Tops", "Sarees", "Kurtas", "Jeans", "Activewear", "Kurtas & Kurtis", "Salwar Suits", "Leggings", "Nightwear", "Co-ord Sets"] },
       { name: "Shoes", leaves: ["Casual Shoes", "Sports Shoes", "Formal Shoes", "Sneakers", "Sandals", "Running Shoes", "Training Shoes", "Volleyball Shoes", "Nike Sports Shoes", "Nike Casual Shoes", "Nike Run Defy", "Shoes", "Flip-Flops"] },
       { name: "Watches", leaves: ["Analog Watches", "Digital Watches", "Smartwatches", "Chronograph", "Watches"] },
-      { name: "Bags & Luggage", leaves: ["Backpacks", "Handbags", "Wallets", "Clutches", "Messenger Bags", "Bags"] },
-      { name: "Jewellery", leaves: ["Necklaces", "Earrings", "Rings", "Bracelets", "Gold & Silver"] },
+      { name: "Bags & Luggage", leaves: ["Backpacks", "Handbags", "Wallets", "Clutches", "Messenger Bags", "Bags", "Travel Accessories", "Luggage", "Trolley Bags"] },
+      { name: "Jewellery", leaves: ["Necklaces", "Earrings", "Rings", "Bracelets", "Gold & Silver", "Jewellery", "Jewelry"] },
       { name: "Accessories", leaves: ["Belts", "Wallets", "Caps", "Scarves", "Socks"] },
       { name: "Sunglasses", leaves: ["Aviator", "Wayfarer", "Round", "Polarized Sunglasses", "Sunglasses"] },
     ],
@@ -87,10 +87,10 @@ export const TAXONOMY: TaxonomyGroup[] = [
     icon: "💄",
     description: "Skincare, makeup, hair care, fragrances, personal care appliances and grooming.",
     children: [
-      { name: "Skincare", leaves: ["Cleansers", "Moisturizers", "Serums", "Sunscreen", "Face Wash", "Face Masks", "Serum"] },
-      { name: "Makeup", leaves: ["Lipstick", "Lipsticks", "Foundation", "Eyeliner", "Mascara", "Compact Powder"] },
-      { name: "Hair Care", leaves: ["Shampoo", "Shampoos", "Conditioner", "Conditioners", "Hair Oil", "Hair Oils", "Hair Serum", "Hair Serums", "Hair Color", "Hair Masks & Packs", "Hair Sprays & Mists"] },
-      { name: "Fragrances", leaves: ["Perfume", "Perfumes", "Deodorant", "Deodorants", "Body Mists", "Cologne"] },
+      { name: "Skincare", leaves: ["Cleansers", "Moisturizers", "Moisturisers", "Serums", "Sunscreen", "Face Wash", "Face Masks", "Serum", "Toners & Mists", "Hand Creams"] },
+      { name: "Makeup", leaves: ["Lipstick", "Lipsticks", "Foundation", "Eyeliner", "Mascara", "Compact Powder", "Makeup Kits", "Makeup", "Face Makeup", "Eye Makeup", "Nail Care"] },
+      { name: "Hair Care", leaves: ["Shampoo", "Shampoos", "Conditioner", "Conditioners", "Hair Oil", "Hair Oils", "Hair Serum", "Hair Serums", "Hair Color", "Hair Masks & Packs", "Hair Sprays & Mists", "Hair Care", "Hair Styling"] },
+      { name: "Fragrances", leaves: ["Perfume", "Perfumes", "Fragrance", "Deodorant", "Deodorants", "Body Mists", "Cologne"] },
       { name: "Bath & Body", leaves: ["Body Wash", "Soaps", "Body Lotions", "Scrubs"] },
       { name: "Personal Care Appliances", leaves: ["Trimmers", "Clippers & Trimmers", "Hair Dryers", "Straighteners", "Shavers"] },
       { name: "Men's Grooming", leaves: ["Beard Oils", "Aftershave", "Shaving Creams", "Grooming Kits"] },
@@ -103,8 +103,8 @@ export const TAXONOMY: TaxonomyGroup[] = [
     icon: "🏋️",
     description: "Exercise equipment, sportswear, footwear, fitness accessories and sports nutrition.",
     children: [
-      { name: "Exercise Equipment", leaves: ["Dumbbells", "Treadmills", "Exercise Bikes", "Resistance Bands", "Kettlebells"] },
-      { name: "Fitness Accessories", leaves: ["Gym Gloves", "Shakers", "Wrist Wraps", "Yoga Blocks"] },
+      { name: "Exercise Equipment", leaves: ["Dumbbells", "Treadmills", "Exercise Bikes", "Resistance Bands", "Kettlebells", "Yoga Mats", "Massage Guns", "Foam Rollers", "Fitness Equipment", "Fitness"] },
+      { name: "Fitness Accessories", leaves: ["Gym Gloves", "Shakers", "Wrist Wraps", "Yoga Blocks", "Skipping Ropes", "Water Bottles"] },
       { name: "Sportswear", leaves: ["Track Pants", "Gym T-Shirts", "Sports Bras", "Compression Wear"] },
       { name: "Footwear", leaves: ["Running Shoes", "Training Shoes", "Football Studs", "Badminton Shoes", "Sports Shoes", "Volleyball Shoes"] },
       { name: "Outdoor Recreation", leaves: ["Tents", "Hiking Backpacks", "Trekking Poles", "Sleeping Bags", "Running"] },
@@ -118,11 +118,11 @@ export const TAXONOMY: TaxonomyGroup[] = [
     icon: "🚗",
     description: "Car accessories, electronics, tyres, car care, motorcycle gear and helmets.",
     children: [
-      { name: "Car Accessories", leaves: ["Seat Covers", "Car Mats", "Sunshades", "Steering Covers"] },
+      { name: "Car Accessories", leaves: ["Seat Covers", "Car Mats", "Sunshades", "Steering Covers", "Car Accessories", "Air Fresheners"] },
       { name: "Motorcycle Accessories", leaves: ["Bike Covers", "Mobile Mounts", "Tank Bags", "Riding Bags"] },
       { name: "Car Electronics", leaves: ["Dash Cameras", "Car Chargers", "GPS Navigators", "Reverse Cameras"] },
       { name: "Tyres & Rims", leaves: ["Car Tyres", "Motorcycle Tyres", "Alloy Wheels", "Tyre Inflators"] },
-      { name: "Car Care & Cleaning", leaves: ["Car Shampoos", "Microfiber Cloths", "Polishes", "Car Vacuums"] },
+      { name: "Car Care & Cleaning", leaves: ["Car Shampoos", "Microfiber Cloths", "Polishes", "Car Vacuums", "Car Care"] },
       { name: "Helmets & Riding Gear", leaves: ["Full Face Helmets", "Riding Jackets", "Gloves", "Knee Guards"] },
       { name: "Tools & Equipment", leaves: ["Jack Kits", "Jump Starters", "Air Compressors", "Socket Sets"] },
     ],
@@ -134,8 +134,8 @@ export const TAXONOMY: TaxonomyGroup[] = [
     description: "Baby gear, toys, clothing, feeding, baby care, safety and nursery essentials.",
     children: [
       { name: "Baby Gear", leaves: ["Strollers", "Car Seats", "Baby Carriers", "High Chairs", "Walkers"] },
-      { name: "Toys & Games", leaves: ["Soft Toys", "Rattles", "Building Blocks", "Educational Toys"] },
-      { name: "Baby Care", leaves: ["Diapers", "Wipes", "Baby Lotions", "Baby Powder", "Baby Shampoos"] },
+      { name: "Toys & Games", leaves: ["Soft Toys", "Rattles", "Building Blocks", "Educational Toys", "Toys & Games"] },
+      { name: "Baby Care", leaves: ["Diapers", "Wipes", "Baby Lotions", "Baby Powder", "Baby Shampoos", "Baby Care", "Onesies & Rompers", "Baby Toys"] },
       { name: "Kids Fashion", leaves: ["Boys Clothes", "Girls Clothes", "Kids Shoes", "Ethnic Wear"] },
       { name: "Feeding & Nursing", leaves: ["Feeding Bottles", "Breast Pumps", "Sterilizers", "Baby Food"] },
       { name: "Baby Safety", leaves: ["Baby Monitors", "Safety Gates", "Corner Guards", "Child Locks"] },
@@ -149,10 +149,10 @@ export const TAXONOMY: TaxonomyGroup[] = [
     description: "Coffee, tea, snacks, branded foods, organic picks and everyday grocery.",
     children: [
       { name: "Coffee & Tea", leaves: ["Coffee", "Tea", "Green Tea", "Herbal Teas", "Chyawanprash"] },
-      { name: "Snacks & Branded Foods", leaves: ["Biscuits", "Chips", "Chocolates", "Instant Noodles", "Energy Bars", "Protein Bars"] },
+      { name: "Snacks & Branded Foods", leaves: ["Biscuits", "Chips", "Chocolates", "Instant Noodles", "Energy Bars", "Protein Bars", "Snacks"] },
       { name: "Drinks", leaves: ["Fruit Juices", "Health Drinks", "Soft Drinks", "Cologne"] },
-      { name: "Healthy & Organic", leaves: ["Honey", "Oats", "Dry Fruits", "Seeds", "Whey Protein", "Plant Protein", "Mass Gainers", "Multivitamins", "Vitamin C", "Vitamin D3", "Omega 3", "Biotin", "Ashwagandha", "Giloy", "Triphala"] },
-      { name: "Grocery Staples", leaves: ["Rice", "Atta", "Sugar", "Cooking Oil", "Spices", "Pulses & Grains"] },
+      { name: "Healthy & Organic", leaves: ["Honey", "Oats", "Dry Fruits", "Seeds", "Whey Protein", "Plant Protein", "Mass Gainers", "Multivitamins", "Vitamin C", "Vitamin D3", "Omega 3", "Biotin", "Ashwagandha", "Giloy", "Triphala", "Jams & Preserves"] },
+      { name: "Grocery Staples", leaves: ["Rice", "Atta", "Sugar", "Cooking Oil", "Spices", "Pulses & Grains", "Grocery Staples"] },
     ],
   },
   {
@@ -163,7 +163,7 @@ export const TAXONOMY: TaxonomyGroup[] = [
     children: [
       { name: "Books", leaves: ["Books", "Fiction", "Non-Fiction", "Self-Help", "Biographies", "Business"] },
       { name: "School Books", leaves: ["NCERT", "CBSE", "Reference Books", "Children's Books"] },
-      { name: "Office Supplies", leaves: ["Files & Folders", "Desk Organizers", "Staplers", "Calculators"] },
+      { name: "Office Supplies", leaves: ["Files & Folders", "Desk Organizers", "Staplers", "Calculators", "Office Supplies"] },
       { name: "Writing Instruments", leaves: ["Ball Pens", "Gel Pens", "Fountain Pens", "Markers", "Highlighters"] },
       { name: "Art & Craft", leaves: ["Sketchbooks", "Acrylic Paints", "Watercolors", "Paint Brushes"] },
       { name: "Notebooks & Diaries", leaves: ["Notebooks", "Ruled Notebooks", "Spiral Diaries", "Journals", "Planners"] },
@@ -181,7 +181,7 @@ export const TAXONOMY: TaxonomyGroup[] = [
       { name: "Personal Care Essentials", leaves: ["Soaps", "Shampoos", "Toothpaste", "Handwash"] },
       { name: "Household Essentials", leaves: ["Laundry Detergents", "Dishwash", "Surface Cleaners"] },
       { name: "Baby Essentials", leaves: ["Baby Food", "Diapers", "Baby Wipes", "Baby Formula"] },
-      { name: "Pet Essentials", leaves: ["Pet Food", "Treats", "Pet Shampoo", "Odor Removers"] },
+      { name: "Pet Essentials", leaves: ["Pet Food", "Treats", "Pet Shampoo", "Odor Removers", "Pet Supplies", "Pet Beds", "Aquariums", "Dog Beds"] },
     ],
   },
   {
@@ -262,7 +262,7 @@ export const TAXONOMY: TaxonomyGroup[] = [
     description: "Suitcases, trolleys, travel backpacks, packing cubes and travel accessories.",
     children: [
       { name: "Suitcases & Trolleys", leaves: ["Cabin Trolleys", "Check-in Bags", "Hard Suitcases", "Soft Trolleys"] },
-      { name: "Backpacks", leaves: ["Laptop Backpacks", "Trekking Rucksacks", "Casual Backpacks"] },
+      { name: "Backpacks", leaves: ["Laptop Backpacks", "Trekking Rucksacks", "Casual Backpacks", "Travel Backpacks"] },
       { name: "Travel Accessories", leaves: ["Neck Pillows", "Universal Adapters", "Luggage Weighing Scales", "Luggage Tags"] },
       { name: "Travel Essentials", leaves: ["Packing Cubes", "Toiletry Bags", "Passport Holders", "Money Belts"] },
       { name: "Duffel Bags", leaves: ["Gym Duffels", "Wheeled Duffel Bags", "Leather Weekender Bags"] },
@@ -279,8 +279,44 @@ function norm(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "");
 }
 
+/** Whole words of a category name, "&" read as a separator. */
+function words(s: string): string[] {
+  return s
+    .toLowerCase()
+    .replace(/&/g, " ")
+    .split(/[^a-z0-9]+/g)
+    .filter(Boolean);
+}
+
+/** Every leaf in the tree, flattened once at module load. */
+const ALL_LEAVES: string[] = TAXONOMY.flatMap((g) => g.children.flatMap((c) => c.leaves));
+
 /** Brand shelves and odd store category names that need a hand. */
 const ALIASES: Record<string, string> = {
+  // Brand shelves: the store filed the whole brand as one category, so the
+  // category name says who made it, not what it is. Placed by hand.
+  libas: "Kurtas & Kurtis",
+  darshanamworldcomputercomponents: "Computers & Accessories",
+  combosnykaa: "Makeup Kits",
+  // Spelling and wording variants our importers grew into.
+  notebookcomputerstands: "Laptop Stands",
+  tventertainmentunits: "TV Units",
+  shelving: "Shelves",
+  bedlinen: "Bed Linen",
+  moisturisers: "Moisturizers",
+  keyboardandmousesets: "Keyboard & Mouse Sets",
+  // Categories that read as one thing and are another. Whole-word matching in
+  // resolveLeaf refuses to guess across words, so these need naming by hand.
+  handcreamsandmasks: "Hand Creams",
+  handcreamsmasks: "Hand Creams",
+  // Every soundbar and 2.1 speaker the stores filed under a bare "Audio" shelf.
+  audio: "Speakers",
+  sofasets: "Sofas",
+  snackgifts: "Snacks",
+  coffeemakers: "Kitchen Appliances",
+  morphyrichardscoffeemakers: "Kitchen Appliances",
+  agarocoffeemakers: "Kitchen Appliances",
+  pigeoncoffeemakers: "Kitchen Appliances",
   appplemobiles: "Smartphones",
   applemobiles: "Smartphones",
   oneplusmobiles: "Smartphones",
@@ -339,7 +375,9 @@ const ALIASES: Record<string, string> = {
   sunscreens: "Sunscreen",
   facewash: "Face Wash",
   facewashes: "Face Wash",
-  backpacks: "Backpacks",
+  // Our travel-backpack importer wrote the group name as the category, and
+  // "Backpacks" is not a leaf — every row under it is an outdoor rucksack.
+  backpacks: "Travel Backpacks",
   backpacksandbags: "Backpacks",
   sunglasses: "Sunglasses",
   earbuds: "Earbuds",
@@ -404,16 +442,38 @@ export function resolveLeaf(category: string | null): string | null {
   const alias = ALIASES[n];
   if (alias) return alias;
 
-  for (const g of TAXONOMY) {
-    for (const c of g.children) {
-      for (const leaf of c.leaves) {
-        const ln = norm(leaf);
-        if (!ln) continue;
-        if (n === ln) return leaf;
-        if (n.length >= 4 && ln.includes(n)) return leaf;
-        if (n.length >= 4 && n.includes(ln)) return leaf;
-      }
-    }
+  // 1. Exact. This has to be its own pass. When everything lived in one loop,
+  //    the first leaf that merely *contained* the name won, so "Fitness" was
+  //    filed under "Fitness Bands" and "Audio" under "Audio Interfaces" even
+  //    though both are leaves in their own right.
+  for (const leaf of ALL_LEAVES) if (norm(leaf) === n) return leaf;
+
+  // 2. Whole-word containment, either direction, best score wins. Working in
+  //    words instead of joined letters is what stops "Cups & Mugs" from
+  //    matching "UPS" (c|UPS|and|mugs) and "Other" from matching
+  //    "Motherboards" (m|OTHER|boards) — the two ways the old test served a
+  //    mug on the power-supply shelf.
+  const cw = words(category);
+  let best: { leaf: string; score: number } | null = null;
+  for (const leaf of ALL_LEAVES) {
+    const lw = words(leaf);
+    const leafIn = lw.filter((w) => cw.includes(w)).length;
+    const catIn = cw.filter((w) => lw.includes(w)).length;
+    let score = 0;
+    if (leafIn === lw.length) score = 200 + leafIn * 2 - cw.length; // leaf ⊆ category
+    else if (catIn === cw.length) score = 150 + catIn; // category ⊆ leaf
+    if (score > (best?.score ?? 0)) best = { leaf, score };
+  }
+  if (best) return best.leaf;
+
+  // 3. Letter-prefix, for the singular/plural and one-word-vs-two cases the
+  //    word pass cannot see: "traditionallaptops" → "Traditional Laptops".
+  //    Restricted to a prefix of at least six letters so short leaves such as
+  //    "ram", "ups" or "tv" cannot reach into an unrelated word again.
+  for (const leaf of ALL_LEAVES) {
+    const ln = norm(leaf);
+    if (ln.length >= 6 && n.startsWith(ln)) return leaf;
+    if (n.length >= 6 && ln.startsWith(n)) return leaf;
   }
   return null;
 }

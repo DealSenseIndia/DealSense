@@ -33,6 +33,20 @@ export async function searchAmazon(query: string, limit = 12): Promise<SearchHit
   }
 }
 
+/**
+ * Amazon's search markup sometimes puts prices, MRP strings or full
+ * "₹x₹x M.R.P.: ₹y" blocks inside the links we scrape. Those are not titles,
+ * and a search card with no real title is worse than no card at all.
+ */
+export function isProductTitle(value: string): boolean {
+  const t = value.trim();
+  if (t.length < 4 || t.split(/\s+/).length < 2) return false;
+  if (/m\.?\s*r\.?\s*p\.?/i.test(t)) return false;
+  if (/^(₹|rs\.?|inr)\s*[\d,.]+$/i.test(t)) return false;
+  if (t.replace(/[₹,\d.\s]/g, "").length < 4) return false;
+  return /[a-z]{2,}/i.test(t);
+}
+
 export function parseAmazonResults(html: string, limit = 12): SearchHit[] {
   // Amazon search result cards
   const $ = cheerio.load(html);
@@ -52,16 +66,30 @@ export function parseAmazonResults(html: string, limit = 12): SearchHit[] {
     if (!/^[A-Z0-9]{10}$/.test(asin) || seen.has(asin)) continue;
     seen.add(asin);
 
-    // Title — Amazon's new PUIS layout puts it in a recipe span, not the h2.
-    // The reliable source is the product link with the most text.
+    // Title — Amazon's PUIS layout puts it in a recipe span, not the h2.
+    // Prefer the real title elements. The old "longest link wins" rule picked
+    // up price blocks such as "₹1,19,900₹1,19,900 M.R.P.: ₹1,49,900".
     let title = "";
-    $c.find("a.a-link-normal").each((_, el) => {
-      const t = cleanTitle($(el).text());
-      if (t.length > title.length) title = t;
-    });
-    if (!title) title = cleanTitle($c.find("span[data-cy='title-recipe']").first().text());
-    if (!title) title = cleanTitle($c.find("h2").first().text());
-    if (!title || title.length < 4 || title.split(/\s+/).length < 2) continue;
+    const candidates = [
+      $c.find("span[data-cy='title-recipe']").first().text(),
+      $c.find("h2").first().text(),
+      $c.find("h2 a span").first().text(),
+      $c.find("h2 a").first().text(),
+    ];
+    for (const candidate of candidates) {
+      const t = cleanTitle(candidate);
+      if (isProductTitle(t)) {
+        title = t;
+        break;
+      }
+    }
+    if (!title) {
+      $c.find("a.a-link-normal").each((_, el) => {
+        const t = cleanTitle($(el).text());
+        if (isProductTitle(t) && t.length > title.length) title = t;
+      });
+    }
+    if (!isProductTitle(title)) continue;
 
     let price: number | null = parsePrice($c.find(".a-price .a-offscreen").first().text());
     if (price === null) {

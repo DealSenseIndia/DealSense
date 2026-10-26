@@ -1,7 +1,8 @@
 import * as cheerio from "cheerio";
-import type { ExtractedProduct } from "../types";
+import type { ExtractedProduct, StoreReview } from "../types";
 import type { FetchResult } from "./http";
 import { cleanTitle, extractBrandFromTitle, inferCategory, parseCount, parsePrice, parseRating } from "./parse";
+import { extractFlipkartReviews } from "./reviews";
 
 function firstText($: cheerio.CheerioAPI, selectors: string[]): string | null {
   for (const s of selectors) {
@@ -100,6 +101,16 @@ export function extractFlipkart(res: FetchResult, pid: string, url: string): Ext
 
   const confidence = (title ? 0.3 : 0) + (price !== null ? 0.5 : 0) + (images.length ? 0.2 : 0);
 
+  // Real written reviews, when the page publishes them.
+  let reviews: StoreReview[] = [];
+  if (res.format === "html") {
+    try {
+      reviews = extractFlipkartReviews(res.content);
+    } catch {
+      reviews = [];
+    }
+  }
+
   return {
     merchant: "flipkart",
     merchantProductId: pid,
@@ -120,5 +131,6 @@ export function extractFlipkart(res: FetchResult, pid: string, url: string): Ext
     coupon: null,
     extractionMethod: `flipkart_${res.via}`,
     confidence: Math.round(confidence * 100) / 100,
+    reviews,
   };
 }

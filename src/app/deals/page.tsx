@@ -7,7 +7,7 @@ import { getFilteredDeals, getFilterFacets } from "@/lib/db/deals";
 export const metadata: Metadata = {
   title: "Live deals",
   description:
-    "Real, verified price drops across Amazon India, Flipkart and Myntra — every one backed by recorded price history.",
+    "Real, verified price drops across Amazon, Flipkart, Myntra, Nykaa, Tata CLiQ and more — every one backed by recorded price history.",
   alternates: { canonical: "/deals" },
 };
 

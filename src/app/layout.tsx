@@ -4,6 +4,7 @@ import "./globals.css";
 import { site } from "@/lib/config";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
+import { TopLoadingBar } from "@/components/site/TopLoadingBar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -65,6 +66,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className={`${inter.variable} ${jet.variable} min-h-screen antialiased`}>
+        <TopLoadingBar />
         <Nav />
         <main className="relative">{children}</main>
         <Footer />

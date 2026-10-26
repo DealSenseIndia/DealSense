@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { ClipboardPaste, Link2, Mic, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { ClipboardPaste, Link2, Mic } from "lucide-react";
+import { AnalyzingButton, type AnalyzePhase } from "@/components/ui/AnalyzingButton";
 import { StorePlaceholder } from "@/components/ui/StorePlaceholder";
 import { cn } from "@/lib/utils";
 
@@ -17,15 +16,19 @@ export function UrlForm({
   className,
   defaultValue = "",
   onValue,
+  onAnalyse,
+  phase = "idle",
+  shakeKey = 0,
 }: {
   size?: "md" | "lg";
   className?: string;
   defaultValue?: string;
   onValue?: (v: string) => void;
+  onAnalyse: (url: string) => void;
+  phase?: AnalyzePhase;
+  shakeKey?: number;
 }) {
   const [url, setUrl] = useState(defaultValue);
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   function update(v: string) {
     setUrl(v);
@@ -34,9 +37,9 @@ export function UrlForm({
 
   function go(value: string) {
     const v = value.trim();
-    if (!v) return;
-    setLoading(true);
-    router.push(`/analyze?url=${encodeURIComponent(v)}`);
+    if (!v || phase === "loading") return;
+    update(v);
+    onAnalyse(v);
   }
 
   async function paste() {
@@ -56,58 +59,53 @@ export function UrlForm({
           go(url);
         }}
         className={cn(
-          "flex items-center gap-2 rounded-2xl border border-hairline bg-card p-2 shadow-card transition-shadow focus-within:border-emerald-400/60 focus-within:shadow-[0_18px_46px_-22px_rgba(16,185,129,0.55)]",
-          size === "lg" ? "min-h-[60px]" : "min-h-[54px]",
+          "flex flex-col gap-2 rounded-2xl border border-hairline bg-card p-2 shadow-card transition-shadow focus-within:border-emerald-400/60 focus-within:shadow-[0_18px_46px_-22px_rgba(16,185,129,0.55)] sm:flex-row sm:items-center",
+          size === "lg" ? "sm:min-h-[60px]" : "sm:min-h-[54px]",
         )}
       >
-        <span className="pl-2.5 text-muted">
-          <Link2 className="h-4.5 w-4.5" />
-        </span>
-        <span className="relative flex min-w-0 flex-1 items-center">
-          <StorePlaceholder hidden={url.length > 0} className="px-1" />
-          <input
-            value={url}
-            onChange={(e) => update(e.target.value)}
-            placeholder=""
-            aria-label="Paste a product link or search for a product"
-            className="h-full min-w-0 flex-1 bg-transparent text-[14.5px] text-headline placeholder:text-muted focus:outline-none"
-            autoComplete="off"
-            spellCheck={false}
-          />
-        </span>
-        <span className="hidden h-5 w-px bg-hairline sm:block" />
-        <button
-          type="button"
-          onClick={paste}
-          aria-label="Paste link"
-          className="hidden text-muted transition-colors hover:text-headline sm:block"
-        >
-          <ClipboardPaste className="h-4 w-4" />
-        </button>
-        <button
-          type="button"
-          aria-label="Voice search"
-          className="hidden text-muted transition-colors hover:text-headline md:block"
-        >
-          <Mic className="h-4 w-4" />
-        </button>
-        <Button type="submit" size={size === "lg" ? "md" : "sm"} variant="gradient" disabled={loading} className="relative overflow-hidden">
-          {loading ? (
-            <>
-              <span className="mr-2 animate-pulse flex items-center gap-1.5">
-                <Sparkles className="h-4 w-4 text-white" /> Analysing
-              </span>
-              <span className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/40 to-transparent animate-[shimmer_2s_infinite]"></span>
-            </>
-          ) : (
-            <>
-              <span className="mr-2 inline-flex items-center gap-1.5">
-                <Sparkles className="h-4 w-4" />
-                Analyse
-              </span>
-            </>
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <span className="pl-2.5 text-muted">
+            <Link2 className="h-4.5 w-4.5" />
+          </span>
+          <span className="relative flex min-w-0 flex-1 items-center">
+            <StorePlaceholder hidden={url.length > 0} className="px-1" />
+            <input
+              value={url}
+              onChange={(e) => update(e.target.value)}
+              placeholder=""
+              aria-label="Paste a product link or search for a product"
+              className="h-9 min-w-0 flex-1 bg-transparent text-[14.5px] text-headline placeholder:text-muted focus:outline-none"
+              autoComplete="off"
+              spellCheck={false}
+            />
+          </span>
+          <span className="hidden h-5 w-px bg-hairline sm:block" />
+          <button
+            type="button"
+            onClick={paste}
+            aria-label="Paste link"
+            className="hidden text-muted transition-colors hover:text-headline sm:block"
+          >
+            <ClipboardPaste className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            aria-label="Voice search"
+            className="hidden text-muted transition-colors hover:text-headline md:block"
+          >
+            <Mic className="h-4 w-4" />
+          </button>
+        </div>
+        <AnalyzingButton
+          phase={phase}
+          shakeKey={shakeKey}
+          className={cn(
+            "w-full sm:w-auto",
+            size === "lg"
+              ? "h-11 px-6 text-[13.5px]"
+              : "h-9 px-4 text-[12.5px]",
           )}
-        </Button>
+        />
       </form>
 
       <div className="mt-3 flex flex-wrap items-center gap-2 text-[12px] text-muted">
@@ -115,11 +113,9 @@ export function UrlForm({
         {EXAMPLES.map((ex, i) => (
           <button
             key={ex}
-            onClick={() => {
-              update(ex);
-              go(ex);
-            }}
-            className="rounded-full border border-hairline bg-card px-2.5 py-1 font-semibold transition-colors hover:border-emerald-400/50 hover:text-headline"
+            onClick={() => go(ex)}
+            disabled={phase === "loading"}
+            className="rounded-full border border-hairline bg-card px-2.5 py-1 font-semibold transition-colors hover:border-emerald-400/50 hover:text-headline disabled:opacity-60"
           >
             {i === 0 ? "an Amazon link" : "a Flipkart link"}
           </button>

@@ -3,11 +3,14 @@ import { Container } from "@/components/ui/Container";
 import { Hero, type FeaturedDeal } from "@/components/landing/Hero";
 import { CategoryPanel } from "@/components/landing/CategoryPanel";
 import { LiveDeals } from "@/components/landing/LiveDeals";
+import { SmartSetupsTeaser } from "@/components/landing/SmartSetupsTeaser";
 import { AllTimeLows, DealsMovingNow, PlatformShelves } from "@/components/landing/DealSections";
+import { BudgetPicks } from "@/components/landing/BudgetPicks";
 import { CtaBand } from "@/components/landing/CtaBand";
 import { Faq, HowItWorks } from "@/components/landing/Sections";
 import {
   getAllTimeLows,
+  getBudgetPicks,
   getFilterFacets,
   getLatestDeals,
   getPlatformShelves,
@@ -15,7 +18,7 @@ import {
 } from "@/lib/db/deals";
 import { getShelves } from "@/lib/db/shelves";
 import { getHistorySpotlight } from "@/lib/db/spotlight";
-import { site } from "@/lib/config";
+import { site, storeMeta } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: `${site.name} — ${site.tagline}`,
@@ -25,23 +28,15 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-const STORE_LABEL: Record<string, string> = {
-  amazon: "Amazon",
-  flipkart: "Flipkart",
-  myntra: "Myntra",
-  tatacliq: "Tata CLiQ",
-  croma: "Croma",
-  reliancedigital: "Reliance Digital",
-};
-
 export default async function HomePage() {
-  const [shelves, drops, lows, platform, facets, live] = await Promise.all([
+  const [shelves, drops, lows, platform, facets, live, budget] = await Promise.all([
     getShelves(6, 6),
     getRecentDrops(14),
     getAllTimeLows(12),
     getPlatformShelves(6),
     getFilterFacets(),
     getLatestDeals(8),
+    getBudgetPicks(6),
   ]);
 
   // The hero's floating cards all describe ONE product — the one with the
@@ -80,8 +75,14 @@ export default async function HomePage() {
       .filter((d) => d.count > 0 && d.min >= 50 && d.count >= 5)
       .map((d) => ({ label: `${d.min}% off`, href: `/deals?discountMin=${d.min}`, count: d.count })),
     ...facets.stores
-      .filter((s) => s.count > 5)
-      .map((s) => ({ label: STORE_LABEL[s.merchant] ?? s.merchant, href: `/deals?store=${s.merchant}`, count: s.count })),
+      .filter((s) => s.count > 0)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 8)
+      .map((s) => ({
+        label: storeMeta(s.merchant).name,
+        href: `/deals?store=${s.merchant}`,
+        count: s.count,
+      })),
   ];
 
   return (
@@ -90,6 +91,10 @@ export default async function HomePage() {
 
       {/* ---------- the products ---------- */}
       <LiveDeals deals={live} />
+
+      <BudgetPicks bands={budget} />
+
+      <SmartSetupsTeaser />
 
       <DealsMovingNow deals={drops} filters={filters} />
 
@@ -100,11 +105,11 @@ export default async function HomePage() {
           <Container size="wide">
             <div className="mb-7">
               <h2 className="text-[28px] font-extrabold tracking-[-0.03em] text-headline">
-                Every product here has real price history
+                The strongest buy in every category
               </h2>
               <p className="mt-1.5 max-w-[650px] text-[14.5px] leading-[1.5] text-body">
-                We only list what we can actually track. Every card below has a recorded price
-                series behind it.
+                Cheap against its own recorded history, well rated, and available across every
+                store we track. Expensive shelf-fillers are left out.
               </p>
             </div>
 

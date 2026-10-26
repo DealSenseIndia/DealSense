@@ -32,25 +32,57 @@ truth instead of showing an empty box:
 | Layer | Source | Available |
 | --- | --- | --- |
 | 1 | **Our own observations** — immutable, timestamped | always, grows over time |
-| 2 | **Imported history** — real series from a price-history provider, cached forever in our own DB | after the first fetch |
+| 2 | **Imported history** — real series from a price-history provider, stored in our own DB and topped up over time | after the first backfill |
 | 3 | **External provider** — Keepa / PriceHistory.app official APIs | when a key is set |
 | 4 | **Cross-store proxy** — the same product's history on the other store | when the rival is tracked |
 | 5 | **Market context** — the real typical price band for that category | always, computed from verified listings |
 
 **We already ship a working, free provider.** PriceHistory.ai publishes public product pages
-and a public catalogue API; we pull the real price series on demand (one product at a time,
-throttled), persist it in our own database so it is never fetched twice, and always show
-`Source: PriceHistory.ai` on the page. Measured results: the Samsung Galaxy S25 Ultra returns
-**239 real price points spanning 20 months** (₹69,999 → ₹1,29,999).
+and a public catalogue API. A new product gets one full backfill; an hourly controlled sync
+(`/api/cron/sync`, five listings per run) then appends only points newer than ours and refreshes
+the listing price, so deals and charts move as the stores do. We always show
+`Source: PriceHistory.ai` wherever imported points are used. Measured results: the Samsung
+Galaxy S25 Ultra returns **239 real price points spanning 20 months** (₹69,999 → ₹1,29,999).
 
 Full survey of every competitor we tested, what each can give us and what it costs:
 **[`PRICE-HISTORY-SOURCES.md`](./PRICE-HISTORY-SOURCES.md)**.
 
 The rules we follow: **exact product-id match only** (a near-match would attach the wrong
-product's history), **fetch once and own it forever**, **never bulk-harvest**, **always
-attribute**, and **our affiliate links on every buy button** — never the provider's.
+product's history), **we own every point we store**, **top-up instead of bulk-harvest**,
+**always attribute**, and **our affiliate links on every buy button** — never the provider's.
 
 MRP discounts are reported separately as **advertised**, never as verified history.
+
+---
+
+## Smart Setups — a whole room, priced from real listings
+
+[`/setups`](./src/app/setups/page.tsx) turns a space (bedroom, WFH desk, gaming, student,
+living room, kitchen), a budget and the things you already own into three complete builds.
+The engine works from tracked Amazon/Flipkart listings only — the same catalogue and the same
+verdict engine as the rest of the site.
+
+**The rules the engine follows**
+
+- Every recommended item has a recorded price series. Nothing is invented to fill a gap.
+- One product per slot; items rated **Avoid** are never recommended, even if that leaves a slot open.
+- Each gap explains itself: not tracked yet, nothing inside the tier's price band, or only poor deals.
+- A tier is a ceiling, not a spending target. When a higher budget cannot beat the current picks,
+  **Step up stays identical to Best value** and the UI says so instead of padding the cart.
+- Buy links always route through our internal `/go/[listingId]` (Amazon tag / Cuelinks), never a
+  provider's affiliate link.
+
+**Composition math** — essentials are funded first, then finishing pieces. Each slot gets a target
+share of the tier budget; candidates are ranked on budget fit (45%), deal score (35%), style (10%)
+and price evidence (10%). The setup score is 40% coverage, 20% budget fit, 20% evidence and 20%
+deal quality. All weights are disclosed in the results UI.
+
+```bash
+npm run setups:seed                 # curated, exact-id PriceHistory.ai backfills
+npm run setups:report               # catalogue coverage + default-tier builds
+npm run setups:report -- --all      # compare saver / value / premium and list every gap
+npx tsx scripts/setups-inspect.ts kitchen air_fryer   # why a slot did or did not fill
+```
 
 ---
 
@@ -155,22 +187,48 @@ layer. Every outbound button already routes through it.
    | `TURSO_AUTH_TOKEN` | free serverless database |
    | `NEXT_PUBLIC_SITE_URL` | your domain |
    | `NEXT_PUBLIC_AMAZON_TAG` | your Amazon Associates tag |
-   | `NEXT_PUBLIC_CUELINKS_CHANNEL` | your Cuelinks channel id |
+   | `NEXT_PUBLIC_CUELINKS_CHANNEL` | Cuelinks channel id (public) |
+   | `CUELINKS_API_KEY` | Cuelinks link building — **server only, never `NEXT_PUBLIC_`** |
    | `TELEGRAM_BOT_TOKEN` | price-drop alerts (optional) |
-   | `CRON_SECRET` | protects the refresh endpoint |
+   | `RESEND_API_KEY` + `ALERT_FROM_EMAIL` | email alerts (optional) |
+   | `CRON_SECRET` | protects the cron endpoints |
 
-4. Deploy. Vercel runs a daily refresh; **GitHub Actions** (`.github/workflows/refresh.yml`) runs it
-   hourly for free — add `DEALSENSE_URL` and `CRON_SECRET` as repo secrets.
-5. Seed the production database once, from a machine that has `TURSO_DATABASE_URL` set:
+4. **Copy the catalogue into Turso.** Nothing else works until this runs: a fresh
+   database is empty, and the deployed app reads `TURSO_DATABASE_URL`. From a
+   machine holding the same URL + token in `.env.local`:
 
    ```bash
-   npm run catalogue -- --products 120   # products WITH real price history
-   npm run merge                        # merge duplicates, drop orphans
-   npm run scrape                       # pull live prices for everything tracked
+   npx tsx scripts/migrate-to-turso.ts --dry   # row counts, no writes
+   npx tsx scripts/migrate-to-turso.ts         # schema + all tables, idempotent
    ```
 
-   Run these against the **Turso** database (not the local SQLite file) so the
-   deployed site starts with a real catalogue instead of an empty one.
+   Safe to re-run after every import pass — rows are `INSERT OR REPLACE`, and
+   the script refuses to run if the destination is also its source.
+
+5. **Deploy**, then verify in production: `/` and `/setups` render, a product page
+   shows its chart, a "Check price" button lands on Cuelinks markup through
+   `/go/…`, and `/api/worker/status` reports a non-zero catalogue.
+
+6. **Freshness.** Two free loops keep prices moving:
+
+   - Vercel cron (`vercel.json`) runs once a day as a safety net;
+   - GitHub Actions — `sync.yml` every 20 minutes tops up the ten
+     oldest-checked listings (≈720/day, a full sweep every two days), and
+     `refresh.yml` reads two store pages directly every hour.
+
+   Add `DEALSENSE_URL` (e.g. `https://dealsense.in`) and `CRON_SECRET` as
+   repository secrets. Check the sweep with:
+
+   ```bash
+   npx tsx scripts/freshness-report.ts   # median age, oldest listings, per store
+   ```
+
+   It reads whichever database the environment points at, so set
+   `TURSO_DATABASE_URL` to inspect production.
+
+7. **First week.** Watch the freshness median, the failing-store count in
+   `/api/worker/status`, and which products get clicks through `/go`. A deal
+   site is judged on two things only: the price is real, and the link works.
 
 ---
 

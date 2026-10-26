@@ -99,7 +99,7 @@ export function DealCard({ deal }: { deal: DealRow }) {
           href={deal.url}
           target="_blank"
           rel="noopener noreferrer sponsored"
-          className="mt-3 inline-flex h-8 items-center justify-center gap-1.5 rounded-btn bg-gradient-brand text-[11.5px] font-extrabold text-white transition-transform hover:-translate-y-0.5"
+          className="btn-cta mt-3 inline-flex h-8 items-center justify-center gap-1.5 rounded-btn text-[11.5px] font-extrabold"
         >
           Check deal <ArrowUpRight className="h-3.5 w-3.5" />
         </a>

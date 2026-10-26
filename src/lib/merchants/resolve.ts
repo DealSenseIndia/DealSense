@@ -20,6 +20,40 @@ export function detectMerchant(url: string): Merchant | null {
   return null;
 }
 
+/**
+ * Every store host we can hold a listing for, mapped to its merchant key.
+ * Used when the source we import from names a store we cannot trust — the
+ * real destination of the link wins over the label a provider attached to it.
+ */
+const STORE_HOST_RE: Array<[RegExp, Merchant]> = [
+  [/(?:^|\.)amazon\./i, "amazon"],
+  [/(?:^|\.)amzn\.to$/i, "amazon"],
+  [/(?:^|\.)amzn\.in$/i, "amazon"],
+  [/flipkart\./i, "flipkart"],
+  [/fkrt\.it$/i, "flipkart"],
+  [/myntra\./i, "myntra"],
+  [/nykaa\./i, "nykaa"],
+  [/firstcry\./i, "firstcry"],
+  [/reliancedigital\./i, "reliancedigital"],
+  [/croma\./i, "croma"],
+  [/biba\./i, "biba"],
+  [/libas\./i, "libas"],
+  [/tatacliq\./i, "tatacliq"],
+  [/ajio\./i, "ajio"],
+  [/meesho\./i, "meesho"],
+  [/shopsy\./i, "shopsy"],
+];
+
+/** Resolve the real store a listing URL points at, if we know the host. */
+export function merchantFromUrl(url: string): Merchant | null {
+  const host = safeHost(url);
+  if (!host) return null;
+  for (const [re, merchant] of STORE_HOST_RE) {
+    if (re.test(host)) return merchant;
+  }
+  return null;
+}
+
 function safeHost(url: string): string | null {
   try {
     return new URL(url).hostname.toLowerCase();

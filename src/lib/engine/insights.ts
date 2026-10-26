@@ -432,7 +432,7 @@ export function analysisBullets(input: {
 
   if (score !== null) {
     bullets.push({
-      text: `DealSense score ${(score / 10).toFixed(1)} out of 10`,
+      text: `DealSense score ${Math.round(score)} out of 100`,
       kind: score >= 70 ? "GOOD" : score >= 50 ? "INFO" : "WARN",
     });
   }

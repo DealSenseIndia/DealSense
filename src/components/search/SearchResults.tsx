@@ -193,7 +193,7 @@ export function SearchResults({ initialQuery }: { initialQuery: string }) {
                     </div>
                     <Link
                       href={analyzeUrl}
-                      className="mt-3 inline-flex h-8 items-center justify-center gap-1 rounded-btn bg-gradient-brand text-[11.5px] font-extrabold text-white transition-transform hover:-translate-y-0.5"
+                      className="btn-cta mt-3 inline-flex h-8 items-center justify-center gap-1 rounded-btn text-[11.5px] font-extrabold"
                     >
                       Check deal <ChevronRight className="h-3.5 w-3.5" />
                     </Link>

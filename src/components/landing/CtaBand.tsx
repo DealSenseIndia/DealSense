@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { GeminiIcon } from "@/components/ui/GeminiIcon";
 
 /**
  * Closing band — the shopping-bags artwork with one clear next step.
@@ -35,15 +36,17 @@ export function CtaBand() {
             </h2>
 
             <p className="mt-3 max-w-md text-[14.5px] leading-relaxed text-[#0F5138] dark:text-slate-300">
-              Paste any Amazon, Flipkart or Myntra link. We read the real price, check it against
-              every price we have recorded, and tell you whether now is a good time to buy.
+              Paste a link from Amazon, Flipkart, Myntra, Nykaa or any other store we track. We
+              read the real price, check it against every price we have recorded, and tell you
+              whether now is a good time to buy.
             </p>
 
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <Link
                 href="/analyze"
-                className="inline-flex h-12 items-center gap-2 rounded-xl bg-gradient-brand px-6 text-[#04140d] font-extrabold shadow-[0_10px_26px_-12px_rgba(16,185,129,0.85)] transition-all hover:-translate-y-0.5 hover:brightness-105"
+                className="btn-cta inline-flex h-12 items-center gap-2 rounded-xl px-6 font-extrabold"
               >
+                <GeminiIcon className="h-4 w-4" />
                 Analyze a product link
                 <ArrowRight className="h-4 w-4" />
               </Link>

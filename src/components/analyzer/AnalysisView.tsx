@@ -269,7 +269,7 @@ export function AnalysisView({
                 Compare & find the lowest price
               </h2>
               <p className="mt-0.5 text-[12.5px] text-muted">
-                Same product, verified across stores — including shipping and card offers.
+                Same product, plain current store prices — no coupons or card offers assumed.
               </p>
             </div>
             {cheaper && rivalDiff !== null && (
@@ -337,6 +337,12 @@ export function AnalysisView({
               </li>
             ))}
           </ul>
+          {bundle?.importedPoints ? (
+            <p className="mt-3 border-t border-hairline pt-3 text-[10.5px] leading-relaxed text-muted">
+              {bundle.importedPoints} earlier price points come from DealSense&apos;s tracked price
+              record; each new direct store reading is added on top.
+            </p>
+          ) : null}
         </div>
 
         <AlertPanel
@@ -352,7 +358,7 @@ export function AnalysisView({
         {[
           { t: "Real Price History", s: "Every price was actually observed.", icon: <LineChartIcon /> },
           { t: "Buy / Wait / Avoid", s: "A plain verdict, with the maths shown.", icon: <ScaleIcon /> },
-          { t: "Compare Everywhere", s: "Amazon, Flipkart and Myntra side by side.", icon: <LayersIcon /> },
+          { t: "Compare Everywhere", s: "Every store we track, side by side.", icon: <LayersIcon /> },
           { t: "True Landed Cost", s: "Delivery, coupons and card offers included.", icon: <WalletIcon /> },
           { t: "Save Money", s: "Transparent deals. No fake discounts.", icon: <HeartIcon /> },
         ].map((i) => (
@@ -382,6 +388,9 @@ export function AnalysisView({
           reviews={reviews}
           storeRating={listing.rating}
           storeReviewCount={storeReviewCount}
+          productId={product.id}
+          storeHref={`/go/${listing.id}`}
+          storeName={meta.name}
         />
       ) : null}
       {/* ---------- similar products ---------- */}

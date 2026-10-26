@@ -16,6 +16,10 @@ export interface HistorySpotlight {
   points: number;
   /** Oldest -> newest price series (capped). */
   series: number[];
+  /** Full recorded series for the interactive chart. */
+  history: { t: number; price: number }[];
+  /** Records imported from a public tracker (all legacy imports are PriceHistory.ai). */
+  importedPoints: number;
   /** All-time low with the date it was observed. */
   low: { price: number; at: number } | null;
   /** Most recent real drop (price went down). */
@@ -46,6 +50,7 @@ export async function getHistorySpotlight(): Promise<HistorySpotlight | null> {
       curPrice: listings.price,
       mrp: listings.mrp,
       rating: listings.rating,
+      source: observations.source,
     })
     .from(observations)
     .innerJoin(listings, eq(observations.listingId, listings.id))
@@ -58,14 +63,16 @@ export async function getHistorySpotlight(): Promise<HistorySpotlight | null> {
     {
       meta: (typeof rows)[number];
       points: { price: number; at: number }[];
+      imported: number;
     }
   >();
 
   for (const r of rows) {
     const price = r.price as number;
     if (!Number.isFinite(price) || price <= 0) continue;
-    const entry = byListing.get(r.listingId) ?? { meta: r, points: [] };
+    const entry = byListing.get(r.listingId) ?? { meta: r, points: [], imported: 0 };
     entry.points.push({ price, at: r.at });
+    if (r.source === "imported" || r.source.startsWith("imported:")) entry.imported++;
     byListing.set(r.listingId, entry);
   }
 
@@ -73,7 +80,7 @@ export async function getHistorySpotlight(): Promise<HistorySpotlight | null> {
   let best: HistorySpotlight | null = null;
   let bestScore = -1;
 
-  for (const { meta, points } of byListing.values()) {
+  for (const { meta, points, imported } of byListing.values()) {
     if (points.length < 3) continue;
 
     const prices = points.map((p) => p.price);
@@ -124,6 +131,8 @@ export async function getHistorySpotlight(): Promise<HistorySpotlight | null> {
       href: `/product/${meta.slug}`,
       points: points.length,
       series,
+      history: points.map((p) => ({ t: p.at, price: p.price })),
+      importedPoints: imported,
       low,
       lastDrop,
       spanDays,

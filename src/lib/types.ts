@@ -12,6 +12,7 @@ export type ObservationSource =
   | "live_heartbeat"
   | "user_triggered"
   | "imported"
+  | `imported:${string}`
   | "seed";
 
 /** The normalized result of reading a merchant product page. */
@@ -136,6 +137,9 @@ export interface AnalysisResult {
   bundle?: {
     source: "own" | "cross_store" | "external" | "none";
     sourceLabel: string;
+    /** Imported records in the charted series, and the tracker they came from. */
+    importedPoints?: number;
+    externalProvider?: string | null;
     observationCount: number;
     points: PricePoint[];
     low: number | null;

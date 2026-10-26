@@ -1,20 +1,26 @@
-name: DealSense price refresh
+name: DealSense store refresh
 
-# Free hourly price refresh. GitHub Actions is a genuinely free scheduler
-# (Vercel Hobby cron only runs once a day). Set these repository secrets:
-#   DEALSENSE_URL   e.g. https://dealsense.in
-#   CRON_SECRET     the same value you set in Vercel env vars
+# Reads a couple of store pages directly, on top of the provider sync that
+# runs every 20 minutes (see sync.yml). This is the step that proves a price
+# on the store itself rather than trusting the feed, so it stays deliberately
+# small: two pages an hour is enough to catch drift without inviting blocks.
+#
+# Repository secrets: DEALSENSE_URL (e.g. https://dealsense.in) and CRON_SECRET.
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "15 * * * *"
   workflow_dispatch:
+
+concurrency:
+  group: dealsense-refresh
+  cancel-in-progress: false
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - name: Trigger refresh
+      - name: Read store pages directly
         run: |
-          curl -sS --max-time 120 \
-            "${{ secrets.DEALSENSE_URL }}/api/cron/refresh?limit=5&secret=${{ secrets.CRON_SECRET }}" \
-            || true
+          curl -fsS --max-time 120 --retry 2 --retry-delay 10 \
+            "${{ secrets.DEALSENSE_URL }}/api/cron/refresh?limit=2&secret=${{ secrets.CRON_SECRET }}"

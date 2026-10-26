@@ -11,6 +11,7 @@ const COLUMNS: { title: string; links: { href: string; label: string }[] }[] = [
   {
     title: "Shop",
     links: [
+      { href: "/setups", label: "Build a Smart Setup" },
       { href: "/deals?sort=drop", label: "Live price drops" },
       { href: "/deals?sort=allTimeLow", label: "All-time lows" },
       { href: "/deals?multiStore=1", label: "Compare across stores" },

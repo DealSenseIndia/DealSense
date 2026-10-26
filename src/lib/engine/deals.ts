@@ -1,8 +1,7 @@
 import type { Merchant } from "../config";
-import { affiliate } from "../config";
 import type { VerdictResult } from "../types";
 import { getObservations, getRecentListings, getProductById } from "../db/queries";
-import { affiliateUrl } from "../merchants/resolve";
+import { goPath } from "../affiliate";
 import { computeStats, priceSeries } from "./stats";
 import { evaluateDeal } from "./verdict";
 
@@ -55,12 +54,7 @@ export async function getLiveDeals(limit = 48): Promise<DealItem[]> {
       price: listing.price,
       mrp: listing.mrp,
       url: listing.url,
-      affiliateUrl: affiliateUrl(
-        listing.merchant as Merchant,
-        listing.url,
-        affiliate.amazonTag,
-        affiliate.cuelinksChannel,
-      ),
+      affiliateUrl: goPath(listing.id, "live_deals"),
       lastCheckedAt: listing.lastCheckedAt,
       observationCount: stats.count,
       verdict,

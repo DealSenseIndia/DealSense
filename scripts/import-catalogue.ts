@@ -149,7 +149,7 @@ async function main() {
           await addObservation({
             listingId: listing.id,
             price: p.price,
-            source: "imported",
+            source: "imported:pricehistory.ai",
             observedAt: p.t,
           });
         }

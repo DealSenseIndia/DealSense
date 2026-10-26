@@ -7,12 +7,12 @@ import { trackedStores } from "@/lib/config";
 export const metadata: Metadata = {
   title: "Check a deal",
   description:
-    "Paste any Amazon or Flipkart link. DealSense verifies the live price, reads the real price history and gives you a plain buy / wait / avoid verdict.",
+    "Paste a product link from Amazon, Flipkart, Myntra, Nykaa or another tracked store. DealSense verifies the live price, reads the real price history and gives you a plain buy / wait / avoid verdict.",
   alternates: { canonical: "/analyze" },
 };
 
 const STEPS = [
-  { t: "Paste the link", s: "Any Amazon or Flipkart product URL." },
+  { t: "Paste the link", s: "Any supported store's product URL." },
   { t: "We read the real page", s: "Live price, stock, seller and rating." },
   { t: "You get the verdict", s: "Buy, wait or avoid — with the history behind it." },
 ];

@@ -1,14 +1,13 @@
-import Link from "next/link";
-import { ArrowUpRight, Check, Crown, Truck, Wallet } from "lucide-react";
+import { ArrowUpRight, Crown } from "lucide-react";
 import { StoreLogo } from "@/components/ui/StoreLogo";
 import { Rating } from "@/components/ui/Rating";
 import type { StoreComparison, StoreOffer } from "@/lib/db/compare";
 import { cn, formatINR, timeAgo } from "@/lib/utils";
 
 /**
- * Compare the price of this exact product across every store we track it in,
- * priced end to end — delivery, coupon and the best card offer included — so
- * the best place to buy is obvious.
+ * Compare the plain price of this exact product across every store we track
+ * it in. No coupons, no delivery estimates, no card offers — just what each
+ * store is asking for it today.
  */
 export function StoreComparisonPanel({
   comparison,
@@ -61,9 +60,9 @@ export function StoreComparisonPanel({
                   target="_blank"
                   rel="noopener noreferrer sponsored"
                   className={cn(
-                    "shrink-0 rounded-lg px-2.5 py-1 text-[11px] font-extrabold transition-colors",
+                    "shrink-0 rounded-lg px-2.5 py-1 text-[11px] font-extrabold transition-all",
                     o.isBest
-                      ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                      ? "btn-cta"
                       : "border border-hairline text-secondary hover:border-emerald-400/60",
                   )}
                 >
@@ -75,7 +74,7 @@ export function StoreComparisonPanel({
         </div>
 
         <p className="mt-2.5 text-[10.5px] leading-snug text-muted">
-          Current market price per store, before any card offer.
+          Current market price at each store.
         </p>
       </div>
     );
@@ -91,7 +90,7 @@ export function StoreComparisonPanel({
           </h2>
           <p className="mt-0.5 text-[12.5px] text-muted">
             {storesCompared > 1
-              ? `We track this product in ${storesCompared} stores. These are the prices you actually pay.`
+              ? `We track this product in ${storesCompared} stores. This is the current market price at each one.`
               : "We track this product in one store so far. Add the same product on another store and we will compare them."}
           </p>
         </div>
@@ -116,11 +115,11 @@ export function StoreComparisonPanel({
 
         {best && storesCompared > 1 ? (
           <div className="mt-4 flex flex-wrap items-center gap-2 rounded-xl border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-4 py-3">
-            <Check className="h-4 w-4 shrink-0 text-[var(--dw-green-mid)]" />
+            <Crown className="h-4 w-4 shrink-0 text-[var(--dw-green-mid)]" />
             <p className="text-[12.5px] font-semibold text-body">
-              Buy it on{" "}
-              <strong className="text-headline">{best.merchantName}</strong> and you pay{" "}
-              <strong className="text-headline">{formatINR(best.landed)}</strong> —{" "}
+              The lowest current price is on{" "}
+              <strong className="text-headline">{best.merchantName}</strong> at{" "}
+              <strong className="text-headline">{formatINR(best.price)}</strong> —{" "}
               {formatINR(spread)} less than the most expensive store.
             </p>
           </div>
@@ -150,7 +149,7 @@ function OfferRow({ offer, primary }: { offer: StoreOffer; primary: boolean }) {
             </span>
             {offer.isBest ? (
               <span className="inline-flex items-center gap-1 rounded-full bg-emerald-600 px-2 py-0.5 text-[9.5px] font-extrabold uppercase tracking-wider text-white">
-                <Crown className="h-2.5 w-2.5" /> Best price
+                <Crown className="h-2.5 w-2.5" /> Lowest price
               </span>
             ) : null}
             {primary ? (
@@ -173,11 +172,11 @@ function OfferRow({ offer, primary }: { offer: StoreOffer; primary: boolean }) {
         </div>
       </div>
 
-      {/* price breakdown */}
+      {/* current price */}
       <div className="flex items-center gap-4 sm:justify-end">
         <div className="text-right">
           <div className="tabular text-[17px] font-extrabold leading-none text-headline">
-            {formatINR(offer.landed)}
+            {formatINR(offer.price)}
           </div>
           <div className="mt-1 flex items-center justify-end gap-1.5">
             {offer.mrp ? (
@@ -191,22 +190,6 @@ function OfferRow({ offer, primary }: { offer: StoreOffer; primary: boolean }) {
               </span>
             ) : null}
           </div>
-          <div className="mt-1 flex flex-wrap items-center justify-end gap-2 text-[9.5px] font-semibold text-muted">
-            {offer.shipping > 0 ? (
-              <span className="inline-flex items-center gap-1">
-                <Truck className="h-2.5 w-2.5" /> +{formatINR(offer.shipping)} delivery
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-1">
-                <Truck className="h-2.5 w-2.5" /> free delivery
-              </span>
-            )}
-            {offer.bankDiscount > 0 ? (
-              <span className="inline-flex items-center gap-1 text-[var(--dw-green-mid)]">
-                <Wallet className="h-2.5 w-2.5" /> −{formatINR(offer.bankDiscount)} card
-              </span>
-            ) : null}
-          </div>
         </div>
 
         <a
@@ -216,7 +199,7 @@ function OfferRow({ offer, primary }: { offer: StoreOffer; primary: boolean }) {
           className={cn(
             "inline-flex h-9 shrink-0 items-center gap-1.5 rounded-xl px-4 text-[12px] font-extrabold transition-all hover:-translate-y-0.5",
             offer.isBest
-              ? "bg-emerald-600 text-white"
+              ? "btn-cta"
               : "border border-hairline bg-card text-headline hover:border-emerald-400/60",
           )}
         >

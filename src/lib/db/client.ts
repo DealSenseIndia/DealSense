@@ -48,7 +48,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 /** Idempotent schema creation so the app works with zero setup. */
-const DDL = `
+export const SCHEMA_DDL = `
 CREATE TABLE IF NOT EXISTS products (
   id TEXT PRIMARY KEY,
   slug TEXT NOT NULL,
@@ -173,7 +173,7 @@ export function ensureSchema(): Promise<void> {
     global.__dealsense_ready = (async () => {
       await client.execute("PRAGMA journal_mode=WAL;").catch(() => {});
       await client.execute("PRAGMA busy_timeout=5000;").catch(() => {});
-      await client.executeMultiple(DDL);
+      await client.executeMultiple(SCHEMA_DDL);
     })();
   }
   return global.__dealsense_ready;

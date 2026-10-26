@@ -116,10 +116,30 @@ export function evaluateDeal(input: VerdictInput): VerdictResult {
   };
 }
 
+/**
+ * A short, factual note explaining why an Avoid-rated product is still in a
+ * build. Some slots cannot be left empty — a PC without memory is not a PC —
+ * so instead of dropping the slot we keep the cheapest honest option and say
+ * what its price looks like historically. Never a prediction.
+ */
+export function priceCautionNote(current: number, stats: DealStats): string {
+  const { low, median } = stats;
+  if (low === null || median === null || median <= 0) {
+    return `Rated Avoid today. It stays in the build because this slot cannot be left empty and nothing better is tracked.`;
+  }
+  const vsTypical = Math.round(((current - median) / median) * 100);
+  const framing =
+    vsTypical > 0
+      ? `${vsTypical}% above the usual ${formatINR(median)}`
+      : `${Math.abs(vsTypical)}% below the usual ${formatINR(median)}, still not low enough to rate well`;
+  return `Avoid-rated at ${formatINR(current)} — ${framing} and a recorded low of ${formatINR(low)}. It stays in the build because this slot cannot be left empty; nothing better is tracked.`;
+}
+
 export const verdictMeta: Record<
   Verdict,
   { label: string; blurb: string; color: string; emoji: string }
 > = {
+
   BUY: { label: "Buy now", blurb: "This is a genuinely good price.", color: "#22c55e", emoji: "🔥" },
   FAIR: { label: "Fair price", blurb: "A normal price. Fine to buy, no rush.", color: "#38bdf8", emoji: "🙂" },
   WAIT: { label: "Wait", blurb: "Likely to get cheaper. Hold on.", color: "#f59e0b", emoji: "⏳" },

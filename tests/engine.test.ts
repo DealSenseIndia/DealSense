@@ -4,9 +4,10 @@ import assert from "node:assert/strict";
 import { detectMerchant, parseMerchantUrl, stripTracking, affiliateUrl } from "../src/lib/merchants/resolve";
 import { parsePrice, parseCount, parseRating, inferCategory } from "../src/lib/merchants/parse";
 import { parseAmazonAmount, pricesFromText } from "../src/lib/merchants/amazon";
+import { parseAmazonResults, isProductTitle } from "../src/lib/merchants/search";
 import { buildIdentityKey, sameVariant, variantTokens, storageOf, ramOf, titleSimilarity, isSameProduct, isAccessory } from "../src/lib/engine/identity";
 import { computeStats } from "../src/lib/engine/stats";
-import { evaluateDeal } from "../src/lib/engine/verdict";
+import { evaluateDeal, priceCautionNote } from "../src/lib/engine/verdict";
 import { computeLandedPrice } from "../src/lib/engine/landedPrice";
 import { alertConditionMet, type AlertContext } from "../src/lib/engine/alerts";
 import type { AlertRow } from "../src/lib/db/queries";
@@ -236,8 +237,30 @@ test("verdict flags an inflated MRP discount", () => {
   assert.equal(v.advertisedDiscountPct, 60);
 });
 
-/* ------------------------------- Landed price ------------------------------ */
+test("an unavoidable Avoid pick explains its price in today's terms", () => {
+  const now = Date.now();
+  const stats = computeStats([
+    { price: 2449, observedAt: now - 4000 },
+    { price: 3784, observedAt: now - 3000 },
+    { price: 3000, observedAt: now - 2000 },
+    { price: 12199, observedAt: now - 1000 },
+    { price: 12199, observedAt: now },
+  ]);
+  const note = priceCautionNote(12199, stats);
+  assert.ok(note.includes("Avoid-rated"), note);
+  assert.ok(note.includes("₹12,199"), note);
+  // Says what the usual price was, without promising a future drop.
+  assert.match(note, /usual ₹3,784/, note);
+  assert.ok(!/will|going to|expect/i.test(note), note);
+});
 
+test("a caution note with no usable history still admits the gap", () => {
+  const note = priceCautionNote(5000, computeStats([]));
+  assert.ok(note.includes("Rated Avoid today"), note);
+  assert.ok(!note.includes("NaN"), note);
+});
+
+/* ------------------------------- Landed price ------------------------------ */
 test("landed price subtracts coupon and best card offer", () => {
   const landed = computeLandedPrice({ base: 10000, shipping: 0, coupon: 500, merchant: "amazon" });
   // best amazon offer = 10% capped at 1500 -> 1000
@@ -315,4 +338,33 @@ test("deal score requires BUY and non-low confidence", () => {
   assert.equal(alertConditionMet(alert, makeCtx({ score: 85, verdict: "BUY", confidence: "HIGH" })), true);
   assert.equal(alertConditionMet(alert, makeCtx({ score: 85, verdict: "WAIT", confidence: "HIGH" })), false);
   assert.equal(alertConditionMet(alert, makeCtx({ score: 85, verdict: "BUY", confidence: "LOW" })), false);
+});
+
+/* ---------------------------- Search result parsing --------------------------- */
+
+test("Amazon search uses the real title, never the price block", () => {
+  const html = `
+    <div data-component-type="s-search-result" data-asin="B0TEST1234">
+      <h2><span>Apple iPhone 18 (Black, 256 GB)</span></h2>
+      <a class="a-link-normal" href="/dp/B0TEST1234">₹1,19,900₹1,19,900 M.R.P.: ₹1,49,900 M.R.P.: ₹1,49,900</a>
+      <span class="a-price"><span class="a-offscreen">₹1,19,900</span></span>
+    </div>`;
+  const hits = parseAmazonResults(html, 5);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].title, "Apple iPhone 18 (Black, 256 GB)");
+});
+
+test("Amazon search skips a card whose only text is a price", () => {
+  const html = `
+    <div data-component-type="s-search-result" data-asin="B0PRICE123">
+      <a class="a-link-normal" href="/dp/B0PRICE123">₹1,19,900₹1,19,900 M.R.P.: ₹1,49,900</a>
+      <span class="a-price"><span class="a-offscreen">₹1,19,900</span></span>
+    </div>`;
+  assert.equal(parseAmazonResults(html, 5).length, 0);
+});
+
+test("isProductTitle rejects price-only strings", () => {
+  assert.equal(isProductTitle("₹1,19,900₹1,19,900 M.R.P.: ₹1,49,900"), false);
+  assert.equal(isProductTitle("₹54,900"), false);
+  assert.equal(isProductTitle("Apple iPhone 18 (Black, 256 GB)"), true);
 });

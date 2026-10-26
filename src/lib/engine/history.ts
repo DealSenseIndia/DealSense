@@ -11,12 +11,34 @@ export interface Evidence {
 
 export type HistorySource = "own" | "cross_store" | "external" | "none";
 
+/**
+ * Imported points are written as `imported` (legacy imports from
+ * PriceHistory.ai's catalogue) or `imported:<provider>` going forward.
+ */
+export function isImportedSource(source: string): boolean {
+  return source === "imported" || source.startsWith("imported:");
+}
+
+/** The provider behind an imported point. Legacy imports are PriceHistory.ai. */
+export function importedProvider(source: string): string {
+  return source.startsWith("imported:") ? source.slice("imported:".length) : "pricehistory.ai";
+}
+
+/** Display name for a provider id. */
+export function providerName(provider: string | null): string {
+  if (!provider) return "external";
+  return provider === "pricehistory.ai" ? "PriceHistory.ai" : provider;
+}
+
 export interface HistoryBundle {
   /** Series to chart. */
   points: PricePoint[];
   /** Where the series came from. */
   source: HistorySource;
   sourceLabel: string;
+  /** How many charted points were imported, and from whom. */
+  importedPoints: number;
+  externalProvider: string | null;
   /** How much history we actually have (points). */
   observationCount: number;
   /** All-time low/high across the merged series. */

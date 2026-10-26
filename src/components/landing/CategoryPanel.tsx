@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, BadgeCheck } from "lucide-react";
 import type { Shelf } from "@/lib/db/shelves";
 import { StoreLogo } from "@/components/ui/StoreLogo";
 import { ProductThumb } from "@/components/ui/ProductThumb";
@@ -25,11 +25,14 @@ export function CategoryPanel({ shelf }: { shelf: Shelf }) {
         {/* badge + title */}
         <div className="flex flex-wrap items-center gap-3">
           <span className="rounded-xl bg-gradient-brand px-3.5 py-2 text-[14px] font-extrabold text-white shadow-[0_10px_26px_-12px_rgba(5,150,105,0.9)]">
-            {shelf.maxDiscount}% off
+            {shelf.maxDiscount > 0 ? `Up to ${shelf.maxDiscount}% off` : "Live picks"}
           </span>
           <h2 className="text-[21px] font-extrabold tracking-tight text-headline sm:text-[25px]">
             {shelf.category}
           </h2>
+          <span className="text-[11.5px] font-bold text-muted">
+            cheapest strong buys across our stores
+          </span>
         </div>
 
         {/* product row */}
@@ -49,6 +52,11 @@ export function CategoryPanel({ shelf }: { shelf: Shelf }) {
                     sizes="(max-width: 640px) 50vw, 200px"
                     imageClassName="transition-transform duration-500 group-hover:scale-105"
                   />
+                  {p.atLow ? (
+                    <span className="absolute left-1.5 top-1.5 inline-flex items-center gap-0.5 rounded-full bg-emerald-600 px-1.5 py-0.5 text-[8px] font-extrabold uppercase tracking-wide text-white shadow-sm">
+                      <BadgeCheck className="h-2.5 w-2.5" /> Lowest ever
+                    </span>
+                  ) : null}
                 </div>
 
                 <div className="mt-2.5 line-clamp-2 min-h-[2.1rem] text-[11.5px] font-bold leading-snug text-headline">

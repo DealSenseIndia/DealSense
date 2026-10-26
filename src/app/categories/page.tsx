@@ -197,7 +197,7 @@ function TrustStrip() {
   const items = [
     { t: "Real Price History", s: "Every price we show was actually observed." },
     { t: "Buy / Wait / Avoid", s: "A plain verdict, with the maths shown." },
-    { t: "Compare Everywhere", s: "Amazon, Flipkart and Myntra side by side." },
+    { t: "Compare Everywhere", s: "Every store we track, side by side." },
     { t: "True Landed Cost", s: "Delivery, coupons and card offers included." },
     { t: "Save Money", s: "Transparent deals. No fake discounts." },
   ];

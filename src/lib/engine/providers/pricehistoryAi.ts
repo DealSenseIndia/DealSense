@@ -6,16 +6,17 @@
  * rendered and embed the raw price-history series, the low/high/average
  * statistics and a buy recommendation.
  *
- * We use it the way a browser would — one product at a time, on demand, when
- * a user analyses a product we have no history for. Every result is cached
- * permanently in our own database, so each product is fetched at most once.
- * We never bulk-harvest and we always attribute the source in the UI.
+ * We use it the way a browser would — one product at a time. A new product
+ * gets one full backfill; a controlled hourly sync then re-reads a handful of
+ * tracked listings and appends only points newer than ours. We never
+ * bulk-harvest and we always attribute the source in the UI.
  *
  * Outbound buy buttons use OUR affiliate links (Cuelinks / Amazon tag), never
  * the provider's.
  */
 
 import type { ExternalHistory } from "../providers";
+import { priceTrackedMerchants } from "../../config";
 
 const UA =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
@@ -70,11 +71,33 @@ async function throttle() {
   lastCall = Date.now();
 }
 
-/** Search the public catalogue. */
-export async function searchPriceHistoryAi(query: string, limit = 50): Promise<PHAIProduct[]> {
+/** Stores the tracker publishes, named the way DealSense stores them. */
+export const PROVIDER_MERCHANTS = priceTrackedMerchants;
+
+/** A few platform spellings differ between the tracker and DealSense. */
+export function providerMerchant(platform: string): string {
+  const p = platform.trim().toLowerCase();
+  if (p === "reliance") return "reliancedigital";
+  if (p === "tata_cliq" || p === "tata-cliq") return "tatacliq";
+  return p;
+}
+
+/** Search the public catalogue, optionally inside one store. */
+export async function searchPriceHistoryAi(
+  query: string,
+  limit = 50,
+  opts: { platform?: string; offset?: number } = {},
+): Promise<PHAIProduct[]> {
   await throttle();
   try {
-    const url = `${BASE}/api/v1/search?q=${encodeURIComponent(query)}&limit=${limit}&offset=0&compact=true`;
+    const params = new URLSearchParams({
+      q: query,
+      limit: String(limit),
+      offset: String(opts.offset ?? 0),
+      compact: "true",
+    });
+    if (opts.platform) params.set("platform", opts.platform);
+    const url = `${BASE}/api/v1/search?${params.toString()}`;
     const res = await fetch(url, {
       headers: { "User-Agent": UA, Accept: "application/json" },
       signal: AbortSignal.timeout(25000),
@@ -86,7 +109,7 @@ export async function searchPriceHistoryAi(query: string, limit = 50): Promise<P
       title: String(r.title ?? ""),
       brand: (r.brand as string) || null,
       category: (r.category as string) || null,
-      platform: String(r.platform ?? ""),
+      platform: providerMerchant(String(r.platform ?? "")),
       asin: String(r.asin ?? ""),
       current_price: r.current_price != null ? Number(r.current_price) : null,
       original_price: r.original_price != null ? Number(r.original_price) : null,
@@ -298,11 +321,12 @@ function cleanQuery(title: string): string {
  * showing no external history at all.
  */
 export async function fetchPriceHistoryAiFor(
-  merchant: "amazon" | "flipkart",
+  merchant: string,
   merchantProductId: string,
   titleHint?: string,
 ): Promise<PHAIResult | null> {
   const wanted = merchantProductId.toUpperCase();
+  const wantedMerchant = providerMerchant(merchant);
 
   const queries: string[] = [];
   if (titleHint) queries.push(cleanQuery(titleHint));
@@ -312,7 +336,7 @@ export async function fetchPriceHistoryAiFor(
     if (!q) continue;
     const hits = await searchPriceHistoryAi(q, 50);
     const exact = hits.find(
-      (h) => h.asin?.toUpperCase() === wanted && h.platform === merchant,
+      (h) => h.asin?.toUpperCase() === wanted && h.platform === wantedMerchant,
     );
     if (!exact?.id) continue;
 

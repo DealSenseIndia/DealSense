@@ -1,6 +1,7 @@
-import { and, desc, eq, gte, isNull, lte, or, sql } from "drizzle-orm";
+import { and, desc, eq, gte, inArray, isNull, lte, or, sql } from "drizzle-orm";
 import { db, ensureSchema } from "./client";
 import { alerts, alertEvents, events, listings, observations, products, reviews } from "./schema";
+import { priceTrackedMerchants } from "../config";
 
 const now = () => Date.now();
 export const uid = () => crypto.randomUUID();
@@ -299,8 +300,53 @@ export async function getDueListings(limit = 10) {
   return db
     .select()
     .from(listings)
-    .where(or(isNull(listings.nextCheckAt), lte(listings.nextCheckAt, ts)))
+    .where(
+      and(
+        // Only stores we can actually read directly.
+        inArray(listings.merchant, ["amazon", "flipkart"]),
+        or(isNull(listings.nextCheckAt), lte(listings.nextCheckAt, ts)),
+      ),
+    )
     .orderBy(sql`${listings.nextCheckAt} IS NULL DESC`, listings.nextCheckAt)
+    .limit(limit);
+}
+
+/**
+ * Listings worth topping up from the public price tracker, freshest-value first:
+ * the deepest records (what the homepage shows) that have waited longest.
+ * After a sync the listing is rescheduled, so the queue rotates on its own.
+ */
+export async function getSyncCandidates(limit = 6) {
+  await ensureSchema();
+  return db
+    .select({
+      id: listings.id,
+      merchant: listings.merchant,
+      merchantProductId: listings.merchantProductId,
+      title: listings.title,
+      price: listings.price,
+      lastCheckedAt: listings.lastCheckedAt,
+      failureCount: listings.failureCount,
+    })
+    .from(listings)
+    .innerJoin(observations, eq(observations.listingId, listings.id))
+    .where(inArray(listings.merchant, [...priceTrackedMerchants]))
+    .groupBy(
+      listings.id,
+      listings.merchant,
+      listings.merchantProductId,
+      listings.title,
+      listings.price,
+      listings.lastCheckedAt,
+      listings.failureCount,
+      listings.nextCheckAt,
+    )
+    .orderBy(
+      sql`${listings.nextCheckAt} IS NULL DESC`,
+      sql`${listings.nextCheckAt} ASC`,
+      sql`count(${observations.id}) DESC`,
+      sql`max(${observations.observedAt}) ASC`,
+    )
     .limit(limit);
 }
 

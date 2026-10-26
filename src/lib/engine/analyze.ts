@@ -23,6 +23,7 @@ import { computeLandedPrice } from "./landedPrice";
 import { computeStats, priceSeries } from "./stats";
 import { evaluateDeal } from "./verdict";
 import { affiliateUrl } from "../merchants/resolve";
+import { goPath } from "../affiliate";
 import { fetchProduct } from "../merchants";
 import { slugify } from "../utils";
 
@@ -253,7 +254,7 @@ export async function analyzeUrl(rawUrl: string): Promise<AnalysisResult> {
       reviewCount: p.reviewCount,
       seller: p.seller,
       imageUrl: p.imageUrl,
-      affiliateUrl: affiliateUrl(merchant, listing.url, affiliate.amazonTag, affiliate.cuelinksChannel),
+      affiliateUrl: goPath(listing.id, "analyze"),
       lastCheckedAt: ts,
     },
     rival,

@@ -39,9 +39,9 @@ export function PriceChart({
   primary,
   rival,
   height = 300,
-  primaryLabel = "Amazon",
-  rivalLabel = "Flipkart",
-  primaryColor = "#F59E0B",
+  primaryLabel = "Store price",
+  rivalLabel = "Other store",
+  primaryColor = "#10B981",
   rivalColor = "#3B82F6",
 }: {
   primary: PricePoint[];
