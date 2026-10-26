@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import { Container } from "@/components/ui/Container";
 import { PageSearch } from "@/components/site/PageSearch";
 import { DealGrid } from "@/components/deals/DealGrid";
@@ -12,6 +13,38 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 30;
+
+/**
+ * Two minutes of caching per filter combination. The underlying prices move on
+ * a twenty-minute sync, so this cannot show a number the database no longer
+ * holds; it just stops every visitor paying for the same read.
+ */
+const loadDeals = unstable_cache(
+  async (
+    priceMax: number | null,
+    discountMin: number | null,
+    store: string | null,
+    category: string | null,
+    multiStore: boolean,
+    sort: string | null,
+  ) => {
+    const [deals, facets] = await Promise.all([
+      getFilteredDeals({
+        priceMax: priceMax ?? undefined,
+        discountMin: discountMin ?? undefined,
+        store: store ?? undefined,
+        category: category ?? undefined,
+        multiStore,
+        sort: (sort ?? undefined) as "drop" | "allTimeLow" | "discount" | "history" | undefined,
+      }),
+      getFilterFacets(),
+    ]);
+    return { deals, facets };
+  },
+  ["deals-page-v1"],
+  { revalidate: 120 },
+);
 
 export default async function DealsPage({
   searchParams,
@@ -33,10 +66,14 @@ export default async function DealsPage({
   const multiStore = sp.multiStore === "1";
   const sort = sp.sort as "drop" | "allTimeLow" | "discount" | "history" | undefined;
 
-  const [deals, facets] = await Promise.all([
-    getFilteredDeals({ priceMax, discountMin, store, category, multiStore, sort }),
-    getFilterFacets(),
-  ]);
+  const { deals, facets } = await loadDeals(
+    priceMax ?? null,
+    discountMin ?? null,
+    store ?? null,
+    category ?? null,
+    multiStore,
+    sort ?? null,
+  );
 
   return (
     <section className="relative py-12">

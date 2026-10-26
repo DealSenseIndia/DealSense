@@ -29,3 +29,10 @@ jobs:
         run: |
           curl -fsS --max-time 120 --retry 2 --retry-delay 10 \
             "${{ secrets.DEALSENSE_URL }}/api/cron/sync?limit=10&secret=${{ secrets.CRON_SECRET }}"
+
+      # The landing page caches its data for twenty minutes. This request lands
+      # on the same beat, so the rebuild happens here instead of in front of a
+      # visitor.
+      - name: Keep the landing page warm
+        run: |
+          curl -fsS --max-time 90 -o /dev/null "${{ secrets.DEALSENSE_URL }}/" || true
