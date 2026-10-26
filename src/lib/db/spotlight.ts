@@ -27,8 +27,10 @@ export interface HistorySpotlight {
 }
 
 const SERIES_POINTS = 24;
-/** How many of the deepest listings get a full series for scoring. */
-const CANDIDATES = 16;
+/** How many of the deepest listings get a full series for scoring. Each one
+ * costs a slice of network transfer, and the winner is always among the very
+ * deepest — eight is enough to keep the choice honest without the payload. */
+const CANDIDATES = 8;
 
 /**
  * Pick one product that tells a complete, TRUE price story:

@@ -36,25 +36,37 @@ export const dynamic = "force-dynamic";
  * keeps rendering per request — a landing page with stale prices is worse than a
  * slow one — but the numbers behind it are reused for five minutes.
  */
+async function collectHomeData() {
+  const [shelves, drops, lows, platform, facets, live, budget] = await Promise.all([
+    getShelves(6, 6),
+    getRecentDrops(14),
+    getAllTimeLows(12),
+    getPlatformShelves(6),
+    getFilterFacets(),
+    getLatestDeals(8),
+    getBudgetPicks(6),
+  ]);
+
+  // The hero's floating cards all describe ONE product — the one with the
+  // deepest recorded history and a genuine recent drop. Every number on the
+  // hero comes from the database.
+  const spotlight = await getHistorySpotlight();
+  return { shelves, drops, lows, platform, facets, live, budget, spotlight };
+}
+
 const loadHomeData = unstable_cache(
   async () => {
-    const [shelves, drops, lows, platform, facets, live, budget] = await Promise.all([
-      getShelves(6, 6),
-      getRecentDrops(14),
-      getAllTimeLows(12),
-      getPlatformShelves(6),
-      getFilterFacets(),
-      getLatestDeals(8),
-      getBudgetPicks(6),
-    ]);
-
-    // The hero's floating cards all describe ONE product — the one with the
-    // deepest recorded history and a genuine recent drop. Every number on the
-    // hero comes from the database.
-    const spotlight = await getHistorySpotlight();
-    return { shelves, drops, lows, platform, facets, live, budget, spotlight };
+    try {
+      return await collectHomeData();
+    } catch {
+      // A remote database can drop a socket mid-read. One clean retry turns a
+      // transient blip into a normal page instead of a 500 for everyone who
+      // arrives in the same window.
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      return await collectHomeData();
+    }
   },
-  ["homepage-data-v1"],
+  ["homepage-data-v2"],
   { revalidate: 300 },
 );
 

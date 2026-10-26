@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { ProductDetail } from "@/components/analyzer/ProductDetail";
@@ -14,6 +15,20 @@ import { formatINR } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 /** A cold analysis is a handful of queries; give it room beyond Hobby's default. */
 export const maxDuration = 30;
+
+/**
+ * Metadata and the page body both need the analysis. React's request cache
+ * makes that one database read per visit, not two, and the retry covers a
+ * dropped socket without turning it into a 500.
+ */
+const loadForRequest = cache(async (slug: string) => {
+  try {
+    return await loadAnalysisBySlug(slug);
+  } catch {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    return await loadAnalysisBySlug(slug);
+  }
+});
 
 const loadSidePanels = unstable_cache(
   async (productId: string, listingId: string, listingTitle: string, slug: string) => {
@@ -35,7 +50,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const result = await loadAnalysisBySlug(slug);
+  const result = await loadForRequest(slug);
   if (!result?.product) return { title: "Product not found" };
 
   const title = result.listing?.price
@@ -67,7 +82,7 @@ export default async function ProductPage({
   searchParams: Promise<{ opt?: string }>;
 }) {
   const [{ slug }, sp] = await Promise.all([params, searchParams]);
-  const result = await loadAnalysisBySlug(slug);
+  const result = await loadForRequest(slug);
   if (!result?.product || !result.listing) notFound();
 
   const product = result.product;
