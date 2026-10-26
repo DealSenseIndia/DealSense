@@ -61,7 +61,9 @@ export default async function TrackPage() {
             />
             <h2 className="mt-6 text-lg font-extrabold text-headline">No alerts yet</h2>
             <p className="mx-auto mt-2 max-w-md text-[13.5px] text-body">
-              Open any product, set your target price, and we&apos;ll watch it — on Telegram or email.
+              Price-drop alerts aren&apos;t live yet — they open once our Telegram bot is connected.
+              Until then, the recorded price history on every product is the honest way to time a
+              buy.
             </p>
             <Link
               href="/deals"

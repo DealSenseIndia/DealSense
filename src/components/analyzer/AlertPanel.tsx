@@ -22,11 +22,32 @@ export function AlertPanel({
   const [target, setTarget] = useState(currentPrice ? String(Math.round(currentPrice * 0.9)) : "");
   const [percent, setPercent] = useState("10");
   const [score, setScore] = useState("80");
-  const [channel, setChannel] = useState<"telegram" | "email">("telegram");
-  const [contact, setContact] = useState("");
   const [state, setState] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
   const [deepLink, setDeepLink] = useState<string | null>(null);
+
+  /**
+   * Alert delivery exists only through a Telegram bot. Until one is connected
+   * there is nowhere for an alert to go, and the page says so instead of
+   * collecting a target price for a promise nothing can keep. The flag is a
+   * public build-time value, so this costs no request.
+   */
+  const bot = process.env.NEXT_PUBLIC_TELEGRAM_BOT;
+
+  if (!bot) {
+    return (
+      <div className="rounded-2xl border border-hairline bg-card p-4 shadow-card">
+        <div className="flex items-center gap-1.5 text-[12px] font-extrabold uppercase tracking-wider text-secondary">
+          <BellRing className="h-3.5 w-3.5 text-emerald-accent" />
+          Price drop alert
+        </div>
+        <p className="mt-2 text-[12px] leading-relaxed text-muted">
+          Alerts aren&apos;t live yet. We would rather say that than take your details for a
+          promise we can&apos;t keep — when alerts open, they will actually arrive.
+        </p>
+      </div>
+    );
+  }
 
   async function submit() {
     setState("loading");
@@ -43,8 +64,7 @@ export function AlertPanel({
           baselinePrice: currentPrice ?? undefined,
           targetPercent: type === "PERCENT_DROP" ? Number(percent) : undefined,
           targetScore: type === "DEAL_SCORE" ? Number(score) : undefined,
-          channel,
-          contact: contact || undefined,
+          channel: "telegram",
         }),
       });
       const data = await res.json();
@@ -55,10 +75,7 @@ export function AlertPanel({
       }
       setState("done");
       setMessage("Alert armed. We'll notify you the moment it triggers.");
-      const bot = process.env.NEXT_PUBLIC_TELEGRAM_BOT;
-      if (channel === "telegram" && bot) {
-        setDeepLink(`https://t.me/${bot}?start=alert_${data.alert.id}`);
-      }
+      if (bot) setDeepLink(`https://t.me/${bot}?start=alert_${data.alert.id}`);
     } catch {
       setState("error");
       setMessage("Network error. Try again.");
@@ -138,36 +155,6 @@ export function AlertPanel({
               />
               <span className="text-[13px] text-muted">/ 100</span>
             </div>
-          </Field>
-        )}
-
-        <Field label="Notify me on">
-          <div className="flex gap-1.5">
-            {(["telegram", "email"] as const).map((c) => (
-              <button
-                key={c}
-                onClick={() => setChannel(c)}
-                className={cn(
-                  "flex-1 rounded-xl border px-3 py-2 text-[12.5px] font-bold capitalize transition-colors",
-                  channel === c
-                    ? "border-emerald-accent bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]"
-                    : "border-hairline text-secondary hover:border-hairline-strong",
-                )}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
-        </Field>
-
-        {channel === "email" && (
-          <Field label="Your email">
-            <input
-              value={contact}
-              onChange={(e) => setContact(e.target.value)}
-              placeholder="you@example.com"
-              className="h-10 w-full rounded-xl border border-hairline bg-subtle px-3 text-[13px] text-headline focus:border-emerald-accent/50 focus:outline-none"
-            />
           </Field>
         )}
 

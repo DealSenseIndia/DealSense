@@ -45,6 +45,26 @@ export async function POST(req: Request) {
     );
   }
   const d = parsed.data;
+
+  // There is no delivery path without a Telegram bot, and email was never
+  // implemented. Refuse the promise instead of storing an alert that can
+  // never fire.
+  if (!process.env.TELEGRAM_BOT_TOKEN) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "Price-drop alerts aren't live yet. They open when the Telegram bot is connected.",
+      },
+      { status: 503 },
+    );
+  }
+  if (d.channel === "email") {
+    return NextResponse.json(
+      { ok: false, error: "Email alerts aren't available yet. Choose Telegram." },
+      { status: 400 },
+    );
+  }
+
   if (d.alertType === "TARGET_PRICE" && !d.targetPrice) {
     return NextResponse.json({ ok: false, error: "targetPrice is required." }, { status: 400 });
   }
