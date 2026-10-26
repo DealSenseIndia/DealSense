@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { ProductDetail } from "@/components/analyzer/ProductDetail";
@@ -11,6 +12,22 @@ import { site } from "@/lib/config";
 import { formatINR } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
+/** A cold analysis is a handful of queries; give it room beyond Hobby's default. */
+export const maxDuration = 30;
+
+const loadSidePanels = unstable_cache(
+  async (productId: string, listingId: string, listingTitle: string, slug: string) => {
+    const [reviews, similar, comparison, siblings] = await Promise.all([
+      getReviewsForProduct(productId),
+      getSimilarProducts(productId, 8),
+      getStoreComparison(productId, listingId, listingTitle),
+      getVariantSiblings(productId, 8),
+    ]);
+    return { reviews, similar, comparison, siblings, slug };
+  },
+  ["product-side-panels-v1"],
+  { revalidate: 120 },
+);
 
 export async function generateMetadata({
   params,
@@ -68,12 +85,15 @@ export default async function ProductPage({
     return { key, value };
   })();
 
-  const [reviews, similar, comparison, siblings] = await Promise.all([
-    getReviewsForProduct(product.id),
-    getSimilarProducts(product.id, 8),
-    getStoreComparison(product.id, listing.id, listing.title),
-    getVariantSiblings(product.id, 8),
-  ]);
+  // The four panels around the main analysis are read-only and change slowly.
+  // Cached for two minutes per product so a busy page does not repeat their
+  // round trips on every visit; the price and verdict above stay live.
+  const { reviews, similar, comparison, siblings } = await loadSidePanels(
+    product.id,
+    listing.id,
+    listing.title ?? product.title,
+    slug,
+  );
 
   const jsonLd = {
     "@context": "https://schema.org",

@@ -209,6 +209,10 @@ layer. Every outbound button already routes through it.
    shows its chart, a "Check price" button lands on Cuelinks markup through
    `/go/…`, and `/api/worker/status` reports a non-zero catalogue.
 
+   Functions run in **`bom1` (Mumbai)** via `vercel.json`, next to the Turso
+   database — a page makes a few dozen queries, so distance matters. If you move
+   the database, move the region with it.
+
 6. **Freshness.** Two free loops keep prices moving:
 
    - Vercel cron (`vercel.json`) runs once a day as a safety net;

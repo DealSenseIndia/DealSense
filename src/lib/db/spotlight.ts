@@ -1,6 +1,4 @@
-import { and, asc, eq, isNotNull } from "drizzle-orm";
-import { db, ensureSchema } from "./client";
-import { listings, observations, products } from "./schema";
+import { client, ensureSchema } from "./client";
 
 export interface HistorySpotlight {
   slug: string;
@@ -29,51 +27,91 @@ export interface HistorySpotlight {
 }
 
 const SERIES_POINTS = 24;
+/** How many of the deepest listings get a full series for scoring. */
+const CANDIDATES = 16;
 
 /**
  * Pick one product that tells a complete, TRUE price story:
  * it has the deepest recorded history AND a genuine recent price drop.
  * Everything the hero renders comes from this — no invented numbers.
+ *
+ * The first version read every observation row (219k) across three joined
+ * tables and grouped them in JavaScript. Against the local file that was fast
+ * enough to hide; against production it was a 48-second download for one hero
+ * card. The shortlist is now ranked in SQL and only its series is fetched.
  */
 export async function getHistorySpotlight(): Promise<HistorySpotlight | null> {
   await ensureSchema();
 
-  const rows = await db
-    .select({
-      listingId: observations.listingId,
-      price: observations.price,
-      at: observations.observedAt,
-      slug: products.slug,
-      title: products.title,
-      imageUrl: products.imageUrl,
-      merchant: listings.merchant,
-      curPrice: listings.price,
-      mrp: listings.mrp,
-      rating: listings.rating,
-      source: observations.source,
-    })
-    .from(observations)
-    .innerJoin(listings, eq(observations.listingId, listings.id))
-    .innerJoin(products, eq(products.id, listings.productId))
-    .where(and(isNotNull(listings.price), isNotNull(observations.price)))
-    .orderBy(asc(observations.observedAt));
+  // One row per listing. Ordering by span as a tie-breaker keeps long-lived
+  // products ahead of flash-in-the-pan imports with the same count.
+  const ranked = await client.execute({
+    sql: `
+      SELECT o.listing_id AS listingId, COUNT(*) AS n
+      FROM observations o
+      JOIN listings l ON l.id = o.listing_id
+      WHERE o.price IS NOT NULL AND o.price > 0 AND l.price IS NOT NULL
+      GROUP BY o.listing_id
+      HAVING COUNT(*) >= 3
+      ORDER BY n DESC, (MAX(o.observed_at) - MIN(o.observed_at)) DESC
+      LIMIT ${CANDIDATES}
+    `,
+    args: [],
+  });
+  const ids = ranked.rows.map((r) => String(r.listingId));
+  if (!ids.length) return null;
 
+  const placeholders = ids.map(() => "?").join(", ");
+  const series = await client.execute({
+    sql: `
+      SELECT o.listing_id AS listingId, o.price AS price, o.observed_at AS at,
+             o.source AS source, p.slug AS slug, p.title AS title,
+             p.image_url AS imageUrl, l.merchant AS merchant,
+             l.price AS curPrice, l.mrp AS mrp, l.rating AS rating
+      FROM observations o
+      JOIN listings l ON l.id = o.listing_id
+      JOIN products p ON p.id = l.product_id
+      WHERE o.listing_id IN (${placeholders}) AND o.price IS NOT NULL AND o.price > 0
+      ORDER BY o.observed_at ASC
+    `,
+    args: ids,
+  });
+
+  type Meta = {
+    slug: string;
+    title: string;
+    imageUrl: string | null;
+    merchant: string;
+    curPrice: number;
+    mrp: number | null;
+    rating: number | null;
+  };
   const byListing = new Map<
     string,
-    {
-      meta: (typeof rows)[number];
-      points: { price: number; at: number }[];
-      imported: number;
-    }
+    { meta: Meta; points: { price: number; at: number }[]; imported: number }
   >();
 
-  for (const r of rows) {
-    const price = r.price as number;
+  for (const row of series.rows) {
+    const price = Number(row.price);
     if (!Number.isFinite(price) || price <= 0) continue;
-    const entry = byListing.get(r.listingId) ?? { meta: r, points: [], imported: 0 };
-    entry.points.push({ price, at: r.at });
-    if (r.source === "imported" || r.source.startsWith("imported:")) entry.imported++;
-    byListing.set(r.listingId, entry);
+    const listingId = String(row.listingId);
+    const entry = byListing.get(listingId) ?? {
+      meta: {
+        slug: String(row.slug),
+        title: String(row.title),
+        imageUrl: row.imageUrl ? String(row.imageUrl) : null,
+        merchant: String(row.merchant),
+        curPrice: Number(row.curPrice),
+        mrp: row.mrp === null || row.mrp === undefined ? null : Number(row.mrp),
+        rating: row.rating === null || row.rating === undefined ? null : Number(row.rating),
+      },
+      points: [],
+      imported: 0,
+    };
+    entry.points.push({ price, at: Number(row.at) });
+    const source = String(row.source);
+    if (source === "imported" || source.startsWith("imported:")) entry.imported++;
+    byListing.set(listingId, entry);
   }
 
   const cutoff = Date.now() - 21 * 24 * 60 * 60 * 1000;
@@ -98,7 +136,7 @@ export async function getHistorySpotlight(): Promise<HistorySpotlight | null> {
       }
     }
 
-    const curPrice = meta.curPrice as number;
+    const curPrice = meta.curPrice;
     const mrp = meta.mrp && meta.mrp > curPrice ? meta.mrp : null;
     const spanDays = Math.max(
       1,
@@ -116,8 +154,8 @@ export async function getHistorySpotlight(): Promise<HistorySpotlight | null> {
     bestScore = score;
 
     const step = Math.max(1, Math.ceil(points.length / SERIES_POINTS));
-    const series = points.filter((_, i) => i % step === 0).map((p) => p.price);
-    if (series.length > SERIES_POINTS) series.length = SERIES_POINTS;
+    const capped = points.filter((_, i) => i % step === 0).map((p) => p.price);
+    if (capped.length > SERIES_POINTS) capped.length = SERIES_POINTS;
 
     best = {
       slug: meta.slug,
@@ -130,7 +168,7 @@ export async function getHistorySpotlight(): Promise<HistorySpotlight | null> {
       rating: meta.rating,
       href: `/product/${meta.slug}`,
       points: points.length,
-      series,
+      series: capped,
       history: points.map((p) => ({ t: p.at, price: p.price })),
       importedPoints: imported,
       low,

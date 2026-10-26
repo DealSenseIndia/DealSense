@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import { Container } from "@/components/ui/Container";
 import { Hero, type FeaturedDeal } from "@/components/landing/Hero";
 import { CategoryPanel } from "@/components/landing/CategoryPanel";
@@ -28,21 +29,38 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function HomePage() {
-  const [shelves, drops, lows, platform, facets, live, budget] = await Promise.all([
-    getShelves(6, 6),
-    getRecentDrops(14),
-    getAllTimeLows(12),
-    getPlatformShelves(6),
-    getFilterFacets(),
-    getLatestDeals(8),
-    getBudgetPicks(6),
-  ]);
+/**
+ * Eight queries build the landing page. Against the local SQLite file they were
+ * free; against the production database each one is a handful of network round
+ * trips, so a per-visit render would spend seconds waiting on the wire. The page
+ * keeps rendering per request — a landing page with stale prices is worse than a
+ * slow one — but the numbers behind it are reused for five minutes.
+ */
+const loadHomeData = unstable_cache(
+  async () => {
+    const [shelves, drops, lows, platform, facets, live, budget] = await Promise.all([
+      getShelves(6, 6),
+      getRecentDrops(14),
+      getAllTimeLows(12),
+      getPlatformShelves(6),
+      getFilterFacets(),
+      getLatestDeals(8),
+      getBudgetPicks(6),
+    ]);
 
-  // The hero's floating cards all describe ONE product — the one with the
-  // deepest recorded history and a genuine recent drop. Every number on the
-  // hero comes from the database.
-  const spotlight = await getHistorySpotlight();
+    // The hero's floating cards all describe ONE product — the one with the
+    // deepest recorded history and a genuine recent drop. Every number on the
+    // hero comes from the database.
+    const spotlight = await getHistorySpotlight();
+    return { shelves, drops, lows, platform, facets, live, budget, spotlight };
+  },
+  ["homepage-data-v1"],
+  { revalidate: 300 },
+);
+
+export default async function HomePage() {
+  const { shelves, drops, lows, platform, facets, live, budget, spotlight } = await loadHomeData();
+
   const featured: FeaturedDeal | null = spotlight
     ? {
         title: spotlight.title,
