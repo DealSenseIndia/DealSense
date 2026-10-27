@@ -99,7 +99,7 @@ export function LiveDeals({
           {/* tabs */}
           <div className="px-3 pb-3 pt-3 sm:px-5">
             <div className="flex gap-1 overflow-x-auto rounded-xl border border-hairline bg-subtle p-1 [scrollbar-width:none]">
-              {TABS.map((t) => {
+              {TABS.filter((t) => t.key === "all" || sets[t.key].length > 0).map((t) => {
                 const on = tab === t.key;
                 return (
                   <button

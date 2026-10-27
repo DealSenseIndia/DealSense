@@ -46,7 +46,7 @@ async function collectHomeData() {
     getAllTimeLows(12),
     getPlatformShelves(6),
     getFilterFacets(),
-    getLatestDeals(8),
+    getLatestDeals(24),
     getBudgetPicks(6),
   ]);
 
@@ -69,7 +69,7 @@ const loadHomeData = unstable_cache(
       return await collectHomeData();
     }
   },
-  ["homepage-data-v2"],
+  ["homepage-data-v3"],
   // Matches the sync cadence: prices in our own record move at most every 20
   // minutes, so a landing page rebuilt on the same beat is never behind the
   // data it is showing — and the cron warm-up keeps a visitor from paying the
