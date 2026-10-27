@@ -61,21 +61,23 @@ export function SearchResults({ initialQuery }: { initialQuery: string }) {
           routerPush(q);
           run(q);
         }}
-        className="flex items-center gap-2 rounded-2xl border border-hairline bg-card p-2 shadow-card focus-within:border-emerald-400/60"
+        className="nova-frame"
       >
-        <span className="pl-2.5 text-muted">
-          <Search className="h-4.5 w-4.5" />
-        </span>
-        <input
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="Search products, brands or categories…"
-          className="h-10 min-w-0 flex-1 bg-transparent text-[14.5px] text-headline placeholder:text-muted focus:outline-none"
-          autoComplete="off"
-        />
-        <Button type="submit" variant="gradient" size="sm" disabled={loading}>
-          {loading ? <span className="h-3.5 w-3.5 animate-spin" /> : "Search"}
-        </Button>
+        <div className="nova-inner flex items-center gap-2 rounded-[19px] p-2 transition-shadow focus-within:shadow-[0_0_0_4px_rgba(16,185,129,0.12)]">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]">
+            <Search className="h-[17px] w-[17px]" />
+          </span>
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search products, brands or categories…"
+            className="h-10 min-w-0 flex-1 bg-transparent text-[14.5px] text-headline placeholder:text-muted focus:outline-none"
+            autoComplete="off"
+          />
+          <Button type="submit" variant="gradient" size="sm" disabled={loading}>
+            {loading ? <span className="h-3.5 w-3.5 animate-spin" /> : "Search"}
+          </Button>
+        </div>
       </form>
 
       <div className="mt-3 flex flex-wrap items-center gap-2">

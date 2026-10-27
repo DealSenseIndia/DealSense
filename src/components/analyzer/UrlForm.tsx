@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ClipboardPaste, Link2, Mic } from "lucide-react";
+import { ClipboardPaste, Link2 } from "lucide-react";
 import { AnalyzingButton, type AnalyzePhase } from "@/components/ui/AnalyzingButton";
 import { StorePlaceholder } from "@/components/ui/StorePlaceholder";
 import { cn } from "@/lib/utils";
@@ -90,13 +90,6 @@ export function UrlForm({
             className="hidden text-muted transition-colors hover:text-headline sm:block"
           >
             <ClipboardPaste className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            aria-label="Voice search"
-            className="hidden text-muted transition-colors hover:text-headline md:block"
-          >
-            <Mic className="h-4 w-4" />
           </button>
         </div>
         <AnalyzingButton
