@@ -24,6 +24,8 @@ const UA =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36";
 
 export const LEAD_SOURCES = [
+  // Official Amazon short links (amzn.to) — verified to resolve to product ids.
+  { key: "lootersindia", url: "https://t.me/s/lootersindia" },
   { key: "idoffers", url: "https://t.me/s/idoffers" },
   { key: "flipshope", url: "https://t.me/s/flipshope" },
 ] as const;
