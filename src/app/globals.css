@@ -599,3 +599,40 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ── Phone ergonomics ──────────────────────────────────────────────────────
+   The site is used thumb-first in India. These are the small things that make
+   it feel native: no blue tap flashes, no iOS zoom when a field gains focus,
+   comfortable button heights, and tables that scroll instead of bursting the
+   page width. */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 767px) {
+  /* iOS Safari zooms the viewport when a focused input is under 16px. */
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+  .btn-cta {
+    min-height: 40px;
+  }
+  .prose-ds table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .prose-ds pre {
+    overflow-x: auto;
+  }
+}
+
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+html {
+  scroll-padding-top: 88px;
+}

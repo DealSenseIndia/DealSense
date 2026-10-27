@@ -5,6 +5,7 @@ import { site } from "@/lib/config";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
 import { TopLoadingBar } from "@/components/site/TopLoadingBar";
+import { MobileTabBar } from "@/components/site/MobileTabBar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -65,11 +66,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className={`${inter.variable} ${jet.variable} min-h-screen antialiased`}>
+      <body className={`${inter.variable} ${jet.variable} min-h-screen pb-[84px] antialiased lg:pb-0`}>
         <TopLoadingBar />
         <Nav />
         <main className="relative">{children}</main>
         <Footer />
+        <MobileTabBar />
       </body>
     </html>
   );

@@ -155,7 +155,9 @@ export function Hero({ featured }: { featured?: FeaturedDeal | null }) {
           </div>
 
           {/* ===================== RIGHT — girl + floating cards ===================== */}
-          <div className="relative mx-auto flex h-[420px] w-full max-w-[550px] items-end justify-center max-lg:h-[380px] max-lg:max-w-[440px] max-sm:flex max-sm:h-auto max-sm:max-w-none max-sm:flex-col max-sm:items-center max-sm:pt-3">
+          {/* Desktop only: on phones the illustration and its cards were cramped
+              and pushed the search below the fold. The hero copy is the page. */}
+          <div className="relative mx-auto hidden h-[420px] w-full max-w-[550px] items-end justify-center lg:flex">
             {/* The artwork, exactly as drawn — no crop, no filter, no retouch.
                 Its clouds have soft, separate edges, so it melts into the green
                 wash on its own. No panel, no mask. */}

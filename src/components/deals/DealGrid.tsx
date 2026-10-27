@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ChevronRight, SlidersHorizontal, X } from "lucide-react";
+import { ChevronDown, ChevronRight, SlidersHorizontal, X } from "lucide-react";
 import type { DealRow } from "@/lib/db/deals";
 import { StoreLogo } from "@/components/ui/StoreLogo";
 import { cn, formatINR } from "@/lib/utils";
@@ -36,6 +36,7 @@ export function DealGrid({
   const router = useRouter();
   const PAGE = 48;
   const [shown, setShown] = useState(PAGE);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const visible = deals.slice(0, shown);
 
   // A new filter set starts from the top again.
@@ -155,7 +156,19 @@ export function DealGrid({
           )}
         </div>
 
-        <div className="space-y-4">
+        {/* Phones get an accordion instead of a tall filter wall. */}
+        <button
+          onClick={() => setFiltersOpen((v) => !v)}
+          aria-expanded={filtersOpen}
+          className="flex w-full items-center justify-between rounded-xl border border-hairline bg-subtle px-3 py-2 text-[12px] font-extrabold text-secondary lg:hidden"
+        >
+          <span>Filters{hasFilter ? " · active" : ""}</span>
+          <ChevronDown
+            className={cn("h-3.5 w-3.5 transition-transform", filtersOpen && "rotate-180")}
+          />
+        </button>
+
+        <div className={cn("mt-3 space-y-4 lg:mt-0", filtersOpen ? "block" : "hidden lg:block")}>
           {groups.map((g) =>
             g.items.length === 0 ? null : (
               <div key={g.label}>
