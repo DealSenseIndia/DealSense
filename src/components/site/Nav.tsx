@@ -71,7 +71,7 @@ export function Nav() {
             : "shadow-[0_12px_44px_-30px_rgba(6,95,70,0.45)]",
         )}
       >
-        <div className="nav-shell nova-inner overflow-hidden rounded-[19px]">
+        <div className="nav-shell nova-inner overflow-hidden rounded-[19px] backdrop-blur-xl backdrop-saturate-150">
           <div
             className={cn(
               "flex items-center gap-1.5 px-2.5 transition-[height] duration-300",

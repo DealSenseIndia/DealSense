@@ -88,6 +88,7 @@
   --bg-elevated: #f1f5f9;
   --bg-terminal: #0f172a;
   --bg-header: rgba(255, 255, 255, 0.96);
+  --nav-bg: rgba(255, 255, 255, 0.82);
 
   --text-headline: #0f172a;
   --text-body: #334155;
@@ -126,6 +127,7 @@
   --bg-elevated: #131c2e;
   --bg-terminal: #060a13;
   --bg-header: rgba(5, 7, 13, 0.93);
+  --nav-bg: rgba(13, 20, 36, 0.78);
 
   --text-headline: #f8fafc;
   --text-body: #cbd5e1;
@@ -575,16 +577,14 @@ body {
   border-radius: 19px;
   background: var(--bg-card);
 }
-.dark .nova-frame::before { opacity: 0.8; }
+:root[data-theme="dark"] .nova-frame::before { opacity: 0.8; }
 
 @keyframes nova-travel {
   to { --nova-angle: 360deg; }
 }
 
 .nav-shell {
-  background: color-mix(in srgb, var(--bg-card) 82%, transparent);
-  backdrop-filter: blur(18px) saturate(1.15);
-  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+  background: var(--nav-bg);
 }
 
 @media (prefers-reduced-motion: reduce) {
