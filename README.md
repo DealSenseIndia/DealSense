@@ -236,6 +236,28 @@ layer. Every outbound button already routes through it.
 
 ---
 
+## Live deals (verified)
+
+`/live` shows only prices DealSense has re-fetched itself in the last twenty
+minutes. A listing qualifies when it is in stock, has at least four recorded
+points, and is either at/near its own low or at least a tenth under its own
+average. A card leaves the feed the moment the price moves or the listing goes
+out of stock.
+
+- Workers: `/api/cron/live` (re-verify + promote) and `/api/cron/leads`
+  (read lead sources), both protected by `CRON_SECRET`.
+- Schedules: `.github/workflows/live.yml` every five minutes,
+  `leads.yml` every fifteen. The feed also self-verifies on read, so a
+  throttled schedule empties it honestly instead of showing stale "live" prices.
+- Leads: public Telegram previews listed in `LEAD_SOURCES`
+  (`src/lib/leads.ts`). Only outbound product links are read; titles, images,
+  text and affiliate links from the source are never copied. Every lead is
+  resolved to a store product id and checked against our own history.
+- Countdowns appear only when the store itself states an end time. Nothing is
+  counted down by guesswork.
+
+---
+
 ## Project layout
 
 ```

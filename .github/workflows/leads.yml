@@ -1,0 +1,26 @@
+name: DealSense lead scan
+
+# Reads the public previews of the deal channels we follow, takes outbound
+# product links only, and lets the app verify each one against its own price
+# history. Nothing from the channel is republished.
+#
+# Every 15 minutes, at most three new links per run. Repository secrets:
+# DEALSENSE_URL and CRON_SECRET.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: dealsense-leads
+  cancel-in-progress: false
+
+jobs:
+  leads:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Scan lead sources
+        run: |
+          curl -fsS --max-time 120 --retry 1 --retry-delay 10 \
+            "${{ secrets.DEALSENSE_URL }}/api/cron/leads?limit=3&secret=${{ secrets.CRON_SECRET }}"

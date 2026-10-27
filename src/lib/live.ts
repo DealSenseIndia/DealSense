@@ -284,6 +284,35 @@ export async function promoteLiveDeals(limit = 3) {
   return results;
 }
 
+/**
+ * Publish from data we fetched seconds ago (a lead we just imported), without
+ * paying for a second provider call. Only used immediately after a fetch.
+ */
+export async function publishFromFreshImport(listingId: string, source: string) {
+  await ensureSchema();
+  const listing = await loadListing(listingId);
+  if (!listing) return { outcome: "missing" as const, price: null };
+  const stats = await seriesStats(listing.id);
+  if (!listing.price || !qualifies(listing.price, listing.inStock, stats.n, stats.low, stats.avg)) {
+    return { outcome: "rejected" as const, price: listing.price };
+  }
+  await publish(listing, listing.price, stats, source);
+  return { outcome: "published" as const, price: listing.price };
+}
+
+/** Verify a listing that arrived as a lead, and publish it only if it holds. */
+export async function publishFromLead(listingId: string, source: string) {
+  await ensureSchema();
+  const listing = await loadListing(listingId);
+  if (!listing) return { outcome: "missing" as const, price: null };
+  const checked = await verifyOne(listing);
+  if (checked.ok && checked.price !== null && checked.listing) {
+    await publish(checked.listing, checked.price, checked.stats, source);
+    return { outcome: "published" as const, price: checked.price };
+  }
+  return { outcome: "rejected" as const, price: checked.price ?? null };
+}
+
 /** Active deals verified recently enough to call themselves live. */
 export async function getLiveDeals(limit = 24): Promise<LiveDealCard[]> {
   await ensureSchema();
