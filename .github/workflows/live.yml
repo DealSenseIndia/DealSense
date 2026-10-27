@@ -1,0 +1,26 @@
+name: DealSense live deals
+
+# The live feed worker. Every five minutes it re-checks the deals currently on
+# the site (expiring any whose price moved or went out of stock) and looks for a
+# few new drops to verify. GitHub's minimum granularity is five minutes, so the
+# feed promises "verified minutes ago", never "live to the second".
+#
+# Repository secrets: DEALSENSE_URL and CRON_SECRET.
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: dealsense-live
+  cancel-in-progress: false
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify live deals and promote new drops
+        run: |
+          curl -fsS --max-time 120 --retry 1 --retry-delay 10 \
+            "${{ secrets.DEALSENSE_URL }}/api/cron/live?verify=4&promote=3&secret=${{ secrets.CRON_SECRET }}"

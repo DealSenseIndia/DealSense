@@ -155,3 +155,38 @@ export const events = sqliteTable("events", {
   payload: text("payload"),
   createdAt: integer("created_at").notNull(),
 });
+
+/**
+ * A price drop DealSense has verified itself and is currently surfacing.
+ *
+ * The lead can come from anywhere — our own sync, a reader tip, a deal we saw
+ * mentioned elsewhere — but a row is only written after the price and stock
+ * were re-fetched from the source we track. It expires the moment that stops
+ * being true, so the feed can never show a deal we no longer stand behind.
+ */
+export const liveDeals = sqliteTable(
+  "live_deals",
+  {
+    id: text("id").primaryKey(),
+    listingId: text("listing_id").notNull(),
+    productId: text("product_id").notNull(),
+    price: real("price").notNull(),
+    mrp: real("mrp"),
+    /** Lowest recorded price in our own history at verification time. */
+    lowPrice: real("low_price"),
+    /** Average of the recorded series; the reference for "below average". */
+    avgPrice: real("avg_price"),
+    source: text("source").notNull().default("price_watch"),
+    startsAt: integer("starts_at").notNull(),
+    verifiedAt: integer("verified_at").notNull(),
+    /** Set only when the store itself states an end time. */
+    expiresAt: integer("expires_at"),
+    status: text("status").notNull().default("ACTIVE"),
+    createdAt: integer("created_at").notNull(),
+    updatedAt: integer("updated_at").notNull(),
+  },
+  (t) => ({
+    statusIdx: index("live_deals_status_idx").on(t.status, t.verifiedAt),
+    listingIdx: index("live_deals_listing_idx").on(t.listingId),
+  }),
+);

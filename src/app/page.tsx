@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { LiveFeed } from "@/components/live/LiveFeed";
 import { Hero, type FeaturedDeal } from "@/components/landing/Hero";
 import { CategoryPanel } from "@/components/landing/CategoryPanel";
 import { LiveDeals } from "@/components/landing/LiveDeals";
@@ -125,6 +128,35 @@ export default async function HomePage() {
 
       {/* ---------- the products ---------- */}
       <LiveDeals deals={live} />
+
+      <section className="py-8">
+        <Container size="wide">
+          <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[var(--dw-green-mid)]">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-70" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                </span>
+                Live · verified minutes ago
+              </span>
+              <h2 className="mt-1 text-[24px] font-extrabold tracking-[-0.03em] text-headline">
+                Drops we just checked
+              </h2>
+              <p className="mt-1 text-[12.5px] text-secondary">
+                At or near their own recorded low. Re-priced by us, not copied from a feed.
+              </p>
+            </div>
+            <Link
+              href="/live"
+              className="inline-flex items-center gap-1 text-[11.5px] font-extrabold text-[var(--dw-green-mid)] hover:underline"
+            >
+              Open the live feed <ArrowUpRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+          <LiveFeed variant="rail" />
+        </Container>
+      </section>
 
       <BudgetPicks bands={budget} />
 

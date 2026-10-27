@@ -166,6 +166,25 @@ CREATE TABLE IF NOT EXISTS events (
   payload TEXT,
   created_at INTEGER NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS live_deals (
+  id TEXT PRIMARY KEY,
+  listing_id TEXT NOT NULL,
+  product_id TEXT NOT NULL,
+  price REAL NOT NULL,
+  mrp REAL,
+  low_price REAL,
+  avg_price REAL,
+  source TEXT NOT NULL DEFAULT 'price_watch',
+  starts_at INTEGER NOT NULL,
+  verified_at INTEGER NOT NULL,
+  expires_at INTEGER,
+  status TEXT NOT NULL DEFAULT 'ACTIVE',
+  created_at INTEGER NOT NULL,
+  updated_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS live_deals_status_idx ON live_deals (status, verified_at);
+CREATE INDEX IF NOT EXISTS live_deals_listing_idx ON live_deals (listing_id);
 `;
 
 export function ensureSchema(): Promise<void> {

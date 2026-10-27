@@ -33,6 +33,7 @@ const COLUMNS: { title: string; links: { href: string; label: string }[] }[] = [
     title: "Learn",
     links: [
       { href: "/blog", label: "The DealSense journal" },
+      { href: "/live", label: "Live price drops" },
       { href: "/#how-it-works", label: "How DealSense works" },
       { href: "/#faq", label: "Questions, answered" },
       { href: "/price-history", label: "How we track prices" },

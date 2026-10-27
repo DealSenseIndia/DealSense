@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { Zap } from "lucide-react";
 import { unstable_cache } from "next/cache";
 import { Container } from "@/components/ui/Container";
 import { PageSearch } from "@/components/site/PageSearch";
@@ -82,9 +84,17 @@ export default async function DealsPage({
           <h1 className="text-[30px] font-extrabold tracking-[-0.025em] text-headline sm:text-[38px]">
             Live deals
           </h1>
-          <span className="tabular rounded-xl border border-hairline bg-card px-4 py-2.5 text-[13px] font-extrabold text-secondary">
-            {deals.length} products
-          </span>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/live"
+              className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-emerald-500/30 bg-[var(--dw-green-surface)] px-3 text-[11.5px] font-extrabold text-[var(--dw-green-mid)] transition-colors hover:border-emerald-500/50"
+            >
+              <Zap className="h-3.5 w-3.5" /> Live drops
+            </Link>
+            <span className="tabular rounded-xl border border-hairline bg-card px-4 py-2.5 text-[13px] font-extrabold text-secondary">
+              {deals.length} products
+            </span>
+          </div>
         </div>
 
         <PageSearch className="mt-6 max-w-xl" />
