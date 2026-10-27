@@ -18,12 +18,14 @@ type TabKey = "all" | "lows" | "drops" | "tracked";
 
 const TABS: { key: TabKey; label: string }[] = [
   { key: "all", label: "All" },
-  { key: "lows", label: "All-time lows" },
+  { key: "lows", label: "Near their low" },
   { key: "drops", label: "Biggest drops" },
   { key: "tracked", label: "Most tracked" },
 ];
 
 const isAllTimeLow = (d: DealRow) => d.low !== null && d.low > 0 && d.price <= d.low * 1.01;
+/** The "near low" cut: within 5% of the floor. The strict badge stays at 1%. */
+const isNearLow = (d: DealRow) => d.low !== null && d.low > 0 && d.price <= d.low * 1.05;
 
 /**
  * "Live deals" — the watchlist, not a hero grid.
@@ -49,7 +51,7 @@ export function LiveDeals({
 
   const sets = useMemo(() => {
     const lows = deals
-      .filter(isAllTimeLow)
+      .filter(isNearLow)
       .sort((a, b) => a.price / (a.low || 1) - b.price / (b.low || 1));
     const drops = deals
       .filter((d) => d.discountPct >= 10)
