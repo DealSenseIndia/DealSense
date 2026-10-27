@@ -58,14 +58,17 @@ export function UrlForm({
           e.preventDefault();
           go(url);
         }}
-        className={cn(
-          "flex flex-col gap-2 rounded-2xl border border-hairline bg-card p-2 shadow-card transition-shadow focus-within:border-emerald-400/60 focus-within:shadow-[0_18px_46px_-22px_rgba(16,185,129,0.55)] sm:flex-row sm:items-center",
-          size === "lg" ? "sm:min-h-[60px]" : "sm:min-h-[54px]",
-        )}
+        className="nova-frame w-full"
       >
+        <div
+          className={cn(
+            "nova-inner flex flex-col gap-2 rounded-[19px] p-2 transition-shadow focus-within:shadow-[0_0_0_4px_rgba(16,185,129,0.12)] sm:flex-row sm:items-center",
+            size === "lg" ? "sm:min-h-[60px]" : "sm:min-h-[54px]",
+          )}
+        >
         <div className="flex min-w-0 flex-1 items-center gap-2">
-          <span className="pl-2.5 text-muted">
-            <Link2 className="h-4.5 w-4.5" />
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]">
+            <Link2 className="h-[17px] w-[17px]" />
           </span>
           <span className="relative flex min-w-0 flex-1 items-center">
             <StorePlaceholder hidden={url.length > 0} className="px-1" />
@@ -106,6 +109,7 @@ export function UrlForm({
               : "h-9 px-4 text-[12.5px]",
           )}
         />
+        </div>
       </form>
 
       <div className="mt-3 flex flex-wrap items-center gap-2 text-[12px] text-muted">

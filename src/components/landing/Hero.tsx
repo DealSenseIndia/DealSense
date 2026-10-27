@@ -109,29 +109,33 @@ export function Hero({ featured }: { featured?: FeaturedDeal | null }) {
                 e.preventDefault();
                 go(url);
               }}
-              className="flex w-full max-w-[680px] flex-col items-stretch gap-1 rounded-2xl border border-hairline bg-card p-[6px_8px] shadow-card transition-all focus-within:border-[var(--dw-green-mid)] focus-within:shadow-[0_0_0_3px_rgba(16,185,129,0.18)] sm:flex-row sm:items-center"
+              className="nova-frame w-full max-w-[680px]"
             >
-              <span className="flex min-w-0 flex-1 items-center gap-2 pl-[10px] pr-1">
-                <Link2 className="h-[18px] w-[18px] shrink-0 text-muted" />
-                <span className="relative flex min-w-0 flex-1 items-center">
-                  <StorePlaceholder hidden={url.length > 0} className="px-3" />
-                  <input
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                    placeholder=""
-                    aria-label="Search products or paste a product link"
-                    className="h-[46px] w-full min-w-0 flex-1 bg-transparent px-3 text-[14px] text-headline placeholder:text-[13.5px] placeholder:text-muted focus:outline-none"
-                    autoComplete="off"
-                    spellCheck={false}
-                  />
+              <div className="nova-inner flex flex-col items-stretch gap-1 rounded-[19px] p-[6px_8px] transition-shadow focus-within:shadow-[0_0_0_4px_rgba(16,185,129,0.12)] sm:flex-row sm:items-center">
+                <span className="flex min-w-0 flex-1 items-center gap-2 pl-[2px] pr-1">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]">
+                    <Link2 className="h-[17px] w-[17px]" />
+                  </span>
+                  <span className="relative flex min-w-0 flex-1 items-center">
+                    <StorePlaceholder hidden={url.length > 0} className="px-3" />
+                    <input
+                      value={url}
+                      onChange={(e) => setUrl(e.target.value)}
+                      placeholder=""
+                      aria-label="Search products or paste a product link"
+                      className="h-[46px] w-full min-w-0 flex-1 bg-transparent px-3 text-[14px] text-headline placeholder:text-[13.5px] placeholder:text-muted focus:outline-none"
+                      autoComplete="off"
+                      spellCheck={false}
+                    />
+                  </span>
                 </span>
-              </span>
 
-              <AnalyzingButton
-                phase={pending ? "loading" : "idle"}
-                idleLabel="Analyze deal"
-                className="h-[42px] w-full shrink-0 px-5 text-[13.5px] sm:w-auto"
-              />
+                <AnalyzingButton
+                  phase={pending ? "loading" : "idle"}
+                  idleLabel="Analyze deal"
+                  className="h-[42px] w-full shrink-0 px-5 text-[13.5px] sm:w-auto"
+                />
+              </div>
             </form>
 
             {/* popular */}
