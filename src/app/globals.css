@@ -514,6 +514,22 @@ body {
 .prose-ds p { color: var(--text-body); line-height: 1.75; margin: 0.75rem 0; }
 .prose-ds ul { color: var(--text-body); line-height: 1.75; padding-left: 1.25rem; list-style: disc; margin: 0.75rem 0; }
 .prose-ds a { color: var(--dw-green-mid); text-decoration: underline; text-underline-offset: 3px; }
+.prose-ds strong { color: var(--text-headline, var(--text-body)); font-weight: 750; }
+.prose-ds ol { color: var(--text-body); line-height: 1.75; padding-left: 1.35rem; list-style: decimal; margin: 0.75rem 0; }
+.prose-ds li { margin: 0.3rem 0; }
+.prose-ds blockquote {
+  margin: 1.25rem 0;
+  border-left: 3px solid var(--dw-green-mid);
+  background: var(--dw-green-surface);
+  padding: 0.75rem 1rem;
+  border-radius: 0 0.75rem 0.75rem 0;
+  color: var(--text-body);
+}
+.prose-ds blockquote p { margin: 0; }
+.prose-ds hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 1.75rem 0; }
+.prose-ds table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+.prose-ds th, .prose-ds td { border-bottom: 1px solid var(--border-subtle); padding: 0.5rem 0.6rem; text-align: left; }
+.prose-ds code { background: var(--surface-subtle); padding: 0.1rem 0.35rem; border-radius: 0.35rem; font-size: 0.85em; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

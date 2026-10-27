@@ -14,6 +14,12 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "**.media-amazon.com" },
     ],
   },
+  // The blog reads markdown from disk at build time, and the sitemap reads the
+  // same folder at request time. Keep those files in the serverless bundle.
+  outputFileTracingIncludes: {
+    "/sitemap.xml": ["./content/blog/**/*.md"],
+    "/blog/**": ["./content/blog/**/*.md"],
+  },
   async headers() {
     return [
       {

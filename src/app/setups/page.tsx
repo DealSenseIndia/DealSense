@@ -426,6 +426,25 @@ export default async function SetupsPage({
             </div>
           ))}
 
+          <div className="mt-7 rounded-2xl border border-hairline bg-card p-4">
+            <div className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-muted">Room guides</div>
+            <p className="mt-1 text-[11.5px] leading-relaxed text-secondary">
+              Every room also has a shareable page with the full build, the slots it leaves open, and a
+              link into each product&apos;s recorded price history.
+            </p>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {meta.spaces.map((s) => (
+                <Link
+                  key={s.key}
+                  href={`/setups/${s.key}`}
+                  className="inline-flex rounded-full border border-hairline bg-subtle px-2.5 py-1 text-[10.5px] font-bold text-secondary transition-colors hover:border-emerald-400/40 hover:text-headline"
+                >
+                  {s.title}
+                </Link>
+              ))}
+            </div>
+          </div>
+
           <p className="mt-6 text-center text-[10px] leading-relaxed text-muted">
             Space images are original DealSense illustrations. Products and prices in a build are
             always taken from live listings in stores we track — not from these images.
