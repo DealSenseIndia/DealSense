@@ -4,18 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Bell, Menu, Search, X } from "lucide-react";
+import { Bell, BellRing, BookOpen, LayoutGrid, Menu, Search, Shapes, Tag, TrendingUp, X } from "lucide-react";
 import { GeminiIcon } from "@/components/ui/GeminiIcon";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/deals", label: "Deals" },
-  { href: "/setups", label: "Smart Setups" },
-  { href: "/blog", label: "Journal" },
-  { href: "/categories", label: "Categories" },
-  { href: "/price-history", label: "History" },
-  { href: "/track", label: "Track" },
+  { href: "/deals", label: "Deals", icon: Tag },
+  { href: "/setups", label: "Smart Setups", icon: LayoutGrid },
+  { href: "/blog", label: "Journal", icon: BookOpen },
+  { href: "/categories", label: "Categories", icon: Shapes },
+  { href: "/price-history", label: "History", icon: TrendingUp },
+  { href: "/track", label: "Track", icon: BellRing },
 ];
 
 const isActive = (pathname: string, href: string) =>
@@ -63,9 +63,19 @@ export function Nav() {
 
   return (
     <header className="sticky top-0 z-50 px-3 pb-1 pt-2.5 sm:px-4 sm:pt-3">
+      {/* The floating bar sits a few pixels down from the edge; without this
+          scrim the page scrolls visibly through that strip. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-[104px]"
+        style={{
+          background:
+            "linear-gradient(to bottom, var(--bg-pure) 0%, var(--bg-pure) 58%, transparent 100%)",
+        }}
+      />
       <div
         className={cn(
-          "nova-frame mx-auto w-full max-w-[1400px]",
+          "nova-frame relative mx-auto w-full max-w-[1400px]",
           scrolled
             ? "shadow-[0_22px_60px_-28px_rgba(6,95,70,0.6)]"
             : "shadow-[0_12px_44px_-30px_rgba(6,95,70,0.45)]",
@@ -74,7 +84,7 @@ export function Nav() {
         <div className="nav-shell nova-inner overflow-hidden rounded-[19px] backdrop-blur-xl backdrop-saturate-150">
           <div
             className={cn(
-              "flex items-center gap-1.5 px-2.5 transition-[height] duration-300",
+              "relative flex items-center gap-1.5 px-2.5 transition-[height] duration-300",
               scrolled ? "h-[54px]" : "h-[60px]",
             )}
           >
@@ -97,21 +107,29 @@ export function Nav() {
               </span>
             </Link>
 
-            <nav className="ml-1.5 hidden items-center gap-0.5 lg:flex">
-              {links.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className={cn(
-                    "rounded-xl px-2.5 py-1.5 text-[12.5px] font-semibold transition-colors",
-                    isActive(pathname, l.href)
-                      ? "bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]"
-                      : "text-body hover:bg-elevated hover:text-headline",
-                  )}
-                >
-                  {l.label}
-                </Link>
-              ))}
+            <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-0.5 lg:flex">
+              {links.map((l) => {
+                const active = isActive(pathname, l.href);
+                const Icon = l.icon;
+                return (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    className={cn(
+                      "inline-flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-[12.5px] font-semibold transition-colors",
+                      active
+                        ? "bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]"
+                        : "text-body hover:bg-elevated hover:text-headline",
+                    )}
+                  >
+                    <Icon
+                      className={cn("h-3.5 w-3.5", active ? "opacity-100" : "opacity-60")}
+                      aria-hidden
+                    />
+                    {l.label}
+                  </Link>
+                );
+              })}
             </nav>
 
             <div className="ml-auto flex items-center gap-1">
@@ -160,21 +178,26 @@ export function Nav() {
           {open && (
             <div className="border-t border-hairline px-2.5 pb-3 pt-2 lg:hidden">
               <div className="grid grid-cols-2 gap-1">
-                {links.map((l) => (
-                  <Link
-                    key={l.href}
-                    href={l.href}
-                    onClick={() => setOpen(false)}
-                    className={cn(
-                      "rounded-xl px-3 py-2.5 text-[13px] font-semibold transition-colors",
-                      isActive(pathname, l.href)
-                        ? "bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]"
-                        : "text-body hover:bg-elevated hover:text-headline",
-                    )}
-                  >
-                    {l.label}
-                  </Link>
-                ))}
+                {links.map((l) => {
+                  const active = isActive(pathname, l.href);
+                  const Icon = l.icon;
+                  return (
+                    <Link
+                      key={l.href}
+                      href={l.href}
+                      onClick={() => setOpen(false)}
+                      className={cn(
+                        "inline-flex items-center gap-2 rounded-xl px-3 py-2.5 text-[13px] font-semibold transition-colors",
+                        active
+                          ? "bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]"
+                          : "text-body hover:bg-elevated hover:text-headline",
+                      )}
+                    >
+                      <Icon className={cn("h-4 w-4", active ? "opacity-100" : "opacity-60")} aria-hidden />
+                      {l.label}
+                    </Link>
+                  );
+                })}
               </div>
               <div className="mt-2 flex gap-2">
                 <Link
