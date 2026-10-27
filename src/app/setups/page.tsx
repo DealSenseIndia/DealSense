@@ -146,7 +146,7 @@ export default async function SetupsPage({
                 </span>
               </div>
 
-              <h1 className="mt-5 text-[38px] font-extrabold leading-[1.04] tracking-[-0.045em] text-headline sm:text-[52px]">
+              <h1 className="mt-5 text-[32px] font-extrabold leading-[1.06] tracking-[-0.04em] text-headline sm:text-[52px]">
                 A room that works.
                 <br />
                 Priced from{" "}
