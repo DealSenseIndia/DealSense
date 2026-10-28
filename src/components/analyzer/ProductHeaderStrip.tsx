@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Info, TrendingDown } from "lucide-react";
 import { Rating } from "@/components/ui/Rating";
 import { storageOf } from "@/lib/engine/identity";
@@ -60,6 +61,7 @@ export function ProductHeaderStrip({
   rating,
   reviewCount,
   brand,
+  brandHref,
   category,
   currentPrice,
   mrp,
@@ -69,6 +71,8 @@ export function ProductHeaderStrip({
   rating: number | null;
   reviewCount: number | null;
   brand: string | null;
+  /** Set only when the brand has its own page. */
+  brandHref?: string | null;
   category: string | null;
   currentPrice: number | null;
   mrp: number | null;
@@ -87,9 +91,15 @@ export function ProductHeaderStrip({
   ].filter(Boolean) as string[];
 
   // Drop near-duplicates ("Nike" and "Nike Men Running" say the same thing).
+  // The brand is never dropped: a store category such as "APPLE Mobiles"
+  // would otherwise swallow it, and the brand chip is the link to its page.
   const seen = new Set<string>();
   const cleanTags = tags.filter((t) => {
     const k = t.toLowerCase();
+    if (t === brand) {
+      seen.add(k);
+      return true;
+    }
     if (seen.has(k)) return false;
     for (const s of seen) if (k.startsWith(s) || s.startsWith(k)) return false;
     seen.add(k);
@@ -124,14 +134,24 @@ export function ProductHeaderStrip({
 
           {cleanTags.length > 0 ? (
             <div className="mt-2.5 flex flex-wrap gap-1.5">
-              {cleanTags.map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full border border-hairline bg-subtle px-2.5 py-1 text-[11px] font-bold text-body"
-                >
-                  {t}
-                </span>
-              ))}
+              {cleanTags.map((t) =>
+                brandHref && t === brand ? (
+                  <Link
+                    key={t}
+                    href={brandHref}
+                    className="rounded-full border border-hairline bg-subtle px-2.5 py-1 text-[11px] font-bold text-body transition-colors hover:border-emerald-400/60 hover:text-[var(--dw-green-mid)]"
+                  >
+                    {t}
+                  </Link>
+                ) : (
+                  <span
+                    key={t}
+                    className="rounded-full border border-hairline bg-subtle px-2.5 py-1 text-[11px] font-bold text-body"
+                  >
+                    {t}
+                  </span>
+                ),
+              )}
             </div>
           ) : null}
         </div>

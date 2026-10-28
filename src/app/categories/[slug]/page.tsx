@@ -3,9 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight, LineChart } from "lucide-react";
 import { Container } from "@/components/ui/Container";
-import { ProductThumb } from "@/components/ui/ProductThumb";
-import { getCategoryPage, listCategoryPages, type CategoryProduct } from "@/lib/db/categoryPages";
-import { formatINR } from "@/lib/utils";
+import { ProductShelfCard } from "@/components/product/ProductShelfCard";
+import { getCategoryPage, listCategoryPages } from "@/lib/db/categoryPages";
 import { site } from "@/lib/config";
 
 export const revalidate = 600;
@@ -112,7 +111,7 @@ export default async function CategoryPage({
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {page.products.map((p) => (
-            <CategoryCard key={p.id} product={p} />
+            <ProductShelfCard key={p.id} product={p} />
           ))}
         </div>
 
@@ -137,37 +136,5 @@ export default async function CategoryPage({
         ) : null}
       </Container>
     </section>
-  );
-}
-
-function CategoryCard({ product }: { product: CategoryProduct }) {
-  return (
-    <Link
-      href={`/product/${product.slug}`}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-hairline bg-card shadow-card transition-all hover:-translate-y-0.5 hover:border-emerald-400/50"
-    >
-      <div className="relative aspect-square w-full bg-subtle">
-        <ProductThumb
-          imageUrl={product.imageUrl}
-          alt={product.title}
-          merchant={product.merchant}
-          className="h-full w-full"
-          sizes="(max-width: 640px) 50vw, 240px"
-        />
-      </div>
-      <div className="flex flex-1 flex-col gap-1.5 p-3">
-        <h3 className="line-clamp-2 text-[13px] font-bold leading-snug text-headline group-hover:text-[var(--dw-green-mid)]">
-          {product.title}
-        </h3>
-        <div className="mt-auto flex items-end justify-between gap-2 pt-1">
-          <span className="tabular text-[15px] font-extrabold text-headline">
-            {formatINR(product.price)}
-          </span>
-          <span className="text-[10.5px] font-semibold text-muted">
-            {product.points.toLocaleString("en-IN")} dated prices
-          </span>
-        </div>
-      </div>
-    </Link>
   );
 }

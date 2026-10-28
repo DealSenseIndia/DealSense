@@ -9,8 +9,11 @@ import { getReviewsForProduct } from "@/lib/db/queries";
 import { getSimilarProducts } from "@/lib/db/similar";
 import { getStoreComparison } from "@/lib/db/compare";
 import { getVariantSiblings } from "@/lib/db/variantSiblings";
+import { getBrandPage } from "@/lib/db/brandPages";
+import { getCategoryPage } from "@/lib/db/categoryPages";
+import { resolveLeaf } from "@/lib/db/taxonomy";
 import { site } from "@/lib/config";
-import { formatINR } from "@/lib/utils";
+import { formatINR, slugify } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 /** A cold analysis is a handful of queries; give it room beyond Hobby's default. */
@@ -110,6 +113,12 @@ export default async function ProductPage({
     slug,
   );
 
+  const leaf = resolveLeaf(product.category);
+  const [brandPage, categoryPage] = await Promise.all([
+    product.brand ? getBrandPage(slugify(product.brand)) : Promise.resolve(null),
+    leaf ? getCategoryPage(slugify(leaf)) : Promise.resolve(null),
+  ]);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -141,7 +150,9 @@ export default async function ProductPage({
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: site.url },
-      { "@type": "ListItem", position: 2, name: "Deals", item: `${site.url}/deals` },
+      categoryPage
+        ? { "@type": "ListItem", position: 2, name: categoryPage.name, item: `${site.url}/categories/${categoryPage.slug}` }
+        : { "@type": "ListItem", position: 2, name: "Deals", item: `${site.url}/deals` },
       { "@type": "ListItem", position: 3, name: product.title, item: `${site.url}/product/${slug}` },
     ],
   };
@@ -159,6 +170,8 @@ export default async function ProductPage({
           siblings={siblings}
           option={opt}
           slug={slug}
+          brandHref={brandPage ? `/brands/${brandPage.slug}` : null}
+          categoryHref={categoryPage ? `/categories/${categoryPage.slug}` : null}
         />
       </Container>
     </section>

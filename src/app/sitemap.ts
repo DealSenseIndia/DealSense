@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { site } from "@/lib/config";
 import { listProducts } from "@/lib/db/queries";
 import { listCategoryPages } from "@/lib/db/categoryPages";
+import { listBrandPages } from "@/lib/db/brandPages";
 import { getAllPosts } from "@/lib/blog";
 import { setupGuidePaths } from "@/lib/setups/seo";
 
@@ -15,6 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/live`, changeFrequency: "hourly", priority: 0.9 },
     { url: `${base}/setups`, changeFrequency: "daily", priority: 0.9 },
     { url: `${base}/categories`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/brands`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${base}/price-history`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${base}/analyze`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${base}/blog`, changeFrequency: "weekly", priority: 0.7 },
@@ -35,7 +37,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   try {
-    const [products, categories] = await Promise.all([listProducts(5000), listCategoryPages()]);
+    const [products, categories, brands] = await Promise.all([
+      listProducts(5000),
+      listCategoryPages(),
+      listBrandPages(),
+    ]);
     const productRoutes: MetadataRoute.Sitemap = products.map((p) => ({
       url: `${base}/product/${p.slug}`,
       lastModified: new Date(p.updatedAt),
@@ -47,7 +53,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "daily",
       priority: 0.75,
     }));
-    return [...staticRoutes, ...setupRoutes, ...blogRoutes, ...categoryRoutes, ...productRoutes];
+    const brandRoutes: MetadataRoute.Sitemap = brands.map((b) => ({
+      url: `${base}/brands/${b.slug}`,
+      changeFrequency: "daily",
+      priority: 0.7,
+    }));
+    return [
+      ...staticRoutes,
+      ...setupRoutes,
+      ...blogRoutes,
+      ...categoryRoutes,
+      ...brandRoutes,
+      ...productRoutes,
+    ];
   } catch {
     return [...staticRoutes, ...setupRoutes, ...blogRoutes];
   }

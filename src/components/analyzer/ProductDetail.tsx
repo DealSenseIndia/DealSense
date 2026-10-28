@@ -47,6 +47,8 @@ export function ProductDetail({
   siblings = [],
   option = null,
   slug = "",
+  brandHref = null,
+  categoryHref = null,
 }: {
   result: AnalysisResult;
   reviews: ReviewRow[];
@@ -55,6 +57,10 @@ export function ProductDetail({
   siblings?: VariantSibling[];
   option?: { key: string; value: string } | null;
   slug?: string;
+  /** Set only when the brand has its own page. */
+  brandHref?: string | null;
+  /** Set only when the product's category has its own page. */
+  categoryHref?: string | null;
 }) {
   const listing = result.listing!;
   const product = result.product!;
@@ -158,7 +164,7 @@ export function ProductDetail({
           <>
             <ChevronRight className="h-3.5 w-3.5" />
             <Link
-              href={`/deals?category=${encodeURIComponent(product.category)}`}
+              href={categoryHref ?? `/deals?category=${encodeURIComponent(product.category)}`}
               className="text-[var(--dw-green-mid)] hover:underline"
             >
               {product.category}
@@ -175,6 +181,7 @@ export function ProductDetail({
         rating={listing.rating}
         reviewCount={listing.reviewCount}
         brand={product.brand}
+        brandHref={brandHref}
         category={product.category}
         currentPrice={listing.price}
         mrp={listing.mrp}
