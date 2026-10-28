@@ -1,6 +1,6 @@
 ---
 title: Why DealSense leaves some setup slots empty
-description: A ₹1.25 lakh gaming build with no power supply, a nursery without a diaper bag. The gaps are real, and showing them is the point.
+description: A ₹1.25 lakh gaming build with one slot still open, a nursery without a diaper bag. The gaps are real, and showing them is the point.
 date: 2026-10-27
 tags: how we work, honesty
 setups: gaming, home_theatre, baby_nursery, pet_corner
@@ -10,15 +10,19 @@ Every "complete setup" article on the internet has the same shape: twenty produc
 
 DealSense builds a room from **functional slots** — the jobs a room has to do — and then fills each slot with a listing we actually track. When nothing tracked fits, the slot stays open and says why. That decision costs us a few affiliate clicks. It buys something more useful: you can trust the rest of the page.
 
-## The gaming PC: no power supply, and memory that will not fit
+## The gaming PC: a power supply found, one gap left
 
-The [₹1.25 lakh gaming plan](/setups/gaming/125000) fills eighteen of twenty slots. The two gaps are instructive.
+The [₹1.25 lakh gaming plan](/setups/gaming/125000) fills nineteen of twenty slots. The one still open is speakers, because nothing tracked sits inside that slot's share of the money.
 
-**The power supply is empty because we have no power supplies.** Not "none in stock" — our sources do not carry a single PC power supply with a recorded price series. We have looked under nine different phrasings. Putting a random 500 W unit in the list would have made the build look finished and, quite possibly, taken the whole build with it.
+Two slots were empty until this week, and how they closed is the point.
 
-**Memory is empty because the arithmetic refuses it.** The board chosen for this budget takes DDR5, and the cheapest DDR5 kit we can verify costs more than the slot's share of the money at that price. The alternative — quietly swapping to DDR4 memory that does not fit the board — would be worse than an open slot.
+**The power supply used to be empty because our sources carried none** — not out of stock, no catalogue at all. Nine phrasings returned nothing. So we read the stores directly, one product page at a time, and now track a **650 W 80+ Bronze unit at ₹5,749**. It carries a single reading today; the record grows as the page is re-read. One reading is thin, and the page shows that rather than pretending the record is a year old.
 
-The [room guide](/setups/gaming) shows both gaps with their reasons. What it does not do is pretend the PC is finished.
+**Memory used to be empty for a subtler reason.** The board the builder picked was DDR5, and the cheapest DDR5 kit we track costs ₹19,999 — more than the slot's share. A 16 GB DDR4 kit at ₹12,199 fits, but only beside a DDR4 board. The builder now prefers a DDR4 board at these budgets, so memory fills with 16 GB at 3200 MHz. No component was swapped behind your back; both parts are tracked listings.
+
+**The lower tier still leaves five slots open** — SSD, streaming gear, controller, UPS and speakers — each with its reason: no tracked product inside the band, or the money already committed to the parts above. The ₹1.65 lakh tier fills all twenty.
+
+The [room guide](/setups/gaming) shows every gap with its reason. What it does not do is pretend the PC is finished.
 
 ## The home theatre: no AV receiver
 
