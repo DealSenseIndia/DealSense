@@ -37,7 +37,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: true });
       }
     }
-    await reply(chatId, "👋 Welcome to DealSense. Open a product on dealsense.in and tap “Track price” to set an alert.");
+    await reply(chatId, "👋 Welcome to DealSense. Open a product page and tap “Track price” to set an alert.");
   }
 
   return NextResponse.json({ ok: true });
