@@ -25,7 +25,8 @@
     "compare": "tsx scripts/compare-merge.ts",
     "gallery": "tsx scripts/backfill-gallery.ts",
     "setups:seed": "tsx scripts/seed-setups.ts",
-    "setups:report": "tsx scripts/setups-report.ts"
+    "setups:report": "tsx scripts/setups-report.ts",
+    "clicks": "tsx scripts/click-report.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",
