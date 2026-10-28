@@ -799,16 +799,18 @@ export const SETUP_SPACES: Record<SetupSpaceKey, SetupSpace> = {
         key: "psu",
         label: "Power supply",
         phase: 1,
-        impactWeight: 0.02,
-        minFactor: 0.35,
-        maxFactor: 2.5,
+        // A certified 550–750W unit costs ₹4–6k in India. At the old 2% share
+        // the target was ₹2,500, below every real product, so the slot could
+        // never fill even when one was tracked.
+        impactWeight: 0.045,
+        minFactor: 0.5,
+        maxFactor: 1.8,
         ownedKey: "psu",
         matchAny: ["power supply", "smps", "psu", "80 plus"],
         exclude: [
           "cable",
           "extension",
           "socket",
-          "board",
           "ups",
           "inverter",
           "battery",
@@ -816,10 +818,12 @@ export const SETUP_SPACES: Record<SetupSpaceKey, SetupSpace> = {
           "adapter",
           "bulb",
           "lamp",
-          "fan",
           "heater",
           "iron",
         ],
+        // "fan" and "board" used to be excluded here, which killed every real
+        // PSU title ("120mm Fan", "for motherboard"). matchAny already keeps
+        // standalone fans and boards out.
         rationale: "The one part that can take the whole build with it. Buy certified, not decorative.",
       },
       {
