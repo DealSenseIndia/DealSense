@@ -1,0 +1,26 @@
+name: DealSense price audit
+
+# Daily plausibility sweep. Finds listings priced under 20% of their own
+# recorded average, re-reads each at the store, and removes only the ones the
+# store confirms are absurd. Five listings per run by default, so a backlog is
+# worked through over a few days instead of hammering the stores at once.
+#
+# Repository secrets: DEALSENSE_URL and CRON_SECRET (same as the other workers).
+on:
+  schedule:
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: dealsense-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Sweep implausible listings
+        run: |
+          curl -fsS --max-time 120 --retry 2 --retry-delay 15 \
+            "${{ secrets.DEALSENSE_URL }}/api/cron/audit?limit=5&secret=${{ secrets.CRON_SECRET }}"
