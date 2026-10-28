@@ -4,7 +4,8 @@ import { ChevronRight, Sparkles } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { PageSearch } from "@/components/site/PageSearch";
 import { getCategoryGroups, getPopularSearches } from "@/lib/db/taxonomy";
-import { cn } from "@/lib/utils";
+import { CATEGORY_PAGE_MIN } from "@/lib/db/categoryPages";
+import { cn, slugify } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "All product categories",
@@ -155,7 +156,11 @@ export default async function CategoriesPage() {
                           {c.leaves.map((l) => (
                             <li key={l.name}>
                               <Link
-                                href={`/deals?category=${encodeURIComponent(l.name)}`}
+                                href={
+                                  l.count >= CATEGORY_PAGE_MIN
+                                    ? `/categories/${slugify(l.name)}`
+                                    : `/deals?category=${encodeURIComponent(l.name)}`
+                                }
                                 title={
                                   l.count > 0
                                     ? `${l.count} tracked`
