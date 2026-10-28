@@ -337,12 +337,6 @@ export function AnalysisView({
               </li>
             ))}
           </ul>
-          {bundle?.importedPoints ? (
-            <p className="mt-3 border-t border-hairline pt-3 text-[10.5px] leading-relaxed text-muted">
-              {bundle.importedPoints} earlier price points come from DealSense&apos;s tracked price
-              record; each new direct store reading is added on top.
-            </p>
-          ) : null}
         </div>
 
         <AlertPanel

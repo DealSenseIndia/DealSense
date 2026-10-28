@@ -64,8 +64,8 @@ export function Footer() {
               </span>
             </div>
             <p className="mt-3 max-w-xs text-[13.5px] leading-relaxed">
-              India&apos;s shopping decision engine. We read the price straight off the store,
-              keep every price we see, and tell you whether now is a good time to buy.
+              India&apos;s shopping decision engine. Every price in our record is dated, so we
+              can tell you whether now is a good time to buy.
             </p>
           </div>
 
@@ -118,7 +118,7 @@ export function Footer() {
           Associate and a Flipkart affiliate, DealSense may earn a commission when you buy through
           a store link. It costs you nothing extra, and it never changes our deal scores or the
           order products are ranked in. We do not sell placement and we do not accept payment for
-          reviews. Prices shown are what the store listed when we recorded them — always confirm
+          reviews. Prices shown are what the store listed when they were recorded — always confirm
           at checkout.
         </div>
 

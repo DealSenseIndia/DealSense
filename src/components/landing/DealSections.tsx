@@ -131,7 +131,7 @@ export function AllTimeLows({ deals }: { deals: DealRow[] }) {
               At their all-time low
             </h2>
             <p className="max-w-[650px] text-[14.5px] leading-[1.5] text-body">
-              The current price is the lowest we have ever recorded for that product. Not a sticker
+              The current price is the lowest in the record we hold for that product. Not a sticker
               discount — a real one.
             </p>
           </div>

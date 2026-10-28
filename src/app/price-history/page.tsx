@@ -16,7 +16,7 @@ import { formatINR, timeAgo } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Price history",
   description:
-    "Every price point DealSense has actually recorded — low, high, typical and the exact moment the price moved.",
+    "Real, dated price history — low, high, typical and the exact moment the price moved. Every point carries the date it was recorded.",
   alternates: { canonical: "/price-history" },
 };
 
@@ -48,8 +48,7 @@ export default async function PriceHistoryPage() {
               Price <span className="text-gradient-brand">History</span>
             </h1>
             <p className="mt-2 max-w-xl text-[14.5px] leading-relaxed text-body">
-              Every point on every line is a real recorded price — read from the store page
-              by DealSense or imported from a public tracker and labelled.
+              Every point on every line is a real recorded price, with the date it was recorded.
             </p>
           </div>
           <PageSearch className="w-full max-w-md" placeholder="Search a product to see its history…" />
@@ -273,9 +272,9 @@ export default async function PriceHistoryPage() {
         </div>
 
         <p className="mt-10 rounded-2xl border border-hairline bg-subtle px-4 py-3 text-[11.5px] leading-relaxed text-muted">
-          Every chart is DealSense&apos;s own tracked price record. New points come from store
-          readings across Amazon, Flipkart, Myntra, Nykaa and every other store we track, so each
-          series keeps getting longer over time.
+          Every chart is a real, dated price record. New readings land on top across Amazon,
+          Flipkart, Myntra, Nykaa and every other store we track, so each series keeps getting
+          longer over time.
         </p>
       </Container>
     </section>

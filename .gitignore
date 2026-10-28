@@ -16,6 +16,13 @@ next-env.d.ts
 tsconfig.tsbuildinfo
 /tmp
 
+# local database dumps and generated reports (never commit price data)
+backups/
+reports/
+
+# workspace history exports (may contain environment values)
+DealSense_Project_*.md
+
 # local dev logs
 devlog.txt
 *.log

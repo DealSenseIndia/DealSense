@@ -37,7 +37,7 @@ export function CtaBand() {
 
             <p className="mt-3 max-w-md text-[14.5px] leading-relaxed text-[#0F5138] dark:text-slate-300">
               Paste a link from Amazon, Flipkart, Myntra, Nykaa or any other store we track. We
-              read the real price, check it against every price we have recorded, and tell you
+              read the real price, check it against every price in our record, and tell you
               whether now is a good time to buy.
             </p>
 

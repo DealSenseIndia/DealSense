@@ -479,7 +479,7 @@ export function SetupResults({
       </div>
 
       <p className="mt-4 text-center text-[9.5px] leading-relaxed text-muted">
-        Prices are the latest values DealSense recorded across its tracked stores. They are not live
+        Prices are the latest values in our record across the stores we track. They are not live
         checkout quotes. Confirm price, seller and delivery on the store page before paying.
       </p>
 

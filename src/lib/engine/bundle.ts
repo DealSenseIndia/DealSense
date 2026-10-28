@@ -43,14 +43,17 @@ export async function buildBundle(input: {
 }> {  const { product, listing, rivalListing } = input;
 
   const ownObs = await getObservations(listing.id);
-  const ownPoints = priceSeries(ownObs);
+  // "Own" means we read the price ourselves. Imported rows live in the same
+  // table, so they must be filtered out here or every imported point is
+  // mislabelled as our own observation.
+  const ownPoints = priceSeries(ownObs.filter((o) => !isImportedSource(o.source)));
 
   // 1. External provider (PriceHistory.ai / Keepa / PriceHistory.app).
   //    Imported points are persisted into our own observation table the first
   //    time, so each product is fetched from the provider at most once.
   let points = ownPoints;
   let source: HistoryBundle["source"] = ownPoints.length ? "own" : "none";
-  let sourceLabel = "DealSense observations";
+  let sourceLabel = "recorded price history";
   let importedCount = 0;
   let externalProvider: string | null = null;
 
@@ -64,7 +67,7 @@ export async function buildBundle(input: {
       provider: externalProvider,
     });
     source = ownPoints.length ? "own" : "external";
-    sourceLabel = ownPoints.length ? "DealSense tracked history" : "tracked price history";
+    sourceLabel = "recorded price history";
   } else if (ownPoints.length < EXTERNAL_BOOTSTRAP_LIMIT) {
     // We only have a thin record of our own. Pull the provider's longer
     // history once (it is cached permanently in our observation table).
@@ -176,7 +179,9 @@ export async function buildBundle(input: {
     source,
     sourceLabel,
     importedPoints: importedCount,
-    externalProvider,
+    // Never returned: the upstream provider is not named anywhere the client
+    // can read it, including API payloads.
+    externalProvider: null,
     observationCount: stats.count,
     low: stats.low,
     high: stats.high,

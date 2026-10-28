@@ -128,7 +128,7 @@ export function PriceChart({
     const median = sorted[Math.floor(sorted.length / 2)];
     const lowPt = pts.p.reduce((a, b) => (b.q.price < a.q.price ? b : a));
     const lastPt = pts.p[pts.p.length - 1];
-    // The band we call "typical" — the middle half of everything we recorded.
+    // The band we call "typical" — the middle half of everything on the record.
     const q1 = sorted[Math.floor(sorted.length * 0.25)];
     const q3 = sorted[Math.floor(sorted.length * 0.75)];
     return {

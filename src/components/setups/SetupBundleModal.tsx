@@ -169,7 +169,7 @@ export function SetupBundleModal({
           <div className="mt-4 flex items-start gap-2 rounded-xl border border-emerald-400/25 bg-[var(--dw-green-surface)] p-3 text-[10.5px] leading-relaxed text-secondary">
             <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--dw-green-mid)]" />
             <p>
-              Prices are the last values we recorded from the stores, not live checkout quotes.
+              Prices are the last values in our record, not live checkout quotes.
               Confirm the final price, seller and delivery date on the store page. Bank or exchange
               offers never enter these totals.
             </p>

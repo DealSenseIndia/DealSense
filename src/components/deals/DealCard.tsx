@@ -96,7 +96,11 @@ export function DealCard({ deal }: { deal: DealRow }) {
         </div>
 
         <a
-          href={deal.url}
+          href={
+            deal.listingId
+              ? `/go/${encodeURIComponent(deal.listingId)}?src=deals`
+              : deal.url
+          }
           target="_blank"
           rel="noopener noreferrer sponsored"
           className="btn-cta mt-3 inline-flex h-8 items-center justify-center gap-1.5 rounded-btn text-[11.5px] font-extrabold"

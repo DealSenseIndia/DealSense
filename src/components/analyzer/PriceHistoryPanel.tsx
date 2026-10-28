@@ -41,12 +41,6 @@ export interface StoreSeries {
   points: PricePoint[];
 }
 
-/** Where imported records came from — shown, never hidden. */
-export interface HistoryAttribution {
-  label: string;
-  href: string;
-}
-
 function mean(values: number[]): number {
   return values.reduce((a, b) => a + b, 0) / values.length;
 }
@@ -82,13 +76,10 @@ function dayLabel(t: number, long = false): string {
 export function PriceHistoryPanel({
   series,
   events,
-  attribution = null,
   className,
 }: {
   series: StoreSeries[];
   events: DealEvent[];
-  /** Shown in the footer when some points were imported from a public tracker. */
-  attribution?: HistoryAttribution | null;
   className?: string;
 }) {
   const stores = useMemo(
@@ -602,23 +593,6 @@ export function PriceHistoryPanel({
         </span>
         <span className="text-hairline">·</span>
         <span>{dates}</span>
-        {attribution ? (
-          <>
-            <span className="text-hairline">·</span>
-            <span>
-              includes{" "}
-              <a
-                href={attribution.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-bold text-[var(--dw-green-mid)] underline decoration-dotted underline-offset-2"
-              >
-                {attribution.label}
-              </a>{" "}
-              records
-            </span>
-          </>
-        ) : null}
         {hovered ? (
           <>
             <span className="text-hairline">·</span>

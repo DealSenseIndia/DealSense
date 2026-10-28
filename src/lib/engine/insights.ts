@@ -3,7 +3,7 @@ import type { PricePoint } from "../types";
 /* ==================================================================
    DealSense analysis.
 
-   Everything here is derived from the price points we actually recorded.
+   Everything here is derived from the real, dated price points on the record.
    Nothing is invented, and when the record is too thin we say so instead
    of guessing.
    ================================================================== */
@@ -120,7 +120,7 @@ export function findEvents(points: PricePoint[]): DealEvent[] {
   const first = points[0];
   const last = points[points.length - 1];
 
-  // Launch price — the very first thing we recorded.
+  // Launch price — the very first point on the record.
   events.push({
     kind: "LAUNCH",
     label: "Launch Price",
@@ -462,7 +462,7 @@ export function recommendation(
       headline: "Buy Now",
       sub: bits.length
         ? `Great price — ${bits.join(", and ")}.`
-        : "Great price. It is below the average we have recorded for this product.",
+        : "Great price. It is below the average in our record for this product.",
     };
   }
 

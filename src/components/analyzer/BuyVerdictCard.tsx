@@ -114,7 +114,7 @@ export function BuyVerdictCard({
                   Confidence: <span className="text-white">{verdict.confidence}</span>
                 </span>
                 <span className="rounded-lg border border-rose-400/30 bg-rose-500/10 px-2.5 py-1 text-[11px] font-bold text-rose-300">
-                  {verdict.stats.count} verified observations
+                  {verdict.stats.count} recorded observations
                 </span>
                 {verdict.fakeDiscount && (
                   <span className="rounded-lg border border-rose-400/30 bg-rose-500/10 px-2.5 py-1 text-[11px] font-bold text-rose-300">
@@ -147,7 +147,7 @@ export function BuyVerdictCard({
                   )}
                 </>
               ) : (
-                "DealSense has not collected enough verified observations for this product yet. Track it and the insight builds as we record real prices."
+                "DealSense has not recorded enough dated prices for this product yet. Track it and the record builds as we read real prices."
               )}
             </p>
           </div>
@@ -155,7 +155,7 @@ export function BuyVerdictCard({
 
         {/* right rail — a row on small screens, a rail on large */}
         <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-4 sm:grid-cols-4 lg:block lg:space-y-4 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
-          <Rail label="Tracking" value={`${trackingDays}d`} />
+          <Rail label="History spans" value={`${trackingDays}d`} />
           <Rail label="Typical price" value={median !== null ? formatINR(median) : "—"} />
           <Rail
             label="Potential saving"

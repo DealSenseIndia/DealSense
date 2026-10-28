@@ -165,7 +165,7 @@ export function BudgetPicks({ bands }: { bands: BudgetBand[] }) {
                       </div>
                       <div className="mt-0.5 text-[9.5px] font-semibold text-muted">
                         {atLow
-                          ? "lowest price we have ever recorded"
+                          ? "lowest price in our record"
                           : recentDrop && d.lastDropAt
                             ? `dropped ${timeAgo(d.lastDropAt)}`
                             : `${d.observations} price points tracked`}

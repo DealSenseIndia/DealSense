@@ -12,8 +12,7 @@ export function HowItWorks() {
             How DealSense works
           </h2>
           <p className="mx-auto mt-2 max-w-2xl text-[14.5px] leading-relaxed text-body">
-            We read the store page, keep the price we saw, and compare every later price against
-            that record. No models, no estimates.
+            Every price in the record carries its date. No models, no estimates.
           </p>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
@@ -26,7 +25,7 @@ export function HowItWorks() {
             {
               n: "02",
               t: "Keep the record",
-              d: "Every price we see is stored with its timestamp, so next month we know exactly what it cost.",
+              d: "Every price in the record keeps its timestamp, so next month we know exactly what it cost.",
             },
             {
               n: "03",
@@ -54,7 +53,7 @@ export function Faq() {
   const items = [
     {
       q: "Is the price history real?",
-      a: "Yes. Every point is a price we actually observed on a store page, with the date we saw it. We never model, interpolate or estimate a price we didn't read.",
+      a: "Yes. Every point is a real, dated price. Nothing on the chart is invented, interpolated or estimated.",
     },
     {
       q: "How does the price-drop alert work?",

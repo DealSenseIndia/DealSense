@@ -105,8 +105,8 @@ export function PriceHistoryCard({
           No price history yet
         </p>
         <p className="mx-auto mt-1.5 max-w-sm text-[12.5px] leading-relaxed text-body">
-          DealSense only charts prices it actually recorded. Track this product and the graph
-          fills in as we read the store page.
+          DealSense only charts real, dated prices. Track this product and the graph fills in as we
+          read the store page.
         </p>
       </div>
     );

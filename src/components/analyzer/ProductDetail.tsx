@@ -29,6 +29,15 @@ import { BuyVerdictCard } from "./BuyVerdictCard";
 import { LandedPriceCard } from "./LandedPriceCard";
 import { AlertPanel } from "./AlertPanel";
 
+/** "14 Mar 2024" in Indian dates, so the start day never shifts with the server. */
+function historyStartLabel(t: number): string {
+  return new Date(t).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "Asia/Kolkata",
+  });
+}
 
 export function ProductDetail({
   result,
@@ -57,6 +66,11 @@ export function ProductDetail({
   const trackingDays = points.length
     ? Math.max(1, Math.round((Date.now() - points[0].t) / 86400000))
     : 0;
+  // The oldest point of the series the chart is built from. Imported and
+  // observed points are merged in date order, so the first one is the start of
+  // the record — null when there is nothing to draw. The chart's range buttons
+  // narrow the window they draw, not the record itself.
+  const historyStart = points.length ? points[0].t : null;
   const potentialSaving =
     bundle?.low !== null && bundle?.low !== undefined && listing.price !== null
       ? Math.max(0, listing.price - bundle.low)
@@ -298,11 +312,10 @@ export function ProductDetail({
             </li>
           ))}
         </ul>
-        {bundle?.importedPoints ? (
-          <p className="mt-3 text-[11px] leading-relaxed text-muted">
-            {bundle.importedPoints} of these points come from DealSense&apos;s tracked price record.
-            New direct store readings keep extending the series.
-          </p>
+        {historyStart !== null ? (
+          <div className="mt-3 space-y-1 text-[11px] leading-relaxed text-muted">
+            <p>History starts {historyStartLabel(historyStart)}.</p>
+          </div>
         ) : null}
         {(() => {
           // The newest recorded price is the only date we can honestly stand
