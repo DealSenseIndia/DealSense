@@ -4,6 +4,13 @@ import { workerConfig } from "../config";
 
 const RETRY_BASE_MS = 30 * 60 * 1000;
 const RETRY_MAX_MS = 24 * 60 * 60 * 1000;
+/**
+ * The route has a 60s ceiling. Stop starting new listings at 50s so a slow
+ * scrape is never cut off mid-flight; the rest stay due for the next run.
+ * Measured locally: ~12s per listing including the 5–8s store spacing, so a
+ * run of four fits and a fifth is deferred.
+ */
+const TIME_BUDGET_MS = 50 * 1000;
 
 export interface RefreshReport {
   startedAt: number;
@@ -11,6 +18,8 @@ export interface RefreshReport {
   scanned: number;
   succeeded: number;
   failed: number;
+  /** True when the run stopped on the time budget before the queue was empty. */
+  budgetHit: boolean;
   results: { listingId: string; url: string; status: string; verdict?: string }[];
 }
 
@@ -32,8 +41,13 @@ export async function runRefreshCycle(limit = 5): Promise<RefreshReport> {
   const results: RefreshReport["results"] = [];
   let succeeded = 0;
   let failed = 0;
+  let budgetHit = false;
 
   for (const listing of due) {
+    if (Date.now() - startedAt > TIME_BUDGET_MS) {
+      budgetHit = true;
+      break;
+    }
     try {
       const res = await analyzeUrl(listing.url);
       if (res.ok) {
@@ -56,9 +70,10 @@ export async function runRefreshCycle(limit = 5): Promise<RefreshReport> {
   return {
     startedAt,
     finishedAt: Date.now(),
-    scanned: due.length,
+    scanned: results.length,
     succeeded,
     failed,
+    budgetHit,
     results,
   };
 }
