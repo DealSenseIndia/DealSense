@@ -640,6 +640,14 @@ export const SETUP_SPACES: Record<SetupSpaceKey, SetupSpace> = {
           "inch",
           "9th gen",
           "8th gen",
+          // LGA1200 chips (10th/11th gen) forced the board slot onto a dead
+          // socket with nothing tracked. Modern tiers start at 12th gen.
+          "10th gen",
+          "11th gen",
+          "lga1200",
+          "10400",
+          "10500",
+          "11400",
         ],
         rationale: "The floor under everything else. A balanced six-core beats a hot flagship on a budget.",
       },
