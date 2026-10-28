@@ -72,6 +72,55 @@ const QUERIES = (process.env.CATALOGUE_QUERIES ?? "").split("|").filter(Boolean)
       "canon dslr", "nikon d560", "gopro hero", "action camera", "instant camera",
     ];
 
+/**
+ * Second wave — the categories the first pass left thin. Only used when the
+ * query list is not overridden through CATALOGUE_QUERIES, so an explicit run
+ * always means exactly the queries given.
+ */
+if (!process.env.CATALOGUE_QUERIES) {
+  QUERIES.push(
+    ...[
+      // phones the first pass missed
+      "iphone 15", "iphone 14", "samsung galaxy s24", "samsung galaxy m35", "redmi note 14",
+      "realme narzo", "poco x7", "iqoo z9", "vivo v50", "oppo k12", "motorola edge 50",
+      "nothing phone 2a", "oneplus nord", "google pixel 9",
+      // more computers
+      "hp laptop 15", "lenovo thinkpad", "asus tuf gaming", "acer nitro", "macbook pro",
+      "chromebook", "gaming laptop rtx 4060", "lenovo tab", "redmi pad",
+      // tv and streaming
+      "mi tv 43", "samsung 55 inch tv", "lg 43 inch tv", "oneplus tv", "fire tv stick",
+      "benq monitor",
+      // audio
+      "sony wh-1000xm4", "bose quietcomfort", "jbl tune", "boat rockerz", "samsung galaxy buds",
+      "airpods 4", "marshall speaker", "home theatre",
+      // wearables
+      "apple watch se", "garmin watch", "titan smart watch", "fastrack reflex",
+      // appliances
+      "daikin ac", "voltas ac", "lg washing machine", "samsung refrigerator",
+      "whirlpool refrigerator", "ifb washing machine", "bajaj mixer grinder",
+      "prestige pressure cooker", "philips air fryer", "kent water purifier",
+      "eureka forbes", "havells ceiling fan", "water heater geyser", "microwave oven",
+      // home, kitchen and furniture
+      "sofa set", "study chair", "bookshelf", "dining table", "curtains", "bedsheet double",
+      "mattress king", "cookware set", "storage cabinet", "shoe rack", "bean bag", "recliner",
+      // fashion
+      "adidas shoes", "puma sneakers", "levis tshirt", "fabindia kurta", "raymond shirt",
+      "woodland shoes", "crocs", "titan watch", "wildcraft backpack", "samsonite luggage",
+      "zara dress", "puma tshirt",
+      // beauty
+      "cerave moisturiser", "the ordinary serum", "minimalist serum", "dot and key",
+      "plum serum", "mamaearth shampoo", "nivea cream", "loreal shampoo",
+      "maybelline mascara", "mac lipstick",
+      // baby and sport
+      "pampers pants", "huggies", "baby stroller", "baby car seat", "yoga mat",
+      "dumbbell set", "cricket bat", "badminton racket", "cycle helmet",
+      // electronics and peripherals
+      "logitech mouse", "webcam", "wifi router", "ssd 1tb", "external hard drive",
+      "power bank", "printer", "keyboard",
+    ].filter((q) => !QUERIES.includes(q)),
+  );
+}
+
 const PLATFORM_MERCHANTS: Record<string, string> = {
   amazon: "amazon",
   flipkart: "flipkart",
