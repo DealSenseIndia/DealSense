@@ -88,6 +88,27 @@ export function getAllPosts(): BlogPost[] {
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
+/**
+ * Posts that name this product in their front matter, newest first.
+ * Used to link a product page to the writing that discusses it.
+ */
+export function getPostsForProduct(productSlug: string): BlogPostMeta[] {
+  if (!productSlug) return [];
+  return getAllPosts()
+    .filter((p) => p.products.includes(productSlug))
+    .map((p) => ({
+      slug: p.slug,
+      title: p.title,
+      description: p.description,
+      date: p.date,
+      updated: p.updated,
+      tags: p.tags,
+      products: p.products,
+      setups: p.setups,
+      readingMinutes: p.readingMinutes,
+    }));
+}
+
 export function getPost(slug: string): BlogPost | null {
   if (!SLUG.test(slug)) return null;
   try {

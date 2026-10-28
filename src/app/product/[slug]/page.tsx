@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
 import { notFound } from "next/navigation";
@@ -9,6 +10,7 @@ import { getReviewsForProduct } from "@/lib/db/queries";
 import { getSimilarProducts } from "@/lib/db/similar";
 import { getStoreComparison } from "@/lib/db/compare";
 import { getVariantSiblings } from "@/lib/db/variantSiblings";
+import { getPostsForProduct } from "@/lib/blog";
 import { getBrandPage } from "@/lib/db/brandPages";
 import { getCategoryPage } from "@/lib/db/categoryPages";
 import { resolveLeaf } from "@/lib/db/taxonomy";
@@ -118,6 +120,7 @@ export default async function ProductPage({
     product.brand ? getBrandPage(slugify(product.brand)) : Promise.resolve(null),
     leaf ? getCategoryPage(slugify(leaf)) : Promise.resolve(null),
   ]);
+  const journal = getPostsForProduct(product.slug);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -173,6 +176,28 @@ export default async function ProductPage({
           brandHref={brandPage ? `/brands/${brandPage.slug}` : null}
           categoryHref={categoryPage ? `/categories/${categoryPage.slug}` : null}
         />
+
+        {journal.length > 0 ? (
+          <section className="mt-8 rounded-2xl border border-hairline bg-card p-5 shadow-card">
+            <div className="text-[10.5px] font-extrabold uppercase tracking-widest text-muted">
+              From the journal
+            </div>
+            <ul className="mt-3 space-y-3">
+              {journal.map((post) => (
+                <li key={post.slug}>
+                  <Link href={`/blog/${post.slug}`} className="group block">
+                    <div className="text-[14.5px] font-extrabold leading-snug text-headline transition-colors group-hover:text-[var(--dw-green-mid)]">
+                      {post.title}
+                    </div>
+                    <p className="mt-0.5 line-clamp-2 text-[12.5px] leading-relaxed text-body">
+                      {post.description}
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
       </Container>
     </section>
   );
