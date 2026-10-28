@@ -292,6 +292,12 @@ export async function loadCandidates(): Promise<Candidate[]> {
     const stats = computeStats(obs);
     if (!stats.count) continue;
 
+    // A live price far under the product's own record is a listing error, not
+    // a deal: a ₹899 flagship board was poisoning the PC build and dragging
+    // the memory slot onto an expensive generation. Keep it off the shelves.
+    const median = stats.median;
+    if (stats.count >= 5 && median !== null && median > 0 && price < median * 0.25) continue;
+
     const verdict = evaluateDeal({ current: price, mrp: r.mrp, stats });
     const series = [...obs].sort((a, b) => a.observedAt - b.observedAt);
     const title = r.listingTitle || r.productTitle;
@@ -419,6 +425,15 @@ function chooseForTier(
       clashed = matching.length > 0 && fits.length === 0;
       clashWith = `${platform} processor`;
       pool = fits;
+
+      // A DDR5 board silently doubles the memory bill: the cheapest 16GB DDR5
+      // kit we track is ₹19,999 against ₹9,699 for DDR4. Saver and value tiers
+      // therefore prefer a board that is not DDR5-only, but never at the cost
+      // of leaving the slot empty. Premium keeps both options.
+      if (tier.key !== "premium") {
+        const notDdr5 = pool.filter((c) => detectMemoryGen(c.haystack) !== "ddr5");
+        if (notDdr5.length) pool = notDdr5;
+      }
     } else if (slot.key === "ram") {
       // A priced board fixes the memory generation. When the board slot stayed
       // open, the processor's socket still rules out the generations it cannot
