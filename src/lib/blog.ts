@@ -92,25 +92,39 @@ export function getAllPosts(): BlogPost[] {
   return posts.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
+function metaOf(p: BlogPost): BlogPostMeta {
+  return {
+    slug: p.slug,
+    title: p.title,
+    description: p.description,
+    date: p.date,
+    updated: p.updated,
+    tags: p.tags,
+    products: p.products,
+    setups: p.setups,
+    readingMinutes: p.readingMinutes,
+  };
+}
+
 /**
  * Posts that name this product in their front matter, newest first.
  * Used to link a product page to the writing that discusses it.
  */
 export function getPostsForProduct(productSlug: string): BlogPostMeta[] {
   if (!productSlug) return [];
+  return getAllPosts().filter((p) => p.products.includes(productSlug)).map(metaOf);
+}
+
+/**
+ * Posts covering any product in a set — a category page passes its shelf.
+ * A piece about the iPhone 17 therefore appears on the Smartphones page.
+ */
+export function getPostsForProducts(productSlugs: string[]): BlogPostMeta[] {
+  if (!productSlugs.length) return [];
+  const wanted = new Set(productSlugs);
   return getAllPosts()
-    .filter((p) => p.products.includes(productSlug))
-    .map((p) => ({
-      slug: p.slug,
-      title: p.title,
-      description: p.description,
-      date: p.date,
-      updated: p.updated,
-      tags: p.tags,
-      products: p.products,
-      setups: p.setups,
-      readingMinutes: p.readingMinutes,
-    }));
+    .filter((p) => p.products.some((slug) => wanted.has(slug)))
+    .map(metaOf);
 }
 
 export function getPost(slug: string): BlogPost | null {

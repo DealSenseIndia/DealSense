@@ -5,6 +5,7 @@ import { ChevronRight, LineChart } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { ProductShelfCard } from "@/components/product/ProductShelfCard";
 import { getCategoryPage, listCategoryPages } from "@/lib/db/categoryPages";
+import { getPostsForProducts } from "@/lib/blog";
 import { site } from "@/lib/config";
 
 export const revalidate = 600;
@@ -37,6 +38,7 @@ export default async function CategoryPage({
   if (!page) notFound();
 
   const related = all.filter((p) => p.slug !== page.slug).slice(0, 8);
+  const journal = getPostsForProducts(page.products.map((p) => p.slug));
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -114,6 +116,32 @@ export default async function CategoryPage({
             <ProductShelfCard key={p.id} product={p} />
           ))}
         </div>
+
+        {journal.length > 0 ? (
+          <div className="mt-12 border-t border-hairline pt-8">
+            <h2 className="text-[15px] font-extrabold text-headline">From the journal</h2>
+            <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+              {journal.map((post) => (
+                <li key={post.slug}>
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="group block h-full rounded-2xl border border-hairline bg-card p-4 shadow-card transition-colors hover:border-emerald-400/50"
+                  >
+                    <div className="text-[14px] font-extrabold leading-snug text-headline group-hover:text-[var(--dw-green-mid)]">
+                      {post.title}
+                    </div>
+                    <p className="mt-1 line-clamp-2 text-[12.5px] leading-relaxed text-body">
+                      {post.description}
+                    </p>
+                    <div className="mt-2 text-[10.5px] font-bold uppercase tracking-wider text-muted">
+                      {post.readingMinutes} min read
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
 
         {related.length > 0 ? (
           <div className="mt-12 border-t border-hairline pt-8">
