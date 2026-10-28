@@ -49,23 +49,35 @@ const RULES: Rule[] = [
   { category: /^Cabinet Straps$/i, leaf: "Child Locks", why: "child-proof latch" },
 ];
 
+/** Last resort, keyed on the title, for products with no usable category. */
+const TITLE_RULES: Rule[] = [
+  { title: /\bipad\b/i, leaf: "Tablets", why: "iPad" },
+  { title: /induction cooktop/i, leaf: "Induction Cooktops", why: "induction cooktop" },
+  { title: /study table|study\/office table|computer desk|office table/i, leaf: "Tables", why: "study table" },
+  { title: /office (executive )?chair|executive chair/i, leaf: "Ergonomic Office Chairs", why: "office chair" },
+  { title: /floor lamp/i, leaf: "Floor Lamps", why: "floor lamp" },
+  { title: /pixel \d{1,2}( pro|a| fold)? \(/i, leaf: "Smartphones", why: "Pixel phone" },
+  { title: /pixel buds|buds pro/i, leaf: "Earbuds", why: "Pixel buds" },
+  { title: /monitor/i, leaf: "Monitors", why: "monitor" },
+];
+
 (async () => {
-  const rows = await client.execute(
-    "SELECT id, title, category FROM products WHERE category IS NOT NULL AND TRIM(category) != ''",
-  );
+  const rows = await client.execute("SELECT id, title, category FROM products");
 
   const changes: { id: string; title: string; from: string; to: string; why: string }[] = [];
   let unmapped = 0;
 
   for (const row of rows.rows) {
-    const category = String(row.category);
-    if (resolveLeaf(category)) continue;
+    const category = String(row.category ?? "");
+    if (category && resolveLeaf(category)) continue;
     unmapped++;
     const title = String(row.title ?? "");
-    const rule = RULES.find(
-      (r) => (!r.category || r.category.test(category)) && (!r.title || r.title.test(title)),
-    );
+    const rule =
+      RULES.find(
+        (r) => category && (!r.category || r.category.test(category)) && (!r.title || r.title.test(title)),
+      ) ?? TITLE_RULES.find((r) => r.title!.test(title));
     if (!rule) continue;
+    if (/studio|baby|blood pressure/i.test(title) && rule.leaf === "Monitors") continue;
     if (!resolveLeaf(rule.leaf)) {
       console.log(`SKIP bad leaf "${rule.leaf}" for ${category}`);
       continue;
@@ -87,7 +99,8 @@ const RULES: Rule[] = [
   }
 
   mkdirSync("reports", { recursive: true });
-  const file = `reports/category-fix-${new Date().toISOString().slice(0, 10)}.json`;
+  const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+  const file = `reports/category-fix-${stamp}.json`;
   writeFileSync(file, JSON.stringify({ createdAt: new Date().toISOString(), changes }, null, 2));
 
   let done = 0;
