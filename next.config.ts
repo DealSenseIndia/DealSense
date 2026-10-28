@@ -27,6 +27,8 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/sitemap.xml": ["./content/blog/**/*.md"],
     "/blog/**": ["./content/blog/**/*.md"],
+    // Product pages read the journal front matter to show related posts.
+    "/product/**": ["./content/blog/**/*.md"],
   },
   async headers() {
     return [

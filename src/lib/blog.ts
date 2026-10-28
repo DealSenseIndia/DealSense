@@ -79,13 +79,17 @@ export function getAllPosts(): BlogPost[] {
   } catch {
     return [];
   }
-  return files
-    .map((file) => {
-      const slug = file.replace(/\.md$/, "");
-      return build(slug, readFileSync(path.join(DIR, file), "utf8"));
-    })
-    .filter((p) => SLUG.test(p.slug))
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
+  const posts: BlogPost[] = [];
+  for (const file of files) {
+    const slug = file.replace(/\.md$/, "");
+    if (!SLUG.test(slug)) continue;
+    try {
+      posts.push(build(slug, readFileSync(path.join(DIR, file), "utf8")));
+    } catch {
+      // One unreadable file must never take a product page down.
+    }
+  }
+  return posts.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
 /**
