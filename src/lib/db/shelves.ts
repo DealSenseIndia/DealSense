@@ -81,7 +81,7 @@ const FOREIGN_TITLE: Record<string, RegExp> = {
   "Home Decor":
     /\b(glue gun|drill|saw|screwdriver|power tool|charger|cable|adapter|battery)\b/i,
   "Baby Care":
-    /\b(kurta|kurti|palazzo|saree|dress|jacket|shirt|tshirt|t-shirt|jeans|clothing|fashion|lehenga|choli)\b/i,
+    /\b(kurta|kurti|palazzo|saree|dress|jacket|shirt|tshirt|t-shirt|jeans|clothing|fashion|lehenga|choli|shawl|wrap|stole|scarf|dupatta)\b/i,
   Earbuds:
     /\b(phones?|smartphones?|laptops?|tv|television|shoes?|sneakers?|shirts?|kurtas?|sarees?|sofas?|mattress|chairs?|desks?|tables?|cabinets?|processors?|motherboards?|graphics card|routers?|printers?)\b/i,
   Headphones:
