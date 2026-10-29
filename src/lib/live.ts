@@ -118,15 +118,13 @@ async function publish(
   const now = Date.now();
   const checkedAt = Math.min(verifiedAt, now);
   const existing = await client.execute({
-    sql: `SELECT id, price, starts_at AS startsAt, verified_at AS verifiedAt FROM live_deals
+    sql: `SELECT id, price, starts_at AS startsAt FROM live_deals
           WHERE listing_id = ? AND status = 'ACTIVE' ORDER BY verified_at DESC LIMIT 1`,
     args: [listing.id],
   });
   const row = existing.rows[0];
   if (row) {
     const startedAt = Number(row.startsAt);
-    const previousVerifiedAt = Number(row.verifiedAt ?? 0);
-    const nextVerifiedAt = Math.max(previousVerifiedAt, checkedAt);
     const changed = Math.abs(Number(row.price) - price) > 0.5;
     await client.execute({
       sql: `UPDATE live_deals
@@ -139,8 +137,8 @@ async function publish(
         stats.low,
         stats.avg,
         source,
-        changed ? nextVerifiedAt : startedAt,
-        nextVerifiedAt,
+        changed ? checkedAt : startedAt,
+        checkedAt,
         now,
         String(row.id),
       ],
@@ -331,7 +329,7 @@ export async function getLiveDeals(limit = 24): Promise<LiveDealCard[]> {
   const now = Date.now();
   const res = await client.execute({
     sql: `SELECT d.id, d.price, d.mrp, d.low_price AS lowPrice, d.avg_price AS avgPrice,
-                 d.verified_at AS verifiedAt, d.expires_at AS expiresAt,
+                 MIN(d.verified_at, l.last_checked_at) AS verifiedAt, d.expires_at AS expiresAt,
                  p.slug, p.title, p.image_url AS imageUrl, l.merchant
           FROM live_deals d
           JOIN products p ON p.id = d.product_id
@@ -339,9 +337,11 @@ export async function getLiveDeals(limit = 24): Promise<LiveDealCard[]> {
           WHERE d.status = 'ACTIVE' AND d.verified_at >= ?
             AND (d.expires_at IS NULL OR d.expires_at > ?)
             AND l.merchant IN ('amazon', 'flipkart') AND l.in_stock = 1
-          ORDER BY d.verified_at DESC, (d.price * 1.0 / NULLIF(d.avg_price, 0)) ASC
+            AND l.last_checked_at IS NOT NULL AND l.last_checked_at >= ?
+          ORDER BY MIN(d.verified_at, l.last_checked_at) DESC,
+                   (d.price * 1.0 / NULLIF(d.avg_price, 0)) ASC
           LIMIT ?`,
-    args: [now - FEED_TTL_MS, now, limit],
+    args: [now - FEED_TTL_MS, now, now - FEED_TTL_MS, limit],
   });
 
   return res.rows.map((row) => {
