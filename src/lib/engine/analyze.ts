@@ -222,7 +222,7 @@ export async function analyzeUrl(rawUrl: string): Promise<AnalysisResult> {
     productId: product.id,
     verdict: verdict?.verdict,
     score: verdict?.score,
-    tier,
+    tier: p.price === null ? "unpriced" : tier,
   });
 
   // 7) Alert evaluation happens AFTER the observation is committed.

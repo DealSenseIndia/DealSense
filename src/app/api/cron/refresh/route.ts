@@ -8,8 +8,8 @@ export const maxDuration = 60;
 /**
  * Cron endpoint. Point a free scheduler at this every minute with `limit=4`.
  *
- * Each listing is rescheduled ten hours after a successful read, so covering
- * the whole catalogue needs ~4,900 reads a day — four per minute is enough.
+ * A successful read is scheduled by tier: hot 3h, warm 6h, standard 24h, so
+ * the catalogue needs about 4,300 reads a day — four per minute is enough.
  * The cycle stops starting new listings after 50 seconds, so a slow scrape
  * never gets cut off by the 60s function limit.
  *

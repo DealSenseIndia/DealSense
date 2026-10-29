@@ -294,13 +294,20 @@ export async function updateListingState(
     .where(eq(listings.id, id));
 }
 
-/** True when this listing is currently on the live feed. */
+/** True when this listing is on the live feed inside its 20-minute window. */
 export async function hasActiveLiveDeal(listingId: string): Promise<boolean> {
   await ensureSchema();
+  const cutoff = Date.now() - 20 * 60 * 1000;
   const rows = await db
     .select({ id: liveDeals.id })
     .from(liveDeals)
-    .where(and(eq(liveDeals.listingId, listingId), eq(liveDeals.status, "ACTIVE")))
+    .where(
+      and(
+        eq(liveDeals.listingId, listingId),
+        eq(liveDeals.status, "ACTIVE"),
+        gte(liveDeals.verifiedAt, cutoff),
+      ),
+    )
     .limit(1);
   return rows.length > 0;
 }
