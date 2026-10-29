@@ -186,6 +186,7 @@ export function ProductDetail({
         currentPrice={listing.price}
         mrp={listing.mrp}
         score={result.verdict?.score ?? null}
+        check={listing.check}
       />
 
       {/* ---------- gallery + price panel ---------- */}
@@ -341,7 +342,6 @@ export function ProductDetail({
                 ? `Newest price on record is ${ageDays} days old — it may have moved since. `
                 : `Price last recorded ${latestPoint ? timeAgo(latestPoint) : "—"}. `}
               {points.length} points from {meta.name}
-              {listing.lastCheckedAt ? ` · refreshed ${timeAgo(listing.lastCheckedAt)}` : ""}
             </p>
           );
         })()}

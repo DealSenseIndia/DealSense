@@ -43,16 +43,15 @@ export default async function LivePage() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-70" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
             </span>
-            Live · re-checked every few minutes
+            Live · checked in the last 20 minutes
           </span>
           <h1 className="mt-3 text-[32px] font-extrabold leading-[1.1] tracking-[-0.03em] text-headline sm:text-[42px]">
             Drops we verified, not drops we heard about
           </h1>
           <p className="mt-3 text-[14.5px] leading-relaxed text-body">
-            Every card here was re-priced from the store we track in the last twenty minutes. It is at
-            or near its own recorded low, or at least a tenth under its own average. When the price
-            moves or the listing goes out of stock, the card disappears — there is nothing to catch
-            up on.
+            Every card here was read from the store in the last twenty minutes. It is at or near its
+            own recorded low, or at least a tenth under its own average. When the price moves or the
+            listing goes out of stock, the card disappears — there is nothing to catch up on.
           </p>
         </header>
 

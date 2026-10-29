@@ -113,8 +113,8 @@ export function LiveFeed({
       </div>
       <p className="mt-3 flex items-center gap-1.5 text-[10px] text-muted">
         <RefreshCw className={cn("h-3 w-3", loading && "animate-spin")} />
-        Updated {updatedAt ? ago(updatedAt, now) : "just now"} · re-checked every few minutes, never
-        older than 20
+        Updated {updatedAt ? ago(updatedAt, now) : "just now"} · every card checked within the last
+        20 minutes
       </p>
     </div>
   );

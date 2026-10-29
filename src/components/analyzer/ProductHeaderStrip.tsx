@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { Info, TrendingDown } from "lucide-react";
+import { CheckAgeBadge } from "@/components/ui/Badge";
 import { Rating } from "@/components/ui/Rating";
 import { storageOf } from "@/lib/engine/identity";
 import { formatINR } from "@/lib/utils";
+import type { CheckInfo } from "@/lib/types";
 
 /** A ring gauge for the DealSense score, out of 100. */
 function ScoreGauge({ score }: { score: number }) {
@@ -66,6 +68,7 @@ export function ProductHeaderStrip({
   currentPrice,
   mrp,
   score,
+  check,
 }: {
   title: string;
   rating: number | null;
@@ -77,6 +80,8 @@ export function ProductHeaderStrip({
   currentPrice: number | null;
   mrp: number | null;
   score: number | null;
+  /** When the price was last read successfully. */
+  check: CheckInfo;
 }) {
   const storage = storageOf(title)[0];
   const model = title.split(" ").slice(0, 3).join(" ");
@@ -117,9 +122,12 @@ export function ProductHeaderStrip({
           <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5">
             <Rating rating={rating} reviewCount={reviewCount} size="md" />
             {currentPrice !== null ? (
-              <span className="tabular text-[19px] font-extrabold leading-none text-[var(--dw-green-mid)]">
-                {formatINR(currentPrice)}
-              </span>
+              <>
+                <span className="tabular text-[19px] font-extrabold leading-none text-[var(--dw-green-mid)]">
+                  {formatINR(currentPrice)}
+                </span>
+                <CheckAgeBadge check={check} />
+              </>
             ) : null}
             {currentPrice && mrp && mrp > currentPrice ? (
               <span className="inline-flex items-center gap-1.5 text-[12px] font-bold text-muted">

@@ -5,6 +5,7 @@ import type { ListingRow, ProductRow } from "../db/queries";
 import { goPath } from "../affiliate";
 import { buildBundle, findRivalListing } from "./bundle";
 import { buildIdentityKey } from "./identity";
+import { checkInfoFor } from "./freshness";
 
 /** Build a full analysis result from stored data (used by SSR product pages). */
 export async function buildResultForListing(
@@ -46,6 +47,7 @@ export async function buildResultForListing(
       imageUrl: listing.imageUrl,
       affiliateUrl: goPath(listing.id, "pdp"),
       lastCheckedAt: listing.lastCheckedAt,
+      check: checkInfoFor(listing),
     },
     rival,
     landed,

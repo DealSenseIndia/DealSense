@@ -1,28 +1,24 @@
 import { client, ensureSchema } from "./db/client";
 import { uid } from "./db/queries";
-import { priceTrackedMerchants, storeMeta } from "./config";
-import { PROVIDER_MERCHANTS } from "./engine/providers/pricehistoryAi";
-import { syncListingHistory } from "./engine/sync";
+import { storeMeta } from "./config";
 
 /**
  * The live feed: deals we verified ourselves and are currently standing behind.
  *
  * Rules that keep it honest:
- *   • nothing is published until the price and stock are re-fetched from the
- *     source we track — a lead is only a hint of where to look;
+ *   • a card is only published from a store page the refresh worker actually
+ *     read; its `verifiedAt` is that read, never the time we fetched a feed;
+ *   • only the two stores we can read directly (Amazon and Flipkart) are
+ *     eligible — a provider series for a store we cannot read is not a check;
  *   • a deal must be at or near its own recorded low, or well under its own
  *     average, and carry at least four recorded points;
- *   • every card is re-checked a few minutes later; the moment the price moves
- *     or the listing goes out of stock, it leaves the feed;
- *   • the feed only shows deals verified in the last 20 minutes, so a stalled
- *     worker empties it rather than showing stale "live" prices.
+ *   • the feed only shows checks from the last 20 minutes, so a stalled worker
+ *     empties it rather than showing stale "live" prices.
  */
 
 const VERIFY_AFTER_MS = 3 * 60 * 1000;
 const FEED_TTL_MS = 20 * 60 * 1000;
-/** Don't probe the same listing again for six hours after a look. */
-const PROBE_COOLDOWN_MS = 6 * 60 * 60 * 1000;
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const DIRECT_MERCHANTS = new Set(["amazon", "flipkart"]);
 
 export interface LiveDealCard {
   id: string;
@@ -108,44 +104,29 @@ function qualifies(price: number | null, stock: boolean | null, n: number, low: 
   return false;
 }
 
-/** Re-fetch one listing; returns its fresh price and whether it still qualifies. */
-async function verifyOne(listing: ListingRow) {
-  await syncListingHistory({
-    id: listing.id,
-    merchant: listing.merchant,
-    merchantProductId: listing.merchantProductId,
-    title: listing.title,
-    price: listing.price,
-    lastCheckedAt: listing.lastCheckedAt,
-    failureCount: listing.failureCount,
-  }).catch(() => null);
-
-  const fresh = await loadListing(listing.id);
-  const stats = await seriesStats(listing.id);
-  const price = fresh?.price ?? null;
-  return {
-    listing: fresh,
-    stats,
-    price,
-    ok: fresh ? qualifies(price, fresh.inStock, stats.n, stats.low, stats.avg) : false,
-  };
-}
-
+/**
+ * Publish a deal only with the time the store page was actually read. The
+ * worker is the source of `verifiedAt`; a provider fetch cannot move it.
+ */
 async function publish(
   listing: ListingRow,
   price: number,
   stats: { low: number | null; avg: number | null },
   source: string,
+  verifiedAt: number,
 ) {
   const now = Date.now();
+  const checkedAt = Math.min(verifiedAt, now);
   const existing = await client.execute({
-    sql: `SELECT id, price, starts_at AS startsAt FROM live_deals
+    sql: `SELECT id, price, starts_at AS startsAt, verified_at AS verifiedAt FROM live_deals
           WHERE listing_id = ? AND status = 'ACTIVE' ORDER BY verified_at DESC LIMIT 1`,
     args: [listing.id],
   });
   const row = existing.rows[0];
   if (row) {
     const startedAt = Number(row.startsAt);
+    const previousVerifiedAt = Number(row.verifiedAt ?? 0);
+    const nextVerifiedAt = Math.max(previousVerifiedAt, checkedAt);
     const changed = Math.abs(Number(row.price) - price) > 0.5;
     await client.execute({
       sql: `UPDATE live_deals
@@ -158,8 +139,8 @@ async function publish(
         stats.low,
         stats.avg,
         source,
-        changed ? now : startedAt,
-        now,
+        changed ? nextVerifiedAt : startedAt,
+        nextVerifiedAt,
         now,
         String(row.id),
       ],
@@ -172,7 +153,20 @@ async function publish(
             (id, listing_id, product_id, price, mrp, low_price, avg_price, source,
              starts_at, verified_at, expires_at, status, created_at, updated_at)
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, 'ACTIVE', ?, ?)`,
-    args: [id, listing.id, listing.productId, price, listing.mrp, stats.low, stats.avg, source, now, now, now, now],
+    args: [
+      id,
+      listing.id,
+      listing.productId,
+      price,
+      listing.mrp,
+      stats.low,
+      stats.avg,
+      source,
+      checkedAt,
+      checkedAt,
+      now,
+      now,
+    ],
   });
   return id;
 }
@@ -184,14 +178,7 @@ async function expire(dealId: string) {
   });
 }
 
-async function recordProbe(listingId: string, ok: boolean, price: number | null) {
-  await client.execute({
-    sql: `INSERT INTO events (id, type, payload, created_at) VALUES (?, 'live_probe', ?, ?)`,
-    args: [uid(), JSON.stringify({ listingId, ok, price }), Date.now()],
-  }).catch(() => {});
-}
-
-/** Re-check the deals that are due, expiring any that no longer hold. */
+/** Expire deals whose store check is no longer recent, or no longer qualifies. */
 export async function verifyLiveDeals(limit = 4) {
   await ensureSchema();
   const now = Date.now();
@@ -220,97 +207,122 @@ export async function verifyLiveDeals(limit = 4) {
       results.push({ dealId, outcome: "expired-listing", price: null });
       continue;
     }
-    const checked = await verifyOne(listing);
-    if (checked.ok && checked.price !== null) {
-      await publish(listing, checked.price, checked.stats, "price_watch");
-      results.push({ dealId, outcome: "still-live", price: checked.price });
+    const checkedAt = listing.lastCheckedAt;
+    const recent =
+      DIRECT_MERCHANTS.has(listing.merchant) &&
+      checkedAt !== null &&
+      now - checkedAt <= FEED_TTL_MS;
+    const stats = recent ? await seriesStats(listing.id) : null;
+    const price = listing.price;
+    if (
+      recent &&
+      checkedAt !== null &&
+      stats &&
+      price !== null &&
+      qualifies(price, listing.inStock, stats.n, stats.low, stats.avg)
+    ) {
+      await publish(listing, price, stats, "price_watch", checkedAt);
+      results.push({ dealId, outcome: "still-live", price });
     } else {
       await expire(dealId);
-      results.push({ dealId, outcome: "expired", price: checked.price });
+      results.push({
+        dealId,
+        outcome: recent ? "no-longer-qualifies" : "check-too-old",
+        price,
+      });
     }
-    await sleep(700);
   }
   return results;
 }
 
 /**
- * Find listings whose current price is at/near their own low or well under
- * their average, verify a few, and publish the ones that survive.
+ * Publish deals from checks the refresh worker made in the last twenty
+ * minutes. No second store read and no provider guess: the card's timestamp
+ * is the worker's check.
  */
 export async function promoteLiveDeals(limit = 3) {
   await ensureSchema();
-  const merchants = priceTrackedMerchants.filter((m) => (PROVIDER_MERCHANTS as readonly string[]).includes(m));
-  if (!merchants.length) return [];
-  const placeholders = merchants.map(() => "?").join(", ");
-  const probeCutoff = Date.now() - PROBE_COOLDOWN_MS;
+  const cutoff = Date.now() - FEED_TTL_MS;
 
   const candidates = await client.execute({
     sql: `SELECT l.id AS listingId
           FROM listings l
           JOIN observations o ON o.listing_id = l.id
           WHERE l.in_stock = 1 AND l.price IS NOT NULL AND l.price >= 199
-            AND l.merchant IN (${placeholders})
+            AND l.merchant IN ('amazon', 'flipkart')
+            AND l.last_checked_at IS NOT NULL AND l.last_checked_at > ?
             AND NOT EXISTS (
               SELECT 1 FROM live_deals d WHERE d.listing_id = l.id AND d.status = 'ACTIVE'
-            )
-            AND NOT EXISTS (
-              SELECT 1 FROM events e
-              WHERE e.type = 'live_probe' AND e.created_at > ?
-                AND json_extract(e.payload, '$.listingId') = l.id
             )
           GROUP BY l.id
           HAVING COUNT(o.id) >= 4
              AND (l.price <= MIN(o.price) * 1.02 OR l.price <= AVG(o.price) * 0.9)
-          ORDER BY (l.price * 1.0 / NULLIF(MIN(o.price), 0)) ASC, COUNT(o.id) DESC
+          ORDER BY l.last_checked_at DESC,
+                   (l.price * 1.0 / NULLIF(MIN(o.price), 0)) ASC,
+                   COUNT(o.id) DESC
           LIMIT ?`,
-    args: [...merchants, probeCutoff, limit],
+    args: [cutoff, limit],
   });
 
   const results: { listingId: string; outcome: string; price: number | null }[] = [];
   for (const row of candidates.rows) {
     const listingId = String(row.listingId);
     const listing = await loadListing(listingId);
-    if (!listing) continue;
-    const checked = await verifyOne(listing);
-    await recordProbe(listingId, checked.ok, checked.price);
-    if (checked.ok && checked.price !== null && checked.listing) {
-      await publish(checked.listing, checked.price, checked.stats, "price_watch");
-      results.push({ listingId, outcome: "published", price: checked.price });
+    if (!listing || listing.lastCheckedAt === null) continue;
+    const stats = await seriesStats(listingId);
+    if (
+      listing.price !== null &&
+      qualifies(listing.price, listing.inStock, stats.n, stats.low, stats.avg)
+    ) {
+      await publish(listing, listing.price, stats, "price_watch", listing.lastCheckedAt);
+      results.push({ listingId, outcome: "published", price: listing.price });
     } else {
-      results.push({ listingId, outcome: "rejected", price: checked.price });
+      results.push({ listingId, outcome: "rejected", price: listing.price });
     }
-    await sleep(700);
   }
   return results;
 }
 
+/** A direct store read in the last twenty minutes is the only proof we accept. */
+function recentlyChecked(
+  listing: ListingRow,
+): listing is ListingRow & { lastCheckedAt: number } {
+  return (
+    DIRECT_MERCHANTS.has(listing.merchant) &&
+    listing.lastCheckedAt !== null &&
+    Date.now() - listing.lastCheckedAt <= FEED_TTL_MS
+  );
+}
+
 /**
- * Publish from data we fetched seconds ago (a lead we just imported), without
- * paying for a second provider call. Only used immediately after a fetch.
+ * Publish from a store page we read seconds ago (a lead we just imported).
+ * If the import was not a direct read, it is not a live deal.
  */
 export async function publishFromFreshImport(listingId: string, source: string) {
   await ensureSchema();
   const listing = await loadListing(listingId);
   if (!listing) return { outcome: "missing" as const, price: null };
+  if (!recentlyChecked(listing)) return { outcome: "rejected" as const, price: listing.price };
   const stats = await seriesStats(listing.id);
   if (!listing.price || !qualifies(listing.price, listing.inStock, stats.n, stats.low, stats.avg)) {
     return { outcome: "rejected" as const, price: listing.price };
   }
-  await publish(listing, listing.price, stats, source);
+  await publish(listing, listing.price, stats, source, listing.lastCheckedAt);
   return { outcome: "published" as const, price: listing.price };
 }
 
-/** Verify a listing that arrived as a lead, and publish it only if it holds. */
+/** Publish a lead only when its listing has a direct store check from the last twenty minutes. */
 export async function publishFromLead(listingId: string, source: string) {
   await ensureSchema();
   const listing = await loadListing(listingId);
   if (!listing) return { outcome: "missing" as const, price: null };
-  const checked = await verifyOne(listing);
-  if (checked.ok && checked.price !== null && checked.listing) {
-    await publish(checked.listing, checked.price, checked.stats, source);
-    return { outcome: "published" as const, price: checked.price };
+  if (!recentlyChecked(listing)) return { outcome: "rejected" as const, price: listing.price };
+  const stats = await seriesStats(listing.id);
+  if (!listing.price || !qualifies(listing.price, listing.inStock, stats.n, stats.low, stats.avg)) {
+    return { outcome: "rejected" as const, price: listing.price };
   }
-  return { outcome: "rejected" as const, price: checked.price ?? null };
+  await publish(listing, listing.price, stats, source, listing.lastCheckedAt);
+  return { outcome: "published" as const, price: listing.price };
 }
 
 /** Active deals verified recently enough to call themselves live. */
@@ -326,6 +338,7 @@ export async function getLiveDeals(limit = 24): Promise<LiveDealCard[]> {
           JOIN listings l ON l.id = d.listing_id
           WHERE d.status = 'ACTIVE' AND d.verified_at >= ?
             AND (d.expires_at IS NULL OR d.expires_at > ?)
+            AND l.merchant IN ('amazon', 'flipkart') AND l.in_stock = 1
           ORDER BY d.verified_at DESC, (d.price * 1.0 / NULLIF(d.avg_price, 0)) ASC
           LIMIT ?`,
     args: [now - FEED_TTL_MS, now, limit],

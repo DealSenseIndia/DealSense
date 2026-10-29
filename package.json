@@ -27,6 +27,7 @@
     "setups:seed": "tsx scripts/seed-setups.ts",
     "setups:report": "tsx scripts/setups-report.ts",
     "clicks": "tsx scripts/click-report.ts",
+    "health": "tsx scripts/queue-health.ts",
     "telegram:setup": "tsx scripts/telegram-setup.ts"
   },
   "dependencies": {

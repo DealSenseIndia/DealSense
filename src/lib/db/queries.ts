@@ -1,4 +1,4 @@
-import { and, desc, eq, gte, inArray, isNull, lte, or, sql } from "drizzle-orm";
+import { and, desc, eq, gte, inArray, isNull, lte, notInArray, or, sql } from "drizzle-orm";
 import { db, ensureSchema } from "./client";
 import { alerts, alertEvents, events, listings, observations, products, reviews } from "./schema";
 import { priceTrackedMerchants } from "../config";
@@ -330,7 +330,15 @@ export async function getSyncCandidates(limit = 6) {
     })
     .from(listings)
     .innerJoin(observations, eq(observations.listingId, listings.id))
-    .where(inArray(listings.merchant, [...priceTrackedMerchants]))
+    // The provider only fills stores we cannot read directly. Amazon and
+    // Flipkart have a store-page worker of their own, and a provider point
+    // must never be mistaken for a first-party check.
+    .where(
+      and(
+        inArray(listings.merchant, [...priceTrackedMerchants]),
+        notInArray(listings.merchant, ["amazon", "flipkart"]),
+      ),
+    )
     .groupBy(
       listings.id,
       listings.merchant,

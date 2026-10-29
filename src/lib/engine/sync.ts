@@ -85,6 +85,12 @@ export async function syncListingHistory(listing: Candidate): Promise<SyncItem> 
     latestPointAt: null as number | null,
   };
 
+  // Directly-readable stores are refreshed from their own page. A provider
+  // price must never be paired with a first-party check timestamp.
+  if (listing.merchant === "amazon" || listing.merchant === "flipkart") {
+    return { ...base, status: "SKIPPED", message: "Direct store listings are refreshed from the store page." };
+  }
+
   if (!(PROVIDER_MERCHANTS as readonly string[]).includes(merchant)) {
     return { ...base, status: "SKIPPED", message: "Merchant has no public tracker series." };
   }
@@ -132,6 +138,7 @@ export async function syncListingHistory(listing: Candidate): Promise<SyncItem> 
       ? product.original_price
       : undefined;
 
+  const direct = listing.merchant === "amazon" || listing.merchant === "flipkart";
   const now = Date.now();
   await updateListingState(listing.id, {
     price: nextPrice,
@@ -140,11 +147,17 @@ export async function syncListingHistory(listing: Candidate): Promise<SyncItem> 
     ...(product?.rating != null ? { rating: product.rating } : {}),
     ...(product?.review_count != null ? { reviewCount: product.review_count } : {}),
     ...(product?.image_url ? { imageUrl: product.image_url } : {}),
-    lastCheckedAt: Math.max(listing.lastCheckedAt ?? 0, newest.t),
-    // Rotate the queue: this listing steps aside for 20–26 hours.
-    nextCheckAt: now + SYNC_INTERVAL_MS + Math.random() * 6 * HOUR,
-    failureCount: 0,
-    lastError: null,
+    // `lastCheckedAt`, the failure state and the refresh queue belong to the
+    // direct store read. A provider point is not a first-party check, so a
+    // direct listing keeps all three; only the provider-only stores rotate on
+    // this 20–26 hour schedule.
+    ...(direct
+      ? {}
+      : {
+          nextCheckAt: now + SYNC_INTERVAL_MS + Math.random() * 6 * HOUR,
+          failureCount: 0,
+          lastError: null,
+        }),
   });
 
   await recordEvent("provider_sync", {

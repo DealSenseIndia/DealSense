@@ -1,9 +1,7 @@
 import { getDueListings, updateListingState } from "../db/queries";
 import { analyzeUrl } from "./analyze";
 import { workerConfig } from "../config";
-
-const RETRY_BASE_MS = 30 * 60 * 1000;
-const RETRY_MAX_MS = 24 * 60 * 60 * 1000;
+import { retryDelayMs } from "./freshness";
 /**
  * The route has a 60s ceiling. Stop starting new listings at 50s so a slow
  * scrape is never cut off mid-flight; the rest stay due for the next run.
@@ -80,7 +78,9 @@ export async function runRefreshCycle(limit = 5): Promise<RefreshReport> {
 
 async function rescheduleFailed(listing: { id: string; failureCount: number }, message: string) {
   const failures = (listing.failureCount ?? 0) + 1;
-  const wait = Math.min(RETRY_MAX_MS, RETRY_BASE_MS * 2 ** Math.min(5, failures - 1));
+  // Blocked and unpriced pages back off by days, not hours: retrying them on
+  // the default schedule spends the 50s budget on pages that cannot succeed.
+  const wait = retryDelayMs(message, failures);
   await updateListingState(listing.id, {
     nextCheckAt: Date.now() + wait,
     failureCount: failures,

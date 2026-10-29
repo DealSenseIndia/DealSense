@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
-import type { Confidence, Freshness, Verdict } from "@/lib/types";
+import { cn, timeAgo } from "@/lib/utils";
+import type { CheckInfo, Confidence, Freshness, Verdict } from "@/lib/types";
 import { storeMeta } from "@/lib/config";
 
 export function Pill({
@@ -105,6 +105,60 @@ export function FreshnessBadge({ freshness, ts }: { freshness: Freshness; ts?: n
         </span>
       ) : null}
     </span>
+  );
+}
+
+const checkTone: Record<CheckInfo["state"], "neutral" | "amber" | "red"> = {
+  FRESH: "neutral",
+  OBSERVED: "neutral",
+  STALE: "amber",
+  EXPIRED: "red",
+  NEVER: "neutral",
+};
+
+const checkDot: Record<CheckInfo["state"], string> = {
+  FRESH: "bg-emerald-500",
+  OBSERVED: "bg-sky-500",
+  STALE: "bg-amber-500",
+  EXPIRED: "bg-red-500",
+  NEVER: "bg-slate-400",
+};
+
+function retryNote(kind: CheckInfo["failureKind"]): string {
+  if (kind === "BLOCKED") return "The store blocked the last read. We will retry later.";
+  if (kind === "UNPRICED") return "The last read found no price. We will retry later.";
+  return "The last read failed. We will retry later.";
+}
+
+/**
+ * When the price was last read successfully. The date is the last success, not
+ * the last attempt: a failed retry never makes an older price look fresh.
+ */
+export function CheckAgeBadge({ check, className }: { check: CheckInfo; className?: string }) {
+  const label = check.state === "NEVER" ? "Not checked yet" : `Checked ${timeAgo(check.checkedAt)}`;
+  return (
+    <Pill
+      tone={checkTone[check.state]}
+      className={cn(
+        "shrink-0 gap-1.5 whitespace-nowrap",
+        // The shared pill tones are a touch light at 11px; the deeper shades
+        // clear AA without changing the semantic colour.
+        check.state === "STALE" && "text-amber-700 dark:text-amber-300",
+        check.state === "EXPIRED" && "text-red-700 dark:text-red-300",
+        className,
+      )}
+    >
+      <span className={cn("h-1.5 w-1.5 rounded-full", checkDot[check.state])} />
+      {label}
+      {check.retrying ? (
+        <span
+          className="font-medium text-slate-700 dark:text-slate-300"
+          title={retryNote(check.failureKind)}
+        >
+          {" · retrying"}
+        </span>
+      ) : null}
+    </Pill>
   );
 }
 

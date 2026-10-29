@@ -19,6 +19,7 @@ import {
 } from "../db/queries";
 import { buildIdentityKey, sameVariant } from "./identity";
 import { buildBundle, findRivalListing } from "./bundle";
+import { checkInfoFor } from "./freshness";
 import { computeLandedPrice } from "./landedPrice";
 import { computeStats, priceSeries } from "./stats";
 import { evaluateDeal } from "./verdict";
@@ -256,6 +257,7 @@ export async function analyzeUrl(rawUrl: string): Promise<AnalysisResult> {
       imageUrl: p.imageUrl,
       affiliateUrl: goPath(listing.id, "analyze"),
       lastCheckedAt: ts,
+      check: checkInfoFor({ lastCheckedAt: ts, failureCount: 0, lastError: null }, ts),
     },
     rival,
     landed,

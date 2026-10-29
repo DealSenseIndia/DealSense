@@ -7,6 +7,20 @@ export type { StoreReview };
 export type Verdict = "BUY" | "FAIR" | "WAIT" | "AVOID" | "INSUFFICIENT";
 export type Confidence = "HIGH" | "MEDIUM" | "LOW" | "INSUFFICIENT";
 export type Freshness = "LIVE" | "OBSERVED" | "STALE" | "EXPIRED" | "UNKNOWN";
+
+/** How old the last *successful* store read is for a listing. */
+export type CheckState = "FRESH" | "OBSERVED" | "STALE" | "EXPIRED" | "NEVER";
+export type CheckFailureKind = "BLOCKED" | "UNPRICED" | "ERROR" | null;
+
+export interface CheckInfo {
+  state: CheckState;
+  /** Last successful read, never a failed attempt. */
+  checkedAt: number | null;
+  ageMs: number | null;
+  /** True when the most recent attempt failed; the age above is still the last success. */
+  retrying: boolean;
+  failureKind: CheckFailureKind;
+}
 export type ObservationSource =
   | "live_extraction"
   | "live_heartbeat"
@@ -121,6 +135,8 @@ export interface AnalysisResult {
     imageUrl: string | null;
     affiliateUrl: string;
     lastCheckedAt: number | null;
+    /** Freshness of the last successful read, with an honest "never" state. */
+    check: CheckInfo;
   } | null;
   rival: {
     merchant: Merchant;
