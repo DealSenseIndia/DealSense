@@ -80,6 +80,9 @@ export async function analyzeUrl(rawUrl: string): Promise<AnalysisResult> {
 
   const p = outcome.product;
   const merchant: Merchant = p.merchant;
+  // Flipkart ids are case-insensitive; store one canonical case so a different
+  // spelling of the same URL cannot create a second listing row.
+  if (merchant === "flipkart") p.merchantProductId = p.merchantProductId.toLowerCase();
   const identityKey = buildIdentityKey(p.title);
 
   // 1) Canonical product.

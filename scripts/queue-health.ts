@@ -14,6 +14,20 @@ import { client } from "../src/lib/db/client";
 const HOUR = 3_600_000;
 const DAY = 24 * HOUR;
 const DIRECT = "('amazon','flipkart')";
+/** Keep one row per case-insensitive merchant id: the one with the latest check. */
+const CANONICAL = `NOT EXISTS (
+  SELECT 1 FROM listings twin
+  WHERE twin.merchant = listings.merchant
+    AND twin.id <> listings.id
+    AND lower(twin.merchant_product_id) = lower(listings.merchant_product_id)
+    AND (
+      COALESCE(twin.last_checked_at, 0) > COALESCE(listings.last_checked_at, 0)
+      OR (
+        COALESCE(twin.last_checked_at, 0) = COALESCE(listings.last_checked_at, 0)
+        AND twin.id < listings.id
+      )
+    )
+)`;
 
 function human(ms: number | null): string {
   if (ms === null || !Number.isFinite(ms)) return "never";
@@ -40,21 +54,27 @@ async function main() {
             SUM(CASE WHEN last_checked_at IS NULL THEN 1 ELSE 0 END) AS never_checked,
             SUM(CASE WHEN last_checked_at > ? THEN 1 ELSE 0 END) AS within_24h,
             SUM(CASE WHEN last_checked_at IS NOT NULL AND last_checked_at <= ? THEN 1 ELSE 0 END) AS stale_24h
-          FROM listings WHERE merchant IN ${DIRECT}`,
+          FROM listings WHERE merchant IN ${DIRECT} AND ${CANONICAL}`,
     args: [now - DAY, now - DAY],
   });
   const d = direct.rows[0];
 
+  const dupes = await client.execute({
+    sql: `SELECT COUNT(*) AS n FROM listings WHERE merchant IN ${DIRECT} AND NOT (${CANONICAL})`,
+    args: [],
+  });
+
   const due = await client.execute({
     sql: `SELECT COUNT(*) AS due, MIN(next_check_at) AS oldest_due
           FROM listings
-          WHERE merchant IN ${DIRECT} AND next_check_at IS NOT NULL AND next_check_at <= ?`,
+          WHERE merchant IN ${DIRECT} AND next_check_at IS NOT NULL AND next_check_at <= ?
+            AND ${CANONICAL}`,
     args: [now],
   });
   const q = due.rows[0];
 
   const ages = await client.execute({
-    sql: `SELECT last_checked_at FROM listings WHERE merchant IN ${DIRECT}`,
+    sql: `SELECT last_checked_at FROM listings WHERE merchant IN ${DIRECT} AND ${CANONICAL}`,
     args: [],
   });
   const sorted = ages.rows
@@ -100,7 +120,7 @@ async function main() {
   const oldestDue = q.oldest_due === null ? null : now - Number(q.oldest_due);
 
   console.log(`DealSense queue health — ${new Date(now).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}`);
-  console.log(`\nDirect listings (Amazon/Flipkart): ${total}`);
+  console.log(`\nDirect listings (Amazon/Flipkart): ${total} canonical · ${dupes.rows[0].n} duplicate rows parked`);
   console.log(`  checked <24h: ${within} (${share(within, total)})`);
   console.log(`  stale 24h+:    ${stale}`);
   console.log(`  never checked: ${never}`);

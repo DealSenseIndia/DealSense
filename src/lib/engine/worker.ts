@@ -9,6 +9,8 @@ import { retryDelayMs } from "./freshness";
  * run of four fits and a fifth is deferred.
  */
 const TIME_BUDGET_MS = 50 * 1000;
+/** Park a queued duplicate for a month once its URL resolves to the canonical twin. */
+const DUPLICATE_PARK_MS = 30 * 24 * 60 * 60 * 1000;
 
 export interface RefreshReport {
   startedAt: number;
@@ -50,6 +52,16 @@ export async function runRefreshCycle(limit = 5): Promise<RefreshReport> {
       const res = await analyzeUrl(listing.url);
       if (res.ok) {
         succeeded++;
+        if (res.listing && res.listing.id !== listing.id) {
+          // The URL resolved to a different listing row (usually a
+          // case-mismatched duplicate id). Park the queued row so it cannot
+          // block the queue forever.
+          await updateListingState(listing.id, {
+            nextCheckAt: Date.now() + DUPLICATE_PARK_MS,
+            failureCount: 0,
+            lastError: `DUPLICATE: canonical listing ${res.listing.id}`,
+          });
+        }
         results.push({ listingId: listing.id, url: listing.url, status: res.status, verdict: res.verdict?.verdict });
       } else {
         failed++;
