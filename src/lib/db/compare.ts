@@ -1,4 +1,4 @@
-import { and, asc, eq, isNotNull } from "drizzle-orm";
+import { and, asc, eq, inArray, isNotNull } from "drizzle-orm";
 import { db, ensureSchema } from "./client";
 import { listings, observations } from "./schema";
 import { sameVariant, titleSimilarity, isSameProduct } from "../engine/identity";
@@ -77,15 +77,20 @@ export async function getStoreComparison(
   const pool = sameVariantOnly.length ? sameVariantOnly : priced;
 
   // Each listing's own recorded price series — this is what the chart draws.
-  const seriesRows = await db
-    .select({
-      listingId: observations.listingId,
-      price: observations.price,
-      at: observations.observedAt,
-    })
-    .from(observations)
-    .where(isNotNull(observations.price))
-    .orderBy(asc(observations.observedAt));
+  // Scoped to this product's listings; reading the whole observation table
+  // here cost seconds on every product page.
+  const listingIds = siblings.map((l) => l.id);
+  const seriesRows = listingIds.length
+    ? await db
+        .select({
+          listingId: observations.listingId,
+          price: observations.price,
+          at: observations.observedAt,
+        })
+        .from(observations)
+        .where(and(isNotNull(observations.price), inArray(observations.listingId, listingIds)))
+        .orderBy(asc(observations.observedAt))
+    : [];
   const seriesByListing = new Map<string, PricePoint[]>();
   for (const s of seriesRows) {
     if (!s.price || s.price <= 0) continue;

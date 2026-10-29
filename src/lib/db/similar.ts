@@ -1,4 +1,4 @@
-import { and, eq, isNotNull, sql } from "drizzle-orm";
+import { and, asc, eq, inArray, isNotNull, sql } from "drizzle-orm";
 import { db, ensureSchema } from "./client";
 import { listings, observations, products } from "./schema";
 import { resolveLeaf } from "./taxonomy";
@@ -67,38 +67,24 @@ export async function getSimilarProducts(
     .innerJoin(listings, eq(listings.productId, products.id))
     .where(and(isNotNull(listings.price), sql`${products.id} <> ${productId}`));
 
-  // Best listing per product, and the price series behind it.
-  const byProduct = new Map<
-    string,
-    { row: (typeof rows)[number]; series: number[] }
-  >();
-
-  const obsRows = await db
-    .select({ listingId: observations.listingId, price: observations.price })
-    .from(observations)
-    .where(isNotNull(observations.price));
-  const seriesByListing = new Map<string, number[]>();
-  for (const o of obsRows) {
-    if (!o.price || o.price <= 0) continue;
-    const list = seriesByListing.get(o.listingId) ?? [];
-    list.push(o.price);
-    seriesByListing.set(o.listingId, list);
-  }
+  // Best listing per product. Series are fetched only for the handful we end
+  // up showing — reading every observation here cost seconds per page.
+  const byProduct = new Map<string, { row: (typeof rows)[number] }>();
 
   for (const r of rows) {
     const prev = byProduct.get(r.slug);
     if (!prev) {
-      byProduct.set(r.slug, { row: r, series: seriesByListing.get(r.listingId) ?? [] });
+      byProduct.set(r.slug, { row: r });
       continue;
     }
     if ((r.rating ?? 0) > (prev.row.rating ?? 0)) {
-      byProduct.set(r.slug, { row: r, series: seriesByListing.get(r.listingId) ?? [] });
+      byProduct.set(r.slug, { row: r });
     }
   }
 
-  const scored: (SimilarProduct & { score: number })[] = [];
+  const scored: (SimilarProduct & { score: number; listingId: string })[] = [];
 
-  for (const { row: r, series } of byProduct.values()) {
+  for (const { row: r } of byProduct.values()) {
     if (!r.price) continue;
     const leaf = resolveLeaf(r.category);
     const brand = (r.brand ?? "").trim().toLowerCase();
@@ -123,7 +109,6 @@ export async function getSimilarProducts(
     // Prefer products we have actually tracked more of.
     score += Math.min(10, (r.reviewCount ?? 0) / 5000);
     if ((r.rating ?? 0) >= 4) score += 3;
-    if (series.length >= 3) score += 2;
 
     const mrp = r.mrp && r.mrp > r.price ? r.mrp : null;
     scored.push({
@@ -136,16 +121,39 @@ export async function getSimilarProducts(
       discountPct: mrp ? Math.round(((mrp - r.price) / mrp) * 100) : 0,
       rating: r.rating,
       reviewCount: r.reviewCount,
-      observations: series.length,
-      spark: series.length > 24 ? series.slice(-24) : series,
+      observations: 0,
+      spark: [],
       href: `/product/${r.slug}`,
       reason,
       score,
+      listingId: r.listingId,
     });
   }
 
-  return scored
+  const top = scored
     .sort((a, b) => b.score - a.score || b.rating! - a.rating!)
-    .slice(0, limit)
-    .map(({ score: _score, ...rest }) => rest);
+    .slice(0, limit);
+
+  if (top.length) {
+    const ids = top.map((t) => t.listingId);
+    const seriesRows = await db
+      .select({ listingId: observations.listingId, price: observations.price })
+      .from(observations)
+      .where(and(isNotNull(observations.price), inArray(observations.listingId, ids)))
+      .orderBy(asc(observations.observedAt));
+    const seriesByListing = new Map<string, number[]>();
+    for (const o of seriesRows) {
+      if (!o.price || o.price <= 0) continue;
+      const list = seriesByListing.get(o.listingId) ?? [];
+      list.push(o.price);
+      seriesByListing.set(o.listingId, list);
+    }
+    for (const t of top) {
+      const series = seriesByListing.get(t.listingId) ?? [];
+      t.observations = series.length;
+      t.spark = series.length > 24 ? series.slice(-24) : series;
+    }
+  }
+
+  return top.map(({ score: _score, listingId: _listingId, ...rest }) => rest);
 }

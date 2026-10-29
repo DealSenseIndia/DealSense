@@ -11,11 +11,11 @@ import { getSimilarProducts } from "@/lib/db/similar";
 import { getStoreComparison } from "@/lib/db/compare";
 import { getVariantSiblings } from "@/lib/db/variantSiblings";
 import { getPostsForProduct } from "@/lib/blog";
-import { getBrandPage } from "@/lib/db/brandPages";
-import { getCategoryPage } from "@/lib/db/categoryPages";
+import { brandPageHref } from "@/lib/db/brandPages";
+import { categoryPageHref } from "@/lib/db/categoryPages";
 import { resolveLeaf } from "@/lib/db/taxonomy";
 import { site } from "@/lib/config";
-import { formatINR, slugify } from "@/lib/utils";
+import { formatINR } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 /** A cold analysis is a handful of queries; give it room beyond Hobby's default. */
@@ -116,9 +116,11 @@ export default async function ProductPage({
   );
 
   const leaf = resolveLeaf(product.category);
-  const [brandPage, categoryPage] = await Promise.all([
-    product.brand ? getBrandPage(slugify(product.brand)) : Promise.resolve(null),
-    leaf ? getCategoryPage(slugify(leaf)) : Promise.resolve(null),
+  // Cheap existence checks: full category/brand catalogues are far too heavy
+  // to build on every product view.
+  const [brandHref, categoryHref] = await Promise.all([
+    brandPageHref(product.brand),
+    categoryPageHref(product.category),
   ]);
   const journal = getPostsForProduct(product.slug);
 
@@ -153,8 +155,8 @@ export default async function ProductPage({
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: site.url },
-      categoryPage
-        ? { "@type": "ListItem", position: 2, name: categoryPage.name, item: `${site.url}/categories/${categoryPage.slug}` }
+      categoryHref
+        ? { "@type": "ListItem", position: 2, name: leaf ?? "Category", item: `${site.url}${categoryHref}` }
         : { "@type": "ListItem", position: 2, name: "Deals", item: `${site.url}/deals` },
       { "@type": "ListItem", position: 3, name: product.title, item: `${site.url}/product/${slug}` },
     ],
@@ -173,8 +175,8 @@ export default async function ProductPage({
           siblings={siblings}
           option={opt}
           slug={slug}
-          brandHref={brandPage ? `/brands/${brandPage.slug}` : null}
-          categoryHref={categoryPage ? `/categories/${categoryPage.slug}` : null}
+          brandHref={brandHref}
+          categoryHref={categoryHref}
         />
 
         {journal.length > 0 ? (

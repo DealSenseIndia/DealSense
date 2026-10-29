@@ -93,6 +93,40 @@ export async function listCategoryPages(): Promise<CategoryPageData[]> {
   return (await load()).pages;
 }
 
+/**
+ * Cheap existence check for a single product page.
+ *
+ * The full `load()` builds every shelf — too heavy to run on a product view.
+ * This counts products per stored category in one small query and resolves the
+ * leaf in memory, so a product page can decide whether to link its category
+ * without touching the catalogue join.
+ */
+let countIndex: { at: number; counts: Map<string, number> } | null = null;
+
+async function leafCounts(): Promise<Map<string, number>> {
+  if (countIndex && Date.now() - countIndex.at < CACHE_MS) return countIndex.counts;
+  const res = await client.execute(
+    "SELECT category, COUNT(*) AS n FROM products WHERE category IS NOT NULL AND TRIM(category) != '' GROUP BY category",
+  );
+  const counts = new Map<string, number>();
+  for (const row of res.rows) {
+    const leaf = resolveLeaf(String(row.category));
+    if (!leaf) continue;
+    counts.set(leaf, (counts.get(leaf) ?? 0) + Number(row.n));
+  }
+  countIndex = { at: Date.now(), counts };
+  return counts;
+}
+
+/** The category page URL for a raw store category, or null when none exists. */
+export async function categoryPageHref(rawCategory: string | null): Promise<string | null> {
+  const leaf = resolveLeaf(rawCategory);
+  if (!leaf) return null;
+  const n = (await leafCounts()).get(leaf) ?? 0;
+  if (n < CATEGORY_PAGE_MIN) return null;
+  return `/categories/${slugify(leaf)}`;
+}
+
 export async function getCategoryPage(slug: string): Promise<CategoryPageData | null> {
   return (await load()).bySlug.get(slug) ?? null;
 }

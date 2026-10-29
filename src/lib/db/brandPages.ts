@@ -86,6 +86,46 @@ export async function listBrandPages(): Promise<BrandPageData[]> {
   return (await load()).pages;
 }
 
+/**
+ * Cheap existence check for a single product page: brand totals only, no
+ * catalogue join. The full `load()` is for the brand pages themselves.
+ */
+let countIndex: { at: number; counts: Map<string, { total: number; spellings: Map<string, number> }> } | null =
+  null;
+
+async function brandCounts() {
+  if (countIndex && Date.now() - countIndex.at < CACHE_MS) return countIndex.counts;
+  const res = await client.execute(
+    "SELECT brand, COUNT(*) AS n FROM products WHERE brand IS NOT NULL AND TRIM(brand) != '' GROUP BY brand",
+  );
+  const counts = new Map<string, { total: number; spellings: Map<string, number> }>();
+  for (const row of res.rows) {
+    const raw = String(row.brand).trim();
+    const key = raw.toLowerCase().replace(/\s+/g, " ");
+    const entry = counts.get(key) ?? { total: 0, spellings: new Map<string, number>() };
+    entry.total += Number(row.n);
+    entry.spellings.set(raw, (entry.spellings.get(raw) ?? 0) + Number(row.n));
+    counts.set(key, entry);
+  }
+  countIndex = { at: Date.now(), counts };
+  return counts;
+}
+
+/** The brand page URL for a raw store brand, or null when none exists. */
+export async function brandPageHref(brand: string | null): Promise<string | null> {
+  if (!brand) return null;
+  const key = brand.trim().toLowerCase().replace(/\s+/g, " ");
+  if (!key) return null;
+  const entry = (await brandCounts()).get(key);
+  if (!entry || entry.total < BRAND_PAGE_MIN) return null;
+  const winner = [...entry.spellings.entries()].sort((a, b) => b[1] - a[1])[0][0];
+  const name =
+    winner.length > 4 && winner === winner.toUpperCase()
+      ? winner[0] + winner.slice(1).toLowerCase()
+      : winner;
+  return `/brands/${slugify(name)}`;
+}
+
 export async function getBrandPage(slug: string): Promise<BrandPageData | null> {
   return (await load()).bySlug.get(slug) ?? null;
 }
