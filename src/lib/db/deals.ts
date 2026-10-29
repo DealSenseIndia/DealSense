@@ -128,6 +128,12 @@ const baseRows = cache(async () => {
     const mrp = r.mrp && r.mrp > price ? r.mrp : null;
     const meta = storeMeta(r.merchant);
     const stores = storeCount.get(r.productId);
+    const median = prices.length
+      ? [...prices].sort((a, b) => a - b)[Math.floor(prices.length / 2)]
+      : null;
+    // An extreme outlier is a recording error or a seller placeholder until a
+    // store re-read says otherwise; keep it out of discovery.
+    if (median !== null && prices.length >= 5 && price < median * 0.25) continue;
     out.push({
       slug: r.slug,
       title: r.title,
@@ -146,7 +152,7 @@ const baseRows = cache(async () => {
       observations: prices.length,
       low: prices.length ? Math.min(...prices) : null,
       high: prices.length ? Math.max(...prices) : null,
-      median: prices.length ? [...prices].sort((a, b) => a - b)[Math.floor(prices.length / 2)] : null,
+      median,
       lastDropAt,
       dropAmount,
       lastSeenAt: obs.length ? Math.max(...obs.map((o) => o.t)) : null,
@@ -300,6 +306,15 @@ export async function getPlatformShelves(
 export async function getLatestDeals(limit = 12): Promise<DealRow[]> {
   const rows = await baseRows();
   return rows.sort((a, b) => b.observations - a.observations).slice(0, limit);
+}
+
+/** Prices at or within 2% of their own recorded low. */
+export async function getNearLowDeals(limit = 24): Promise<DealRow[]> {
+  const rows = await baseRows();
+  return rows
+    .filter((r) => r.observations >= 3 && r.low !== null && r.price <= r.low * 1.02)
+    .sort((a, b) => b.discountPct - a.discountPct || b.observations - a.observations)
+    .slice(0, limit);
 }
 
 /* ------------------------------------------------------------------ */

@@ -64,6 +64,34 @@ const ACCESSORY_RE =
   /\b(case|cases|cover|covers|back cover|tempered glass|screen guard|protector|charger|chargers|adapter|cable|cables|data cable|earphones? case|pouch|holder|stand|wallet|bag for|strap|band for|stickers?)\b/i;
 
 /** Store shelves that are just navigation, not a product category. */
+/**
+ * Store categories are sometimes a shelf next to the product, not the product
+ * itself. A TV filed under "Smartphones" or a sideboard under "File Cabinets"
+ * must not headline that category. These are the obvious cross-category words.
+ */
+const FOREIGN_TITLE: Record<string, RegExp> = {
+  Smartphones:
+    /\b(buds|earbuds|headphones?|speakers?|soundbar|tv|television|qled|oled|laptops?|shoes?|sneakers?|shirts?|kurtas?|sarees?|sofas?|mattress|chairs?|desks?|tables?|cabinets?|printers?|routers?|ssd|gpus?|graphics card|processors?|motherboards?|cameras?|watches?)\b/i,
+  "Smart TVs":
+    /\b(cabinets?|sideboards?|phones?|smartphones?|laptops?|earbuds?|buds|shoes?|shirts?|kurtas?|sofas?|chairs?|desks?|tables?|processors?|motherboards?|graphics card)\b/i,
+  Televisions:
+    /\b(cabinets?|sideboards?|phones?|smartphones?|laptops?|earbuds?|buds|shoes?|shirts?|kurtas?|sofas?|chairs?|desks?|tables?|processors?|motherboards?|graphics card)\b/i,
+  "Mobiles & Gadgets":
+    /\b(buds|earbuds?|headphones?|speakers?|soundbar|tv|television|laptops?|shoes?|sneakers?|shirts?|kurtas?|sarees?|sofas?|mattress|chairs?|desks?|tables?|cabinets?|printers?|routers?|ssd|gpus?|graphics card|processors?|motherboards?)\b/i,
+  "Home Decor":
+    /\b(glue gun|drill|saw|screwdriver|power tool|charger|cable|adapter|battery)\b/i,
+  Earbuds:
+    /\b(phones?|smartphones?|laptops?|tv|television|shoes?|sneakers?|shirts?|kurtas?|sarees?|sofas?|mattress|chairs?|desks?|tables?|cabinets?|processors?|motherboards?|graphics card|routers?|printers?)\b/i,
+  Headphones:
+    /\b(phones?|smartphones?|laptops?|tv|television|shoes?|sneakers?|shirts?|kurtas?|sofas?|chairs?|desks?|tables?|cabinets?|processors?|motherboards?|graphics card)\b/i,
+  Processors:
+    /\b(motherboards?|combo kit|tv|phones?|laptops?|shoes?|shirts?|kurtas?|sofas?|chairs?|desks?|tables?|cabinets?|graphics card)\b/i,
+  "Graphics Cards":
+    /\b(phones?|laptops?|tv|earbuds?|shoes?|shirts?|kurtas?|sofas?|chairs?|desks?|tables?|cabinets?|processors?|motherboards?)\b/i,
+  "Running Shoes":
+    /\b(phones?|laptops?|tv|earbuds?|buds|shirts?|kurtas?|sarees?|sofas?|mattress|chairs?|desks?|tables?|cabinets?|processors?|motherboards?|graphics card)\b/i,
+};
+
 const GENERIC_CATEGORY = new Set([
   "other",
   "all",
@@ -115,8 +143,17 @@ export async function getShelves(perCategory = 8, maxCategories = 0): Promise<Sh
     if (!r.category) continue;
     if (r.observations < 3) continue;
     if (ACCESSORY_RE.test(r.title)) continue;
-    const leaf = resolveLeaf(r.category) ?? r.category.trim();
-    if (!leaf || GENERIC_CATEGORY.has(leaf.toLowerCase())) continue;
+    let leaf = resolveLeaf(r.category);
+    if (!leaf) continue;
+    // Store shelves called "Cabinets" are too broad: a TV sideboard is not a
+    // file cabinet, and a storage unit is not one either.
+    if (leaf === "File Cabinets") {
+      if (/\b(tv|sideboard|crockery)\b/i.test(r.title)) leaf = "TV Units";
+      else if (/\b(cabinet|storage)\b/i.test(r.title)) leaf = "Storage";
+    }
+    if (GENERIC_CATEGORY.has(leaf.toLowerCase())) continue;
+    const foreign = FOREIGN_TITLE[leaf];
+    if (foreign && foreign.test(r.title)) continue;
     const list = byCategory.get(leaf) ?? [];
     list.push(r);
     byCategory.set(leaf, list);
