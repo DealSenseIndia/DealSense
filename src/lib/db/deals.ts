@@ -184,13 +184,14 @@ function sparkSeries(prices: (number | null)[]): number[] {
   return out.slice(-SPARK_POINTS);
 }
 
-/** One card per product, even when it has two tracked listings. */
-function dedupeBySlug(rows: DealRow[], limit: number): DealRow[] {
+/** One card per product/variant title, even when it has two tracked listings. */
+function dedupeCards(rows: DealRow[], limit: number): DealRow[] {
   const seen = new Set<string>();
   const out: DealRow[] = [];
   for (const r of rows) {
-    if (seen.has(r.slug)) continue;
-    seen.add(r.slug);
+    const key = r.title.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().slice(0, 40);
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
     out.push(r);
     if (out.length >= limit) break;
   }
@@ -255,7 +256,7 @@ export async function getRecentDrops(limit = 14): Promise<DealRow[]> {
     b.dropAmount = d.amount;
   }
 
-  return dedupeBySlug(
+  return dedupeCards(
     base
       .filter((b) => b.lastDropAt !== null && (b.dropAmount ?? 0) > 0)
       .sort((a, b) => (b.lastDropAt ?? 0) - (a.lastDropAt ?? 0)),
@@ -266,7 +267,7 @@ export async function getRecentDrops(limit = 14): Promise<DealRow[]> {
 /** Products whose current price IS their all-time low. */
 export async function getAllTimeLows(limit = 12): Promise<DealRow[]> {
   const rows = await baseRows();
-  return dedupeBySlug(
+  return dedupeCards(
     rows
       .filter((r) => r.observations >= 3 && r.low !== null && r.price <= r.low)
       .sort((a, b) => b.discountPct - a.discountPct || b.observations - a.observations),
@@ -323,13 +324,13 @@ export async function getPlatformShelves(
 /** Newest observations — "latest deals". */
 export async function getLatestDeals(limit = 12): Promise<DealRow[]> {
   const rows = await baseRows();
-  return dedupeBySlug(rows.sort((a, b) => b.observations - a.observations), limit);
+  return dedupeCards(rows.sort((a, b) => b.observations - a.observations), limit);
 }
 
 /** Prices at or within 2% of their own recorded low. */
 export async function getNearLowDeals(limit = 24): Promise<DealRow[]> {
   const rows = await baseRows();
-  return dedupeBySlug(
+  return dedupeCards(
     rows
       .filter((r) => r.observations >= 3 && r.low !== null && r.price <= r.low * 1.02)
       .sort((a, b) => b.discountPct - a.discountPct || b.observations - a.observations),

@@ -69,7 +69,7 @@ const loadHomeData = unstable_cache(
       return await collectHomeData();
     }
   },
-  ["homepage-data-v4"],
+  ["homepage-data-v5"],
   // Matches the sync cadence: prices in our own record move at most every 20
   // minutes, so a landing page rebuilt on the same beat is never behind the
   // data it is showing — and the cron warm-up keeps a visitor from paying the
