@@ -1,5 +1,6 @@
 import { and, desc, eq, gte, inArray, isNull, lte, notInArray, or, sql } from "drizzle-orm";
 import { db, ensureSchema } from "./client";
+import { canonicalListingWhere } from "./canonical";
 import { alerts, alertEvents, events, listings, liveDeals, observations, products, reviews } from "./schema";
 import { priceTrackedMerchants } from "../config";
 
@@ -323,23 +324,8 @@ export async function getDueListings(limit = 10) {
         // Only stores we can actually read directly.
         inArray(listings.merchant, ["amazon", "flipkart"]),
         or(isNull(listings.nextCheckAt), lte(listings.nextCheckAt, ts)),
-        // Flipkart ids are case-insensitive, but the unique index is not. When
-        // an uppercase twin exists, keep the row with the most recent check
-        // (ties by id) and park the other; otherwise a never-advanced duplicate
-        // sits at the head of the queue forever.
-        sql`NOT EXISTS (
-          SELECT 1 FROM listings twin
-          WHERE twin.merchant = ${listings.merchant}
-            AND twin.id <> ${listings.id}
-            AND lower(twin.merchant_product_id) = lower(${listings.merchantProductId})
-            AND (
-              COALESCE(twin.last_checked_at, 0) > COALESCE(${listings.lastCheckedAt}, 0)
-              OR (
-                COALESCE(twin.last_checked_at, 0) = COALESCE(${listings.lastCheckedAt}, 0)
-                AND twin.id < ${listings.id}
-              )
-            )
-        )`,
+        // Flipkart ids are case-insensitive, but the unique index is not.
+        sql.raw(canonicalListingWhere("listings", "twin")),
       ),
     )
     .orderBy(sql`${listings.nextCheckAt} IS NULL DESC`, listings.nextCheckAt)

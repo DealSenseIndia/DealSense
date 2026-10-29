@@ -28,6 +28,7 @@
     "setups:report": "tsx scripts/setups-report.ts",
     "clicks": "tsx scripts/click-report.ts",
     "health": "tsx scripts/queue-health.ts",
+    "duplicates": "tsx scripts/duplicate-audit.ts",
     "telegram:setup": "tsx scripts/telegram-setup.ts"
   },
   "dependencies": {

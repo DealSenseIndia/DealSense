@@ -9,25 +9,13 @@
  * worker or triggers a scrape, so it is safe to run against production.
  */
 import "./env";
+import { canonicalListingWhere } from "../src/lib/db/canonical";
 import { client } from "../src/lib/db/client";
 
 const HOUR = 3_600_000;
 const DAY = 24 * HOUR;
 const DIRECT = "('amazon','flipkart')";
-/** Keep one row per case-insensitive merchant id: the one with the latest check. */
-const CANONICAL = `NOT EXISTS (
-  SELECT 1 FROM listings twin
-  WHERE twin.merchant = listings.merchant
-    AND twin.id <> listings.id
-    AND lower(twin.merchant_product_id) = lower(listings.merchant_product_id)
-    AND (
-      COALESCE(twin.last_checked_at, 0) > COALESCE(listings.last_checked_at, 0)
-      OR (
-        COALESCE(twin.last_checked_at, 0) = COALESCE(listings.last_checked_at, 0)
-        AND twin.id < listings.id
-      )
-    )
-)`;
+const CANONICAL = canonicalListingWhere("listings", "twin");
 
 function human(ms: number | null): string {
   if (ms === null || !Number.isFinite(ms)) return "never";

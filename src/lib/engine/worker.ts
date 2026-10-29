@@ -1,6 +1,7 @@
 import { getDueListings, updateListingState } from "../db/queries";
 import { analyzeUrl } from "./analyze";
 import { workerConfig } from "../config";
+import { duplicateParkPatch } from "./duplicates";
 import { retryDelayMs } from "./freshness";
 /**
  * The route has a 60s ceiling. Stop starting new listings at 50s so a slow
@@ -9,8 +10,6 @@ import { retryDelayMs } from "./freshness";
  * run of four fits and a fifth is deferred.
  */
 const TIME_BUDGET_MS = 50 * 1000;
-/** Park a queued duplicate for a month once its URL resolves to the canonical twin. */
-const DUPLICATE_PARK_MS = 30 * 24 * 60 * 60 * 1000;
 /** Hold a claimed row long enough for this run to finish before another can pick it. */
 const CLAIM_MS = 2 * 60 * 1000;
 
@@ -58,16 +57,8 @@ export async function runRefreshCycle(limit = 5): Promise<RefreshReport> {
       const res = await analyzeUrl(listing.url);
       if (res.ok) {
         succeeded++;
-        if (res.listing && res.listing.id !== listing.id) {
-          // The URL resolved to a different listing row (usually a
-          // case-mismatched duplicate id). Park the queued row so it cannot
-          // block the queue forever.
-          await updateListingState(listing.id, {
-            nextCheckAt: Date.now() + DUPLICATE_PARK_MS,
-            failureCount: 0,
-            lastError: `DUPLICATE: canonical listing ${res.listing.id}`,
-          });
-        }
+        const park = duplicateParkPatch(listing.id, res.listing?.id);
+        if (park) await updateListingState(listing.id, park);
         results.push({ listingId: listing.id, url: listing.url, status: res.status, verdict: res.verdict?.verdict });
       } else {
         failed++;
