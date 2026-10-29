@@ -30,6 +30,7 @@
     "health": "tsx scripts/queue-health.ts",
     "duplicates": "tsx scripts/duplicate-audit.ts",
     "identity:cleanup": "tsx scripts/identity-cleanup.ts",
+    "identity:merge-products": "tsx scripts/product-merge.ts",
     "telegram:setup": "tsx scripts/telegram-setup.ts"
   },
   "dependencies": {

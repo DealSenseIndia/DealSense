@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import productRedirects from "./data/product-redirects.json";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -34,6 +35,7 @@ const nextConfig: NextConfig = {
   // Leaves that were merged into their canonical name keep their old URLs.
   async redirects() {
     return [
+      ...productRedirects,
       { source: "/categories/traditional-laptops", destination: "/categories/laptops", permanent: true },
       { source: "/categories/in-ear", destination: "/categories/earbuds", permanent: true },
       { source: "/categories/smartwatches", destination: "/categories/smart-watches", permanent: true },
