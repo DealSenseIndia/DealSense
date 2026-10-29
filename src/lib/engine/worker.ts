@@ -11,6 +11,8 @@ import { retryDelayMs } from "./freshness";
 const TIME_BUDGET_MS = 50 * 1000;
 /** Park a queued duplicate for a month once its URL resolves to the canonical twin. */
 const DUPLICATE_PARK_MS = 30 * 24 * 60 * 60 * 1000;
+/** Hold a claimed row long enough for this run to finish before another can pick it. */
+const CLAIM_MS = 2 * 60 * 1000;
 
 export interface RefreshReport {
   startedAt: number;
@@ -48,6 +50,10 @@ export async function runRefreshCycle(limit = 5): Promise<RefreshReport> {
       budgetHit = true;
       break;
     }
+    // Claim the row before the scrape. The scheduler runs every minute and a
+    // cycle can last fifty seconds; without this, two overlapping runs pick the
+    // same head of the queue and spend two reads on one listing.
+    await updateListingState(listing.id, { nextCheckAt: Date.now() + CLAIM_MS }).catch(() => {});
     try {
       const res = await analyzeUrl(listing.url);
       if (res.ok) {

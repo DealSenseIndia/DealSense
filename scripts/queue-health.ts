@@ -120,7 +120,9 @@ async function main() {
   const oldestDue = q.oldest_due === null ? null : now - Number(q.oldest_due);
 
   console.log(`DealSense queue health — ${new Date(now).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}`);
-  console.log(`\nDirect listings (Amazon/Flipkart): ${total} canonical · ${dupes.rows[0].n} duplicate rows parked`);
+  console.log(
+    `\nDirect listings (Amazon/Flipkart): ${total} canonical · ${dupes.rows[0].n} duplicate rows excluded from the queue`,
+  );
   console.log(`  checked <24h: ${within} (${share(within, total)})`);
   console.log(`  stale 24h+:    ${stale}`);
   console.log(`  never checked: ${never}`);
