@@ -135,12 +135,14 @@ export const workerConfig = {
     amazon: [6000, 10000] as [number, number],
     flipkart: [5000, 8000] as [number, number],
   },
-  /** refresh tiers (ms) */
+  /**
+   * Refresh cadence. The tier mix is capped at roughly 150 hot / 450 warm /
+   * 1,310 standard, which is about 4,300 store reads a day.
+   */
   tiers: {
-    hot: 45 * 60 * 1000,
-    active: 3 * 60 * 60 * 1000,
-    normal: 10 * 60 * 60 * 1000,
-    cold: 30 * 60 * 60 * 1000,
+    hot: 3 * 60 * 60 * 1000,
+    warm: 6 * 60 * 60 * 1000,
+    standard: 24 * 60 * 60 * 1000,
   },
   /** backoff schedule (ms) by failure count */
   backoff: [5 * 60_000, 30 * 60_000, 2 * 60 * 60_000, 8 * 60 * 60_000, 24 * 60 * 60_000],

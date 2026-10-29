@@ -70,6 +70,15 @@ async function main() {
     args: [],
   });
 
+  const tiers = await client.execute({
+    sql: `SELECT COALESCE(json_extract(payload, '$.tier'), 'unknown') AS tier, COUNT(*) AS n
+          FROM events
+          WHERE type = 'analyze' AND created_at > ?
+          GROUP BY tier
+          ORDER BY n DESC`,
+    args: [now - DAY],
+  });
+
   const imported = await client.execute({
     sql: `SELECT COUNT(*) AS total,
                  SUM(CASE WHEN newest > ? THEN 1 ELSE 0 END) AS fresh_7d
@@ -103,6 +112,12 @@ async function main() {
   if (!failures.rows.length) console.log("  none");
   for (const row of failures.rows) {
     console.log(`  ${String(row.merchant).padEnd(9)} ${String(row.error).padEnd(36)} ${row.n}`);
+  }
+
+  console.log("\nTier mix (reads, last 24h):");
+  if (!tiers.rows.length) console.log("  none recorded yet");
+  for (const row of tiers.rows) {
+    console.log(`  ${String(row.tier).padEnd(9)} ${row.n}`);
   }
 
   const importedTotal = Number(importedRow.total ?? 0);

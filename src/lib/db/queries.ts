@@ -1,6 +1,6 @@
 import { and, desc, eq, gte, inArray, isNull, lte, notInArray, or, sql } from "drizzle-orm";
 import { db, ensureSchema } from "./client";
-import { alerts, alertEvents, events, listings, observations, products, reviews } from "./schema";
+import { alerts, alertEvents, events, listings, liveDeals, observations, products, reviews } from "./schema";
 import { priceTrackedMerchants } from "../config";
 
 const now = () => Date.now();
@@ -292,6 +292,17 @@ export async function updateListingState(
     .update(listings)
     .set({ ...patch, updatedAt: now() })
     .where(eq(listings.id, id));
+}
+
+/** True when this listing is currently on the live feed. */
+export async function hasActiveLiveDeal(listingId: string): Promise<boolean> {
+  await ensureSchema();
+  const rows = await db
+    .select({ id: liveDeals.id })
+    .from(liveDeals)
+    .where(and(eq(liveDeals.listingId, listingId), eq(liveDeals.status, "ACTIVE")))
+    .limit(1);
+  return rows.length > 0;
 }
 
 export async function getDueListings(limit = 10) {

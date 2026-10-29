@@ -10,6 +10,7 @@ import {
   getObservations,
   getProductById,
   getProductBySlug,
+  hasActiveLiveDeal,
   recordEvent,
   uid,
   updateListingState,
@@ -20,6 +21,7 @@ import {
 import { buildIdentityKey, sameVariant } from "./identity";
 import { buildBundle, findRivalListing } from "./bundle";
 import { checkInfoFor } from "./freshness";
+import { averagePrice, countPriceChanges, intervalForTier, refreshTierFor } from "./tiers";
 import { computeLandedPrice } from "./landedPrice";
 import { computeStats, priceSeries } from "./stats";
 import { evaluateDeal } from "./verdict";
@@ -30,6 +32,7 @@ import { slugify } from "../utils";
 
 const HEARTBEAT_MS = 6 * 60 * 60 * 1000;
 const MIN_SPACING_MS = 5 * 60 * 1000;
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 async function uniqueSlug(title: string, identityKey: string): Promise<string> {
   const base = slugify(title) || "product";
@@ -176,18 +179,12 @@ export async function analyzeUrl(rawUrl: string): Promise<AnalysisResult> {
     }
   }
 
-  // 5) Next refresh.
-  const nextCheckAt = ts + (p.price !== null ? 10 * 60 * 60 * 1000 : 30 * 60 * 1000);
-  await updateListingState(listing.id, {
-    lastCheckedAt: ts,
-    nextCheckAt,
-    failureCount: 0,
-    lastError: null,
-  });
-
   // 5) History + verdict. The bundle's verdict uses the merged history
   //    (our observations + any imported provider series), so it is the
   //    authoritative one.
+  // The evidence line dates the price; use this successful check, not the
+  // previous one, even though the database update lands after the bundle.
+  listing.lastCheckedAt = ts;
   const rivalListing = await findRivalListing(product, listing);
   const { bundle, verdict, landed, rival, rivalPoints } = await buildBundle({
     product,
@@ -195,14 +192,37 @@ export async function analyzeUrl(rawUrl: string): Promise<AnalysisResult> {
     rivalListing,
   });
 
+  // 6) Next refresh. Spend the read budget where the market is moving: an
+  //    active deal or a fast-moving price gets checked every few hours, the
+  //    long tail once a day.
+  const points = bundle.points;
+  const live = await hasActiveLiveDeal(listing.id).catch(() => false);
+  const tier = refreshTierFor({
+    live,
+    price: p.price ?? 0,
+    low: bundle.low,
+    avg: averagePrice(points),
+    changes90d: countPriceChanges(points, ts - 90 * DAY_MS),
+    count: points.length,
+  });
+  const nextCheckAt =
+    p.price !== null ? ts + intervalForTier(tier) : ts + 30 * 60 * 1000;
+  await updateListingState(listing.id, {
+    lastCheckedAt: ts,
+    nextCheckAt,
+    failureCount: 0,
+    lastError: null,
+  });
+
   await recordEvent("analyze", {
     merchant,
     productId: product.id,
     verdict: verdict?.verdict,
     score: verdict?.score,
+    tier,
   });
 
-  // 6) Alert evaluation happens AFTER the observation is committed.
+  // 7) Alert evaluation happens AFTER the observation is committed.
   //    Failures here must never affect the analysis response.
   try {
     const { evaluateAlerts } = await import("./alerts");
