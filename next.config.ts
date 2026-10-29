@@ -31,6 +31,15 @@ const nextConfig: NextConfig = {
     "/product/**": ["./content/blog/**/*.md"],
     "/categories/**": ["./content/blog/**/*.md"],
   },
+  // Leaves that were merged into their canonical name keep their old URLs.
+  async redirects() {
+    return [
+      { source: "/categories/traditional-laptops", destination: "/categories/laptops", permanent: true },
+      { source: "/categories/in-ear", destination: "/categories/earbuds", permanent: true },
+      { source: "/categories/smartwatches", destination: "/categories/smart-watches", permanent: true },
+      { source: "/categories/induction-cooktop", destination: "/categories/induction-cooktops", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {

@@ -434,7 +434,28 @@ const ALIASES: Record<string, string> = {
 };
 
 /** Resolve one raw store category to a taxonomy leaf name, if we can. */
+/**
+ * Leaves that mean the same thing but were seeded under different names.
+ * Without this, "Traditional Laptops" and "Laptops" are two shelves holding
+ * halves of the same catalogue. The first spelling wins everywhere.
+ */
+const CANONICAL_LEAF: Record<string, string> = {
+  "traditional laptops": "Laptops",
+  "in-ear": "Earbuds",
+  smartwatches: "Smart Watches",
+  "induction cooktop": "Induction Cooktops",
+};
+
+function canonical(leaf: string | null): string | null {
+  if (!leaf) return null;
+  return CANONICAL_LEAF[leaf.toLowerCase()] ?? leaf;
+}
+
 export function resolveLeaf(category: string | null): string | null {
+  return canonical(resolveLeafRaw(category));
+}
+
+function resolveLeafRaw(category: string | null): string | null {
   if (!category) return null;
   const n = norm(category);
   if (!n) return null;
