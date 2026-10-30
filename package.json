@@ -2,7 +2,7 @@
   "name": "dealsense",
   "version": "1.0.0",
   "private": true,
-  "description": "DealSense — India's shopping decision engine. Paste a product link, know if it is actually a good deal.",
+  "description": "DealSense \u2014 India's shopping decision engine. Paste a product link, know if it is actually a good deal.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -31,7 +31,9 @@
     "duplicates": "tsx scripts/duplicate-audit.ts",
     "identity:cleanup": "tsx scripts/identity-cleanup.ts",
     "identity:merge-products": "tsx scripts/product-merge.ts",
-    "telegram:setup": "tsx scripts/telegram-setup.ts"
+    "telegram:setup": "tsx scripts/telegram-setup.ts",
+    "worker:local": "tsx scripts/local-worker.ts",
+    "db:restore": "tsx scripts/restore-backup.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",
