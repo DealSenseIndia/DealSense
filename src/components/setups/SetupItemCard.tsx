@@ -15,6 +15,7 @@ import { ProductThumb } from "@/components/ui/ProductThumb";
 import { PriceSpark } from "@/components/ui/PriceSpark";
 import { StoreLogo } from "@/components/ui/StoreLogo";
 import { cn, formatINR, timeAgo } from "@/lib/utils";
+import { SetupAlternatives } from "./SetupAlternatives";
 
 const VERDICT_STYLE: Record<Verdict, string> = {
   BUY: "border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] text-[var(--verdict-buy)]",
@@ -32,7 +33,22 @@ const VERDICT_LABEL: Record<Verdict, string> = {
   INSUFFICIENT: "Learning",
 };
 
-export function SetupItemCard({ item }: { item: SetupItem }) {
+export function SetupItemCard({
+  item,
+  defaultItem,
+  swapped = false,
+  swapError = null,
+  onSwap,
+  onReset,
+}: {
+  item: SetupItem;
+  /** The engine's own pick for this slot, used to offer a restore. */
+  defaultItem?: SetupItem;
+  swapped?: boolean;
+  swapError?: string | null;
+  onSwap?: (listingId: string) => void;
+  onReset?: () => void;
+}) {
   const freshLabel = item.observedAt ? `checked ${timeAgo(item.observedAt)}` : "observation recorded";
 
   return (
@@ -71,6 +87,12 @@ export function SetupItemCard({ item }: { item: SetupItem }) {
         >
           {item.title}
         </Link>
+
+        {swapped && (
+          <span className="mt-1.5 inline-flex w-fit items-center rounded-full border border-[var(--dw-green-border)] bg-[var(--dw-green-surface)] px-2 py-0.5 text-[8.5px] font-extrabold uppercase tracking-wider text-[var(--dw-green-mid)]">
+            Customised pick
+          </span>
+        )}
 
         <p className="mt-1.5 line-clamp-2 text-[11.5px] leading-relaxed text-muted">
           {item.rationale}
@@ -132,6 +154,17 @@ export function SetupItemCard({ item }: { item: SetupItem }) {
             </span>
           </div>
         )}
+
+        {defaultItem && onSwap && onReset ? (
+          <SetupAlternatives
+            item={item}
+            defaultItem={defaultItem}
+            swapped={swapped}
+            error={swapError}
+            onSwap={onSwap}
+            onReset={onReset}
+          />
+        ) : null}
 
         <div className="mt-auto flex items-center justify-between gap-2 border-t border-hairline-soft pt-3">
           <span className="inline-flex min-w-0 items-center gap-1.5 text-[10.5px] font-bold text-secondary">

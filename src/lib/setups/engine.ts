@@ -16,14 +16,17 @@
  * produce the same setup.
  */
 
-import { and, eq, gt, inArray, isNotNull } from "drizzle-orm";
+import { and, eq, gt, inArray, isNotNull, isNull, like, not, or } from "drizzle-orm";
 import { db, ensureSchema } from "../db/client";
 import { listings, observations, products } from "../db/schema";
 import { goPath } from "../affiliate";
 import { storeMeta, priceTrackedMerchants } from "../config";
+import { discountFromMrp, saneMrp } from "../deal-honesty";
 import type { Confidence, Verdict } from "../types";
+import { PARKED_DUPLICATE_PREFIX } from "../engine/duplicates";
 import { computeStats } from "../engine/stats";
 import { evaluateDeal, priceCautionNote } from "../engine/verdict";
+import { alternativeKey, selectAlternatives } from "./alternatives";
 import {
   DEFAULT_SPACE,
   getSetupSpace,
@@ -94,6 +97,38 @@ export interface SetupItem {
   historicalLow: number | null;
   historicalMedian: number | null;
   targetSpend: number;
+  selectionScore: number;
+  affiliateUrl: string;
+  spark: number[];
+  /**
+   * Up to three runner-up listings from the same filtered pool, ranked the same
+   * way. Empty when the slot has only one genuine option: we never pad it.
+   */
+  alternatives: SetupAlternative[];
+}
+
+/** A real runner-up, carrying every field the chosen item shows. */
+export interface SetupAlternative {
+  listingId: string;
+  productId: string;
+  slug: string;
+  title: string;
+  brand: string | null;
+  imageUrl: string | null;
+  merchant: string;
+  merchantName: string;
+  price: number;
+  mrp: number | null;
+  discountPct: number;
+  verdict: Verdict;
+  score: number | null;
+  confidence: Confidence;
+  verdictReason: string | null;
+  observationCount: number;
+  sufficientHistory: boolean;
+  observedAt: number | null;
+  historicalLow: number | null;
+  historicalMedian: number | null;
   selectionScore: number;
   affiliateUrl: string;
   spark: number[];
@@ -210,12 +245,60 @@ function tokenInText(token: string, text: string): boolean {
   return new RegExp(`(?:^|[^a-z0-9])${escaped}(?:s|es)?(?:[^a-z0-9]|$)`).test(text);
 }
 
+/**
+ * A toy, plush, baby or Disney product is never a computer part, however many
+ * component words its marketing copy borrows. "Mickey Mouse" made a baby
+ * carrier a gaming-mouse candidate; "baby monitor" would do the same to a
+ * screen. This guard is scoped to slots that hold computer hardware or
+ * peripherals, so nursery and pet slots keep using those words normally.
+ */
+const COMPUTER_PART_SLOT_KEYS = new Set([
+  "cpu",
+  "gpu",
+  "motherboard",
+  "ram",
+  "case",
+  "cooler",
+  "psu",
+  "ups",
+  "monitor",
+  "keyboard",
+  "keyboard_mouse",
+  "mouse",
+  "headset",
+  "webcam",
+  "microphone",
+  "capture_card",
+  "streaming",
+  "speakers",
+]);
+
+const NOT_A_COMPUTER_PRODUCT = [
+  "toy",
+  "plush",
+  "soft toy",
+  "baby",
+  "infant",
+  "disney",
+  "mickey",
+  "cartoon",
+  "carrier",
+  "stroller",
+  "diaper",
+];
+
 export function matchesSlot(text: string, slot: SetupSlot): boolean {
   // The builder feeds this a lowercased haystack, but a title straight from the
   // store or a test never is. Matching is a property of the words, not of their
   // case, so normalise here instead of trusting every caller to pre-lowercase.
   const haystack = text.toLowerCase();
   if (slot.exclude.some((bad) => tokenInText(bad, haystack))) return false;
+  if (
+    COMPUTER_PART_SLOT_KEYS.has(slot.key) &&
+    NOT_A_COMPUTER_PRODUCT.some((bad) => tokenInText(bad, haystack))
+  ) {
+    return false;
+  }
   return slot.matchAny.some((good) => tokenInText(good, haystack));
 }
 
@@ -223,6 +306,35 @@ function evidenceFor(obsCount: number): number {
   if (obsCount >= MIN_EVIDENCE_OBS) return 1;
   if (obsCount > 1) return 0.5;
   return 0;
+}
+
+/** Turn a ranked candidate into the runner-up card the UI compares against. */
+function toAlternative(c: Candidate, score: number): SetupAlternative {
+  return {
+    listingId: c.listingId,
+    productId: c.productId,
+    slug: c.slug,
+    title: c.title,
+    brand: c.brand,
+    imageUrl: c.imageUrl,
+    merchant: c.merchant,
+    merchantName: c.merchantName,
+    price: c.price,
+    mrp: c.mrp,
+    discountPct: discountFromMrp(c.price, c.mrp),
+    verdict: c.verdict.verdict,
+    score: c.verdict.score,
+    confidence: c.verdict.confidence,
+    verdictReason: c.verdict.reasons[0] ?? null,
+    observationCount: c.obsCount,
+    sufficientHistory: c.obsCount >= MIN_EVIDENCE_OBS,
+    observedAt: c.stats.lastObservedAt,
+    historicalLow: c.stats.low,
+    historicalMedian: c.stats.median,
+    selectionScore: Number(score.toFixed(4)),
+    affiliateUrl: goPath(c.listingId, "setup"),
+    spark: c.spark,
+  };
 }
 
 export async function loadCandidates(): Promise<Candidate[]> {
@@ -253,6 +365,13 @@ export async function loadCandidates(): Promise<Candidate[]> {
         inArray(listings.merchant, [...SUPPORTED_MERCHANTS]),
         isNotNull(listings.price),
         gt(listings.price, 0),
+        // A parked duplicate is a case-variant twin of a canonical listing.
+        // The worker parks it for 30 days; the builder must not offer it as a
+        // second product either. Read-side only — no row is changed.
+        or(
+          isNull(listings.lastError),
+          not(like(listings.lastError, `${PARKED_DUPLICATE_PREFIX}%`)),
+        ),
       ),
     );
 
@@ -314,7 +433,9 @@ export async function loadCandidates(): Promise<Candidate[]> {
       merchant: r.merchant,
       merchantName: storeMeta(r.merchant).name,
       price,
-      mrp: r.mrp && r.mrp > price ? r.mrp : null,
+      // The verdict above reads the raw MRP; what the UI may show is only the
+      // believable reference price (a 10×/100× placeholder never becomes "95% off").
+      mrp: saneMrp(price, r.mrp),
       inStock: r.inStock,
       lastCheckedAt: r.lastCheckedAt,
       // Matching deliberately reads titles and brand, not the catalogue
@@ -361,6 +482,15 @@ function chooseForTier(
   const used = new Set<string>();
   const items: SetupItem[] = [];
   const unfilled: UnfilledSlot[] = [];
+  /**
+   * Each chosen item keeps the ranked pool it was picked from. Runner-ups are
+   * resolved after every slot is filled, so an alternative can never be a
+   * listing another slot already owns (including slots below this one).
+   */
+  const pendingAlternatives: {
+    item: SetupItem;
+    ranked: { score: number; candidate: Candidate }[];
+  }[] = [];
   /**
    * The PC build has to fit together. Slots are walked in blueprint order
    * (processor, then board, then memory), so each choice can constrain the
@@ -560,11 +690,9 @@ function chooseForTier(
     if (slot.key === "motherboard" || slot.key === "ram") {
       memory = memory ?? detectMemoryGen(c.haystack);
     }
-    const discountPct = c.mrp
-      ? Math.round(((c.mrp - c.price) / c.mrp) * 100)
-      : 0;
+    const discountPct = discountFromMrp(c.price, c.mrp);
 
-    items.push({
+    const item: SetupItem = {
       slotKey: slot.key,
       slotLabel: slot.label,
       phase: slot.phase,
@@ -594,7 +722,10 @@ function chooseForTier(
       selectionScore: Number(chosen.score.toFixed(4)),
       affiliateUrl: goPath(c.listingId, "setup"),
       spark: c.spark,
-    });
+      alternatives: [],
+    };
+    items.push(item);
+    pendingAlternatives.push({ item, ranked });
   }
 
   /**
@@ -614,6 +745,21 @@ function chooseForTier(
           "No discrete card fits this tier, and the build does not stop working because of it: the processor chosen here has integrated graphics, so the monitor runs off the CPU. A graphics card is the first upgrade, not a missing part.",
       };
     }
+  }
+
+  // Runner-ups are resolved last: every chosen listing (above and below the
+  // slot) is excluded, and an Avoid-rated candidate is never offered as an
+  // alternative. A forced pick's pool is all-Avoid, so it honestly has none.
+  const usedIds = new Set(items.map((i) => i.listingId));
+  for (const { item, ranked } of pendingAlternatives) {
+    const scoreById = new Map(ranked.map((r) => [r.candidate.listingId, r.score]));
+    item.alternatives = selectAlternatives(
+      ranked,
+      usedIds,
+      undefined,
+      (c) => alternativeKey(c.title),
+      [alternativeKey(item.title)],
+    ).map((c) => toAlternative(c, scoreById.get(c.listingId) ?? 0));
   }
 
   return { items, unfilled };

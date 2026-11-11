@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   AlertTriangle,
   ArrowRight,
@@ -9,11 +9,14 @@ import {
   Layers,
   MessageCircle,
   RefreshCw,
+  RotateCcw,
   ShieldCheck,
+  SlidersHorizontal,
   Sparkles,
   TrendingDown,
 } from "lucide-react";
-import type { SetupBuildResult, SetupTierResult } from "@/lib/setups/engine";
+import type { SetupBuildResult, SetupItem, SetupTierResult } from "@/lib/setups/engine";
+import { applySwaps } from "@/lib/setups/swap";
 import { SetupItemCard } from "./SetupItemCard";
 import { SetupBundleModal } from "./SetupBundleModal";
 import { cn, formatINR } from "@/lib/utils";
@@ -54,8 +57,70 @@ export function SetupResults({
   const [bundleOpen, setBundleOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const tier =
+  const baseTier =
     setup.tiers.find((t) => t.key === tierKey) ?? setup.tiers[1] ?? setup.tiers[0];
+
+  /**
+   * Swaps are held per slot and applied to the engine's own picks on every
+   * render. The totals, phases, budget and savings therefore always describe
+   * the build on screen — and a new build or a tier change starts clean.
+   */
+  const [swaps, setSwaps] = useState<Record<string, string>>({});
+  const [swapError, setSwapError] = useState<{ slotKey: string; message: string } | null>(null);
+
+  useEffect(() => {
+    setSwaps({});
+    setSwapError(null);
+  }, [setup.generatedAt]);
+
+  const applied = useMemo(
+    () => applySwaps(baseTier, swaps, setup.requestedBudget),
+    [baseTier, swaps, setup.requestedBudget],
+  );
+  const tier = applied.tier;
+  const baseBySlot = useMemo(
+    () => new Map(baseTier.items.map((i) => [i.slotKey, i])),
+    [baseTier],
+  );
+
+  function swapIn(slotKey: string, listingId: string) {
+    const next = { ...applied.applied, [slotKey]: listingId };
+    const check = applySwaps(baseTier, next, setup.requestedBudget);
+    const rejection = check.rejected.find((r) => r.slotKey === slotKey);
+    if (rejection) {
+      setSwapError({ slotKey, message: rejection.reason });
+      return;
+    }
+    setSwaps(next);
+    setSwapError(null);
+  }
+
+  function resetSlot(slotKey: string) {
+    const next = { ...applied.applied };
+    delete next[slotKey];
+    setSwaps(next);
+    setSwapError(null);
+  }
+
+  function resetAll() {
+    setSwaps({});
+    setSwapError(null);
+  }
+
+  function renderItem(item: SetupItem) {
+    const base = baseBySlot.get(item.slotKey);
+    return (
+      <SetupItemCard
+        key={item.slotKey}
+        item={item}
+        defaultItem={base}
+        swapped={base ? base.listingId !== item.listingId : false}
+        swapError={swapError?.slotKey === item.slotKey ? swapError.message : null}
+        onSwap={(listingId) => swapIn(item.slotKey, listingId)}
+        onReset={() => resetSlot(item.slotKey)}
+      />
+    );
+  }
 
   const valueTier = setup.tiers.find((t) => t.key === "value");
   const premiumTier = setup.tiers.find((t) => t.key === "premium");
@@ -118,7 +183,13 @@ export function SetupResults({
               key={t.key}
               role="tab"
               aria-selected={active}
-              onClick={() => onTierChange(t.key)}
+              onClick={() => {
+                // A customised tier is not transferable: start the next tier
+                // from its own recommended picks.
+                setSwaps({});
+                setSwapError(null);
+                onTierChange(t.key);
+              }}
               className={cn(
                 "group relative overflow-hidden rounded-xl border p-3.5 text-left transition-all duration-200",
                 active
@@ -190,6 +261,31 @@ export function SetupResults({
         <div className="mt-3 flex items-center gap-2 rounded-xl border border-amber-400/30 bg-amber-500/[0.07] px-3 py-2 text-[11px] font-semibold text-amber-700 dark:text-amber-300">
           <RefreshCw className="h-3.5 w-3.5 shrink-0" />
           Your selections changed. Generate again to rebuild this setup from current prices.
+        </div>
+      )}
+
+      {applied.customized && (
+        <div className="mt-3 flex flex-col gap-2.5 rounded-xl border border-emerald-400/35 bg-[var(--dw-green-surface)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex min-w-0 items-start gap-2">
+            <SlidersHorizontal className="mt-0.5 h-4 w-4 shrink-0 text-[var(--dw-green-mid)]" />
+            <div className="min-w-0 text-[11px] leading-relaxed text-secondary">
+              <strong className="font-extrabold text-headline">
+                Customised build — {Object.keys(applied.applied).length}{" "}
+                {Object.keys(applied.applied).length === 1 ? "slot is" : "slots are"} no longer the
+                recommended pick.
+              </strong>{" "}
+              Totals, phases and savings are recalculated from the swapped prices. Swaps live on
+              this screen only; a shared link rebuilds the default picks.
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={resetAll}
+            className="inline-flex min-h-[40px] shrink-0 items-center justify-center gap-1.5 rounded-lg border border-[var(--dw-green-border)] bg-card px-3 text-[10.5px] font-extrabold text-[var(--dw-green-mid)] hover:bg-emerald-500/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
+          >
+            <RotateCcw className="h-3.5 w-3.5" />
+            Reset to recommended
+          </button>
         </div>
       )}
 
@@ -396,9 +492,7 @@ export function SetupResults({
                 count={phase1.length}
               />
               <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                {phase1.map((item) => (
-                  <SetupItemCard key={item.listingId} item={item} />
-                ))}
+                {phase1.map((item) => renderItem(item))}
               </div>
             </div>
           )}
@@ -413,9 +507,7 @@ export function SetupResults({
                 count={phase2.length}
               />
               <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                {phase2.map((item) => (
-                  <SetupItemCard key={item.listingId} item={item} />
-                ))}
+                {phase2.map((item) => renderItem(item))}
               </div>
             </div>
           )}

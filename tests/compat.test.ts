@@ -57,6 +57,38 @@ test("maps a motherboard to its socket from the chipset", () => {
   assert.equal(detectPlatform("asus tuf gaming z890-plus wifi intel atx motherboard, ddr5"), "lga1851");
 });
 
+test("server and legacy chipsets are read instead of treated as unknown", () => {
+  assert.equal(
+    detectPlatform("x99 dual cpu motherboard lga2011 support ddr4 ecc memory pcb durable"),
+    "lga2011",
+  );
+  assert.equal(detectPlatform("lga 2011-3 motherboard with ddr4"), "lga2011");
+  assert.equal(detectPlatform("x79 motherboard for lga2011 cpus"), "lga2011");
+  assert.equal(detectPlatform("x299 motherboard, lga2066 socket, ddr4"), "lga2066");
+  assert.equal(detectPlatform("lga2066 atx motherboard"), "lga2066");
+  assert.equal(detectPlatform("h81 motherboard, lga1150, ddr3"), "lga1150");
+  assert.equal(detectPlatform("gigabyte b85m-d3h motherboard"), "lga1150");
+  assert.equal(detectPlatform("z97 gaming motherboard"), "lga1150");
+  assert.equal(detectPlatform("h61 motherboard, lga1155"), "lga1155");
+  assert.equal(
+    detectPlatform(
+      "asrock rack b650d4u-2l2t/bcm micro-atx server motherboard single socket amd ryzen 7000",
+    ),
+    "am5",
+  );
+  assert.equal(detectPlatform("b650e motherboard"), "am5");
+});
+
+test("server sockets do not agree with desktop sockets", () => {
+  assert.equal(platformsCompatible("lga2011", "lga1700"), false);
+  assert.equal(platformsCompatible("lga2066", "lga1700"), false);
+  assert.equal(platformsCompatible("lga1150", "lga1155"), false);
+  assert.deepEqual(memoryGensForPlatform("lga2011"), ["ddr3", "ddr4"]);
+  assert.deepEqual(memoryGensForPlatform("lga2066"), ["ddr4"]);
+  assert.deepEqual(memoryGensForPlatform("lga1150"), ["ddr3"]);
+  assert.deepEqual(memoryGensForPlatform("lga1155"), ["ddr3"]);
+});
+
 test("a phone or a laptop is not a desktop platform", () => {
   assert.equal(
     detectPlatform("vivo t5 lite 44w 5g (wave blue, 6gb ram, 128gb storage) | mediatek dimensity 6300 5g processor"),

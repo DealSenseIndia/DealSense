@@ -40,6 +40,9 @@ interface Target {
   exclude?: RegExp;
   category: string;
   max: number;
+  /** Optional price window, for slots with a tier cap. */
+  minPrice?: number;
+  maxPrice?: number;
 }
 
 /**
@@ -130,6 +133,38 @@ const TARGETS: Target[] = [
 
   // Home theatre
   { key: "stream", query: "fire tv stick", include: /fire tv|chromecast|android tv|tv stick/i, category: "Streaming Devices", max: 2 },
+
+  // Smart Setups gaps (2026-11-11). One target per family, max 1–2, so a
+  // near-identical relist can never arrive as a second twin. Run with --deep:
+  // the shallow 12-page scan does not reach these families at all.
+  { key: "coffee-inalsa", query: "INALSA espresso", include: /inalsa.*coffee maker/i, exclude: /knock|puck|screen|mat|filter|cleaner/i, category: "Coffee Makers", max: 1 },
+  { key: "coffee-preethi", query: "Preethi Dripcafe", include: /preethi.*coffee maker/i, exclude: /filter|pod|cleaner/i, category: "Coffee Makers", max: 1 },
+  { key: "baby-blanket", query: "baby blanket", include: /brandonn baby blankets/i, exclude: /adult|single|double|king|queen/i, category: "Baby Care", max: 1 },
+  { key: "nursery-chair", query: "rocking chair", include: /rocking chair/i, exclude: /cover|cushion only|office|gaming|recliner/i, category: "Chairs", max: 1 },
+  { key: "gym-bag", query: "gym bag", include: /gym bag|duffel bag|duffle bag/i, exclude: /combo|glove|shoe|cover|kids|trolley/i, category: "Gym Bags", max: 2 },
+  { key: "hostel-fan", query: "table fan", include: /table fan|desk fan/i, exclude: /ceiling|exhaust|wall|clip/i, category: "Fans", max: 1 },
+  { key: "travel-scale", query: "luggage scale", include: /luggage scale|luggage weighing|hanging scale/i, exclude: /kitchen|body|fish/i, category: "Travel Accessories", max: 2 },
+  { key: "travel-packing", query: "toiletry bag", include: /toiletry bag|wash bag/i, exclude: /kids|baby|pouch only/i, category: "Travel Accessories", max: 1 },
+  { key: "travel-adapter", query: "universal travel adapter", include: /universal travel adapter|all in one travel adapter/i, exclude: /socket|joint|taparia|phone|samsung/i, category: "Travel Accessories", max: 1 },
+  { key: "car-vacuum-gap", query: "car vacuum", include: /car vacuum|handheld vacuum/i, exclude: /filter bag|bag only|robot|mattress|replacement/i, category: "Car Care", max: 1 },
+
+  // Owner round 3 gaps (2026-11-11). Price windows match the tier caps the
+  // slots render against, so a product can never arrive and immediately read
+  // OUT_OF_BUDGET_RANGE.
+  { key: "bed-spacewood", query: "Spacewood Lilly Bed", include: /spacewood lilly/i, exclude: /mattress|bedsheet|pillow|cover/i, category: "Beds", minPrice: 8000, maxPrice: 25000, max: 1 },
+  { key: "bed-wooden", query: "wooden queen size bed", include: /wooden queen size bed/i, exclude: /bedsheet|bed sheet|bed cover|mattress|pillow|sofa|bedside|bed side|baby|crib|toy|poster|dohar|comforter|blanket|quilt|pet|dog|cat|desk|study table|cushion/i, category: "Beds", minPrice: 8000, maxPrice: 25000, max: 1 },
+  { key: "stool-solid", query: "solid wood stool set", include: /solid wood stool/i, exclude: /bar stool|office|gaming|rocking|recliner|dining|outdoor|patio|garden|balcony|plant|toy|baby|bath|spinner|coffee table|ottoman|cover|ergonomic|study table|desk|computer|adjustable|toilet|squat/i, category: "Stools", minPrice: 1000, maxPrice: 6000, max: 1 },
+  { key: "stool-shopify", query: "shopify wooden stool", include: /shopify wooden stool/i, exclude: /bar stool|office|gaming|rocking|recliner|dining|outdoor|patio|garden|balcony|plant|toy|baby|bath|spinner|coffee table|ottoman|cover|ergonomic|study table|desk|computer|adjustable|toilet|squat/i, category: "Stools", minPrice: 1000, maxPrice: 6000, max: 1 },
+  // The vanity slot's real value-tier ceiling is ~₹2,276, not the ₹6,000
+  // maxFactor. This is the only distinct stool under that ceiling.
+  { key: "stool-sheesham", query: "sheesham wood wooden stool", include: /sheesham wood wooden stool|solid wood sitting stool/i, exclude: /bar stool|office|gaming|rocking|recliner|dining|outdoor|patio|garden|balcony|plant|toy|baby|bath|spinner|coffee table|ottoman|cover|ergonomic|study table|desk|computer|adjustable|toilet|squat|set of/i, category: "Stools", minPrice: 500, maxPrice: 2276, max: 1 },
+  { key: "stool-ikea", query: "ikea marius stool", include: /marius|ikea.*stool/i, exclude: /bar stool|office|gaming|rocking|recliner|dining|outdoor|patio|garden|balcony|plant|toy|baby|bath|spinner|coffee table|ottoman|cover|ergonomic|study table|desk|computer|adjustable|toilet|squat|step/i, category: "Stools", minPrice: 400, maxPrice: 2276, max: 1 },
+  { key: "nursery-cot", query: "crib", include: /baby crib|\bcrib\b/i, exclude: /christmas|xmas|nativity|pulkoodu|decor|idol|statue|mattress|bedsheet|bed sheet|sleeping bag|mobile|rattle|toy|net|rail|bedding|hanging|jhoomer|pet|dog|cat|cotton/i, category: "Baby Care", max: 1 },
+  { key: "diaper-bag-r3", query: "diaper bag", include: /diaper bag|nappy bag|maternity bag|mummy bag/i, exclude: /insert only|organizer insert/i, category: "Baby Care", max: 1 },
+  { key: "pet-carrier-r3", query: "cat carrier", include: /pet carrier|dog carrier|cat carrier|pet crate|travel crate/i, exclude: /car seat|stroller|bike|bag for kids/i, category: "Pet Supplies", max: 1 },
+  { key: "webcam-budget", query: "webcam", include: /webcam|web camera/i, exclude: /cover|cctv|security|tripod|stand only|laptop|notebook|computer/i, category: "Webcams", maxPrice: 4000, max: 2 },
+  { key: "studio-ring", query: "ring light", include: /(?:^|[^a-z])ring lights?(?:[^a-z]|$)/i, exclude: /phone|mobile|cover|tripod only|stand only|string light|curtain|fairy|diwali|chandelier|selfie stick/i, category: "Lighting", max: 2 },
+  { key: "av-receiver-r3", query: "av receiver", include: /av receiver|home ?theat(re|er) amplifier/i, exclude: /car|headphone|speaker only|guitar|pa system|soundbar/i, category: "Receivers", max: 1 },
 ];
 
 /** Popularity × discount, used only to order same-category candidates. */
@@ -149,8 +184,13 @@ function desirability(p: PHAIProduct): number {
 async function main() {
   await ensureSchema();
   const dry = has("dry");
-  const only = (arg("only") ?? "").toLowerCase();
-  const targets = TARGETS.filter((t) => !only || t.key === only);
+  const deep = has("deep");
+  const only = (arg("only") ?? "")
+    .toLowerCase()
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const targets = TARGETS.filter((t) => !only.length || only.includes(t.key));
 
   const existing = await db
     .select({ merchant: listings.merchant, merchantProductId: listings.merchantProductId })
@@ -167,12 +207,16 @@ async function main() {
   const started = Date.now();
 
   for (const target of targets) {
-    const hits = await searchPriceHistoryAi(target.query, 50);
+    // `--deep` reads the published product sitemap instead of the first twelve
+    // HTML listing pages; it is the only way to reach thinner families.
+    const hits = await searchPriceHistoryAi(target.query, deep ? 20 : 50, { deep });
     const viable = hits
       .filter(
         (h) =>
           h.current_price !== null &&
           h.current_price > 0 &&
+          (target.minPrice === undefined || h.current_price >= target.minPrice) &&
+          (target.maxPrice === undefined || h.current_price <= target.maxPrice) &&
           h.title.length > 8 &&
           /^https?:\/\//.test(h.url) &&
           h.in_stock !== false &&
@@ -193,7 +237,11 @@ async function main() {
 
       // Trust the link's real host over the provider's store label.
       const merchant = merchantFromUrl(item.url) ?? item.platform;
-      const pid = item.asin || String(item.id);
+      const rawPid = item.asin || String(item.id);
+      // Flipkart ids are case-insensitive but the unique index is not; the app
+      // stores them lowercased. Importing the provider's uppercase spelling
+      // creates a twin the next worker pass then re-imports.
+      const pid = merchant === "flipkart" ? rawPid.toLowerCase() : rawPid;
       if (known.has(`${merchant}:${pid.toUpperCase()}`)) {
         skipped++;
         continue;

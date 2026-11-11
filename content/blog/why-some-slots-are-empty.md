@@ -1,52 +1,70 @@
 ---
 title: Why DealSense leaves some setup slots empty
-description: A ₹1.25 lakh gaming build with one slot still open, a nursery without a diaper bag. The gaps are real, and showing them is the point.
+description: Three honest reasons a setup slot stays open — nothing tracked, a price rated Avoid, or the tier's budget already spent — and how a room is chosen.
 date: 2026-10-27
+updated: 2026-11-11
 tags: how we work, honesty
-setups: gaming, home_theatre, baby_nursery, pet_corner
+setups: gaming, wfh_desk
+products: msi-mag-a650bn-power-supply-unit-650w-80-plus-bronze-certified-12v-single-rail-dc-to-dc-ci, corsair-vengeance-ddr5-16gb-1-x-16gb-up-to-6000mhz-amd-intel-ram-168182, patriot-memory-viper-steel-ddr4-ram-16gb-1x16gb-3200mhz-cl16-udimm-d-29966, logitech-c922-pro-stream-webcam-hd-1080p-30fps-or-hd-720p-60fps-digi-36196
 ---
 
 Every "complete setup" article on the internet has the same shape: twenty products, no gaps, one affiliate link each. Real rooms do not work like that, and neither does a catalogue built from recorded prices.
 
-DealSense builds a room from **functional slots** — the jobs a room has to do — and then fills each slot with a listing we actually track. When nothing tracked fits, the slot stays open and says why. That decision costs us a few affiliate clicks. It buys something more useful: you can trust the rest of the page.
+DealSense builds a room from **functional slots** — the jobs a room has to do — and fills each slot with a listing we actually track. When nothing tracked fits, the slot stays open and says why. That decision costs us a few clicks through the buy links. It buys something more useful: you can trust the rest of the page.
 
-## The gaming PC: a power supply found, one gap left
+*Last revised 11 November 2026. The catalogue changes as listings are re-checked, so this piece explains how a setup is chosen and why a slot can stay empty. It quotes no totals or fill counts for today's builds; where it names a price, the date is attached.*
 
-The [₹1.25 lakh gaming plan](/setups/gaming/125000) fills nineteen of twenty slots. The one still open is speakers, because nothing tracked sits inside that slot's share of the money.
+## How a setup is chosen
 
-Two slots were empty until this week, and how they closed is the point.
+### Every slot gets a share of the money
 
-**The power supply used to be empty because our sources carried none** — not out of stock, no catalogue at all. Nine phrasings returned nothing. So we read the stores directly, one product page at a time, and now track a **650 W 80+ Bronze unit at ₹5,749**. It carries a single reading today; the record grows as the page is re-read. One reading is thin, and the page shows that rather than pretending the record is a year old.
+A room is a set of jobs: somewhere to sleep, somewhere to put clothes, something to read by. Each job carries a weight, and the budget is split by those weights. The bed and the mattress get the larger shares in a bedroom; the finishing decor gets the smallest.
 
-**Memory used to be empty for a subtler reason.** The board the builder picked was DDR5, and the cheapest DDR5 kit we track costs ₹19,999 — more than the slot's share. A 16 GB DDR4 kit at ₹12,199 fits, but only beside a DDR4 board. The builder now prefers a DDR4 board at these budgets, so memory fills with 16 GB at 3200 MHz. No component was swapped behind your back; both parts are tracked listings.
+If you already own something, mark it at the top of the builder. That slot is removed and its money is shared across the rest, so the room gets better rather than just cheaper.
 
-**The lower tier still leaves five slots open** — SSD, streaming gear, controller, UPS and speakers — each with its reason: no tracked product inside the band, or the money already committed to the parts above. The ₹1.65 lakh tier fills all twenty.
+A slot may stretch above its share using money earlier slots left behind. It may not reach into the money a later essential still needs. Without that rule, one expensive pick quietly deletes half the room.
 
-The [room guide](/setups/gaming) shows every gap with its reason. What it does not do is pretend the PC is finished.
+### The price verdict has a veto
 
-## The home theatre: no AV receiver
+Every listing is judged by the same verdict shown on its product page, using its own recorded price history. An Avoid rating is not a comment on the product; it is a comment on today's price.
 
-A 5.1 receiver is the heart of a real theatre, and we cannot track one. The audio slot is filled honestly with a soundbar instead — a different product for a different job, clearly labelled. The [home theatre guide](/setups/home_theatre) says so at the top rather than burying it.
+So an Avoid listing is not picked while anything better-rated fits the slot. When an essential slot has nothing else, the build keeps the product but shows the Avoid chip and a one-line caution instead of hiding it. A nice-to-have slot in that position stays open, because waiting is the honest advice.
 
-## The nursery: no diaper bag
+### PC parts have to fit each other
 
-Everything else in the [nursery plan](/setups/baby_nursery) — cot, mattress, bedding, monitor, storage — is filled from tracked listings. The diaper bag is not, because the category simply is not in the sources we can verify. A baby-care list that silently omits the bag someone will need on day one is not a list; it is a shopping ad.
+The [gaming room](/setups/gaming) is not a list; it is a machine. The processor's socket decides which motherboards can follow, and the board decides whether the build takes DDR4 or DDR5 memory. A build with no graphics card can only use a processor with integrated graphics, so the room still switches on.
 
-## The pet corner: no carrier
+If nothing we can price fits the part already chosen, the slot stays open with a sentence saying what it clashed with. We would rather show a gap than recommend a processor and a board that cannot sit together.
 
-Same story. Beds, bowls, food and toys are tracked. The [carrier slot](/setups/pet_corner) is open because we have no verified listing for one.
+### An open slot is not a failure
 
-## Why we do not substitute a "similar" product
+There are three honest reasons a slot stays open:
 
-The obvious workaround is to find something that looks close and list it anyway. We do not, for one reason: **a price without recorded history is an advertisement**. If we cannot say what the thing has cost over time, we cannot say whether today is a good day to buy it, and that is the only thing we are here to answer.
+1. **Nothing tracked.** The category is not in the catalogue we can price yet.
+2. **Everything rated Avoid at today's price.** Options exist; none is a price we would stand behind today.
+3. **Nothing inside this tier's budget.** Either no tracked option sits under the slot's ceiling, or the money was already committed to the parts above it.
 
-So an open slot is not a failure of the site. It is the site working.
+The page names the reason on the slot itself. What it does not do is substitute something that looks close. A price without recorded history is an advertisement, and an advertisement is not a recommendation.
+
+## What a real record looks like
+
+Prices move, so these are dated snapshots, not current quotes. Each link opens the page with the full history.
+
+**A gap that closed.** For a while we tracked no PC power supply at all. We now track a 650 W 80+ Bronze unit, newest recorded at ₹5,749 on 11 November 2026 ([price history](/product/msi-mag-a650bn-power-supply-unit-650w-80-plus-bronze-certified-12v-single-rail-dc-to-dc-ci)). It is still a short record, and the page says so rather than dressing it up as a year of history.
+
+**A price that argues against itself.** A 16 GB DDR5 kit we track was last recorded at ₹35,399 on 29 October 2026, while the lowest price recorded on its page is ₹14,159 ([price history](/product/corsair-vengeance-ddr5-16gb-1-x-16gb-up-to-6000mhz-amd-intel-ram-168182)). A listing in that state does not recommend itself. The verdict decides, and a build can prefer a board that takes the other memory generation.
+
+**The cheaper generation.** A 16 GB DDR4 kit we track was last recorded at ₹12,199 on 30 October 2026 ([price history](/product/patriot-memory-viper-steel-ddr4-ram-16gb-1x16gb-3200mhz-cl16-udimm-d-29966)). Same capacity, different generation, very different record. This is why the board choice matters more than the memory's advert.
+
+**A nice-to-have that can wait.** A webcam sits in the second phase of the [work-from-home room](/setups/wfh_desk). The one we track was last recorded at ₹21,990 on 30 October 2026, above the ₹18,994 low on its own page ([price history](/product/logitech-c922-pro-stream-webcam-hd-1080p-30fps-or-hd-720p-60fps-digi-36196)). That is exactly the judgement the verdict exists to make, and a reason a phase-two slot can stay open instead of being filled.
 
 ## What you see instead
 
-- Every room shows how many slots are filled, and how many are not.
-- Each open slot carries a reason: **not tracked yet**, **no match in this price band**, or **only poor deals right now**.
-- The money for an open slot stays in your budget instead of being spent on a filler.
-- The build re-prices when you change the budget, so a gap at ₹1.25 lakh can close at ₹2 lakh — if the catalogue has something honest to put there.
+- Every room shows which slots are filled, and each open slot carries its reason in one line.
+- The money for an open slot stays unspent inside the build instead of going to a filler.
+- Change the budget, the tier or the items you own and the build re-prices from scratch. A gap can close at a higher budget if the catalogue has an honest option.
+- Each card shows the recorded price, how fresh the newest reading is, how many readings there are, and the verdict. Buy links go through our own redirect.
 
-The [room builder](/setups) is free and needs no sign-in. Pick a room, set a budget, and see what a complete build actually looks like — including the parts it is missing.
+The [room builder](/setups) is free and needs no sign-in. If you want to see the raw evidence behind a verdict before you commit, the [price history](/price-history) and [tracked deals](/deals) pages carry the dated records, and the [live feed](/live) shows only what has been re-checked in the last twenty minutes.
+
+The gaps are not a failure of the site. They are the site working.

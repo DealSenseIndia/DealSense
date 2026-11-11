@@ -20,6 +20,6 @@ export const buildSetupCached = unstable_cache(
   ): Promise<SetupBuildResult> => buildSetup({ space, budget, style, owned }),
   // Bump this whenever the builder logic changes: Vercel keeps the ISR cache
   // across deployments, so the old picks can otherwise outlive the fix.
-  ["setup-build-v2"],
+  ["setup-build-v5"],
   { revalidate: 120 },
 );

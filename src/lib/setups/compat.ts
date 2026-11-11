@@ -13,7 +13,17 @@
  * a fit.
  */
 
-export type PcPlatform = "am4" | "am5" | "lga1151" | "lga1200" | "lga1700" | "lga1851";
+export type PcPlatform =
+  | "am4"
+  | "am5"
+  | "lga1151"
+  | "lga1200"
+  | "lga1700"
+  | "lga1851"
+  | "lga2011"
+  | "lga2066"
+  | "lga1150"
+  | "lga1155";
 export type MemoryGen = "ddr3" | "ddr4" | "ddr5";
 
 const PLATFORM_TOKENS: [RegExp, PcPlatform][] = [
@@ -23,16 +33,28 @@ const PLATFORM_TOKENS: [RegExp, PcPlatform][] = [
   [/\blga[\s-]?1700\b/, "lga1700"],
   [/\blga[\s-]?1200\b/, "lga1200"],
   [/\blga[\s-]?1151\b/, "lga1151"],
+  [/\blga[\s-]?2011(?:-3)?\b/, "lga2011"],
+  [/\blga[\s-]?2066\b/, "lga2066"],
+  [/\blga[\s-]?1150\b/, "lga1150"],
+  [/\blga[\s-]?1155\b/, "lga1155"],
 ];
 
 /** Chipsets, in the order they are unambiguous. */
 const CHIPSET_PLATFORM: [RegExp, PcPlatform][] = [
   [/\b(z890|b860)\b/, "lga1851"],
   [/\b(h610|h610m|b660|b660m|b760|b760m|h670|z690|z790)\b/, "lga1700"],
-  [/\b(a620|a620m|b650|b650m|b850|b850m|x670|x670e|x870|x870e)\b/, "am5"],
+  // B650D4U and other server boards carry a suffix after the chipset name, so
+  // the boundary must follow the whole model token, not just "b650".
+  [/\b(a620|a620m|b650[a-z0-9]*|b850[a-z0-9]*|x670e?|x870e?)\b/, "am5"],
   [/\b(a320|a520|a520m|b350|b450|b450m|b550|b550m|x470|x570)\b/, "am4"],
   [/\b(h410|h510|b460|b560|z490|z590)\b/, "lga1200"],
   [/\b(h110|b250|z370|h310|b360|z390)\b/, "lga1151"],
+  // Legacy workstation and desktop sockets. X79 is LGA2011 (DDR3), X99 is
+  // LGA2011-3 (DDR4); H61 is LGA1155, not LGA1150.
+  [/\b(x99|x79)\b/, "lga2011"],
+  [/\bx299\b/, "lga2066"],
+  [/\b(h81m?|b85m?|z97[a-z0-9]*)\b/, "lga1150"],
+  [/\b(h61m?|p67|z68|b75[a-z0-9]*)\b/, "lga1155"],
 ];
 
 /**
@@ -79,6 +101,12 @@ const PLATFORM_MEMORY: Record<PcPlatform, MemoryGen[]> = {
   lga1200: ["ddr4"],
   lga1700: ["ddr4", "ddr5"],
   lga1851: ["ddr5"],
+  // X79 (LGA2011) is DDR3, X99 (LGA2011-3) is DDR4; the family carries both,
+  // and the board's own "DDR4" blurb still decides the RAM slot when present.
+  lga2011: ["ddr3", "ddr4"],
+  lga2066: ["ddr4"],
+  lga1150: ["ddr3"],
+  lga1155: ["ddr3"],
 };
 
 export function memoryGensForPlatform(platform: PcPlatform | null): MemoryGen[] | null {
