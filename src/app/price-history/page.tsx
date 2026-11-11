@@ -11,6 +11,7 @@ import { getAllTimeLows, getLatestDeals } from "@/lib/db/deals";
 import { getHistorySpotlight } from "@/lib/db/spotlight";
 import { findEvents } from "@/lib/engine/insights";
 import { storeMeta } from "@/lib/config";
+import { discountFromMrp, saneMrp } from "@/lib/deal-honesty";
 import { formatINR, timeAgo } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -103,14 +104,14 @@ export default async function PriceHistoryPage() {
                     <span className="tabular text-[21px] font-extrabold leading-none tracking-tight text-headline lg:text-[24px]">
                       {formatINR(spotlight.price)}
                     </span>
-                    {spotlight.mrp ? (
+                    {saneMrp(spotlight.price, spotlight.mrp) ? (
                       <span className="tabular text-[11.5px] text-muted line-through">
-                        {formatINR(spotlight.mrp)}
+                        {formatINR(saneMrp(spotlight.price, spotlight.mrp))}
                       </span>
                     ) : null}
-                    {spotlight.discountPct > 0 ? (
+                    {discountFromMrp(spotlight.price, spotlight.mrp) > 0 ? (
                       <span className="text-[11px] font-extrabold text-[var(--dw-green-mid)]">
-                        {spotlight.discountPct}% off
+                        {discountFromMrp(spotlight.price, spotlight.mrp)}% off
                       </span>
                     ) : null}
                   </div>

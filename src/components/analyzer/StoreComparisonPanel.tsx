@@ -2,6 +2,7 @@ import { ArrowUpRight, Crown } from "lucide-react";
 import { StoreLogo } from "@/components/ui/StoreLogo";
 import { Rating } from "@/components/ui/Rating";
 import type { StoreComparison, StoreOffer } from "@/lib/db/compare";
+import { discountFromMrp, saneMrp } from "@/lib/deal-honesty";
 import { cn, formatINR, timeAgo } from "@/lib/utils";
 
 /**
@@ -179,14 +180,14 @@ function OfferRow({ offer, primary }: { offer: StoreOffer; primary: boolean }) {
             {formatINR(offer.price)}
           </div>
           <div className="mt-1 flex items-center justify-end gap-1.5">
-            {offer.mrp ? (
+            {saneMrp(offer.price, offer.mrp) ? (
               <span className="tabular text-[10.5px] text-muted line-through">
-                {formatINR(offer.mrp)}
+                {formatINR(saneMrp(offer.price, offer.mrp))}
               </span>
             ) : null}
-            {offer.discountPct > 0 ? (
+            {discountFromMrp(offer.price, offer.mrp) > 0 ? (
               <span className="text-[10.5px] font-extrabold text-[var(--dw-green-mid)]">
-                {offer.discountPct}% off
+                {discountFromMrp(offer.price, offer.mrp)}% off
               </span>
             ) : null}
           </div>

@@ -1,11 +1,20 @@
 name: DealSense store refresh
 
-# Reads a couple of store pages directly, on top of the provider sync that
-# runs every 20 minutes (see sync.yml). This is the step that proves a price
-# on the store itself rather than trusting the feed, so it stays deliberately
-# small: two pages an hour is enough to catch drift without inviting blocks.
+# Reads store pages directly, on top of the provider sync that runs every 20
+# minutes (see sync.yml). This is the step that proves a price on the store
+# itself rather than trusting the feed.
 #
-# Repository secrets: DEALSENSE_URL (e.g. https://dealsense.in) and CRON_SECRET.
+# GitHub throttles scheduled runs to a few a day whatever the cron says, so the
+# work is done per run instead of per schedule: ten sequential batches of three
+# listings. Each request stays inside the function's 50-second working budget
+# (three listings at roughly 12s each), and the app still spaces reads 5–10s per
+# merchant, so the loop is no more aggressive per merchant than before.
+#
+# Throughput: 10 × 3 = 30 checks per run. At the measured ~3.7 runs/day that is
+# ~111 checks/day, plus the Vercel daily cron's 2, against ~12/day before.
+# One bad batch does not discard the rest; only an all-failed run is red.
+#
+# Repository secrets: DEALSENSE_URL and CRON_SECRET.
 on:
   schedule:
     - cron: "15 * * * *"
@@ -18,9 +27,27 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - name: Read store pages directly
         run: |
-          curl -fsS --max-time 120 --retry 2 --retry-delay 10 \
-            "${{ secrets.DEALSENSE_URL }}/api/cron/refresh?limit=2&secret=${{ secrets.CRON_SECRET }}"
+          ok=0
+          failed=0
+          for i in $(seq 1 10); do
+            if curl -fsS --max-time 75 \
+              "${{ secrets.DEALSENSE_URL }}/api/cron/refresh?limit=3&secret=${{ secrets.CRON_SECRET }}"; then
+              ok=$((ok + 1))
+            else
+              failed=$((failed + 1))
+            fi
+            sleep 2
+          done
+          echo "batches: ok=$ok failed=$failed"
+          test "$ok" -gt 0
+
+      # The landing page caches its data for twenty minutes. This request lands
+      # on the same beat, so the rebuild happens here instead of in front of a
+      # visitor.
+      - name: Keep the landing page warm
+        run: |
+          curl -fsS --max-time 90 -o /dev/null "${{ secrets.DEALSENSE_URL }}/" || true

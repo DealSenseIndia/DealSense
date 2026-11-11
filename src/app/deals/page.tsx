@@ -8,9 +8,9 @@ import { DealGrid } from "@/components/deals/DealGrid";
 import { getFilteredDeals, getFilterFacets } from "@/lib/db/deals";
 
 export const metadata: Metadata = {
-  title: "Live deals",
+  title: "Tracked deals, every price dated",
   description:
-    "Real, verified price drops across Amazon, Flipkart, Myntra, Nykaa, Tata CLiQ and more — every one backed by recorded price history.",
+    "Prices DealSense tracks across Amazon, Flipkart, Myntra, Nykaa, Tata CLiQ and more. Every card is dated with when we last recorded its price — these are recorded prices, not live quotes.",
   alternates: { canonical: "/deals" },
 };
 
@@ -81,9 +81,15 @@ export default async function DealsPage({
     <section className="relative py-12">
       <Container size="wide">
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <h1 className="text-[30px] font-extrabold tracking-[-0.025em] text-headline sm:text-[38px]">
-            Live deals
-          </h1>
+          <div>
+            <h1 className="text-[30px] font-extrabold tracking-[-0.025em] text-headline sm:text-[38px]">
+              Tracked deals
+            </h1>
+            <p className="mt-1.5 max-w-2xl text-[12.5px] leading-relaxed text-secondary">
+              Every card says when its price was last recorded. These are recorded prices, not live
+              quotes — the live feed only holds checks from the last twenty minutes.
+            </p>
+          </div>
           <div className="flex items-center gap-2">
             <Link
               href="/live"
@@ -92,7 +98,7 @@ export default async function DealsPage({
               <Zap className="h-3.5 w-3.5" /> Live drops
             </Link>
             <span className="tabular rounded-xl border border-hairline bg-card px-4 py-2.5 text-[13px] font-extrabold text-secondary">
-              {deals.length} products
+              {facets.total.toLocaleString("en-IN")} tracked
             </span>
           </div>
         </div>

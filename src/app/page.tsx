@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { unstable_cache } from "next/cache";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { LiveFeed } from "@/components/live/LiveFeed";
 import { Hero, type FeaturedDeal } from "@/components/landing/Hero";
@@ -17,11 +15,19 @@ import {
   getBudgetPicks,
   getFilterFacets,
   getNearLowDeals,
+  getNewestCheckAt,
   getPlatformShelves,
   getRecentDrops,
 } from "@/lib/db/deals";
 import { getShelves } from "@/lib/db/shelves";
 import { getHistorySpotlight } from "@/lib/db/spotlight";
+import {
+  discountFromMrp,
+  isLiveCheck,
+  recordedAgeLabel,
+  saneMrp,
+  trackedAgeLabel,
+} from "@/lib/deal-honesty";
 import { site, storeMeta } from "@/lib/config";
 
 export const metadata: Metadata = {
@@ -69,7 +75,7 @@ const loadHomeData = unstable_cache(
       return await collectHomeData();
     }
   },
-  ["homepage-data-v7"],
+  ["homepage-data-v8"],
   // Matches the sync cadence: prices in our own record move at most every 20
   // minutes, so a landing page rebuilt on the same beat is never behind the
   // data it is showing — and the cron warm-up keeps a visitor from paying the
@@ -78,15 +84,40 @@ const loadHomeData = unstable_cache(
 );
 
 export default async function HomePage() {
-  const { shelves, drops, lows, platform, facets, live, budget, spotlight } = await loadHomeData();
+  // The catalogue reads above are cached for twenty minutes; the age of the
+  // newest store check is read fresh, so the sentence "last checked …" names
+  // the real check rather than a cached one.
+  const [{ shelves, drops, lows, platform, facets, live, budget, spotlight }, newestCheckedAt] =
+    await Promise.all([loadHomeData(), getNewestCheckAt().catch(() => null)]);
+
+  // One fact decides every "live" claim on this page: when a store was last
+  // actually read.
+  const now = Date.now();
+  const liveNow = isLiveCheck(newestCheckedAt, now);
+  const trackedAge = trackedAgeLabel(newestCheckedAt, now);
+
+  // The shelf's rows are near-low history, not the live feed. It may only say
+  // "live" when both the feed is live and one of its own rows is that fresh.
+  const shelfNewest = live.reduce<number | null>(
+    (newest, d) => (d.lastSeenAt && (!newest || d.lastSeenAt > newest) ? d.lastSeenAt : newest),
+    null,
+  );
+  const shelfLive = liveNow && isLiveCheck(shelfNewest, now);
+  const shelfAge = recordedAgeLabel(shelfNewest, now);
+
+  const featuredMrp = spotlight ? saneMrp(spotlight.price, spotlight.mrp) : null;
+  const featuredLastAt =
+    spotlight && spotlight.history.length > 0
+      ? spotlight.history[spotlight.history.length - 1].t
+      : null;
 
   const featured: FeaturedDeal | null = spotlight
     ? {
         title: spotlight.title,
         imageUrl: spotlight.imageUrl,
         price: spotlight.price,
-        mrp: spotlight.mrp,
-        discount: spotlight.discountPct || null,
+        mrp: featuredMrp,
+        discount: discountFromMrp(spotlight.price, featuredMrp) || null,
         rating: spotlight.rating,
         reviewCount: null,
         merchant: spotlight.merchant,
@@ -95,6 +126,7 @@ export default async function HomePage() {
         low: spotlight.low,
         lastDrop: spotlight.lastDrop,
         points: spotlight.points,
+        live: isLiveCheck(featuredLastAt, now),
       }
     : null;
 
@@ -127,34 +159,11 @@ export default async function HomePage() {
       <Hero featured={featured} />
 
       {/* ---------- the products ---------- */}
-      <LiveDeals deals={live} />
+      <LiveDeals deals={live} live={shelfLive} trackedAge={shelfAge} trackedTotal={facets.total} />
 
       <section className="py-8">
         <Container size="wide">
-          <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
-            <div>
-              <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[var(--dw-green-mid)]">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-70" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                </span>
-                Live · verified minutes ago
-              </span>
-              <h2 className="mt-1 text-[24px] font-extrabold tracking-[-0.03em] text-headline">
-                Drops we just checked
-              </h2>
-              <p className="mt-1 text-[12.5px] text-secondary">
-                At or near their own recorded low. Re-priced by us, not copied from a feed.
-              </p>
-            </div>
-            <Link
-              href="/live"
-              className="inline-flex items-center gap-1 text-[11.5px] font-extrabold text-[var(--dw-green-mid)] hover:underline"
-            >
-              Open the live feed <ArrowUpRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-          <LiveFeed variant="rail" />
+          <LiveFeed variant="rail" showHeader trackedAge={trackedAge} />
         </Container>
       </section>
 

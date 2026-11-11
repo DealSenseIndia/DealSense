@@ -9,7 +9,7 @@ import { Container } from "@/components/ui/Container";
 import { AnalyzingButton } from "@/components/ui/AnalyzingButton";
 import { StoreLogo } from "@/components/ui/StoreLogo";
 import { StorePlaceholder } from "@/components/ui/StorePlaceholder";
-import { cn, formatINR } from "@/lib/utils";
+import { cn, formatINR, timeAgo } from "@/lib/utils";
 
 export interface FeaturedDeal {
   title: string;
@@ -29,6 +29,8 @@ export interface FeaturedDeal {
   lastDrop?: { amount: number; at: number } | null;
   /** Number of recorded price points. */
   points?: number;
+  /** The newest price point was read from the store in the last twenty minutes. */
+  live?: boolean;
 }
 
 const POPULAR = [
@@ -202,7 +204,11 @@ export function Hero({ featured }: { featured?: FeaturedDeal | null }) {
                 <div className="text-[11.5px] font-bold leading-tight text-headline">
                   Price Drop Alert
                 </div>
-                <div className="my-px text-[10px] text-muted">Great news!</div>
+                <div className="my-px text-[10px] text-muted">
+                  {featured?.lastDrop
+                    ? `${featured.live ? "Checked" : "Recorded"} ${timeAgo(featured.lastDrop.at)}`
+                    : "No drop recorded yet"}
+                </div>
                 <div className="text-[11.5px] font-extrabold leading-tight text-[var(--dw-green-bot)]">
                   {featured?.lastDrop
                     ? `Price dropped by ${formatINR(featured.lastDrop.amount)}`
@@ -234,7 +240,7 @@ export function Hero({ featured }: { featured?: FeaturedDeal | null }) {
                 <div className="flex min-w-0 flex-1 flex-col">
                   <div>
                     <span className="inline-block rounded border border-[var(--dw-green-border)] bg-[rgba(16,185,129,0.08)] px-[7px] py-[2px] text-[9px] font-extrabold uppercase leading-[1.2] tracking-[0.5px] text-[var(--dw-green-bot)]">
-                      {featured.lastDrop ? "Live Drop" : "Recently Viewed"}
+                      {featured.lastDrop ? (featured.live ? "Live Drop" : "Recorded drop") : "Recently Viewed"}
                     </span>
                   </div>
                   <h4 className="mt-1 max-w-[195px] truncate text-[13.5px] font-extrabold leading-tight text-headline">

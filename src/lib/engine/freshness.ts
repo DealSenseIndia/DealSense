@@ -22,6 +22,9 @@ export function failureKindOf(message: string | null | undefined): CheckFailureK
   if (!message) return null;
   const text = message.toUpperCase();
   if (text.includes("BLOCKED")) return "BLOCKED";
+  // A delisted product page is not a block and will not come back. Give it the
+  // long schedule instead of retrying it like a transient failure.
+  if (text.includes("DELISTED")) return "BLOCKED";
   if (text.includes("UNPRICED") || text.includes("NO_PRICE")) return "UNPRICED";
   return "ERROR";
 }

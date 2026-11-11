@@ -10,14 +10,15 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
 export const metadata: Metadata = {
-  title: "Live price drops, verified minutes ago",
+  title: "Live price drops, checked before they are shown",
   description:
-    "The deals DealSense has re-checked in the last twenty minutes: at or near their own recorded low, in stock, and gone the moment the price moves.",
+    "The deals DealSense has re-read from the store in the last twenty minutes: at or near their own recorded low, in stock, and gone the moment the price moves. An empty list is a truthful answer, not a bug.",
   alternates: { canonical: `${site.url}/live` },
 };
 
 export default async function LivePage() {
   const deals = await getLiveDeals(30).catch(() => []);
+  const live = deals.length > 0;
 
   const breadcrumb = {
     "@context": "https://schema.org",
@@ -38,25 +39,32 @@ export default async function LivePage() {
         </nav>
 
         <header className="mt-5 max-w-3xl">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-[var(--dw-green-surface)] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[var(--dw-green-mid)]">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-70" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+          {live ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-[var(--dw-green-surface)] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[var(--dw-green-mid)]">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-70" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              </span>
+              Live · checked in the last 20 minutes
             </span>
-            Live · checked in the last 20 minutes
-          </span>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-subtle px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-secondary">
+              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-slate-400" />
+              Nothing checked in the last 20 minutes
+            </span>
+          )}
           <h1 className="mt-3 text-[32px] font-extrabold leading-[1.1] tracking-[-0.03em] text-headline sm:text-[42px]">
             Drops we verified, not drops we heard about
           </h1>
           <p className="mt-3 text-[14.5px] leading-relaxed text-body">
-            Every card here was read from the store in the last twenty minutes. It is at or near its
-            own recorded low, or at least a tenth under its own average. When the price moves or the
-            listing goes out of stock, the card disappears — there is nothing to catch up on.
+            {live
+              ? "Every card here was read from the store in the last twenty minutes. It is at or near its own recorded low, or at least a tenth under its own average. When the price moves or the listing goes out of stock, the card disappears — there is nothing to catch up on."
+              : "Nothing has been re-read from a store in the last twenty minutes, so this feed is empty. That is the honest state, not a bug: the prices we still track are on the deals page, each dated with when we last recorded it."}
           </p>
         </header>
 
         <div className="mt-7">
-          <LiveFeed initial={deals} />
+          <LiveFeed initial={deals} initialResolved />
         </div>
 
         <section className="mt-10 grid gap-3 sm:grid-cols-3">

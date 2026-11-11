@@ -3,6 +3,7 @@ import { and, asc, desc, eq, gte, isNotNull, sql } from "drizzle-orm";
 import { db, ensureSchema } from "./client";
 import { listings, observations, products } from "./schema";
 import { storeMeta } from "../config";
+import { discountFromMrp, saneMrp } from "../deal-honesty";
 import { resolveLeaf } from "./taxonomy";
 
 export interface DealRow {
@@ -125,7 +126,9 @@ const baseRows = cache(async () => {
         break;
       }
     }
-    const mrp = r.mrp && r.mrp > price ? r.mrp : null;
+    // A seller-placeholder MRP (10× or 100× the asking price) is not a
+    // reference price, so it never reaches the display layer as a discount.
+    const mrp = saneMrp(price, r.mrp);
     const meta = storeMeta(r.merchant);
     const stores = storeCount.get(r.productId);
     const median = prices.length
@@ -144,7 +147,7 @@ const baseRows = cache(async () => {
       storeShort: meta.short,
       price,
       mrp,
-      discountPct: mrp ? Math.round(((mrp - price) / mrp) * 100) : 0,
+      discountPct: discountFromMrp(price, mrp),
       rating: r.rating,
       reviewCount: r.reviewCount,
       url: r.url,
@@ -169,6 +172,20 @@ const baseRows = cache(async () => {
 /** The full priced catalogue, with recorded history for every row. */
 export async function getCatalogueRows(): Promise<DealRow[]> {
   return baseRows();
+}
+
+/**
+ * The newest successful store read across every listing. This is the only
+ * fact the homepage is allowed to use when it says anything is "live": null
+ * means no listing has been re-read recently enough to know.
+ */
+export async function getNewestCheckAt(): Promise<number | null> {
+  await ensureSchema();
+  const rows = await db
+    .select({ newest: sql<number | null>`max(${listings.lastCheckedAt})` })
+    .from(listings);
+  const newest = Number(rows[0]?.newest);
+  return Number.isFinite(newest) && newest > 0 ? newest : null;
 }
 
 /** Last 24 recorded prices, oldest -> newest. Drives the mini price-history graph. */
@@ -421,6 +438,8 @@ export async function getFilterFacets() {
   }
 
   return {
+    /** Every priced listing row we hold — the honest denominator. */
+    total: rows.length,
     priceCaps,
     discounts,
     stores: [...storeMap.entries()].map(([merchant, count]) => ({ merchant, count })),

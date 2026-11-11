@@ -3,6 +3,7 @@ import { Info, TrendingDown } from "lucide-react";
 import { CheckAgeBadge } from "@/components/ui/Badge";
 import { Rating } from "@/components/ui/Rating";
 import { storageOf } from "@/lib/engine/identity";
+import { discountFromMrp, saneMrp } from "@/lib/deal-honesty";
 import { formatINR } from "@/lib/utils";
 import type { CheckInfo } from "@/lib/types";
 
@@ -69,6 +70,7 @@ export function ProductHeaderStrip({
   mrp,
   score,
   check,
+  recordedAt,
 }: {
   title: string;
   rating: number | null;
@@ -82,10 +84,14 @@ export function ProductHeaderStrip({
   score: number | null;
   /** When the price was last read successfully. */
   check: CheckInfo;
+  /** Newest point in the recorded history — dates the price when we never read the store. */
+  recordedAt?: number | null;
 }) {
   const storage = storageOf(title)[0];
   const model = title.split(" ").slice(0, 3).join(" ");
-  const off = mrp && currentPrice ? Math.round(((mrp - currentPrice) / mrp) * 100) : 0;
+  // A seller-placeholder MRP never becomes a "% OFF" claim.
+  const shownMrp = saneMrp(currentPrice, mrp);
+  const off = discountFromMrp(currentPrice, shownMrp);
 
   const tags = [
     category,
@@ -126,12 +132,12 @@ export function ProductHeaderStrip({
                 <span className="tabular text-[19px] font-extrabold leading-none text-[var(--dw-green-mid)]">
                   {formatINR(currentPrice)}
                 </span>
-                <CheckAgeBadge check={check} />
+                <CheckAgeBadge check={check} recordedAt={recordedAt} />
               </>
             ) : null}
-            {currentPrice && mrp && mrp > currentPrice ? (
+            {currentPrice && shownMrp ? (
               <span className="inline-flex items-center gap-1.5 text-[12px] font-bold text-muted">
-                <span className="tabular line-through">{formatINR(mrp)}</span>
+                <span className="tabular line-through">{formatINR(shownMrp)}</span>
                 <span className="inline-flex items-center gap-1 rounded-md bg-emerald-500/12 px-1.5 py-0.5 text-[11px] font-extrabold text-[var(--dw-green-mid)]">
                   <TrendingDown className="h-3 w-3" />
                   {off}% OFF

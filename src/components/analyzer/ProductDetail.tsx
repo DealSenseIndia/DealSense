@@ -187,6 +187,7 @@ export function ProductDetail({
         mrp={listing.mrp}
         score={result.verdict?.score ?? null}
         check={listing.check}
+        recordedAt={points.length ? points[points.length - 1].t : null}
       />
 
       {/* ---------- gallery + price panel ---------- */}

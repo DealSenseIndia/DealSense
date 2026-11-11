@@ -108,6 +108,16 @@ export function FreshnessBadge({ freshness, ts }: { freshness: Freshness; ts?: n
   );
 }
 
+/** A stable Indian date, so the server and browser never disagree on the day. */
+function recordDate(ts: number): string {
+  return new Date(ts).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "Asia/Kolkata",
+  });
+}
+
 const checkTone: Record<CheckInfo["state"], "neutral" | "amber" | "red"> = {
   FRESH: "neutral",
   OBSERVED: "neutral",
@@ -134,8 +144,22 @@ function retryNote(kind: CheckInfo["failureKind"]): string {
  * When the price was last read successfully. The date is the last success, not
  * the last attempt: a failed retry never makes an older price look fresh.
  */
-export function CheckAgeBadge({ check, className }: { check: CheckInfo; className?: string }) {
-  const label = check.state === "NEVER" ? "Not checked yet" : `Checked ${timeAgo(check.checkedAt)}`;
+export function CheckAgeBadge({
+  check,
+  className,
+  recordedAt,
+}: {
+  check: CheckInfo;
+  className?: string;
+  /** Newest point in the recorded history, used when the store was never read. */
+  recordedAt?: number | null;
+}) {
+  const label =
+    check.state === "NEVER"
+      ? recordedAt
+        ? `Not checked yet · newest record ${recordDate(recordedAt)}`
+        : "Not checked yet"
+      : `Checked ${timeAgo(check.checkedAt)}`;
   return (
     <Pill
       tone={checkTone[check.state]}

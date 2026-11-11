@@ -1,6 +1,8 @@
 import { client, ensureSchema } from "./db/client";
-import { uid } from "./db/queries";
+import { canonicalListingWhere } from "./db/canonical";
+import { recordEvent, uid, updateListingState } from "./db/queries";
 import { storeMeta } from "./config";
+import { analyzeUrl } from "./engine/analyze";
 
 /**
  * The live feed: deals we verified ourselves and are currently standing behind.
@@ -18,6 +20,11 @@ import { storeMeta } from "./config";
 
 const VERIFY_AFTER_MS = 3 * 60 * 1000;
 const FEED_TTL_MS = 20 * 60 * 1000;
+/**
+ * A probe claims the row for this long before reading it, so the refresh
+ * worker does not spend a second store read on the same page.
+ */
+const PROBE_LEASE_MS = 20 * 60 * 1000;
 const DIRECT_MERCHANTS = new Set(["amazon", "flipkart"]);
 
 export interface LiveDealCard {
@@ -278,6 +285,136 @@ export async function promoteLiveDeals(limit = 3) {
       results.push({ listingId, outcome: "rejected", price: listing.price });
     }
   }
+  return results;
+}
+
+/**
+ * The only decision the probe may make after a real read.
+ *
+ * Exported so it can be tested without a database or a store. A card may only
+ * be published from this read, it must sit inside the twenty-minute window,
+ * and it must still clear the same bar as every other live deal.
+ */
+export function canPublishFromRead(args: {
+  readOk: boolean;
+  checkedAt: number | null;
+  now: number;
+  price: number | null;
+  inStock: boolean | null;
+  n: number;
+  low: number | null;
+  avg: number | null;
+}): boolean {
+  if (!args.readOk || args.checkedAt === null) return false;
+  if (args.now - args.checkedAt > FEED_TTL_MS) return false;
+  return qualifies(args.price, args.inStock, args.n, args.low, args.avg);
+}
+
+export interface ProbeResult {
+  listingId: string;
+  outcome: "published" | "no-longer-qualifies" | "unreadable" | "missing";
+  price: number | null;
+  checkedAt: number | null;
+}
+
+/**
+ * Read a couple of stale-but-qualifying pages, then publish only the ones that
+ * still qualify *after* the read.
+ *
+ * Nothing else in the live path touches a store: promoteLiveDeals can only use
+ * a check the refresh worker just made, and with the schedulers suppressed to
+ * a handful of runs a day that window is always missed. This is the one place
+ * a read happens, so `verifiedAt` is this read and nothing else.
+ *
+ * Most-stale-first, and only listings whose turn in the refresh queue has come
+ * (`next_check_at <= now`) so the two workers never read the same page at once.
+ */
+export async function probeQualifyingDeals(limit = 2): Promise<ProbeResult[]> {
+  await ensureSchema();
+  const cap = Math.min(Math.max(Math.trunc(limit), 0), 2);
+  if (!cap) return [];
+  const startedAt = Date.now();
+
+  const candidates = await client.execute({
+    sql: `SELECT l.id AS listingId, l.url AS url
+          FROM listings l
+          JOIN observations o ON o.listing_id = l.id
+          WHERE l.in_stock = 1 AND l.price IS NOT NULL AND l.price >= 199
+            AND l.merchant IN ('amazon', 'flipkart')
+            AND (l.next_check_at IS NULL OR l.next_check_at <= ?)
+            AND (l.last_error IS NULL OR l.failure_count < 3)
+            AND ${canonicalListingWhere("l", "twin")}
+            AND NOT EXISTS (
+              SELECT 1 FROM live_deals d WHERE d.listing_id = l.id AND d.status = 'ACTIVE'
+            )
+          GROUP BY l.id
+          HAVING COUNT(o.id) >= 4
+             AND (l.price <= MIN(o.price) * 1.02 OR l.price <= AVG(o.price) * 0.9)
+          ORDER BY COALESCE(l.last_checked_at, 0) ASC,
+                   (l.price * 1.0 / NULLIF(MIN(o.price), 0)) ASC
+          LIMIT ?`,
+    args: [startedAt, cap],
+  });
+
+  const results: ProbeResult[] = [];
+  for (const row of candidates.rows) {
+    const listingId = String(row.listingId);
+    const url = String(row.url);
+
+    // Claim first. A read that dies leaves a 20-minute lease, never a row that
+    // the refresh worker will immediately re-read.
+    await updateListingState(listingId, { nextCheckAt: startedAt + PROBE_LEASE_MS }).catch(() => {});
+
+    let readOk = false;
+    try {
+      readOk = (await analyzeUrl(url)).ok;
+    } catch {
+      readOk = false;
+    }
+
+    const listing = await loadListing(listingId);
+    if (!listing) {
+      results.push({ listingId, outcome: "missing", price: null, checkedAt: null });
+      continue;
+    }
+    const stats = await seriesStats(listingId);
+    const checkedAt = listing.lastCheckedAt;
+
+    const ok = canPublishFromRead({
+      readOk,
+      checkedAt,
+      now: Date.now(),
+      price: listing.price,
+      inStock: listing.inStock,
+      n: stats.n,
+      low: stats.low,
+      avg: stats.avg,
+    });
+
+    if (ok && listing.price !== null && checkedAt !== null) {
+      await publish(listing, listing.price, stats, "probe", checkedAt);
+      results.push({ listingId, outcome: "published", price: listing.price, checkedAt });
+    } else {
+      results.push({
+        listingId,
+        outcome: readOk
+          ? listing.lastCheckedAt === null
+            ? "missing"
+            : "no-longer-qualifies"
+          : "unreadable",
+        price: listing.price,
+        checkedAt,
+      });
+    }
+
+    await recordEvent("live_probe", {
+      listingId,
+      outcome: results[results.length - 1].outcome,
+      price: listing.price,
+      checkedAt,
+    }).catch(() => {});
+  }
+
   return results;
 }
 

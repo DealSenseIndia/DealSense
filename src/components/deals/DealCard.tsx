@@ -1,16 +1,20 @@
 import Link from "next/link";
-import { ArrowUpRight, Flame, Heart } from "lucide-react";
+import { ArrowUpRight, Clock3, Flame, Heart } from "lucide-react";
 import type { DealRow } from "@/lib/db/deals";
+import { discountFromMrp, isHotDeal, saneMrp } from "@/lib/deal-honesty";
 import { StoreLogo } from "@/components/ui/StoreLogo";
 import { ProductThumb } from "@/components/ui/ProductThumb";
 import { Rating } from "@/components/ui/Rating";
 import { PriceSpark } from "@/components/ui/PriceSpark";
 import { StoreCompareBadge } from "@/components/ui/StoreCompareBadge";
-import { cn, formatINR } from "@/lib/utils";
+import { cn, formatINR, timeAgo } from "@/lib/utils";
 
 export function DealCard({ deal }: { deal: DealRow }) {
   const isLow = deal.observations >= 3 && deal.low !== null && deal.price <= deal.low;
-  const isBuy = deal.discountPct >= 20;
+  // A placeholder MRP must never become a "99% off" badge or a Hot tag.
+  const mrp = saneMrp(deal.price, deal.mrp);
+  const discount = discountFromMrp(deal.price, mrp);
+  const isBuy = isHotDeal(deal.price, mrp);
 
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-card border border-hairline bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400/40 hover:shadow-[0_22px_55px_-26px_rgba(16,185,129,0.5)]">
@@ -82,18 +86,23 @@ export function DealCard({ deal }: { deal: DealRow }) {
             <div className="tabular text-[17px] font-extrabold leading-none text-headline">
               {formatINR(deal.price)}
             </div>
-            {deal.mrp && deal.mrp > deal.price && (
+            {mrp && (
               <div className="tabular mt-1 text-[10.5px] text-muted line-through">
-                {formatINR(deal.mrp)}
+                {formatINR(mrp)}
               </div>
             )}
           </div>
-          {deal.discountPct > 0 && (
+          {discount > 0 && (
             <div className="text-[11.5px] font-extrabold text-[var(--dw-green-mid)]">
-              {deal.discountPct}% off
+              {discount}% off
             </div>
           )}
         </div>
+
+        <p className="mt-1.5 flex items-center gap-1 text-[10px] font-semibold text-muted">
+          <Clock3 className="h-3 w-3 shrink-0" />
+          Price recorded {timeAgo(deal.lastSeenAt)}
+        </p>
 
         <a
           href={

@@ -8,7 +8,6 @@ import { StoreLogo } from "@/components/ui/StoreLogo";
 import { ProductThumb } from "@/components/ui/ProductThumb";
 import { Rating } from "@/components/ui/Rating";
 import { PriceSpark } from "@/components/ui/PriceSpark";
-import { NextCheckCountdown } from "@/components/ui/NextCheckCountdown";
 import { StoreCompareBadge } from "@/components/ui/StoreCompareBadge";
 import type { DealRow } from "@/lib/db/deals";
 import { storeMeta } from "@/lib/config";
@@ -37,11 +36,20 @@ const isNearLow = (d: DealRow) => d.low !== null && d.low > 0 && d.price <= d.lo
  */
 export function LiveDeals({
   deals,
+  live = false,
+  trackedAge,
+  trackedTotal,
   title = "Live deals",
   viewAllHref = "/deals",
   collapsed = 5,
 }: {
   deals: DealRow[];
+  /** A store check inside the last twenty minutes — the only "live" warrant. */
+  live?: boolean;
+  /** "last checked 13d ago" / "no store check on record", computed on the server. */
+  trackedAge?: string;
+  /** Every priced listing we hold, not the size of this shelf. */
+  trackedTotal?: number;
   title?: string;
   viewAllHref?: string;
   collapsed?: number;
@@ -73,19 +81,28 @@ export function LiveDeals({
           {/* header */}
           <div className="flex flex-wrap items-end justify-between gap-3 border-b border-hairline px-4 pb-3 pt-4 sm:px-5">
             <div>
-              <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[var(--dw-green-mid)]">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-70" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              {live ? (
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[var(--dw-green-mid)]">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-70" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  </span>
+                  Live · verified minutes ago
                 </span>
-                Live · {deals.length} tracked
-              </span>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-muted">
+                  <span className="inline-flex h-1.5 w-1.5 rounded-full bg-slate-400" />
+                  Tracked · {trackedAge ?? "last check unknown"}
+                </span>
+              )}
               <h2 className="mt-1 flex items-center gap-2 text-[22px] font-extrabold tracking-[-0.03em] text-headline">
-                {title}
-                <Sparkles className="h-4 w-4 text-[var(--dw-green-mid)]" />
+                {live ? title : "Tracked shelves"}
+                {live ? <Sparkles className="h-4 w-4 text-[var(--dw-green-mid)]" /> : null}
               </h2>
               <p className="mt-0.5 text-[12px] text-secondary">
-                Today&apos;s price against each product&apos;s own recorded floor.
+                {live
+                  ? "Today's price against each product's own recorded floor."
+                  : "Today's price against each product's own recorded floor. Every row says when its price was last recorded."}
               </p>
             </div>
             <Link
@@ -117,16 +134,6 @@ export function LiveDeals({
                     )}
                   >
                     {t.label}
-                    <span
-                      className={cn(
-                        "tabular rounded-full px-1.5 py-0.5 text-[9px] font-extrabold",
-                        on
-                          ? "bg-[var(--dw-green-surface)] text-[var(--dw-green-mid)]"
-                          : "bg-card/70 text-muted",
-                      )}
-                    >
-                      {sets[t.key].length}
-                    </span>
                   </button>
                 );
               })}
@@ -224,12 +231,14 @@ export function LiveDeals({
                       </div>
                     </div>
 
-                    {/* next check */}
-                    <div className="hidden shrink-0 flex-col items-center justify-self-end lg:flex">
+                    {/* when this price was recorded — never a countdown */}
+                    <div className="hidden shrink-0 flex-col items-end justify-self-end lg:flex">
                       <span className="mb-0.5 text-[7.5px] font-extrabold uppercase tracking-[0.12em] text-muted">
-                        Next check
+                        Recorded
                       </span>
-                      <NextCheckCountdown />
+                      <span className="tabular text-[11px] font-bold text-secondary">
+                        {timeAgo(d.lastSeenAt)}
+                      </span>
                     </div>
 
                   </Link>
@@ -269,7 +278,7 @@ export function LiveDeals({
               href={viewAllHref}
               className="inline-flex items-center gap-1.5 text-[11.5px] font-extrabold text-[var(--dw-green-mid)] hover:underline"
             >
-              See all {deals.length} tracked deals <ArrowRight className="h-3.5 w-3.5" />
+              See all {trackedTotal ?? deals.length} tracked deals <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
         </div>

@@ -10,6 +10,8 @@ import { cn, formatINR } from "@/lib/utils";
 import { DealCard } from "./DealCard";
 
 export interface Facets {
+  /** Every priced listing we hold — not the filtered slice. */
+  total: number;
   priceCaps: { max: number; count: number }[];
   discounts: { min: number; count: number }[];
   stores: { merchant: string; count: number }[];

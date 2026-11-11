@@ -7,6 +7,7 @@ import { Rating } from "@/components/ui/Rating";
 import { PriceSpark } from "@/components/ui/PriceSpark";
 import type { SimilarProduct } from "@/lib/db/similar";
 import { storeMeta } from "@/lib/config";
+import { discountFromMrp, saneMrp } from "@/lib/deal-honesty";
 import { formatINR } from "@/lib/utils";
 
 /**
@@ -91,14 +92,14 @@ export function SimilarProducts({
                   <span className="tabular text-[14px] font-extrabold text-headline">
                     {formatINR(p.price)}
                   </span>
-                  {p.mrp ? (
+                  {saneMrp(p.price, p.mrp) ? (
                     <span className="tabular text-[10.5px] text-muted line-through">
-                      {formatINR(p.mrp)}
+                      {formatINR(saneMrp(p.price, p.mrp))}
                     </span>
                   ) : null}
-                  {p.discountPct > 0 ? (
+                  {discountFromMrp(p.price, p.mrp) > 0 ? (
                     <span className="text-[10.5px] font-extrabold text-[var(--dw-green-mid)]">
-                      {p.discountPct}% off
+                      {discountFromMrp(p.price, p.mrp)}% off
                     </span>
                   ) : null}
                 </div>
